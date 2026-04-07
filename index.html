@@ -20,7 +20,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const slideEl = document.getElementById("slide");
+const slideEl = const slides = [
+  "🧪 Substance that glows in dark and burns in air?",
+  "👨‍🔬 1669: Alchemist boiled urine → discovery?",
+  "💡 Phosphorus",
+  "📍 Why important in Tamil Nadu?",
+  "🏭 Sivakasi industry",
+  "⚠️ White phosphorus → toxic",
+  "🦴 Phossy jaw",
+  "🔄 Red phosphorus",
+  "❓ Patient consumes rat paste—danger?",
+  "⏳ Lucid interval",
+  "🧬 Liver failure",
+  "👃 Garlic smell",
+  "🚫 2022 ban in Tamil Nadu",
+  "🧠 Clinical pearl: Patient may look fine initially"
+];
+
+slideEl.innerText = slides[data.index] || "End";;
 
 const docRef = doc(db, "slides", "current");
 
