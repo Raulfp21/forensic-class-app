@@ -29,30 +29,193 @@
     const slideEl = document.getElementById("slide");
 
     const slides = [
-  "🧪 Substance that glows in dark and burns in air?",
-  "👨‍🔬 1669: Alchemist boiled urine → discovery?",
-  "💡 PHOSPHORUS",
-  "📍 Why important in Tamil Nadu?",
-  "🏭 Sivakasi firecracker industry",
-  "⚠️ White phosphorus → highly toxic",
-  "🦴 Phossy jaw → mandibular necrosis",
-  "🔄 Shift to red phosphorus (safer)",
-  "❓ Rat paste ingestion — why dangerous?",
-  "⏳ Lucid interval (24–72 hours)",
-  "😶 Patient appears normal",
-  "🧬 Silent hepatocellular necrosis",
-  "⚠️ Sudden liver failure later",
-  "👃 Garlic odour (forensic clue)",
-  "🧫 Fatty liver on autopsy",
-  "🔥 Luminescence in dark",
-  "📍 Thandarai case (Tamil Nadu)",
-  "⚖️ Homicide + suicide case",
-  "📊 Mortality ~70%",
-  "🚫 2022 ban in Tamil Nadu",
-  "🧠 Clinical pearl: ‘Looks fine’ ≠ safe",
-  "🏁 END"
-];
 
+`💡 PHOSPHORUS POISONING
+
+Forensic Medicine Module  
+MBBS + PG Level  
+
+Topics:
+• History  
+• Clinical stages  
+• Postmortem  
+• Management  
+• Medico-legal`,
+
+`👨‍🔬 1669 — Discovery
+
+Henning Brand  
+Boiled ~5000 L urine  
+
+💡 Result:
+Glowing waxy substance  
+
+Named:
+“Phosphorus” = Bearer of Light`,
+
+`📍 Tamil Nadu Context
+
+🏭 Sivakasi industry  
+Workers exposed to White P  
+
+⚠️ Result:
+Phossy jaw  
+(mandibular necrosis)`,
+
+`🔄 Industrial Shift
+
+White phosphorus → banned  
+
+Red phosphorus used  
+✔ Non-toxic  
+✔ Safer  
+
+📌 Safety matches use red P`,
+
+`🚫 Tamil Nadu 2022 Ban
+
+Yellow phosphorus rat paste banned  
+
+Reason:
+⚠️ Mortality ~70%  
+
+Supported by MMC & Stanley data`,
+
+`⚖️ Thandarai Case (2016)
+
+📍 Tiruvannamalai  
+
+Initial confusion:
+Ghost / infection  
+
+💀 Reality:
+Homicide using rat paste  
+
+Mixed in food (rasam/rice)`,
+
+`🧪 Forensic Clues
+
+👃 Garlic odour  
+🧫 Fatty liver  
+
+💡 Key diagnosis:
+Yellow phosphorus poisoning`,
+
+`⚗️ Allotropes
+
+White/Yellow P → TOXIC  
+Red P → NON-TOXIC  
+Black P → Rare  
+
+🔥 White P:
+Glows + ignites at 30°C`,
+
+`☠️ Toxicity
+
+Fatal dose: 60–120 mg  
+
+Features:
+• Garlic smell  
+• Luminescence  
+• Lipid soluble`,
+
+`🩺 Stage 1 — GI Phase
+
+0–24 hrs  
+
+• Burning pain  
+• Vomiting  
+• Garlic eructation  
+
+💡 Vomitus may glow`,
+
+`⏳ Stage 2 — Lucid Interval
+
+24–72 hrs  
+
+⚠️ Symptoms disappear  
+Patient feels NORMAL  
+
+🚨 MOST DANGEROUS PHASE  
+Never discharge`,
+
+`🧬 Stage 3 — Hepatic Failure
+
+72 hrs – 8 days  
+
+• Jaundice  
+• Coagulopathy  
+• Encephalopathy  
+
+💀 Mortality ~70%`,
+
+`⚠️ Clinical Trap
+
+Patient looks fine  
+Vitals stable  
+
+BUT:
+Liver damage ongoing  
+
+👉 Always monitor LFT + INR`,
+
+`🧫 Postmortem — Liver
+
+Enlarged, yellow  
+Fatty change  
+
+📌 Zone 1 (periportal)  
+
+🔥 High-yield PG point`,
+
+`🫀 Other Findings
+
+Heart → “Tiger lily” pattern  
+Stomach → erosions  
+
+👃 Garlic odour present`,
+
+`💊 Management
+
+1. KMnO₄ lavage (1:5000)  
+2. Activated charcoal  
+3. NAC therapy  
+4. Monitor LFT + INR`,
+
+`🚫 Avoid
+
+❌ Milk / fats / oils  
+
+👉 Increase absorption  
+👉 Worsens toxicity`,
+
+`📊 Prognosis
+
+INR > 4 → poor  
+
+Observation:
+Minimum 4 days  
+
+💡 Even if patient looks normal`,
+
+`⚖️ Medico-Legal
+
+Suicidal → common  
+Homicidal → rare  
+Accidental → children  
+
+📌 Cheap, easily available poison`,
+
+`🧠 Key Takeaways
+
+• Lucid interval is trap  
+• Zone 1 liver damage  
+• Garlic odour clue  
+• Never discharge early`,
+
+`🏁 END`
+
+];
     db.collection("slides").doc("current")
       .onSnapshot((doc) => {
 
