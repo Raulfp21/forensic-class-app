@@ -31,235 +31,324 @@
       line-height:1.6;
       white-space:pre-wrap;
       margin:0;
-    "></pre>
+    ">Loading...</pre>
 
   </div>
 
 </div>
 
-</body>
-
-<h1 id="slide">Starting...</h1>
-
 <script>
-  try {
+  const firebaseConfig = {
+    apiKey: "PASTE",
+    authDomain: "PASTE",
+    projectId: "PASTE",
+    storageBucket: "PASTE",
+    messagingSenderId: "PASTE",
+    appId: "PASTE"
+  };
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
-  authDomain: "forensic-class-app.firebaseapp.com",
-  projectId: "forensic-class-app",
-  storageBucket: "forensic-class-app.firebasestorage.app",
-  messagingSenderId: "905219571923",
-  appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
-    };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  const slideEl = document.getElementById("slide");
 
-    const slideEl = document.getElementById("slide");
+  const slides = [
 
-    const slides = [
+`💡 PHOSPHORUS IN TAMIL NADU
 
-`💡 PHOSPHORUS POISONING
+History + Medicine + Forensics  
 
-Forensic Medicine Module  
+👉 Not just a poison  
+👉 A complete story`,
 
-`👨‍🔬 1669 — Discovery
+// 🔥 HISTORY
 
-Henning Brand  
-Boiled ~5000 L urine  
+`👨‍🔬 1669 — Henning Brand
 
-💡 Result:
-Glowing waxy substance  
+Searching for Philosopher’s Stone  
 
-Named:
+Collected:
+~5000 L urine  
+
+👉 Boiled → paste → heated`,
+
+`💡 DISCOVERY
+
+White waxy substance  
+Glows in dark  
+Burns in air  
+
+Name:
 “Phosphorus” = Bearer of Light`,
 
-`📍 Tamil Nadu Context
+// 🔥 SIVAKASI
 
-🏭 Sivakasi industry  
-Workers exposed to White P  
+`🏭 SIVAKASI CONNECTION
 
-⚠️ Result:
-Phossy jaw  
-(mandibular necrosis)`,
+Firecracker industry  
 
-`🔄 Industrial Shift
+Used:
+White Phosphorus`,
 
-White phosphorus → banned  
+`⚠️ PHOSSY JAW
 
-Red phosphorus used  
+Chronic exposure  
+
+👉 Mandibular necrosis  
+👉 Bone glows in dark  
+
+📌 Occupational hazard`,
+
+`🔄 SHIFT TO SAFETY
+
+White P → banned  
+
+Red P used  
+
 ✔ Non-toxic  
-✔ Safer  
+✔ Stable`,
 
-📌 Safety matches use red P`,
+// 🔥 RAT PASTE
 
-`🚫 Tamil Nadu 2022 Ban
+`🧪 RAT PASTE ERA (TN)
 
-Yellow phosphorus rat paste banned  
+3% Yellow Phosphorus  
 
-Reason:
-⚠️ Mortality ~70%  
+💰 Cheap (₹10–15)  
+🏪 Available everywhere`,
 
-Supported by MMC & Stanley data`,
+`⚠️ WHY DANGEROUS?
 
-`⚖️ Thandarai Case (2016)
+❌ No severe pain  
+❌ Easy to consume  
 
-📍 Tiruvannamalai  
+👉 Patient underestimates severity`,
 
-Initial confusion:
-Ghost / infection  
+// 🔥 LUCID INTERVAL
 
-💀 Reality:
-Homicide using rat paste  
+`⏳ LUCID INTERVAL (24–72 hrs)
 
-Mixed in food (rasam/rice)`,
-
-`🧪 Forensic Clues
-
-👃 Garlic odour  
-🧫 Fatty liver  
-
-💡 Key diagnosis:
-Yellow phosphorus poisoning`,
-
-`⚗️ Allotropes
-
-White/Yellow P → TOXIC  
-Red P → NON-TOXIC  
-Black P → Rare  
-
-🔥 White P:
-Glows + ignites at 30°C`,
-
-`☠️ Toxicity
-
-Fatal dose: 60–120 mg  
-
-Features:
-• Garlic smell  
-• Luminescence  
-• Lipid soluble`,
-
-`🩺 Stage 1 — GI Phase
-
-0–24 hrs  
-
-• Burning pain  
-• Vomiting  
-• Garlic eructation  
-
-💡 Vomitus may glow`,
-
-`⏳ Stage 2 — Lucid Interval
-
-24–72 hrs  
-
-⚠️ Symptoms disappear  
 Patient feels NORMAL  
 
 🚨 MOST DANGEROUS PHASE  
-Never discharge`,
 
-`🧬 Stage 3 — Hepatic Failure
+👉 Intern mistake:
+Discharge patient`,
 
-72 hrs – 8 days  
+`🧬 REALITY
+
+During this time:
+
+👉 Liver destruction ongoing  
+👉 Silent hepatotoxicity`,
+
+// 🔥 HEPATIC FAILURE
+
+`⚠️ AFTER 72 HOURS
+
+Fulminant hepatic failure  
 
 • Jaundice  
 • Coagulopathy  
-• Encephalopathy  
+• Encephalopathy`,
 
-💀 Mortality ~70%`,
+`💀 PROGNOSIS
 
-`⚠️ Clinical Trap
+Mortality ~70%  
 
-Patient looks fine  
-Vitals stable  
+📉 Very high risk`,
 
-BUT:
-Liver damage ongoing  
+// 🔥 THANDARAI CASE
 
-👉 Always monitor LFT + INR`,
+`📍 THANDARAI CASE (2016)
 
-`🧫 Postmortem — Liver
+Tiruvannamalai  
 
-Enlarged, yellow  
-Fatty change  
+6 deaths in 25 days`,
 
-📌 Zone 1 (periportal)  
+`😨 INITIAL CONFUSION
 
-🔥 High-yield PG point`,
+Ghost?  
+Infection?  
+Brain fever?`,
 
-`🫀 Other Findings
+`🔍 FORENSIC CLUE
 
-Heart → “Tiger lily” pattern  
-Stomach → erosions  
+Garlic odour  
+Fatty liver`,
 
-👃 Garlic odour present`,
+`⚖️ FINAL DIAGNOSIS
 
-`💊 Management
+Yellow phosphorus poisoning  
+
+👉 Food contamination (rasam)`,
+
+// 🔥 BAN
+
+`🚫 2022 BAN (TAMIL NADU)
+
+Based on:
+
+📊 Mortality ~70%  
+Studies by MMC & Stanley`,
+
+`📌 CURRENT REALITY
+
+Still seen due to:
+
+👉 Illegal stock  
+👉 Old supply`,
+
+// 🔥 ALLOTROPES
+
+`⚗️ ALLOTROPES
+
+White → TOXIC  
+Red → SAFE  
+Black → Stable (no forensic role)`,
+
+`🔥 WHITE PHOSPHORUS
+
+• Glows  
+• Ignites at 30°C  
+• Lipid soluble  
+• Highly toxic`,
+
+// 🔥 CLINICAL STAGES
+
+`🩺 STAGE 1 (0–24 hrs)
+
+GI phase  
+
+• Burning pain  
+• Vomiting  
+• Garlic eructation`,
+
+`✨ FORENSIC SIGNS
+
+• Luminescent vomitus  
+• Smoking stools  
+
+📌 Rare but exam favourite`,
+
+`⏳ STAGE 2
+
+Lucid interval  
+
+Patient:
+“I feel fine”  
+
+🚨 DO NOT TRUST`,
+
+`🧬 STAGE 3
+
+Hepatic failure  
+
+• Jaundice  
+• Bleeding  
+• Encephalopathy`,
+
+// 🔥 POSTMORTEM
+
+`🧫 POSTMORTEM — LIVER
+
+Enlarged  
+Yellow  
+Fatty change`,
+
+`📍 HISTOLOGY
+
+Zone 1 (periportal)  
+
+🔥 HIGH-YIELD POINT`,
+
+`🫀 HEART
+
+“Tiger lily heart”  
+
+Fatty degeneration`,
+
+// 🔥 MANAGEMENT
+
+`💊 MANAGEMENT
 
 1. KMnO₄ lavage (1:5000)  
 2. Activated charcoal  
-3. NAC therapy  
-4. Monitor LFT + INR`,
+3. NAC`,
 
-`🚫 Avoid
+`🚫 AVOID
 
-❌ Milk / fats / oils  
+❌ Milk  
+❌ Oil  
 
-👉 Increase absorption  
-👉 Worsens toxicity`,
+👉 Increases absorption`,
 
-`📊 Prognosis
+`📊 MONITOR
 
-INR > 4 → poor  
+• LFT  
+• PT/INR  
 
-Observation:
-Minimum 4 days  
+👉 Even if asymptomatic`,
 
-💡 Even if patient looks normal`,
+// 🔥 DIFFERENTIAL
 
-`⚖️ Medico-Legal
+`⚖️ DIFFERENTIAL
+
+Yellow P → Liver failure  
+Zinc phosphide → Shock + gas toxicity`,
+
+`👃 ODOUR DIFFERENCE
+
+Yellow P → Garlic  
+Zinc phosphide → Rotten fish`,
+
+// 🔥 CHRONIC
+
+`🦴 CHRONIC POISONING
+
+Phossy jaw  
+
+👉 Osteomyelitis  
+👉 Non-healing extraction`,
+
+// 🔥 MEDICOLEGAL
+
+`⚖️ MEDICOLEGAL
 
 Suicidal → common  
 Homicidal → rare  
-Accidental → children  
+Accidental → children`,
 
-📌 Cheap, easily available poison`,
+`📜 LAW (BNS)
 
-`🧠 Key Takeaways
+Section 123 → Poisoning  
+Section 103 → Murder`,
 
-• Lucid interval is trap  
-• Zone 1 liver damage  
-• Garlic odour clue  
-• Never discharge early`,
+// 🔥 END
 
-`🏁 END`
+`🏁 END
+
+“Lucid interval kills, not the poison immediately”`
 
 ];
-    db.collection("slides").doc("current")
-      .onSnapshot((doc) => {
 
-        if (!doc.exists) {
-          slideEl.innerText = "No data found";
-          return;
-        }
+  db.collection("slides").doc("current")
+    .onSnapshot((doc) => {
 
-        const data = doc.data();
-        const index = data.index || 0;
+      if (!doc.exists) {
+        slideEl.innerText = "No data found";
+        return;
+      }
 
-        slideEl.innerText = slides[index] || "End";
+      const data = doc.data();
+      const index = Number(data.index) || 0;
 
-      }, (error) => {
-        slideEl.innerText = "Firebase Error: " + error.message;
-      });
+      slideEl.innerText = slides[index] || "End";
 
-  } catch (err) {
-    document.getElementById("slide").innerText = "JS Error: " + err.message;
-  }
+    }, (error) => {
+      slideEl.innerText = "Error: " + error.message;
+    });
 </script>
 
-
-<pre id="slide" style="font-size:28px; white-space:pre-wrap; text-align:left;"></pre>
+</body>
 </html>
