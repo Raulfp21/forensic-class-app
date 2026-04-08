@@ -43,7 +43,7 @@ const docRef = doc(db, "slides", "current");
 
 onSnapshot(docRef, (docSnap) => {
   const data = docSnap.data();
-  slideEl.innerText = "Slide " + data.index;
+  slideEl.innerText = "Script Loaded";
 });
 </script>
 
