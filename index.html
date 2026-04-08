@@ -26,11 +26,7 @@
 
   const slideEl = document.getElementById("slide");
 
-  db.collection("slides").doc("current")
-    .onSnapshot((doc) => {
-      if (doc.exists) {
-        const data = doc.data();
-        const slides = [
+  const slides = [
   "🧪 Substance that glows in dark and burns in air?",
   "👨‍🔬 1669: Alchemist boiled urine → discovery?",
   "💡 Phosphorus",
@@ -53,6 +49,16 @@
   "🧠 Clinical pearl: Patient may look normal initially",
   "🏁 END"
 ];
+
+db.collection("slides").doc("current")
+  .onSnapshot((doc) => {
+    if (doc.exists) {
+      const data = doc.data();
+      slideEl.innerText = slides[data.index] || "End";
+    } else {
+      slideEl.innerText = "No data found";
+    }
+  });
 
 slideEl.innerText = slides[data.index] || "End";
       } else {
