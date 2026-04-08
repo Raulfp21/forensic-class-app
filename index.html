@@ -30,7 +30,31 @@
     .onSnapshot((doc) => {
       if (doc.exists) {
         const data = doc.data();
-        slideEl.innerText = "Slide " + data.index;
+        const slides = [
+  "🧪 Substance that glows in dark and burns in air?",
+  "👨‍🔬 1669: Alchemist boiled urine → discovery?",
+  "💡 Phosphorus",
+  "📍 Why important in Tamil Nadu?",
+  "🏭 Sivakasi industry",
+  "⚠️ White phosphorus → toxic",
+  "🦴 Phossy jaw (mandibular necrosis)",
+  "🔄 Shift to red phosphorus",
+  "❓ Rat paste ingestion—why dangerous?",
+  "⏳ Lucid interval (24–72 hrs)",
+  "🧬 Silent hepatic necrosis",
+  "⚠️ Sudden liver failure",
+  "👃 Garlic odour (forensic clue)",
+  "🧫 Fatty liver on autopsy",
+  "🔥 Luminescence in dark",
+  "📍 Thandarai case (TN)",
+  "⚖️ Homicide + suicide case",
+  "📊 Mortality ~70%",
+  "🚫 2022 ban in Tamil Nadu",
+  "🧠 Clinical pearl: Patient may look normal initially",
+  "🏁 END"
+];
+
+slideEl.innerText = slides[data.index] || "End";
       } else {
         slideEl.innerText = "No data found";
       }
