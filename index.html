@@ -1,24 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Student View</title>
-
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-</head>
-
-<body>
-
-<h1 id="slide">Loading...</h1>
-
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
-  authDomain: "forensic-class-app.firebaseapp.com",
-  projectId: "forensic-class-app",
-  storageBucket: "forensic-class-app.firebasestorage.app",
-  messagingSenderId: "905219571923",
-  appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
+    apiKey: "PASTE",
+    authDomain: "PASTE",
+    projectId: "PASTE",
+    storageBucket: "PASTE",
+    messagingSenderId: "PASTE",
+    appId: "PASTE"
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -27,47 +14,48 @@
   const slideEl = document.getElementById("slide");
 
   const slides = [
-  "🧪 Substance that glows in dark and burns in air?",
-  "👨‍🔬 1669: Alchemist boiled urine → discovery?",
-  "💡 Phosphorus",
-  "📍 Why important in Tamil Nadu?",
-  "🏭 Sivakasi industry",
-  "⚠️ White phosphorus → toxic",
-  "🦴 Phossy jaw (mandibular necrosis)",
-  "🔄 Shift to red phosphorus",
-  "❓ Rat paste ingestion—why dangerous?",
-  "⏳ Lucid interval (24–72 hrs)",
-  "🧬 Silent hepatic necrosis",
-  "⚠️ Sudden liver failure",
-  "👃 Garlic odour (forensic clue)",
-  "🧫 Fatty liver on autopsy",
-  "🔥 Luminescence in dark",
-  "📍 Thandarai case (TN)",
-  "⚖️ Homicide + suicide case",
-  "📊 Mortality ~70%",
-  "🚫 2022 ban in Tamil Nadu",
-  "🧠 Clinical pearl: Patient may look normal initially",
-  "🏁 END"
-];
+    "🧪 Substance that glows in dark and burns in air?",
+    "👨‍🔬 1669: Alchemist boiled urine → discovery?",
+    "💡 Phosphorus",
+    "📍 Why important in Tamil Nadu?",
+    "🏭 Sivakasi industry",
+    "⚠️ White phosphorus → toxic",
+    "🦴 Phossy jaw (mandibular necrosis)",
+    "🔄 Shift to red phosphorus",
+    "❓ Rat paste ingestion—why dangerous?",
+    "⏳ Lucid interval (24–72 hrs)",
+    "🧬 Silent hepatic necrosis",
+    "⚠️ Sudden liver failure",
+    "👃 Garlic odour (forensic clue)",
+    "🧫 Fatty liver on autopsy",
+    "🔥 Luminescence in dark",
+    "📍 Thandarai case (TN)",
+    "⚖️ Homicide + suicide case",
+    "📊 Mortality ~70%",
+    "🚫 2022 ban in Tamil Nadu",
+    "🧠 Clinical pearl: Patient may look normal initially",
+    "🏁 END"
+  ];
 
-db.collection("slides").doc("current")
-  .onSnapshot((doc) => {
-    if (doc.exists) {
-      const data = doc.data();
-      slideEl.innerText = slides[data.index] || "End";
-    } else {
-      slideEl.innerText = "No data found";
-    }
-  });
+  db.collection("slides").doc("current")
+    .onSnapshot((doc) => {
+      try {
+        if (!doc.exists) {
+          slideEl.innerText = "No data found";
+          return;
+        }
 
-slideEl.innerText = slides[data.index] || "End";
-      } else {
-        slideEl.innerText = "No data found";
+        const data = doc.data();
+
+        // 🔐 Safe fallback
+        const index = data.index ?? 0;
+
+        slideEl.innerText = slides[index] || "End";
+
+      } catch (err) {
+        slideEl.innerText = "Error: " + err.message;
       }
     }, (error) => {
-      slideEl.innerText = "Error: " + error.message;
+      slideEl.innerText = "Firebase Error: " + error.message;
     });
 </script>
-
-</body>
-</html>
