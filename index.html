@@ -49,34 +49,39 @@
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  // 1. Ask for student name (so you know who is leaving)
-const studentName = prompt("Please enter your name for attendance:") || "Anonymous";
-
-// 2. Listen for tab switching/minimizing
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === 'hidden') {
-    // The student left the page! Let's log it to Firebase.
-    db.collection("activity_logs").add({
-      student: studentName,
-      event: "Left Page / Switched Tab",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      slideIndex: slideEl.innerText.substring(0, 20) // Context of what they were viewing
-    });
-    console.log(`${studentName} switched tabs!`);
-  } else {
-    // They came back
-    db.collection("activity_logs").add({
-      student: studentName,
-      event: "Returned to Page",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  }
-});
- window.onbeforeunload = function() {
-  return "Are you sure you want to leave the lecture? Your activity is being monitored.";
-};
-
+  // ✅ slideEl declared FIRST before any listeners
   const slideEl = document.getElementById("slide");
+
+  const studentName = prompt("Please enter your name for attendance:") || "Anonymous";
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'hidden') {
+      db.collection("activity_logs").add({
+        student: studentName,
+        event: "Left Page / Switched Tab",
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        slideContext: slideEl.innerText.substring(0, 40)
+      });
+    } else {
+      db.collection("activity_logs").add({
+        student: studentName,
+        event: "Returned to Page",
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        slideContext: slideEl.innerText.substring(0, 40)
+      });
+    }
+  });
+
+  window.onbeforeunload = function() {
+    db.collection("activity_logs").add({
+      student: studentName,
+      event: "Closed / Left Page",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      slideContext: slideEl.innerText.substring(0, 40)
+    });
+    return "Are you sure you want to leave the lecture? Your activity is being monitored.";
+  };
+
 
   const slides = [
 
