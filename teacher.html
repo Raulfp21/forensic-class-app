@@ -9,36 +9,202 @@
 
 <body>
 
-<h2>Teacher Panel</h2>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
+  h1 { font-size: 20px; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 12px; }
+  .top-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
+  button { padding: 10px 24px; font-size: 16px; font-family: 'Courier New', monospace; cursor: pointer; border: none; border-radius: 6px; font-weight: bold; }
+  #btnPrev { background: #374151; color: #fff; }
+  #btnNext { background: #00ff88; color: #000; }
+  #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
+  #slidePreview { font-size: 13px; color: #aaa; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; white-space: pre-wrap; max-height: 100px; overflow: hidden; line-height: 1.5; }
+  .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; }
+  .stat-box .stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .stat-box .stat-value { font-size: 22px; font-weight: bold; }
+  .stat-box.green .stat-value { color: #00ff88; }
+  .stat-box.red .stat-value { color: #ff4444; }
+  .stat-box.yellow .stat-value { color: #fbbf24; }
+  #logTable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  #logTable th { text-align: left; padding: 8px 12px; color: #555; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; }
+  #logTable td { padding: 8px 12px; border-bottom: 1px solid #111; vertical-align: top; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+  .tag-left { background: #3b0000; color: #ff6b6b; }
+  .tag-returned { background: #0a2e1a; color: #00cc66; }
+  .tag-closed { background: #2a1a00; color: #ff9900; }
+  .student-name { color: #60a5fa; }
+  .slide-ctx { color: #555; font-size: 11px; }
+  .time-cell { color: #444; font-size: 11px; }
+  #clearBtn { background: #1a0000; color: #ff4444; border: 1px solid #3b0000; font-size: 12px; padding: 6px 14px; margin-left: auto; }
+  .toolbar { display: flex; align-items: center; margin-bottom: 10px; }
+  #logCount { font-size: 12px; color: #555; margin-left: 12px; }
+  #flagList { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; margin-bottom: 24px; }
+  .flag-pill { background: #3b0000; color: #ff6b6b; border: 1px solid #5a0000; border-radius: 20px; padding: 4px 12px; font-size: 12px; }
+  .no-flags { color: #2a2a2a; font-size: 12px; }
+  .log-wrap { overflow-x: auto; border: 1px solid #1a1a1a; border-radius: 8px; }
+</style>
 
-<button onclick="next()">Next</button>
-<button onclick="prev()">Previous</button>
+<h1>⚗ Forensic Class — Teacher Panel</h1>
+
+<div class="top-bar">
+  <button id="btnPrev" onclick="prev()">◀ Prev</button>
+  <button id="btnNext" onclick="next()">Next ▶</button>
+  <div id="slideInfo">Slide: —</div>
+</div>
+
+<div class="section-title">Current Slide Preview</div>
+<div id="slidePreview">Loading...</div>
+
+<div class="stats-row">
+  <div class="stat-box green"><div class="stat-label">Currently Active</div><div class="stat-value" id="statActive">—</div></div>
+  <div class="stat-box red"><div class="stat-label">Tab Switches</div><div class="stat-value" id="statLeft">0</div></div>
+  <div class="stat-box yellow"><div class="stat-label">Total Events</div><div class="stat-value" id="statTotal">0</div></div>
+</div>
+
+<div class="section-title">🚨 Flagged Students (switched tabs)</div>
+<div id="flagList"><span class="no-flags">None yet</span></div>
+
+<div class="toolbar">
+  <div class="section-title" style="margin:0;">Activity Log</div>
+  <span id="logCount"></span>
+  <button id="clearBtn" onclick="clearLogs()">Clear Logs</button>
+</div>
+
+<div class="log-wrap">
+  <table id="logTable">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Student</th>
+        <th>Event</th>
+        <th>Slide Context</th>
+      </tr>
+    </thead>
+    <tbody id="logBody">
+      <tr><td colspan="4" style="color:#333; padding:16px;">Waiting for activity...</td></tr>
+    </tbody>
+  </table>
+</div>
 
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
-  authDomain: "forensic-class-app.firebaseapp.com",
-  projectId: "forensic-class-app",
-  storageBucket: "forensic-class-app.firebasestorage.app",
-  messagingSenderId: "905219571923",
-  appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
+    authDomain: "forensic-class-app.firebaseapp.com",
+    projectId: "forensic-class-app",
+    storageBucket: "forensic-class-app.firebasestorage.app",
+    messagingSenderId: "905219571923",
+    appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
   };
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-
   const ref = db.collection("slides").doc("current");
 
-  function next() {
-    ref.update({
-      index: firebase.firestore.FieldValue.increment(1)
-    });
-  }
+  function next() { ref.update({ index: firebase.firestore.FieldValue.increment(1) }); }
+  function prev() { ref.update({ index: firebase.firestore.FieldValue.increment(-1) }); }
 
-  function prev() {
-    ref.update({
-      index: firebase.firestore.FieldValue.increment(-1)
+  const slides = [
+"💡 PHOSPHORUS IN TAMIL NADU\n\nHistory + Medicine + Forensics",
+"👨‍🔬 1669 — Henning Brand\n\nSearching for Philosopher's Stone\n\nCollected: ~5000 L urine",
+"💡 DISCOVERY\n\nWhite waxy substance\nGlows in dark\nBurns in air",
+"🏭 SIVAKASI CONNECTION\n\nFirecracker industry\nUsed: White Phosphorus",
+"⚠️ PHOSSY JAW\n\nChronic exposure\n👉 Mandibular necrosis",
+"🔄 SHIFT TO SAFETY\n\nWhite P → banned\nRed P used",
+"🧪 RAT PASTE ERA (TN)\n\n3% Yellow Phosphorus\n💰 Cheap (₹10–15)",
+"⚠️ WHY DANGEROUS?\n\n❌ No severe pain\n❌ Easy to consume",
+"⏳ LUCID INTERVAL (24–72 hrs)\n\nPatient feels NORMAL\n🚨 MOST DANGEROUS PHASE",
+"🧬 REALITY\n\nLiver destruction ongoing\nSilent hepatotoxicity",
+"⚠️ AFTER 72 HOURS\n\nFulminant hepatic failure\n• Jaundice • Coagulopathy • Encephalopathy",
+"💀 PROGNOSIS\n\nMortality ~70%",
+"📍 THANDARAI CASE (2016)\n\nTiruvannamalai — 6 deaths in 25 days",
+"😨 INITIAL CONFUSION\n\nGhost? Infection? Brain fever?",
+"🔍 FORENSIC CLUE\n\nGarlic odour\nFatty liver",
+"⚖️ FINAL DIAGNOSIS\n\nYellow phosphorus poisoning\nFood contamination (rasam)",
+"🚫 2022 BAN (TAMIL NADU)\n\nMortality ~70%\nStudies by MMC & Stanley",
+"📌 CURRENT REALITY\n\nStill seen: Illegal stock / Old supply",
+"⚗️ ALLOTROPES\n\nWhite → TOXIC\nRed → SAFE\nBlack → Stable",
+"🔥 WHITE PHOSPHORUS\n\n• Glows\n• Ignites at 30°C\n• Lipid soluble\n• Highly toxic",
+"🩺 STAGE 1 (0–24 hrs)\n\nGI phase\n• Burning pain • Vomiting • Garlic eructation",
+"✨ FORENSIC SIGNS\n\n• Luminescent vomitus\n• Smoking stools",
+"⏳ STAGE 2\n\nLucid interval\nPatient: \"I feel fine\"\n🚨 DO NOT TRUST",
+"🧬 STAGE 3\n\nHepatic failure\n• Jaundice • Bleeding • Encephalopathy",
+"🧫 POSTMORTEM — LIVER\n\nEnlarged\nYellow\nFatty change",
+"📍 HISTOLOGY\n\nZone 1 (periportal)\n🔥 HIGH-YIELD POINT",
+"🫀 HEART\n\n\"Tiger lily heart\"\nFatty degeneration",
+"💊 MANAGEMENT\n\n1. KMnO₄ lavage (1:5000)\n2. Activated charcoal\n3. NAC",
+"🚫 AVOID\n\n❌ Milk\n❌ Oil\n👉 Increases absorption",
+"📊 MONITOR\n\n• LFT\n• PT/INR\n👉 Even if asymptomatic",
+"⚖️ DIFFERENTIAL\n\nYellow P → Liver failure\nZinc phosphide → Shock + gas",
+"👃 ODOUR DIFFERENCE\n\nYellow P → Garlic\nZinc phosphide → Rotten fish",
+"🦴 CHRONIC POISONING\n\nPhossy jaw\n👉 Osteomyelitis",
+"⚖️ MEDICOLEGAL\n\nSuicidal → common\nHomicidal → rare\nAccidental → children",
+"📜 LAW (BNS)\n\nSection 123 → Poisoning\nSection 103 → Murder",
+"🏁 END\n\n\"Lucid interval kills, not the poison immediately\""
+  ];
+
+  ref.onSnapshot((doc) => {
+    if (!doc.exists) return;
+    const index = Number(doc.data().index) || 0;
+    document.getElementById("slideInfo").innerText = `Slide: ${index + 1} / ${slides.length}`;
+    document.getElementById("slidePreview").innerText = slides[index] || "End";
+  });
+
+  const tbody = document.getElementById("logBody");
+  const flaggedStudents = new Set();
+
+  db.collection("activity_logs")
+    .orderBy("timestamp", "desc")
+    .limit(100)
+    .onSnapshot((snapshot) => {
+      let leftCount = 0;
+      let activeSet = new Set();
+      const rows = [];
+
+      snapshot.forEach((doc) => {
+        const d = doc.data();
+        const event = d.event || "";
+        const student = d.student || "Unknown";
+        const ctx = d.slideContext || d.slideIndex || "";
+        const ts = d.timestamp ? d.timestamp.toDate() : null;
+        const timeStr = ts ? ts.toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit", second:"2-digit" }) : "—";
+
+        if (event.includes("Left") || event.includes("Switched")) { leftCount++; flaggedStudents.add(student); }
+        if (event.includes("Returned")) activeSet.add(student);
+
+        let tagClass = "tag-left";
+        if (event.includes("Returned")) tagClass = "tag-returned";
+        else if (event.includes("Closed")) tagClass = "tag-closed";
+
+        rows.push(`<tr>
+          <td class="time-cell">${timeStr}</td>
+          <td class="student-name">${student}</td>
+          <td><span class="tag ${tagClass}">${event}</span></td>
+          <td class="slide-ctx">${ctx}</td>
+        </tr>`);
+      });
+
+      tbody.innerHTML = rows.length > 0 ? rows.join("") : `<tr><td colspan="4" style="color:#333;padding:16px;">No activity yet</td></tr>`;
+
+      document.getElementById("statLeft").innerText = leftCount;
+      document.getElementById("statTotal").innerText = snapshot.size;
+      document.getElementById("statActive").innerText = activeSet.size;
+      document.getElementById("logCount").innerText = `(${snapshot.size} events)`;
+
+      const flagList = document.getElementById("flagList");
+      flagList.innerHTML = flaggedStudents.size === 0
+        ? `<span class="no-flags">None yet</span>`
+        : Array.from(flaggedStudents).map(s => `<span class="flag-pill">⚠ ${s}</span>`).join("");
     });
+
+  async function clearLogs() {
+    if (!confirm("Clear all activity logs?")) return;
+    const snap = await db.collection("activity_logs").get();
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    flaggedStudents.clear();
   }
 </script>
 
