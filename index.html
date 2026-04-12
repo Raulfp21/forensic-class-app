@@ -1,37 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student View</title>
+  <title>Student View - Live Class</title>
 
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <style>
+    .slide-title { font-size: 26px; font-weight: bold; color: #58a6ff; margin-bottom: 15px; }
+    .alert-box { padding: 15px; border-radius: 8px; margin: 10px 0; border: 1px solid #333; font-size: 20px; line-height: 1.5; }
+    .alert-yellow { background: #2b2008; color: #ffa657; border-color: #6e4c0a; }
+    .alert-red { background: #2d1215; color: #f78166; border-color: #6e2128; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+    .compare-card { background: #21262d; padding: 15px; border-radius: 8px; border: 1px solid #30363d; font-size: 18px;}
+    .compare-card h3 { margin-top: 0; color: #7ee787; }
+  </style>
 </head>
 
 <body style="margin:0; font-family: Arial, sans-serif; background:#0f172a; color:white;">
 
-<div style="
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  padding:20px;
-">
+<div style="display:flex; justify-content:center; align-items:center; height:100vh; padding:20px;">
 
-  <div style="
-    max-width:800px;
-    width:100%;
-    background:#1e293b;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.5);
-  ">
+  <div style="max-width:800px; width:100%; background:#1e293b; padding:30px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
 
-    <pre id="slide" style="
-      font-size:26px;
-      line-height:1.6;
-      white-space:pre-wrap;
-      margin:0;
-    ">Loading...</pre>
+    <div id="slide" style="font-size:26px; line-height:1.6; white-space:pre-wrap; margin:0;">
+      Loading...
+    </div>
 
   </div>
 
@@ -40,345 +34,115 @@
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
-  authDomain: "forensic-class-app.firebaseapp.com",
-  projectId: "forensic-class-app",
-  storageBucket: "forensic-class-app.firebasestorage.app",
-  messagingSenderId: "905219571923",
-  appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
+    authDomain: "forensic-class-app.firebaseapp.com",
+    projectId: "forensic-class-app",
+    storageBucket: "forensic-class-app.firebasestorage.app",
+    messagingSenderId: "905219571923",
+    appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
   };
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  // ✅ slideEl declared FIRST before any listeners
+  
   const slideEl = document.getElementById("slide");
-
   const studentName = prompt("Please enter your name for attendance:") || "Anonymous";
 
+  // --- ACTIVITY TRACKING (Unchanged) ---
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === 'hidden') {
       db.collection("activity_logs").add({
-        student: studentName,
-        event: "Left Page / Switched Tab",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        slideContext: slideEl.innerText.substring(0, 40)
+        student: studentName, event: "Left Page / Switched Tab", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40)
       });
     } else {
       db.collection("activity_logs").add({
-        student: studentName,
-        event: "Returned to Page",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        slideContext: slideEl.innerText.substring(0, 40)
+        student: studentName, event: "Returned to Page", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40)
       });
     }
   });
 
   window.onbeforeunload = function() {
     db.collection("activity_logs").add({
-      student: studentName,
-      event: "Closed / Left Page",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      slideContext: slideEl.innerText.substring(0, 40)
+      student: studentName, event: "Closed / Left Page", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40)
     });
     return "Are you sure you want to leave the lecture? Your activity is being monitored.";
   };
 
+  // --- NEW: THE MULTI-TOPIC LIBRARY ---
+  const allTopics = {
+    
+    // BATCH 2024: MONDAY'S CLASS
+    "fm216": [
+      `<div class="slide-title">🦴 FM 2.16: Mutilated Remains</div><b>Reddy:</b> Disfigured bodies where limbs/parts are lost but soft tissue is attached.<br><br><b>Modi:</b> Not always criminal; animals (rats, dogs, vultures) can disfigure bodies quickly.<br><br><b>Parikh:</b> Fragmentary remains = head, trunk, or limb only.`,
+      
+      `<div class="slide-title">🔍 Preliminary Examination</div><img src="https://i.postimg.cc/mD8gM3X9/Screenshot-20260412-143112-OneDrive.jpg" style="width:100%; border-radius:10px;"><br>Record container details (Knot analysis). Detect Anatomy Room artifacts (Formalin/Red Lead).<br><br><span style="color:#f78166"><b>Precipitin Test:</b></span> Mandatory for isolated tissue to confirm human origin.`,
+      
+      `<div class="slide-title">🐾 Animal vs Criminal Dismemberment</div><img src="https://i.postimg.cc/0jXyB6S6/Gemini-Generated-Image-xnmoitxnmoitxnmo.jpg" style="width:100%; border-radius:10px;"><br><div class="compare-grid"><div class="compare-card"><h3>Animal Scavenging</h3>Scalloped edges<br>Pits on bone<br>No vital reaction</div><div class="compare-card"><h3 style="color:#f78166;">Criminal</h3>Clean-cut edges<br>Joint separation (skilled)<br>Vital reaction present</div></div>`,
+      
+      `<div class="slide-title">📏 Stature Calculation</div><b>Pearson's Factors:</b><br>Femur: Length x 3.7<br>Humerus: Length x 5.3<br><br><b>Trotter-Gleser (Male):</b><br>Stature = (2.32 x Femur) + 65.53<br><br><div class="alert-box alert-yellow"><b>Note:</b> Living height is 2-4cm taller than skeletal height due to soft tissues.</div>`,
+      
+      `<div class="slide-title">⚖️ Legal (BNS 2023)</div><div class="alert-box alert-red"><b>Section 238 BNS:</b> Causing disappearance of evidence of an offence (formerly IPC 201).</div><br>Your report must conclude:<br>1. Are remains human?<br>2. Do they belong to one individual? (Check reduplication).<br>3. Cause of death.`
+    ],
+
+    // BATCH 2023: PREVIOUS CLASS
+    "phosphorus": [
+      `💡 PHOSPHORUS IN TAMIL NADU\n\nHistory + Medicine + Forensics\n\n👉 Not just a poison\n👉 A complete story`,
+      `👨‍🔬 1669 — Henning Brand\n\nSearching for Philosopher’s Stone\n\nCollected:\n~5000 L urine\n\n👉 Boiled → paste → heated`,
+      `💡 DISCOVERY\n\nWhite waxy substance\nGlows in dark\nBurns in air\n\nName:\n“Phosphorus” = Bearer of Light`,
+      `🏭 SIVAKASI CONNECTION\n\nFirecracker industry\n\nUsed:\nWhite Phosphorus`,
+      `⚠️ PHOSSY JAW\n\nChronic exposure\n\n👉 Mandibular necrosis\n👉 Bone glows in dark\n\n📌 Occupational hazard`,
+      `🔄 SHIFT TO SAFETY\n\nWhite P → banned\n\nRed P used\n\n✔ Non-toxic\n✔ Stable`,
+      `🧪 RAT PASTE ERA (TN)\n\n3% Yellow Phosphorus\n\n💰 Cheap (₹10–15)\n🏪 Available everywhere`,
+      `⚠️ WHY DANGEROUS?\n\n❌ No severe pain\n❌ Easy to consume\n\n👉 Patient underestimates severity`,
+      `⏳ LUCID INTERVAL (24–72 hrs)\n\nPatient feels NORMAL\n\n🚨 MOST DANGEROUS PHASE\n\n👉 Intern mistake:\nDischarge patient`,
+      `🧬 REALITY\n\nDuring this time:\n\n👉 Liver destruction ongoing\n👉 Silent hepatotoxicity`,
+      `⚠️ AFTER 72 HOURS\n\nFulminant hepatic failure\n\n• Jaundice\n• Coagulopathy\n• Encephalopathy`,
+      `💀 PROGNOSIS\n\nMortality ~70%\n\n📉 Very high risk`,
+      `📍 THANDARAI CASE (2016)\n\nTiruvannamalai\n\n6 deaths in 25 days`,
+      `😨 INITIAL CONFUSION\n\nGhost?\nInfection?\nBrain fever?`,
+      `🔍 FORENSIC CLUE\n\nGarlic odour\nFatty liver`,
+      `⚖️ FINAL DIAGNOSIS\n\nYellow phosphorus poisoning\n\n👉 Food contamination (rasam)`,
+      `🚫 2022 BAN (TAMIL NADU)\n\nBased on:\n\n📊 Mortality ~70%\nStudies by MMC & Stanley`,
+      `📌 CURRENT REALITY\n\nStill seen due to:\n\n👉 Illegal stock\n👉 Old supply`,
+      `⚗️ ALLOTROPES\n\nWhite → TOXIC\nRed → SAFE\nBlack → Stable (no forensic role)`,
+      `🔥 WHITE PHOSPHORUS\n\n• Glows\n• Ignites at 30°C\n• Lipid soluble\n• Highly toxic`,
+      `🩺 STAGE 1 (0–24 hrs)\n\nGI phase\n\n• Burning pain\n• Vomiting\n• Garlic eructation`,
+      `✨ FORENSIC SIGNS\n\n• Luminescent vomitus\n• Smoking stools\n\n📌 Rare but exam favourite`,
+      `⏳ STAGE 2\n\nLucid interval\n\nPatient:\n“I feel fine”\n\n🚨 DO NOT TRUST`,
+      `🧬 STAGE 3\n\nHepatic failure\n\n• Jaundice\n• Bleeding\n• Encephalopathy`,
+      `🧫 POSTMORTEM — LIVER\n\nEnlarged\nYellow\nFatty change`,
+      `📍 HISTOLOGY\n\nZone 1 (periportal)\n\n🔥 HIGH-YIELD POINT`,
+      `🫀 HEART\n\n“Tiger lily heart”\n\nFatty degeneration`,
+      `💊 MANAGEMENT\n\n1. KMnO₄ lavage (1:5000)\n2. Activated charcoal\n3. NAC`,
+      `🚫 AVOID\n\n❌ Milk\n❌ Oil\n\n👉 Increases absorption`,
+      `📊 MONITOR\n\n• LFT\n• PT/INR\n\n👉 Even if asymptomatic`,
+      `⚖️ DIFFERENTIAL\n\nYellow P → Liver failure\nZinc phosphide → Shock + gas toxicity`,
+      `👃 ODOUR DIFFERENCE\n\nYellow P → Garlic\nZinc phosphide → Rotten fish`,
+      `🦴 CHRONIC POISONING\n\nPhossy jaw\n\n👉 Osteomyelitis\n👉 Non-healing extraction`,
+      `⚖️ MEDICOLEGAL\n\nSuicidal → common\nHomicidal → rare\nAccidental → children`,
+      `📜 LAW (BNS)\n\nSection 123 → Poisoning\nSection 103 → Murder`,
+      `🏁 END\n\n“Lucid interval kills, not the poison immediately”`
+    ]
+  };
+
+  // --- CHANGED: LISTENER NOW READS TOPIC AND USES innerHTML ---
+  db.collection("slides").doc("current").onSnapshot((doc) => {
+    if (!doc.exists) {
+      slideEl.innerHTML = "No data found";
+      return;
+    }
+
+    const data = doc.data();
+    // Default to 'fm216' if no topic is explicitly set in Firebase yet
+    const topic = data.topic || "fm216"; 
+    const index = Number(data.index) || 0;
+
+    // Use innerHTML so the CSS, bolding, and images render correctly
+    slideEl.innerHTML = allTopics[topic][index] || "End of Lecture";
+
+  }, (error) => {
+    slideEl.innerHTML = "Error: " + error.message;
+  });
 
-  const slides = [
-
-`💡 PHOSPHORUS IN TAMIL NADU
-
-History + Medicine + Forensics  
-
-👉 Not just a poison  
-👉 A complete story`,
-
-// 🔥 HISTORY
-
-`👨‍🔬 1669 — Henning Brand
-
-Searching for Philosopher’s Stone  
-
-Collected:
-~5000 L urine  
-
-👉 Boiled → paste → heated`,
-
-`💡 DISCOVERY
-
-White waxy substance  
-Glows in dark  
-Burns in air  
-
-Name:
-“Phosphorus” = Bearer of Light`,
-
-// 🔥 SIVAKASI
-
-`🏭 SIVAKASI CONNECTION
-
-Firecracker industry  
-
-Used:
-White Phosphorus`,
-
-`⚠️ PHOSSY JAW
-
-Chronic exposure  
-
-👉 Mandibular necrosis  
-👉 Bone glows in dark  
-
-📌 Occupational hazard`,
-
-`🔄 SHIFT TO SAFETY
-
-White P → banned  
-
-Red P used  
-
-✔ Non-toxic  
-✔ Stable`,
-
-// 🔥 RAT PASTE
-
-`🧪 RAT PASTE ERA (TN)
-
-3% Yellow Phosphorus  
-
-💰 Cheap (₹10–15)  
-🏪 Available everywhere`,
-
-`⚠️ WHY DANGEROUS?
-
-❌ No severe pain  
-❌ Easy to consume  
-
-👉 Patient underestimates severity`,
-
-// 🔥 LUCID INTERVAL
-
-`⏳ LUCID INTERVAL (24–72 hrs)
-
-Patient feels NORMAL  
-
-🚨 MOST DANGEROUS PHASE  
-
-👉 Intern mistake:
-Discharge patient`,
-
-`🧬 REALITY
-
-During this time:
-
-👉 Liver destruction ongoing  
-👉 Silent hepatotoxicity`,
-
-// 🔥 HEPATIC FAILURE
-
-`⚠️ AFTER 72 HOURS
-
-Fulminant hepatic failure  
-
-• Jaundice  
-• Coagulopathy  
-• Encephalopathy`,
-
-`💀 PROGNOSIS
-
-Mortality ~70%  
-
-📉 Very high risk`,
-
-// 🔥 THANDARAI CASE
-
-`📍 THANDARAI CASE (2016)
-
-Tiruvannamalai  
-
-6 deaths in 25 days`,
-
-`😨 INITIAL CONFUSION
-
-Ghost?  
-Infection?  
-Brain fever?`,
-
-`🔍 FORENSIC CLUE
-
-Garlic odour  
-Fatty liver`,
-
-`⚖️ FINAL DIAGNOSIS
-
-Yellow phosphorus poisoning  
-
-👉 Food contamination (rasam)`,
-
-// 🔥 BAN
-
-`🚫 2022 BAN (TAMIL NADU)
-
-Based on:
-
-📊 Mortality ~70%  
-Studies by MMC & Stanley`,
-
-`📌 CURRENT REALITY
-
-Still seen due to:
-
-👉 Illegal stock  
-👉 Old supply`,
-
-// 🔥 ALLOTROPES
-
-`⚗️ ALLOTROPES
-
-White → TOXIC  
-Red → SAFE  
-Black → Stable (no forensic role)`,
-
-`🔥 WHITE PHOSPHORUS
-
-• Glows  
-• Ignites at 30°C  
-• Lipid soluble  
-• Highly toxic`,
-
-// 🔥 CLINICAL STAGES
-
-`🩺 STAGE 1 (0–24 hrs)
-
-GI phase  
-
-• Burning pain  
-• Vomiting  
-• Garlic eructation`,
-
-`✨ FORENSIC SIGNS
-
-• Luminescent vomitus  
-• Smoking stools  
-
-📌 Rare but exam favourite`,
-
-`⏳ STAGE 2
-
-Lucid interval  
-
-Patient:
-“I feel fine”  
-
-🚨 DO NOT TRUST`,
-
-`🧬 STAGE 3
-
-Hepatic failure  
-
-• Jaundice  
-• Bleeding  
-• Encephalopathy`,
-
-// 🔥 POSTMORTEM
-
-`🧫 POSTMORTEM — LIVER
-
-Enlarged  
-Yellow  
-Fatty change`,
-
-`📍 HISTOLOGY
-
-Zone 1 (periportal)  
-
-🔥 HIGH-YIELD POINT`,
-
-`🫀 HEART
-
-“Tiger lily heart”  
-
-Fatty degeneration`,
-
-// 🔥 MANAGEMENT
-
-`💊 MANAGEMENT
-
-1. KMnO₄ lavage (1:5000)  
-2. Activated charcoal  
-3. NAC`,
-
-`🚫 AVOID
-
-❌ Milk  
-❌ Oil  
-
-👉 Increases absorption`,
-
-`📊 MONITOR
-
-• LFT  
-• PT/INR  
-
-👉 Even if asymptomatic`,
-
-// 🔥 DIFFERENTIAL
-
-`⚖️ DIFFERENTIAL
-
-Yellow P → Liver failure  
-Zinc phosphide → Shock + gas toxicity`,
-
-`👃 ODOUR DIFFERENCE
-
-Yellow P → Garlic  
-Zinc phosphide → Rotten fish`,
-
-// 🔥 CHRONIC
-
-`🦴 CHRONIC POISONING
-
-Phossy jaw  
-
-👉 Osteomyelitis  
-👉 Non-healing extraction`,
-
-// 🔥 MEDICOLEGAL
-
-`⚖️ MEDICOLEGAL
-
-Suicidal → common  
-Homicidal → rare  
-Accidental → children`,
-
-`📜 LAW (BNS)
-
-Section 123 → Poisoning  
-Section 103 → Murder`,
-
-// 🔥 END
-
-`🏁 END
-
-“Lucid interval kills, not the poison immediately”`
-
-];
-
-  db.collection("slides").doc("current")
-    .onSnapshot((doc) => {
-
-      if (!doc.exists) {
-        slideEl.innerText = "No data found";
-        return;
-      }
-
-      const data = doc.data();
-      const index = Number(data.index) || 0;
-
-      slideEl.innerText = slides[index] || "End";
-
-    }, (error) => {
-      slideEl.innerText = "Error: " + error.message;
-    });
 </script>
 
 </body>
