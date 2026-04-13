@@ -23,7 +23,6 @@
     .stat-pill .sv { font-size: 28px; font-weight: 700; }
     .stat-pill .sl { font-size: 11px; color: #7d8590; margin-top: 2px; text-transform: uppercase;}
     
-    /* Quiz Styles */
     .quiz-wrap { display: flex; flex-direction: column; gap: 10px; }
     .quiz-q { font-size: 18px; color: #e6edf3; line-height: 1.5; margin-bottom: 8px; }
     .quiz-opt { padding: 12px 16px; border-radius: 10px; border: 1px solid #30363d; background: #21262d; cursor: pointer; font-size: 15px; color: #c9d1d9; text-align: left; }
@@ -35,7 +34,6 @@
     .quiz-feedback.ok { background: #0d2a1a; border: 1px solid #3fb950; color: #7ee787; }
     .quiz-feedback.err { background: #2d1215; border: 1px solid #f85149; color: #f78166; }
 
-    /* Timeline Styles */
     .timeline { display: flex; flex-direction: column; gap: 0; }
     .tl-item { display: flex; gap: 16px; position: relative; padding-bottom: 18px; }
     .tl-left { display: flex; flex-direction: column; align-items: center; min-width: 36px; }
@@ -76,57 +74,53 @@
   const slideEl = document.getElementById("slide");
   const studentName = prompt("Please enter your name for attendance:") || "Anonymous";
 
+  // WATERMARK
+  function applyWatermark(name) {
+    const watermark = document.createElement("div");
+    watermark.style.cssText = `position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9999; opacity:0.04; display:flex; flex-wrap:wrap; overflow:hidden; font-size:24px; font-weight:bold; color:white; transform:rotate(-30deg) scale(1.5);`;
+    let pattern = "";
+    for(let i=0; i<100; i++) { pattern += `${name} - DSMCH &nbsp;&nbsp;&nbsp; `; }
+    watermark.innerHTML = pattern;
+    document.body.appendChild(watermark);
+  }
+  applyWatermark(studentName);
+
   function logActivity(eventName) {
     let ctx = slideEl.innerText.substring(0, 40);
     if (!ctx || ctx.trim() === "") ctx = "Multimedia Slide";
     db.collection("activity_logs").add({
-      student: studentName,
-      event: eventName,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      slideContext: ctx
+      student: studentName, event: eventName,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: ctx
     });
   }
 
-  // --- SPLIT SCREEN & ACTIVITY TRACKING ---
+  // ACTIVITY TRACKING
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === 'hidden') logActivity("Left Page / Switched Tab");
     else logActivity("Returned to Page");
   });
-
-  window.addEventListener("blur", () => {
-    logActivity("Lost Focus (Possible Split-Screen/Notification)");
-  });
-
-  window.addEventListener("focus", () => {
-    logActivity("Regained Focus");
-  });
-
+  window.addEventListener("blur", () => { logActivity("Lost Focus (Possible Split-Screen/Notification)"); });
+  window.addEventListener("focus", () => { logActivity("Regained Focus"); });
   window.onbeforeunload = function() {
     logActivity("Closed / Left Page");
     return "Are you sure you want to leave the lecture?";
   };
 
- // --- QUIZ LOGIC ---
+  // QUIZ LOGIC
   window.answerQuiz = function(choice, result, quizId) {
     const opts = document.querySelectorAll(`#${quizId} .quiz-opt`);
     opts.forEach(o => { o.disabled = true; o.style.cursor = 'default'; });
-    
     const clicked = opts[['A','B','C','D'].indexOf(choice)];
     if (clicked) clicked.classList.add(result);
-    
     const fb = document.getElementById(`fb-${quizId}`);
     if (fb) fb.className = `quiz-feedback ${result === 'correct' ? 'ok' : 'err'} show`;
-
-    // NEW: Send the result to the Teacher Dashboard
     db.collection("activity_logs").add({
-      student: studentName,
-      event: result === 'correct' ? "Quiz: Correct" : "Quiz: Wrong",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      slideContext: `Selected Option: ${choice}`
+      student: studentName, event: result === 'correct' ? "Quiz: Correct" : "Quiz: Wrong",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: `Selected Option: ${choice}`
     });
   };
 
-  // --- TOPIC LIBRARY (ALL 63 SLIDES) ---
+  // TOPIC LIBRARY (32 Slides for FM216)
   const allTopics = {
     "fm216": [
       { render: () => `
@@ -143,13 +137,13 @@
       { render: () => `
         <div class="slide-title">📖 Textbook Definitions</div>
         <div class="alert-box" style="background:#0d1a2a;border:1px solid #1a3a5c"><strong style="color:#58a6ff">Reddy:</strong><br><span style="color:#c9d1d9">"Mutilated bodies — extensively disfigured, or limb/part lost but <strong>soft tissues still attached to bones</strong>"</span></div>
-        <div class="alert-box" style="background:#1a1400;border:1px solid #3a2f00"><strong style="color:#ffa657">Modi:</strong><br><span style="color:#c9d1d9">"Mutilation is <strong>NOT always criminal</strong> — animals (rats, dogs, jackals, hyenas, vultures) can mutilate in a very short time"</span></div>
+        <div class="alert-box" style="background:#1a1400;border:1px solid #3a2f00"><strong style="color:#ffa657">Modi:</strong><br><span style="color:#c9d1d9">"Mutilation is <strong>NOT always criminal</strong> — animals can mutilate in a very short time"</span></div>
         <div class="alert-box" style="background:#0d2a1a;border:1px solid #1a4426"><strong style="color:#7ee787">Parikh:</strong><br><span style="color:#c9d1d9">"<strong>Fragmentary remains</strong> — only fragments such as head, trunk or limb"</span></div>` 
       },
       { render: () => `
         <div class="slide-title">⚡ Causes of Mutilation</div>
         <div class="compare-grid">
-          <div class="compare-card danger"><h3 style="color:#f78166">Criminal</h3><ul><li>Concealment of identity</li><li>Easier disposal of body</li><li>Skilled — joint separation</li><li>Saw/knife/axe marks</li></ul></div>
+          <div class="compare-card danger"><h3 style="color:#f78166">Criminal</h3><ul><li>Concealment of identity</li><li>Easier disposal of body</li><li>Skilled — joint separation</li></ul></div>
           <div class="compare-card"><h3 style="color:#a78bfa">Animal Scavenging</h3><ul><li>Rats, dogs, jackals, vultures</li><li>Haphazard wounds</li><li>Gnaw marks on bone</li></ul></div>
           <div class="compare-card safe-card"><h3 style="color:#7ee787">Natural / Accidental</h3><ul><li>Decomposition — ligament separation</li><li>Moving vehicles (RTA)</li><li>Bomb explosions</li></ul></div>
           <div class="compare-card"><h3 style="color:#ffa657">📌 Key Point</h3><ul><li>Each cause leaves <strong>different marks</strong></li><li>Determining manner is critical for court</li></ul></div>
@@ -163,6 +157,16 @@
             <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#21262d;border-radius:8px;border:1px solid #30363d">
               <span style="font-size:18px;font-weight:700;color:${c};min-width:24px">${n}</span><span style="font-size:15px;color:#c9d1d9">${q}</span>
             </div>`).join('')}
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🧠 The Diagnostic Sequence</div>
+        <div class="slide-subtitle">The strict logical dependency of skeletal analysis</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2d1215;color:#f78166">1</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#f78166">Origin: Human vs. Animal</div><div class="tl-points"><strong>The Threshold:</strong> If tests prove animal origin, the investigation concludes immediately.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">2</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Determine Sex</div><div class="tl-points"><strong>Why before Age/Stature?</strong> Male and female skeletons develop at different rates. Guessing sex ruins stature accuracy because formulae are sex-specific.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">3</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#58a6ff">Estimate Age</div><div class="tl-points"><strong>Why before Stature?</strong> Stature formulae are <em>only valid for fully grown adults</em>. You cannot apply adult formulae to growing children.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">4</div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Calculate Stature</div><div class="tl-points"><strong>The Final Synthesis:</strong> Relies entirely on the demographic profile established in Steps 2 and 3.</div></div></div>
         </div>` 
       },
       { render: () => `
@@ -276,6 +280,16 @@
         <div class="alert-box alert-red">📌 <strong>Confirmatory but not conclusive alone</strong> — always combine with other methods</div>` 
       },
       { render: () => `
+        <div class="slide-title">🚨 Mass Disasters & DVI</div>
+        <div class="slide-subtitle">Disaster Victim Identification (INTERPOL Protocol)</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2d1215;color:#f78166">1</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#f78166">Phase 1: Scene Assessment</div><div class="tl-points">Grid search, tagging fragments, preventing comingling of body parts.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">2</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Phase 2: Postmortem (PM) Data</div><div class="tl-points">Autopsy, taking DNA from petrous bone/teeth, fingerprints from skin slip, dental charting.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">3</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#58a6ff">Phase 3: Antemortem (AM) Data</div><div class="tl-points">Collecting medical/dental records, DNA from personal items (toothbrush) from families.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">4</div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Phase 4: Reconciliation</div><div class="tl-points">Matching AM data with PM data to formally declare identity.</div></div></div>
+        </div>` 
+      },
+      { render: () => `
         <div class="slide-title">✂️ Q8 — Manner of Separation</div>
         <div style="display:flex;flex-direction:column;gap:10px">
           <div class="compare-card danger"><h3 style="color:#f78166">🔪 Criminal Dismemberment</h3><span style="color:#c9d1d9">Clean cuts / saw marks on bone • <strong>Precise joint-level separation (Skilled = anatomical knowledge)</strong> • Minimal hesitation marks • Evidence of planning</span></div>
@@ -303,6 +317,22 @@
           <div class="compare-card danger"><h3 style="color:#f78166">Chemical Analysis</h3><ul><li>Arsenic ⭐ — resists putrefaction</li><li>Antimony — detectable months/years later</li><li>Detectable even in skeletal remains</li></ul></div>
         </div>
         <div class="alert-box alert-yellow">📌 Hyoid fracture is pathognomonic of manual strangulation — never miss it</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🧪 Toxicology in Decomposed Bodies</div>
+        <div class="slide-subtitle">Poisons that resist putrefaction (Parikh)</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+          <thead><tr><th>Category</th><th>Poisons Found in Fragments/Bones</th></tr></thead>
+          <tbody>
+            <tr><td class="warn">Heavy Metals</td><td>Arsenic, Antimony, Lead, Mercury, Thallium</td></tr>
+            <tr><td class="toxic">Agrochemicals</td><td>Endrin, Organophosphorus compounds</td></tr>
+            <tr><td class="safe">Plant/Alkaloids</td><td>Dhatura, Strychnine, Yellow Oleander, Nicotine</td></tr>
+            <tr><td class="warn">Gases & Others</td><td>Carbon Monoxide, Cyanides, Fluorides, Barbiturates</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-red" style="margin-top:15px;">
+          <strong>Never skip chemical analysis:</strong> Even in skeletonized remains, heavy metals like Arsenic can be detected. Maggots can also be tested for drugs.
+        </div>` 
       },
       { render: () => `
         <div class="slide-title">🦴 Fracture Timing</div>
@@ -365,7 +395,27 @@
         <div class="alert-box alert-red">📌 <strong>All unidentified remains → Mandatory Magistrate inquest under BNSS Sec 194</strong></div>` 
       },
       { render: () => `
-        <div class="slide-title">🎯 Spotter — Manner of Separation</div>
+        <div class="slide-title">⚖️ Landmark Case Law</div>
+        <div class="alert-box alert-yellow" style="text-align:center;">
+          <strong>Mahesh Dhanaji Shinde v State of Maharashtra</strong><br>
+          <span style="font-size:14px;color:#c9d1d9;">(Cited in Modi's Medical Jurisprudence)</span>
+        </div>
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h3 style="color:#f78166">The Crime</h3>
+            7 unidentified, mutilated dead bodies were found dumped on hillocks in Sindhudurg over several days.
+          </div>
+          <div class="compare-card safe-card">
+            <h3 style="color:#7ee787">The Identification</h3>
+            Police and Forensics successfully identified the victims using recovered clothes, broken briefcases, blood-stained diaries, and DNA profiling.
+          </div>
+        </div>
+        <div class="alert-box" style="background:#1a1a2a;border:1px solid #333;margin-top:10px;">
+          📌 <strong>Forensic Takeaway:</strong> Even when bodies are dumped to destroy evidence, trace physical evidence (like trouser hooks) combined with DNA can secure a conviction.
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 Spotter Quiz 1 — Separation</div>
         <div class="quiz-wrap" id="quizSpotter">
           <div class="quiz-q" style="background:#21262d;padding:14px;border-radius:10px;">
             <span style="color:#7d8590;font-size:12px;text-transform:uppercase;letter-spacing:1px">Scene Report</span><br><br>
@@ -377,7 +427,24 @@
           <button class="quiz-opt" onclick="answerQuiz('C','wrong','quizSpotter')">C — Unskilled criminal dismemberment</button>
           <button class="quiz-opt" onclick="answerQuiz('D','correct','quizSpotter')">D — Skilled person with anatomical knowledge</button>
           <div id="fb-quizSpotter" class="quiz-feedback">
-            <strong>✔ D is correct.</strong><br>Precise joint separation + no hesitation marks = perpetrator knows human anatomy.<br>This narrows the suspect profile to <strong>medical, paramedical or butchery background</strong>.<br>Minimal blood = body moved postmortem (secondary crime scene).
+            <strong>✔ D is correct.</strong><br>Precise joint separation + no hesitation marks = perpetrator knows human anatomy.<br>This narrows the suspect profile to <strong>medical, paramedical or butchery background</strong>.
+          </div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 Spotter Quiz 2 — DVI</div>
+        <div class="quiz-wrap" id="quizSpotter2">
+          <div class="quiz-q" style="background:#21262d;padding:14px;border-radius:10px;">
+            <span style="color:#7d8590;font-size:12px;text-transform:uppercase;letter-spacing:1px">Disaster Report</span><br><br>
+            Following a train collision, a highly charred body is recovered. Only the skull and a portion of the femur remain intact. The family provides the victim's hairbrush.
+          </div>
+          <div class="quiz-q" style="color:#7d8590;font-size:16px;">What is the most reliable method for identification here?</div>
+          <button class="quiz-opt" onclick="answerQuiz('A','wrong','quizSpotter2')">A — Stature estimation from femur</button>
+          <button class="quiz-opt" onclick="answerQuiz('B','wrong','quizSpotter2')">B — Race determination from skull</button>
+          <button class="quiz-opt" onclick="answerQuiz('C','correct','quizSpotter2')">C — DNA matching (Petrous bone to Hairbrush)</button>
+          <button class="quiz-opt" onclick="answerQuiz('D','wrong','quizSpotter2')">D — Superimposition photography</button>
+          <div id="fb-quizSpotter2" class="quiz-feedback">
+            <strong>✔ C is correct.</strong><br>In severe burns where soft tissue and fingerprints are lost, extracting DNA from the protected petrous part of the temporal bone and matching it with Antemortem (AM) DNA from a personal item is the gold standard for INTERPOL DVI.
           </div>
         </div>` 
       },
@@ -446,21 +513,23 @@
     ]
   };
 
-  // --- DATABASE LISTENER ---
   db.collection("slides").doc("current").onSnapshot((doc) => {
     if (!doc.exists) { slideEl.innerHTML = "No data found"; return; }
     
     const data = doc.data();
+    if (data.status === "locked") {
+      slideEl.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px; margin-bottom:20px;">🔒</div><h2 style="color:#f78166;">Session Ended</h2><p style="color:#8b949e; font-size:18px;">The live lecture has concluded. Materials are currently locked by the instructor.</p></div>`;
+      return; 
+    }
+
     const topic = data.topic || "fm216"; 
     const index = Number(data.index) || 0;
-
     const slideData = allTopics[topic] ? allTopics[topic][index] : null;
 
     if (!slideData) slideEl.innerHTML = "End of Lecture";
-    else if (typeof slideData === "string") slideEl.innerHTML = slideData; // Standard text slides
-    else slideEl.innerHTML = slideData.render(); // Advanced UI slides
+    else if (typeof slideData === "string") slideEl.innerHTML = slideData; 
+    else slideEl.innerHTML = slideData.render(); 
   });
-
 </script>
 </body>
 </html>
