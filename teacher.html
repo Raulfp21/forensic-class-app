@@ -17,6 +17,8 @@
     button { padding: 10px 24px; font-size: 16px; font-family: 'Courier New', monospace; cursor: pointer; border: none; border-radius: 6px; font-weight: bold; }
     #btnPrev { background: #374151; color: #fff; }
     #btnNext { background: #00ff88; color: #000; }
+    .btn-lock { background: #ff4444; color: white; }
+    .btn-unlock { background: #0d2a1a; color: #00ff88; border: 1px solid #00ff88; }
     #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
     #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; line-height: 1.5; }
     .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
@@ -27,6 +29,11 @@
     .stat-box.green .stat-value { color: #00ff88; }
     .stat-box.red .stat-value { color: #ff4444; }
     .stat-box.yellow .stat-value { color: #fbbf24; }
+    
+    /* Missing Students Panel */
+    #missingWrap { background: #1a0f0f; border: 1px solid #3b0000; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; }
+    .missing-pill { display: inline-block; background: #2d1215; color: #f78166; border: 1px solid #6e2128; border-radius: 4px; padding: 4px 8px; font-size: 11px; margin: 4px; }
+    
     #logTable { width: 100%; border-collapse: collapse; font-size: 13px; }
     #logTable th { text-align: left; padding: 8px 12px; color: #555; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; }
     #logTable td { padding: 8px 12px; border-bottom: 1px solid #111; vertical-align: top; }
@@ -40,7 +47,6 @@
     .time-cell { color: #444; font-size: 11px; }
     #clearBtn { background: #1a0000; color: #ff4444; border: 1px solid #3b0000; font-size: 12px; padding: 6px 14px; margin-left: auto; }
     .toolbar { display: flex; align-items: center; margin-bottom: 10px; }
-    #logCount { font-size: 12px; color: #555; margin-left: 12px; }
     #flagList { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; margin-bottom: 24px; }
     .flag-pill { background: #3b0000; color: #ff6b6b; border: 1px solid #5a0000; border-radius: 20px; padding: 4px 12px; font-size: 12px; }
     .flag-pill.blur { background: #4a2a00; color: #ffa657; border-color: #663d00; }
@@ -53,17 +59,20 @@
 <h1>⚗ Forensic Class — Teacher Panel</h1>
 
 <div class="stream-bar">
-  <button class="btn-stream btn-fm" onclick="setTopic('fm216')">📺 STREAM: FM 2.16 (Monday/2024)</button>
-  <button class="btn-stream btn-phos" onclick="setTopic('phosphorus')">📺 STREAM: Phosphorus (2023)</button>
+  <button class="btn-stream btn-fm" onclick="setTopic('fm216')">📺 STREAM: FM 2.16 (2024 Batch)</button>
+  <button class="btn-stream btn-phos" onclick="setTopic('phosphorus')">📺 STREAM: Phosphorus (2023 Batch)</button>
 </div>
 
 <div class="top-bar">
   <button id="btnPrev" onclick="prev()">◀ Prev</button>
   <button id="btnNext" onclick="next()">Next ▶</button>
+  <span style="color:#444;">|</span>
+  <button class="btn-lock" onclick="setSessionStatus('locked')">🔒 End & Lock Class</button>
+  <button class="btn-unlock" onclick="setSessionStatus('live')">🔓 Unlock for Review</button>
   <div id="slideInfo">Topic: — | Slide: —</div>
 </div>
 
-<div class="section-title">Current Slide Preview (What students see)</div>
+<div class="section-title">Current Slide Preview</div>
 <div id="slidePreview">Loading...</div>
 
 <div class="stats-row">
@@ -72,12 +81,14 @@
   <div class="stat-box yellow"><div class="stat-label">Total Events</div><div class="stat-value" id="statTotal">0</div></div>
 </div>
 
+<div class="section-title" id="missingTitle">❌ Missing Students (2024 Batch)</div>
+<div id="missingWrap"><span class="no-flags">Waiting for data...</span></div>
+
 <div class="section-title">🚨 Flagged Students (Red: Left entirely | Orange: Split-Screen/Lost focus)</div>
 <div id="flagList"><span class="no-flags">None yet</span></div>
 
 <div class="toolbar">
   <div class="section-title" style="margin:0;">Activity Log</div>
-  <span id="logCount"></span>
   <button id="clearBtn" onclick="clearLogs()">Clear Logs</button>
 </div>
 
@@ -104,15 +115,23 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
 
-  // Basic representation of topics so the teacher knows what slide they are on
+  // EXTRACTED 2024 BATCH MASTER LIST (253 Students)
+  const masterList2024 = [
+    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABIRAMI SRINIVASAPERUMAI", "ADHITHYAN A T", "ADITHYA B", "AISHWARYA B", "AJEETH KUMAR R S", "AKASHSANG SIVAKUMAR", "AKSHITHA V", "AMIRTHA SHREE SHANMUGA", "ANNAPOORANI LAKSHMANA", "ARAVIND M", "ARJHITH A G", "ARJUN SURESH K", "ARSHAD KHAN Y", "ARUMUGALAKSHMI P", "ARUN BHARATHI E", "ARUNACHALAM E", "ARUNDHATI K P", "ARUN PANDI V", "ASHISH T. A", "ASHVEEKAA P", "ASMITHAH S", "ASWIN BALAJI", "BALA YOGESH S", "BARATH SHYLESH B", "BHAVIYATHAAR K", "BHAVNA G", "DEEKSHIKA PARTHIBAN CHAI", "DEEPIKA U S", "DEEPTHI V", "DEVA B", "DEVA MURUGESAN", "DHARANEESH M", "DHARANEESH N", "DHARANI M", "DHARMARAJ MAMATHA", "DHARSHINI J", "DHARSHINI P", "DHARSHINI V", "DHARUN A", "DHARUN KRISHNA B", "DHAYANAND S S", "DINESH P", "DIVYA VARSHINI JEYAPRAKAS", "DONI ABISHEK KUMAR A", "ELANSURIYAN A G", "ELANTHENDRAL C", "GAUTAMAN B V", "GAYADHARSHINI S", "GOPIKA U", "GOWTHAM K", "GURUMARAN B", "HAMEEM SYED EBRAHIM ABI", "HAMNA SAJAAN H", "HAMZA RAZAK AM", "HARI MANOJ V", "HARINI S", "HARISH P", "HARISH KUMARAN G", "HARISH PRABHU BS", "HARITHA R", "HARSHA S", "HARSHAD J", "HARSHINI P", "HARUNYAA K", "HEERA SHYAM", "HIMAVARSHA N", "HINDHUJA NAGARAJ", "HISHWANTH K", "INBAVEL P", "ISHWARYA T", "JADYN NIHARIKA R", "JAGADEESH S", "JANA S", "JANOVIA JJ", "JASHVANDH SELVA DEV S", "JEEVAN SAMRUDH TGS", "JEEVANA S", "JONES CALVIN T", "JOSHITHA R", "KAAVYASHREE B", "KABIL SRIVATSAN SL", "KALAIVANI H", "KANIGAA GM", "KANISHGA SRIHARINI K", "KARTHICK M", "KARTHIKA K", "KATHIROLI S", "KEERTHANA A", "KEERTHANA K", "KERAN MOZHI B", "KESHIKA V S", "KISHORE P", "KISHORITHA P", "KOHUL KRISHNA T", "LAKSHYASHRI V", "LAZEERA FATHIMANI", "LILAANIE S", "LOGESHWARI J", "MADHUMITHA S", "MADIHA BANU HATHI AHAMI", "MAHALAKSHMIG", "MAHALAKSHMI S", "MAI DEEPA SRI R", "MANOHARAN S", "MANORANJAN S R", "MANYAA P", "MARI MUTHU S", "MAYURANATH K", "MEGHNA NAIR", "MELWIN JONES A", "MITHUNCHANDER R", "MOHAMMED LUKMAAN A", "MOHAMEDHA SANIYA M", "MOHAMMED HUZAIFA M", "MOHAMMED RIYAS A", "MOHANA PRASATH S", "MOHANA SRI M", "MONISH BALAJI C", "MONISHRAGAVENDRA GOVIN", "MOSES KINGSBEU SELVAGANT", "MUKILAN A", "NANDHANA B", "NANDHITHA R", "NASREEN G", "NEERAJ GR", "NEERAJA G", "NEHA S", "NEHA PANDARAPARAMBIL LE", "NISHANTH V", "NISHITH G", "NITHYA SRI M", "NIVEDHA BALADHANDAUDH", "NOORUL HABIBA", "PADMAESH M K", "PAVANJ", "PAVITHRA M", "POOJAR", "POOJAMALAR PRIYA", "POOJASREE TRS", "PRAGADHEESAN R", "PRANAV ADARSH SENTHIL RA", "PRANITH M", "PRASANTH M", "PRATHYANKIRA ES", "PRAVEEN M", "PRAVIN BAALAJI PANDIAN", "PREETHIKA N", "PRIYADARSHINI", "PRIYADARSHINI SS", "PUGALARASAN R", "PUGAZHARASI VALARMATHI", "RADHA RUCKMANI R", "RAGAVI V P", "RAGHAV I", "RAGHUL M C", "RAMANA G", "RANJANA S", "REHANAA MR", "RENUGADEVI S", "RIJAI RENON J K", "RITHIKASREE S", "RIZZA FATHIMA K", "ROHINI PRIYA S", "ROSHITH K S", "SAANVIYA M", "SABITHA K", "SACHIN S", "SACHIN SAGGAR SP", "SAHANA SRIVARTHINI S", "SAKTHI SUDHARSHINI S", "SAKTHI SUNDARA MOORTHY", "SAMEEHA NEHMATH M", "SAMRUTA S", "SAMRUTHA R", "SAMUEL FREDERICCK B", "SANDHYA S", "SANJANA S", "SANJAY S 28.08.2005", "SANJAY S 29.08.2005", "SANJAY S 22.06.2006", "SANJAY RENUGOPAL", "SANTHOSH S V", "SARAN S", "SARAVANA SAKTHIVEL", "SASHDI SHRE N", "SATHYA P", "SHALINI V", "SHARUMATHI P", "SHIFA SHABEER AHMED S", "SHIFANA RAHMATH K", "SHIYAM KUMAR K", "SHREEHARISH RAVICHANDRA", "SHREYA PL", "SHRI PRAJAN S", "SHRUTHI M", "SHRUTI G", "SHUNMUGA SANTOSH S", "SIVASELVI S", "SREYA SWETHA RS", "SRI DHARANI P", "SRI VARSHA V S", "SRICHARAN T V", "SRIHARAN M", "SRIHARI R", "SRIMATHI K", "SRINIKKESH S", "SRINITHI MARAN", "SRINITHI RAMESH", "SRIPRIYA V", "SRIRAM E", "SRIVIDHYA S", "SRUTHI S", "SUDHAN P", "SUNIL BABU G", "SURUTHIKA SREE KARTHIKEY", "SUSHANA M", "SUVATHI V", "SYED SIDDIQ A", "TEJASRI J", "THALHA M", "THAYANITHY V S", "THENISAI M", "THIRUMAGAL M", "UKESHWARAN P", "VALAR NILAD T", "VARSHA BAVADARINI T", "VARTHINI K", "VARUN D", "VEDANTH K", "VEDHA VALLII S", "VIDUNAA M", "VIJAY P", "VIJAYAVARSHINI V", "VIKRAM S", "VINISHA MP", "VISHAL RUBAN KANAGAVEL", "VISHNU PRIYA S", "VISHNUSHREE M", "VISHWA V", "VISWAPPREYAA RU", "YALMOZHIYAN R", "YOGESHWARAA K", "CHINNAYA BALAJI C K", "RANJANA YADAV L", "SABARISH R", "SANTHOSH R", "SUNDAR KARTHIK S", "SANJAYAN R", "BHAVYA SRI B"
+  ];
+
   const allTopics = {
     "fm216": Array(27).fill(0).map((_, i) => `<b>FM 2.16 — Slide ${i+1}</b><br>Check student view for exact layout.`),
     "phosphorus": Array(36).fill(0).map((_, i) => `<b>Phosphorus — Slide ${i+1}</b><br>Check student view for exact layout.`)
   };
 
-  function setTopic(topicName) { ref.update({ topic: topicName, index: 0 }); }
+  function setTopic(topicName) { ref.update({ topic: topicName, index: 0, status: "live" }); }
   function next() { ref.update({ index: firebase.firestore.FieldValue.increment(1) }); }
   function prev() { ref.update({ index: firebase.firestore.FieldValue.increment(-1) }); }
+  function setSessionStatus(newStatus) {
+    if (newStatus === 'locked' && !confirm("Lock class? Students will instantly lose access to slides.")) return;
+    ref.update({ status: newStatus });
+  }
 
   let currentTopic = "fm216";
   let currentIndex = 0;
@@ -123,11 +142,14 @@
     currentTopic = data.topic || "fm216";
     currentIndex = Number(data.index) || 0;
     
-    const maxSlides = allTopics[currentTopic] ? allTopics[currentTopic].length : 0;
-    document.getElementById("slideInfo").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1} / ${maxSlides}`;
-    
-    if (currentIndex >= maxSlides) document.getElementById("slidePreview").innerHTML = "End of Lecture";
-    else document.getElementById("slidePreview").innerHTML = allTopics[currentTopic][currentIndex];
+    if (data.status === "locked") {
+      document.getElementById("slidePreview").innerHTML = "🔒 SESSION LOCKED BY INSTRUCTOR";
+    } else {
+      const maxSlides = allTopics[currentTopic] ? allTopics[currentTopic].length : 0;
+      document.getElementById("slideInfo").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1} / ${maxSlides}`;
+      if (currentIndex >= maxSlides) document.getElementById("slidePreview").innerHTML = "End of Lecture";
+      else document.getElementById("slidePreview").innerHTML = allTopics[currentTopic][currentIndex];
+    }
   });
 
   const tbody = document.getElementById("logBody");
@@ -147,13 +169,12 @@
         const ts = d.timestamp ? d.timestamp.toDate() : null;
         const timeStr = ts ? ts.toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit", second:"2-digit" }) : "—";
 
-        // Logic for tracking who left vs who just split-screened
-        if (event.includes("Left") || event.includes("Switched")) { leftCount++; flaggedStudentsLeft.add(student); }
+        if (event.includes("Left") || event.includes("Switched") || event.includes("Closed")) { leftCount++; flaggedStudentsLeft.add(student); activeSet.delete(student); }
         if (event.includes("Lost Focus")) { flaggedStudentsBlur.add(student); }
-        if (event.includes("Returned") || event.includes("Regained Focus")) activeSet.add(student);
+        if (event.includes("Returned") || event.includes("Regained Focus") || event.includes("Multimedia")) { activeSet.add(student); }
 
         let tagClass = "tag-left";
-        if (event.includes("Returned") || event.includes("Regained Focus")) tagClass = "tag-returned";
+        if (event.includes("Returned") || event.includes("Regained Focus") || event.includes("Multimedia")) tagClass = "tag-returned";
         else if (event.includes("Closed")) tagClass = "tag-closed";
         else if (event.includes("Lost Focus")) tagClass = "tag-blur";
 
@@ -169,15 +190,32 @@
       document.getElementById("statLeft").innerText = leftCount;
       document.getElementById("statTotal").innerText = snapshot.size;
       document.getElementById("statActive").innerText = activeSet.size;
-      document.getElementById("logCount").innerText = `(${snapshot.size} events)`;
 
-      // Combine flags (Red for left entirely, Orange for split-screen)
+      // --- MISSING STUDENTS LOGIC ---
+      if (currentTopic === "fm216") {
+        const missingStudents = masterList2024.filter(masterName => {
+          // Fuzzy match: If the typed name is inside the master name, they are marked present
+          for(let activeName of activeSet) {
+              let a = activeName.toUpperCase().trim();
+              let m = masterName.toUpperCase().trim();
+              if(m.includes(a) || a.includes(m)) return false; 
+          }
+          return true; // Still missing
+        });
+        
+        document.getElementById("missingTitle").innerText = `❌ Missing Students (${missingStudents.length} / 253 Absent)`;
+        document.getElementById("missingWrap").innerHTML = missingStudents.map(s => `<span class="missing-pill">${s}</span>`).join("");
+      } else {
+        document.getElementById("missingTitle").innerText = `❌ Missing Students (Tracking disabled for non-2024 batches)`;
+        document.getElementById("missingWrap").innerHTML = `<span class="no-flags">Switch to FM 2.16 to track 2024 Batch</span>`;
+      }
+
+      // Combined Flags
       let combinedFlags = "";
       flaggedStudentsLeft.forEach(s => combinedFlags += `<span class="flag-pill">⚠ ${s} (Left)</span>`);
       flaggedStudentsBlur.forEach(s => {
         if (!flaggedStudentsLeft.has(s)) combinedFlags += `<span class="flag-pill blur">👀 ${s} (Split Screen)</span>`;
       });
-      
       document.getElementById("flagList").innerHTML = combinedFlags === "" ? `<span class="no-flags">None yet</span>` : combinedFlags;
     });
 
