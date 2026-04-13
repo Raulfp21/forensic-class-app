@@ -18,8 +18,7 @@
     #btnPrev { background: #374151; color: #fff; }
     #btnNext { background: #00ff88; color: #000; }
     #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
-    #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 150px; overflow-y: auto; line-height: 1.5; }
-    #slidePreview img { max-height: 80px; width: auto; border-radius: 4px; display: block; margin-top: 5px; }
+    #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; line-height: 1.5; }
     .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
     .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
     .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; }
@@ -33,6 +32,7 @@
     #logTable td { padding: 8px 12px; border-bottom: 1px solid #111; vertical-align: top; }
     .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
     .tag-left { background: #3b0000; color: #ff6b6b; }
+    .tag-blur { background: #4a2a00; color: #ffa657; }
     .tag-returned { background: #0a2e1a; color: #00cc66; }
     .tag-closed { background: #2a1a00; color: #ff9900; }
     .student-name { color: #60a5fa; }
@@ -43,6 +43,7 @@
     #logCount { font-size: 12px; color: #555; margin-left: 12px; }
     #flagList { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; margin-bottom: 24px; }
     .flag-pill { background: #3b0000; color: #ff6b6b; border: 1px solid #5a0000; border-radius: 20px; padding: 4px 12px; font-size: 12px; }
+    .flag-pill.blur { background: #4a2a00; color: #ffa657; border-color: #663d00; }
     .no-flags { color: #2a2a2a; font-size: 12px; }
     .log-wrap { overflow-x: auto; border: 1px solid #1a1a1a; border-radius: 8px; }
   </style>
@@ -62,16 +63,16 @@
   <div id="slideInfo">Topic: — | Slide: —</div>
 </div>
 
-<div class="section-title">Current Slide Preview</div>
+<div class="section-title">Current Slide Preview (What students see)</div>
 <div id="slidePreview">Loading...</div>
 
 <div class="stats-row">
   <div class="stat-box green"><div class="stat-label">Currently Active</div><div class="stat-value" id="statActive">—</div></div>
-  <div class="stat-box red"><div class="stat-label">Tab Switches</div><div class="stat-value" id="statLeft">0</div></div>
+  <div class="stat-box red"><div class="stat-label">Tab Switches (Left)</div><div class="stat-value" id="statLeft">0</div></div>
   <div class="stat-box yellow"><div class="stat-label">Total Events</div><div class="stat-value" id="statTotal">0</div></div>
 </div>
 
-<div class="section-title">🚨 Flagged Students (switched tabs)</div>
+<div class="section-title">🚨 Flagged Students (Red: Left entirely | Orange: Split-Screen/Lost focus)</div>
 <div id="flagList"><span class="no-flags">None yet</span></div>
 
 <div class="toolbar">
@@ -82,9 +83,7 @@
 
 <div class="log-wrap">
   <table id="logTable">
-    <thead>
-      <tr><th>Time</th><th>Student</th><th>Event</th><th>Slide Context</th></tr>
-    </thead>
+    <thead><tr><th>Time</th><th>Student</th><th>Event</th><th>Slide Context</th></tr></thead>
     <tbody id="logBody">
       <tr><td colspan="4" style="color:#333; padding:16px;">Waiting for activity...</td></tr>
     </tbody>
@@ -105,27 +104,13 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
 
-  // Topic Library for preview
+  // Basic representation of topics so the teacher knows what slide they are on
   const allTopics = {
-    "fm216": [
-      { render: () => `<div style="color:#58a6ff; font-weight:bold;">🦴 FM 2.16: Mutilated Remains</div><br><b>Reddy:</b> Disfigured bodies where limbs/parts are lost but soft tissue is attached.` },
-      { render: () => `<div style="color:#58a6ff; font-weight:bold;">🔍 Preliminary Examination</div><br><img src="https://i.postimg.cc/mD8gM3X9/Screenshot-20260412-143112-OneDrive.jpg"><br>Record container details (Knot analysis).` },
-      { render: () => `<div style="color:#58a6ff; font-weight:bold;">🐾 Animal vs Criminal Dismemberment</div><br><img src="https://i.postimg.cc/0jXyB6S6/Gemini-Generated-Image-xnmoitxnmoitxnmo.jpg"><br><b>Animal:</b> Scalloped edges, pits on bone.` },
-      { render: () => `<div style="color:#58a6ff; font-weight:bold;">📏 Stature Calculation</div><br><b>Pearson's Factors:</b><br>Femur: Length x 3.7` },
-      { render: () => `<div style="color:#58a6ff; font-weight:bold;">⚖️ Legal (BNS 2023)</div><br><span style="color:#f78166"><b>Section 238 BNS:</b></span> Causing disappearance of evidence of an offence.` }
-    ],
-    "phosphorus": [
-      `💡 PHOSPHORUS IN TAMIL NADU\nHistory + Medicine + Forensics`,
-      `👨‍🔬 1669 — Henning Brand\nSearching for Philosopher’s Stone`,
-      `⚠️ PHOSSY JAW\nChronic exposure → Mandibular necrosis`,
-      `⏳ LUCID INTERVAL (24–72 hrs)\nPatient feels NORMAL\n🚨 MOST DANGEROUS PHASE`
-    ]
+    "fm216": Array(27).fill(0).map((_, i) => `<b>FM 2.16 — Slide ${i+1}</b><br>Check student view for exact layout.`),
+    "phosphorus": Array(36).fill(0).map((_, i) => `<b>Phosphorus — Slide ${i+1}</b><br>Check student view for exact layout.`)
   };
 
-  function setTopic(topicName) {
-    ref.update({ topic: topicName, index: 0 });
-  }
-
+  function setTopic(topicName) { ref.update({ topic: topicName, index: 0 }); }
   function next() { ref.update({ index: firebase.firestore.FieldValue.increment(1) }); }
   function prev() { ref.update({ index: firebase.firestore.FieldValue.increment(-1) }); }
 
@@ -141,14 +126,13 @@
     const maxSlides = allTopics[currentTopic] ? allTopics[currentTopic].length : 0;
     document.getElementById("slideInfo").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1} / ${maxSlides}`;
     
-    const slideData = allTopics[currentTopic][currentIndex];
-    if (!slideData) document.getElementById("slidePreview").innerHTML = "End of Lecture";
-    else if (typeof slideData === "string") document.getElementById("slidePreview").innerHTML = slideData;
-    else document.getElementById("slidePreview").innerHTML = slideData.render();
+    if (currentIndex >= maxSlides) document.getElementById("slidePreview").innerHTML = "End of Lecture";
+    else document.getElementById("slidePreview").innerHTML = allTopics[currentTopic][currentIndex];
   });
 
   const tbody = document.getElementById("logBody");
-  const flaggedStudents = new Set();
+  const flaggedStudentsLeft = new Set();
+  const flaggedStudentsBlur = new Set();
 
   db.collection("activity_logs").orderBy("timestamp", "desc").limit(100).onSnapshot((snapshot) => {
       let leftCount = 0;
@@ -159,17 +143,19 @@
         const d = doc.data();
         const event = d.event || "";
         const student = d.student || "Unknown";
-        const ctx = d.slideContext || d.slideIndex || "";
+        const ctx = d.slideContext || "";
         const ts = d.timestamp ? d.timestamp.toDate() : null;
         const timeStr = ts ? ts.toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit", second:"2-digit" }) : "—";
 
-        if (event.includes("Left") || event.includes("Switched")) { leftCount++; flaggedStudents.add(student); }
-        if (event.includes("Returned")) activeSet.add(student);
+        // Logic for tracking who left vs who just split-screened
+        if (event.includes("Left") || event.includes("Switched")) { leftCount++; flaggedStudentsLeft.add(student); }
+        if (event.includes("Lost Focus")) { flaggedStudentsBlur.add(student); }
+        if (event.includes("Returned") || event.includes("Regained Focus")) activeSet.add(student);
 
-        // ✅ THIS WAS THE BUG. IT IS NOW FIXED.
         let tagClass = "tag-left";
-        if (event.includes("Returned")) tagClass = "tag-returned";
+        if (event.includes("Returned") || event.includes("Regained Focus")) tagClass = "tag-returned";
         else if (event.includes("Closed")) tagClass = "tag-closed";
+        else if (event.includes("Lost Focus")) tagClass = "tag-blur";
 
         rows.push(`<tr>
           <td class="time-cell">${timeStr}</td>
@@ -185,8 +171,14 @@
       document.getElementById("statActive").innerText = activeSet.size;
       document.getElementById("logCount").innerText = `(${snapshot.size} events)`;
 
-      const flagList = document.getElementById("flagList");
-      flagList.innerHTML = flaggedStudents.size === 0 ? `<span class="no-flags">None yet</span>` : Array.from(flaggedStudents).map(s => `<span class="flag-pill">⚠ ${s}</span>`).join("");
+      // Combine flags (Red for left entirely, Orange for split-screen)
+      let combinedFlags = "";
+      flaggedStudentsLeft.forEach(s => combinedFlags += `<span class="flag-pill">⚠ ${s} (Left)</span>`);
+      flaggedStudentsBlur.forEach(s => {
+        if (!flaggedStudentsLeft.has(s)) combinedFlags += `<span class="flag-pill blur">👀 ${s} (Split Screen)</span>`;
+      });
+      
+      document.getElementById("flagList").innerHTML = combinedFlags === "" ? `<span class="no-flags">None yet</span>` : combinedFlags;
     });
 
   async function clearLogs() {
@@ -195,7 +187,8 @@
     const batch = db.batch();
     snap.forEach(doc => batch.delete(doc.ref));
     await batch.commit();
-    flaggedStudents.clear();
+    flaggedStudentsLeft.clear();
+    flaggedStudentsBlur.clear();
   }
 </script>
 
