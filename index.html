@@ -2,33 +2,37 @@
 <html>
 <head>
   <title>Student View - Live Class</title>
-
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   
   <style>
+    body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#0f172a; color:white; }
     .slide-title { font-size: 26px; font-weight: bold; color: #58a6ff; margin-bottom: 15px; }
+    .slide-subtitle { font-size: 14px; color: #7d8590; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
     .alert-box { padding: 15px; border-radius: 8px; margin: 10px 0; border: 1px solid #333; font-size: 20px; line-height: 1.5; }
     .alert-yellow { background: #2b2008; color: #ffa657; border-color: #6e4c0a; }
     .alert-red { background: #2d1215; color: #f78166; border-color: #6e2128; }
+    .alert-green { background: #0d2a1a; color: #7ee787; border-color: #1a4426; }
     .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
     .compare-card { background: #21262d; padding: 15px; border-radius: 8px; border: 1px solid #30363d; font-size: 18px;}
+    .compare-card.danger { background: #2d1215; border-color: #6e2128; }
+    .compare-card.safe-card { background: #0d2a1a; border-color: #1a4426; }
     .compare-card h3 { margin-top: 0; color: #7ee787; }
+    .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    .stat-pill { background: #21262d; border: 1px solid #30363d; border-radius: 10px; padding: 10px 18px; text-align: center; }
+    .stat-pill .sv { font-size: 28px; font-weight: 700; }
+    .stat-pill .sl { font-size: 11px; color: #7d8590; margin-top: 2px; }
   </style>
 </head>
 
-<body style="margin:0; font-family: Arial, sans-serif; background:#0f172a; color:white;">
+<body>
 
 <div style="display:flex; justify-content:center; align-items:center; height:100vh; padding:20px;">
-
   <div style="max-width:800px; width:100%; background:#1e293b; padding:30px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-
     <div id="slide" style="font-size:26px; line-height:1.6; white-space:pre-wrap; margin:0;">
       Loading...
     </div>
-
   </div>
-
 </div>
 
 <script>
@@ -47,847 +51,115 @@
   const slideEl = document.getElementById("slide");
   const studentName = prompt("Please enter your name for attendance:") || "Anonymous";
 
-  // --- ACTIVITY TRACKING (Unchanged) ---
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === 'hidden') {
-      db.collection("activity_logs").add({
-        student: studentName, event: "Left Page / Switched Tab", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40)
-      });
+      db.collection("activity_logs").add({ student: studentName, event: "Left Page / Switched Tab", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40) });
     } else {
-      db.collection("activity_logs").add({
-        student: studentName, event: "Returned to Page", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40)
-      });
+      db.collection("activity_logs").add({ student: studentName, event: "Returned to Page", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40) });
     }
   });
 
   window.onbeforeunload = function() {
-    db.collection("activity_logs").add({
-      student: studentName, event: "Closed / Left Page", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40)
-    });
-    return "Are you sure you want to leave the lecture? Your activity is being monitored.";
+    db.collection("activity_logs").add({ student: studentName, event: "Closed / Left Page", timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: slideEl.innerText.substring(0, 40) });
+    return "Are you sure you want to leave the lecture?";
   };
 
-  // --- NEW: THE MULTI-TOPIC LIBRARY ---
+  // ✅ THE DUAL TOPIC LIBRARY
   const allTopics = {
-    
-    // BATCH 2024: MONDAY'S CLASS
     "fm216": [
-      mutilated_bodies: {
-    name: "FM 2.16: Mutilated, Decomposed Bodies & Bones",
-    batch: "batch_2024",
-    slides: [
-
-// ── SLIDE 1 — Title ──────────────────────────────────────────
-{
-  section: "Introduction",
-  color: "#94a3b8",
-  render: () => `
-    <div class="slide-title">🦴 FM 2.16</div>
-    <div class="slide-subtitle">Medicolegal Examination of Mutilated, Decomposed Bodies & Bones</div>
-    <div class="stat-row">
-      <div class="stat-pill"><div class="sv" style="color:#f78166">10</div><div class="sl">Questions to Answer</div></div>
-      <div class="stat-pill"><div class="sv" style="color:#ffa657">95%</div><div class="sl">Pelvis for Sex</div></div>
-      <div class="stat-pill"><div class="sv" style="color:#7ee787">Femur</div><div class="sl">Best for Stature</div></div>
-      <div class="stat-pill"><div class="sv" style="color:#58a6ff">Teeth</div><div class="sl">Best for Age + DNA</div></div>
-    </div>
-    <div class="alert-box alert-yellow" style="margin-top:16px">
-      <strong>When identity is destroyed — Science restores it</strong>
-    </div>`
-},
-
-// ── SLIDE 2 — Definitions ────────────────────────────────────
-{
-  section: "Definitions",
-  color: "#58a6ff",
-  render: () => `
-    <div class="slide-title">📖 Textbook Definitions</div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
-      <div class="alert-box" style="background:#0d1a2a;border:1px solid #1a3a5c">
-        <strong style="color:#58a6ff">Reddy:</strong><br>
-        <span style="color:#c9d1d9">"Mutilated bodies — extensively disfigured, or limb/part lost but <strong>soft tissues still attached to bones</strong>"</span>
-      </div>
-      <div class="alert-box" style="background:#1a1400;border:1px solid #3a2f00">
-        <strong style="color:#ffa657">Modi:</strong><br>
-        <span style="color:#c9d1d9">"Mutilation is <strong>NOT always criminal</strong> — animals (rats, dogs, jackals, hyenas, vultures) can mutilate in a very short time"</span>
-      </div>
-      <div class="alert-box" style="background:#0d2a1a;border:1px solid #1a4426">
-        <strong style="color:#7ee787">Parikh:</strong><br>
-        <span style="color:#c9d1d9">"<strong>Fragmentary remains</strong> — only fragments such as head, trunk or limb"</span>
-      </div>
-    </div>`
-},
-
-// ── SLIDE 3 — Causes ─────────────────────────────────────────
-{
-  section: "Introduction",
-  color: "#94a3b8",
-  render: () => `
-    <div class="slide-title">⚡ Causes of Mutilation</div>
-    <div class="compare-grid" style="grid-template-columns:1fr 1fr">
-      <div class="compare-card danger">
-        <h3 style="color:#f78166">Criminal</h3>
-        <ul>
-          <li>Concealment of identity</li>
-          <li>Easier disposal of body</li>
-          <li>Skilled — joint separation</li>
-          <li>Saw/knife/axe marks</li>
-        </ul>
-      </div>
-      <div class="compare-card" style="background:#1a1a2a;border-color:#2a2a4a">
-        <h3 style="color:#a78bfa">Animal Scavenging</h3>
-        <ul>
-          <li>Rats, dogs, jackals, hyenas</li>
-          <li>Vultures — very rapid</li>
-          <li>Haphazard wounds</li>
-          <li>Gnaw marks on bone</li>
-        </ul>
-      </div>
-      <div class="compare-card safe-card">
-        <h3 style="color:#7ee787">Natural / Accidental</h3>
-        <ul>
-          <li>Decomposition — ligament separation</li>
-          <li>Moving vehicles (RTA)</li>
-          <li>Bomb explosions</li>
-        </ul>
-      </div>
-      <div class="compare-card" style="background:#1a1400;border-color:#3a2f00">
-        <h3 style="color:#ffa657">📌 Key Point</h3>
-        <ul>
-          <li>Each cause leaves</li>
-          <li><strong>different marks</strong></li>
-          <li>Determining manner</li>
-          <li>= critical for court</li>
-        </ul>
-      </div>
-    </div>`
-},
-
-// ── SLIDE 4 — 10 Questions ───────────────────────────────────
-{
-  section: "10 Questions",
-  color: "#ffa657",
-  render: () => `
-    <div class="slide-title">🎯 10 Questions to Answer</div>
-    <div class="slide-subtitle">Primary goal of examining mutilated remains</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
-      ${[
-        ["1","Human or Animal?","#f78166"],
-        ["2","Same individual or multiple?","#f78166"],
-        ["3","Age","#ffa657"],
-        ["4","Sex","#ffa657"],
-        ["5","Stature","#ffa657"],
-        ["6","Race","#ffa657"],
-        ["7","Identity","#7ee787"],
-        ["8","Manner of separation","#7ee787"],
-        ["9","Cause of death","#58a6ff"],
-        ["10","Time since death","#58a6ff"]
-      ].map(([n,q,c]) => `
-        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#21262d;border-radius:8px;border:1px solid #30363d">
-          <span style="font-size:18px;font-weight:700;color:${c};min-width:24px">${n}</span>
-          <span style="font-size:13px;color:#c9d1d9">${q}</span>
-        </div>`).join('')}
-    </div>`
-},
-
-// ── SLIDE 5 — Q1 Human or Animal ────────────────────────────
-{
-  section: "Q1: Human or Animal?",
-  color: "#f78166",
-  render: () => `
-    <div class="slide-title">❓ Q1 — Human or Animal?</div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">1</div><div class="tl-line"></div></div>
-        <div class="tl-body">
-          <div class="tl-title" style="color:#7ee787">Gross Examination</div>
-          <div class="tl-points">Shape, structure and weight usually distinguish human remains from animal</div>
+      // Slide 1
+      { render: () => `
+        <div class="slide-title">🦴 FM 2.16</div>
+        <div class="slide-subtitle">Medicolegal Examination of Mutilated, Decomposed Bodies & Bones</div>
+        <div class="stat-row">
+          <div class="stat-pill"><div class="sv" style="color:#f78166">10</div><div class="sl">Questions to Answer</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">95%</div><div class="sl">Pelvis for Sex</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#7ee787">Femur</div><div class="sl">Best for Stature</div></div>
         </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">2</div><div class="tl-line"></div></div>
-        <div class="tl-body">
-          <div class="tl-title" style="color:#58a6ff">For Isolated Soft Tissue</div>
-          <div class="tl-points">
-            <strong>Precipitin test ⭐</strong> — confirms human protein<br>
-            Anti-globulin inhibition test — alternative
+        <div class="alert-box alert-yellow" style="margin-top:16px"><strong>When identity is destroyed — Science restores it</strong></div>` 
+      },
+      // Slide 2
+      { render: () => `
+        <div class="slide-title">📖 Textbook Definitions</div>
+        <div class="alert-box" style="background:#0d1a2a;border:1px solid #1a3a5c">
+          <strong style="color:#58a6ff">Reddy:</strong><br><span style="color:#c9d1d9">"Mutilated bodies — extensively disfigured, or limb/part lost but <strong>soft tissues still attached to bones</strong>"</span>
+        </div>
+        <div class="alert-box" style="background:#1a1400;border:1px solid #3a2f00">
+          <strong style="color:#ffa657">Modi:</strong><br><span style="color:#c9d1d9">"Mutilation is <strong>NOT always criminal</strong> — animals can mutilate in a very short time"</span>
+        </div>`
+      },
+      // Slide 3
+      { render: () => `
+        <div class="slide-title">🔍 Preliminary Examination</div>
+        <img src="https://i.postimg.cc/mD8gM3X9/Screenshot-20260412-143112-OneDrive.jpg" style="width:100%; border-radius:10px;">
+        <br>Record container details (Knot analysis). Detect Anatomy Room artifacts (Formalin/Red Lead).
+        <div class="alert-box alert-green"><strong>Precipitin test ⭐</strong> — confirms human protein for isolated soft tissue.</div>`
+      },
+      // Slide 4
+      { render: () => `
+        <div class="slide-title">🐾 Animal vs Criminal Dismemberment</div>
+        <img src="https://i.postimg.cc/0jXyB6S6/Gemini-Generated-Image-xnmoitxnmoitxnmo.jpg" style="width:100%; border-radius:10px;">
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h3 style="color:#a78bfa">Animal Scavenging</h3>
+            Scalloped/Nibbled edges<br>Medulla eaten → cortical bone spicules pushed inward ⭐<br>No vital reaction
           </div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">3</div></div>
-        <div class="tl-body">
-          <div class="tl-title" style="color:#ffa657">Anatomy Room Artefacts — Rule Out</div>
-          <div class="tl-points">
-            Formalin odour<br>
-            Red lead injected in blood vessels<br>
-            Preserved, non-decomposed appearance
+          <div class="compare-card danger">
+            <h3 style="color:#f78166">Criminal</h3>
+            Clean-cut or saw marks<br>Precise joint-level separation (Skilled)<br>Evidence of planning
           </div>
-        </div>
-      </div>
-    </div>`
-},
+        </div>`
+      },
+      // Slide 5
+      { render: () => `
+        <div class="slide-title">📏 Stature from Long Bones</div>
+        <div class="alert-box alert-yellow"><strong>Karl Pearson Factors:</strong><br>Femur: Length x 3.7<br>Humerus: Length x 5.3</div>
+        <div class="alert-box alert-green"><strong>Trotter-Gleser (Male):</strong><br>Stature (cm) = (2.32 × Femur length) + 65.53</div>
+        <div class="alert-box" style="background:#1a1a2a; border:1px solid #333;"><strong>Note:</strong> Living height = Skeletal height + 2 to 4 cm (soft tissue correction)</div>`
+      }
+    ],
 
-// ── SLIDE 6 — Q2 Same Individual ────────────────────────────
-{
-  section: "Q2: Same Individual?",
-  color: "#f78166",
-  render: () => `
-    <div class="slide-title">❓ Q2 — Same Individual?</div>
-    <div class="compare-grid">
-      <div class="compare-card" style="background:#1a1400;border-color:#3a2f00">
-        <h3 style="color:#ffa657">Assembly Method</h3>
-        <ul>
-          <li>Anatomically align all parts</li>
-          <li>Jigsaw method</li>
-          <li>Check consistent skin colour</li>
-          <li>Document + photograph</li>
-        </ul>
-      </div>
-      <div class="compare-card danger">
-        <h3 style="color:#f78166">⭐ Reduplication Rule</h3>
-        <ul>
-          <li>Two RIGHT humeri</li>
-          <li>= Minimum TWO victims</li>
-          <li>Count all unpaired bones</li>
-          <li>MNI — Minimum Number of Individuals</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-green" style="margin-top:10px">
-      <strong>Confirmation:</strong> Blood grouping + DNA profiling ⭐ — definitive proof of single vs multiple individuals
-    </div>`
-},
-
-// ── SLIDE 7 — Q3 Sex (soft tissue) ──────────────────────────
-{
-  section: "Q3: Sex",
-  color: "#ffa657",
-  render: () => `
-    <div class="slide-title">♀♂ Q3 — Determining Sex</div>
-    <div class="alert-box alert-yellow" style="margin-bottom:12px">
-      <strong>From decomposed soft tissue:</strong><br>
-      Prostate (male) and non-pregnant uterus (female) are <strong>rot-resistant</strong> ⭐ — confirm sex even in advanced decomposition
-    </div>
-    <div class="compare-grid">
-      <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c">
-        <h3 style="color:#58a6ff">Female Pelvis</h3>
-        <ul>
-          <li>Subpubic angle <strong>&gt;90°</strong></li>
-          <li>Circular pelvic inlet</li>
-          <li>Wide greater sciatic notch</li>
-          <li>Wider, shallower</li>
-        </ul>
-      </div>
-      <div class="compare-card" style="background:#2a1a2a;border-color:#4a2a4a">
-        <h3 style="color:#d2a8ff">Male Pelvis</h3>
-        <ul>
-          <li>Subpubic angle <strong>&lt;70°</strong></li>
-          <li>Heart-shaped inlet</li>
-          <li>Narrow sciatic notch</li>
-          <li>Narrower, deeper</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-green" style="margin-top:10px">
-      <strong>Pelvis = 95% accurate ⭐⭐</strong> — most reliable bone for sex determination
-    </div>`
-},
-
-// ── SLIDE 8 — Skull for Sex ──────────────────────────────────
-{
-  section: "Q3: Sex",
-  color: "#ffa657",
-  render: () => `
-    <div class="slide-title">💀 Sex from Skull</div>
-    <table class="slide-table">
-      <thead><tr><th>Feature</th><th>Female</th><th>Male</th></tr></thead>
-      <tbody>
-        <tr><td>Overall</td><td class="safe">Smooth, rounded</td><td class="warn">Rugged, angular</td></tr>
-        <tr><td>Mastoid process</td><td class="safe">Small</td><td class="warn">Large, prominent</td></tr>
-        <tr><td>Supraorbital ridges</td><td class="safe">Absent / faint</td><td class="warn">Prominent</td></tr>
-        <tr><td>Chin</td><td class="safe">Pointed</td><td class="warn">Square</td></tr>
-        <tr><td>Forehead</td><td class="safe">Vertical, rounded</td><td class="warn">Sloping</td></tr>
-        <tr><td>Orbital margins</td><td class="safe">Sharp</td><td class="warn">Rounded/blunt</td></tr>
-      </tbody>
-    </table>
-    <div class="alert-box alert-yellow" style="margin-top:10px">
-      📌 Skull accuracy = 90% &nbsp;•&nbsp; Pelvis accuracy = 95% &nbsp;•&nbsp; <strong>Always prefer pelvis</strong>
-    </div>`
-},
-
-// ── SLIDE 9 — Q4 Age ─────────────────────────────────────────
-{
-  section: "Q4: Age",
-  color: "#ffa657",
-  render: () => `
-    <div class="slide-title">🎂 Q4 — Determining Age</div>
-    <div class="compare-grid">
-      <div class="compare-card" style="background:#1a1400;border-color:#3a2f00">
-        <h3 style="color:#ffa657">From Bones</h3>
-        <ul>
-          <li>Epiphyseal union — growing age</li>
-          <li>Cranial suture closure — adult</li>
-          <li>Pubic symphysis changes</li>
-          <li>Sternal rib ends</li>
-          <li>Auricular surface</li>
-        </ul>
-      </div>
-      <div class="compare-card safe-card">
-        <h3 style="color:#7ee787">From Teeth ⭐ Most Reliable</h3>
-        <ul>
-          <li>Children: Eruption sequence</li>
-          <li>Children: Demirjian method</li>
-          <li>Adults: Attrition / wear</li>
-          <li>Adults: Root transparency</li>
-          <li>Adults: Secondary dentine</li>
-          <li>Adults: Cementum annulation</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-green" style="margin-top:10px">
-      <strong>Teeth = most reliable for age in all age groups ⭐</strong>
-    </div>`
-},
-
-// ── SLIDE 10 — Q5 Stature Intro ──────────────────────────────
-{
-  section: "Q5: Stature",
-  color: "#7ee787",
-  render: () => `
-    <div class="slide-title">📏 Q5 — Stature from Long Bones</div>
-    <div class="slide-subtitle">Based on constant ratio of bone length to total height</div>
-    <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:12px">
-      <div class="stat-pill"><div class="sv" style="color:#7ee787">Femur</div><div class="sl">Most accurate ⭐</div></div>
-      <div class="stat-pill"><div class="sv" style="color:#58a6ff">Tibia</div><div class="sl">2nd choice</div></div>
-      <div class="stat-pill"><div class="sv" style="color:#ffa657">Humerus</div><div class="sl">Upper limb</div></div>
-    </div>
-    <div class="alert-box alert-yellow">
-      <strong>Two methods:</strong><br>
-      A) Karl Pearson Multiplication Factors — quick, single bone<br>
-      B) Trotter-Gleser Regression Equations — more precise
-    </div>
-    <div class="alert-box alert-green" style="margin-top:10px">
-      <strong>Living height = Skeletal height + 2 to 4 cm</strong><br>
-      (soft tissues — intervertebral discs, scalp)
-    </div>`
-},
-
-// ── SLIDE 11 — Pearson Method ────────────────────────────────
-{
-  section: "Q5: Stature",
-  color: "#7ee787",
-  render: () => `
-    <div class="slide-title">📐 Pearson Multiplication Factors</div>
-    <table class="slide-table">
-      <thead><tr><th>Bone</th><th>Factor</th><th>Example (45 cm bone)</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Femur ⭐</strong></td><td class="safe" style="font-size:18px;font-weight:700">× 3.7</td><td style="color:#7ee787">45 × 3.7 = <strong>166.5 cm</strong></td></tr>
-        <tr><td>Tibia</td><td class="warn" style="font-size:18px;font-weight:700">× 4.3</td><td style="color:#ffa657">45 × 4.3 = 193.5 cm</td></tr>
-        <tr><td>Humerus</td><td class="toxic" style="font-size:18px;font-weight:700">× 5.3</td><td style="color:#f78166">45 × 5.3 = 238.5 cm</td></tr>
-        <tr><td>Radius</td><td>× 6.9</td><td style="color:#8b949e">—</td></tr>
-      </tbody>
-    </table>
-    <div class="alert-box alert-yellow" style="margin-top:12px">
-      <strong>Limitations:</strong> Simple but less accurate &nbsp;•&nbsp; Use only when single bone found &nbsp;•&nbsp; No population correction
-    </div>`
-},
-
-// ── SLIDE 12 — Trotter-Gleser ────────────────────────────────
-{
-  section: "Q5: Stature",
-  color: "#7ee787",
-  render: () => `
-    <div class="slide-title">🔬 Trotter-Gleser Regression</div>
-    <div class="alert-box" style="background:#0d2a1a;border:1px solid #1a4426;margin-bottom:12px;text-align:center">
-      <span style="color:#7ee787;font-size:16px;font-weight:600">Stature (cm) = (2.32 × Femur length) + 65.53 ± 3.94</span><br>
-      <span style="color:#484f58;font-size:12px">For male — general formula</span>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="alert-box alert-green">
-        <strong>Add 2–4 cm</strong> for living stature (soft tissue correction)
-      </div>
-      <div class="alert-box alert-yellow">
-        <strong>Subtract 1.5%</strong> for dry ancient bone (shrinkage correction)
-      </div>
-      <div class="alert-box" style="background:#0d1a2a;border:1px solid #1a3a5c">
-        <strong style="color:#58a6ff">Fragmentary bone?</strong> Use <strong>Steele & McKern method</strong> — estimate full bone length first, then apply formula
-      </div>
-      <div class="alert-box alert-yellow">
-        📌 <strong>Diurnal variation</strong> — body is slightly taller in morning than evening
-      </div>
-    </div>`
-},
-
-// ── SLIDE 13 — Q6 Race ───────────────────────────────────────
-{
-  section: "Q6: Race",
-  color: "#a78bfa",
-  render: () => `
-    <div class="slide-title">🌍 Q6 — Race from Skull</div>
-    <table class="slide-table">
-      <thead><tr><th>Feature</th><th>Caucasoid</th><th>Negroid</th><th>Mongoloid</th></tr></thead>
-      <tbody>
-        <tr><td>Nasal aperture</td><td>Narrow, pointed</td><td class="toxic">Wide, flat</td><td>Medium</td></tr>
-        <tr><td>Prognathism</td><td>Orthognathic</td><td class="toxic">Prognathic</td><td>Flat face</td></tr>
-        <tr><td>Incisors</td><td>Normal</td><td>Normal</td><td class="warn">Shovel-shaped ⭐</td></tr>
-        <tr><td>Face</td><td>Oval</td><td>Long</td><td class="warn">Flat, broad</td></tr>
-      </tbody>
-    </table>
-    <div class="alert-box alert-red" style="margin-top:12px">
-      <strong>⚠ Least reliable parameter</strong> — significant overlap between groups. Also assess: hair texture, skin colour, cephalic index
-    </div>`
-},
-
-// ── SLIDE 14 — Q7 Identity ───────────────────────────────────
-{
-  section: "Q7: Identity",
-  color: "#7ee787",
-  render: () => `
-    <div class="slide-title">🪪 Q7 — Establishing Identity</div>
-    <div class="compare-grid">
-      <div class="compare-card safe-card">
-        <h3 style="color:#7ee787">Scientific Methods ⭐</h3>
-        <ul>
-          <li>DNA profiling — tooth pulp + petrous bone</li>
-          <li>Dental records — ante vs postmortem</li>
-          <li>Fingerprints — skin slip method</li>
-          <li>Superimposition photography</li>
-        </ul>
-      </div>
-      <div class="compare-card" style="background:#1a1400;border-color:#3a2f00">
-        <h3 style="color:#ffa657">Physical Evidence</h3>
-        <ul>
-          <li>Jewellery, clothing</li>
-          <li>Surgical implants — serial numbers</li>
-          <li>Tattoos — even in decomposition</li>
-          <li>Personal belongings</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-yellow" style="margin-top:10px">
-      <strong>Best for fire/disaster victims:</strong> Dental records + DNA<br>
-      <strong>Best for decomposed:</strong> Tooth root pulp DNA ⭐⭐
-    </div>`
-},
-
-// ── SLIDE 15 — Superimposition ───────────────────────────────
-{
-  section: "Q7: Identity",
-  color: "#7ee787",
-  render: () => `
-    <div class="slide-title">🎯 Superimposition Photography</div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">1</div><div class="tl-line"></div></div>
-        <div class="tl-body">
-          <div class="tl-title" style="color:#7ee787">Technique</div>
-          <div class="tl-points">Victim's antemortem photograph overlaid on the recovered skull. Bony landmarks and dental pattern are checked for match.</div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">2</div><div class="tl-line"></div></div>
-        <div class="tl-body">
-          <div class="tl-title" style="color:#58a6ff">Used When</div>
-          <div class="tl-points">Missing persons &nbsp;•&nbsp; Historical cases &nbsp;•&nbsp; No DNA available &nbsp;•&nbsp; Disaster Victim Identification (DVI)</div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">3</div></div>
-        <div class="tl-body">
-          <div class="tl-title" style="color:#ffa657">Modern Method</div>
-          <div class="tl-points">3D digital superimposition — more precise landmark mapping</div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-box alert-red" style="margin-top:10px">
-      📌 <strong>Confirmatory but not conclusive alone</strong> — always combine with other methods
-    </div>`
-},
-
-// ── SLIDE 16 — Q8 Manner of Separation ──────────────────────
-{
-  section: "Q8: Manner of Separation",
-  color: "#f78166",
-  render: () => `
-    <div class="slide-title">✂️ Q8 — Manner of Separation</div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="compare-card danger" style="border-radius:12px">
-        <h3 style="color:#f78166">🔪 Criminal Dismemberment</h3>
-        <div style="font-size:13px;color:#8b949e;line-height:1.8">
-          Clean cuts / saw marks on bone &nbsp;•&nbsp; Precise joint-level separation<br>
-          <strong style="color:#f78166">Skilled = anatomical knowledge</strong> (suspect may be medical/paramedical)<br>
-          Minimal hesitation marks &nbsp;•&nbsp; Evidence of planning
-        </div>
-      </div>
-      <div class="compare-card" style="background:#1a1a2a;border-color:#2a2a4a;border-radius:12px">
-        <h3 style="color:#a78bfa">🐾 Animal Scavenging</h3>
-        <div style="font-size:13px;color:#8b949e;line-height:1.8">
-          Haphazard, irregular wounds &nbsp;•&nbsp; Gnaw marks visible<br>
-          <strong style="color:#a78bfa">Medulla eaten → cortical bone spicules pushed inward ⭐</strong><br>
-          No planning pattern &nbsp;•&nbsp; Random distribution
-        </div>
-      </div>
-      <div class="compare-card safe-card" style="border-radius:12px">
-        <h3 style="color:#7ee787">🌿 Decomposition / Natural</h3>
-        <div style="font-size:13px;color:#8b949e;line-height:1.8">
-          Soft tissue + ligament separation &nbsp;•&nbsp; <strong>No vital reaction</strong><br>
-          Can mimic traumatic dismemberment &nbsp;•&nbsp; Look for absence of bruising/clotted blood
-        </div>
-      </div>
-    </div>`
-},
-
-// ── SLIDE 17 — Tool Marks ────────────────────────────────────
-{
-  section: "Q8: Manner of Separation",
-  color: "#f78166",
-  render: () => `
-    <div class="slide-title">🔧 Tool Marks on Bone</div>
-    <table class="slide-table">
-      <thead><tr><th>Tool</th><th>Mark Type</th><th>Bone Appearance</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Mechanical/hand saw</strong></td><td class="safe">Saw marks</td><td>Parallel striations, initial hesitation marks visible</td></tr>
-        <tr><td><strong>Axe / Cleaver</strong></td><td class="warn">Chop marks</td><td>V-shaped groove, bone splitting at impact point</td></tr>
-        <tr><td><strong>Knife</strong></td><td class="toxic">Cut marks</td><td>Shallow, smooth, direction of stroke visible</td></tr>
-      </tbody>
-    </table>
-    <div class="alert-box alert-yellow" style="margin-top:12px">
-      <strong>Forensic anthropologist can determine:</strong><br>
-      → Blade width &nbsp;•&nbsp; Number of strokes &nbsp;•&nbsp; Direction of force &nbsp;•&nbsp; Right or left-handed operator
-    </div>`
-},
-
-// ── SLIDE 18 — Q9 Cause of Death ────────────────────────────
-{
-  section: "Q9: Cause of Death",
-  color: "#58a6ff",
-  render: () => `
-    <div class="slide-title">💀 Q9 — Cause of Death</div>
-    <div class="alert-box alert-red" style="margin-bottom:12px">
-      Often <strong>difficult to determine</strong> due to decomposition and fragmentation
-    </div>
-    <div class="compare-grid">
-      <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c">
-        <h3 style="color:#58a6ff">Definitive Trauma Evidence</h3>
-        <ul>
-          <li>Skull fractures</li>
-          <li><strong>Hyoid bone fracture ⭐</strong> (strangulation)</li>
-          <li>Knife marks on cervical vertebrae</li>
-          <li>Retained bullets / pellets</li>
-        </ul>
-      </div>
-      <div class="compare-card danger">
-        <h3 style="color:#f78166">Chemical Analysis</h3>
-        <ul>
-          <li>Arsenic ⭐ — resists putrefaction</li>
-          <li>Antimony — detectable months/years later</li>
-          <li>Detectable even in skeletal remains</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-yellow" style="margin-top:10px">
-      📌 Hyoid fracture is pathognomonic of manual strangulation — never miss it
-    </div>`
-},
-
-// ── SLIDE 19 — Fracture Timing ───────────────────────────────
-{
-  section: "Q9: Cause of Death",
-  color: "#58a6ff",
-  render: () => `
-    <div class="slide-title">🦴 Fracture Timing</div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787;font-size:11px">ANTE</div><div class="tl-line"></div></div>
-        <div class="tl-body">
-          <div class="tl-time">Antemortem — before death</div>
-          <div class="tl-title" style="color:#7ee787">Signs of healing</div>
-          <div class="tl-points"><strong>Callus formation ⭐</strong> &nbsp;•&nbsp; Periosteal reaction &nbsp;•&nbsp; Rounded/smooth healed margins</div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657;font-size:10px">PERI</div><div class="tl-line"></div></div>
-        <div class="tl-body">
-          <div class="tl-time">Perimortem — at time of death</div>
-          <div class="tl-title" style="color:#ffa657">Most important forensically</div>
-          <div class="tl-points"><strong>Greenish bone tinge ⭐</strong> (wet bone reaction) &nbsp;•&nbsp; Plastic deformation &nbsp;•&nbsp; <strong>No callus, no remodelling</strong></div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-left"><div class="tl-dot" style="background:#1a1a1a;color:#555;font-size:10px">POST</div></div>
-        <div class="tl-body">
-          <div class="tl-time">Postmortem — after death</div>
-          <div class="tl-title" style="color:#555">Taphonomic damage</div>
-          <div class="tl-points">Clean, pale, angular edges &nbsp;•&nbsp; No haemorrhage in marrow &nbsp;•&nbsp; No vital reaction</div>
-        </div>
-      </div>
-    </div>`
-},
-
-// ── SLIDE 20 — Gunshot on Bone ───────────────────────────────
-{
-  section: "Q9: Cause of Death",
-  color: "#58a6ff",
-  render: () => `
-    <div class="slide-title">🔫 Gunshot Wounds in Skull</div>
-    <div class="compare-grid">
-      <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c">
-        <h3 style="color:#58a6ff">Entry Wound</h3>
-        <ul>
-          <li>Bevelling <strong>INWARD</strong> (internal table)</li>
-          <li>Smaller hole</li>
-          <li>Radiating fractures outward</li>
-          <li>Clean punched-out margins</li>
-        </ul>
-      </div>
-      <div class="compare-card danger">
-        <h3 style="color:#f78166">Exit Wound</h3>
-        <ul>
-          <li>Bevelling <strong>OUTWARD</strong> (external table)</li>
-          <li>Larger, irregular hole</li>
-          <li>More fragmentation</li>
-          <li>Bevelling on outer surface</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-red" style="margin-top:12px">
-      ⭐ <strong>OPPOSITE to soft tissue wounds</strong><br>
-      Soft tissue: entry bevels outward &nbsp;•&nbsp; Bone: entry bevels <strong>INWARD</strong>
-    </div>`
-},
-
-// ── SLIDE 21 — Q10 Time Since Death (brief) ──────────────────
-{
-  section: "Q10: Time Since Death",
-  color: "#94a3b8",
-  render: () => `
-    <div class="slide-title">⏱️ Q10 — Time Since Death</div>
-    <div class="compare-grid">
-      <div class="compare-card" style="background:#1a1400;border-color:#3a2f00">
-        <h3 style="color:#ffa657">Putrefaction Stages</h3>
-        <ul>
-          <li>Day 0–3: Fresh</li>
-          <li>Day 3–7: Bloat + green staining</li>
-          <li>Week 1–2: Active decay</li>
-          <li>Week 2+: Advanced</li>
-          <li>Months+: Skeletonisation</li>
-        </ul>
-      </div>
-      <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c">
-        <h3 style="color:#58a6ff">Entomological Evidence</h3>
-        <ul>
-          <li>Blowfly — arrives within minutes</li>
-          <li>Maggot stage = PMI estimate</li>
-          <li>Most reliable in early stages</li>
-          <li>Species + temperature dependent</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-yellow" style="margin-top:10px">
-      📌 Putrefaction stage + insect evidence combined = best PMI estimate
-    </div>`
-},
-
-// ── SLIDE 22 — Age of Bone ───────────────────────────────────
-{
-  section: "Age of Bone",
-  color: "#94a3b8",
-  render: () => `
-    <div class="slide-title">📅 Age of the Bone Itself</div>
-    <div class="slide-subtitle">How long has this bone been here?</div>
-    <table class="slide-table">
-      <thead><tr><th>Feature</th><th>Fresh Bone</th><th>Old Bone (&gt;50 yr)</th></tr></thead>
-      <tbody>
-        <tr><td>Feel</td><td class="safe">Greasy</td><td class="toxic">Dry, brittle</td></tr>
-        <tr><td>Smell</td><td class="safe">Organic odour</td><td class="toxic">No smell</td></tr>
-        <tr><td>Flexibility</td><td class="safe">Slight flexibility</td><td class="toxic">Chalky, crumbles</td></tr>
-        <tr><td>Benzidine test</td><td class="safe">+ve (blood present)</td><td class="toxic">–ve</td></tr>
-        <tr><td>UV fluorescence</td><td class="safe">Blue-white glow</td><td class="toxic">Brown / no glow</td></tr>
-        <tr><td>Histology (Kerley)</td><td>Few secondary osteons</td><td class="warn">Many secondary osteons</td></tr>
-      </tbody>
-    </table>
-    <div class="alert-box alert-yellow" style="margin-top:10px">
-      📌 Kerley method: count osteons histologically — more secondary osteons = older individual
-    </div>`
-},
-
-// ── SLIDE 23 — DNA from Bones ────────────────────────────────
-{
-  section: "DNA",
-  color: "#7ee787",
-  render: () => `
-    <div class="slide-title">🧬 DNA from Bones</div>
-    <div class="compare-grid">
-      <div class="compare-card safe-card">
-        <h3 style="color:#7ee787">Best Sources ⭐⭐</h3>
-        <ul>
-          <li><strong>Tooth root pulp</strong> — most DNA</li>
-          <li><strong>Petrous bone</strong> — best preservation</li>
-          <li>Dense cortical bone</li>
-        </ul>
-      </div>
-      <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c">
-        <h3 style="color:#58a6ff">Techniques</h3>
-        <ul>
-          <li>STR profiling — identity</li>
-          <li>mtDNA — maternal lineage</li>
-          <li>Y-STR — paternal lineage</li>
-        </ul>
-      </div>
-    </div>
-    <div class="alert-box alert-yellow" style="margin-top:10px">
-      <strong>Use when:</strong> All soft tissue gone &nbsp;•&nbsp; Fire victims &nbsp;•&nbsp; Mass disasters (DVI) &nbsp;•&nbsp; Historical remains
-    </div>`
-},
-
-// ── SLIDE 24 — Legal Framework ───────────────────────────────
-{
-  section: "Legal Framework",
-  color: "#f78166",
-  render: () => `
-    <div class="slide-title">⚖️ Legal Framework</div>
-    <table class="slide-table">
-      <thead><tr><th>Old IPC</th><th>New BNS 2023</th><th>Relevance</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>IPC 201</td>
-          <td class="toxic"><strong>Section 238 BNS</strong></td>
-          <td>Causing disappearance of evidence — criminal mutilation / secret disposal of body</td>
-        </tr>
-        <tr>
-          <td>CrPC 176</td>
-          <td class="warn"><strong>BNSS Section 194</strong></td>
-          <td>Inquest by Magistrate — mandatory for all unidentified bodies</td>
-        </tr>
-        <tr>
-          <td>IPC 302</td>
-          <td class="toxic">Section 103 BNS</td>
-          <td>Murder — when cause of death established from skeletal evidence</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="alert-box alert-red" style="margin-top:12px">
-      📌 <strong>All unidentified remains → Mandatory Magistrate inquest under BNSS Sec 194</strong>
-    </div>`
-},
-
-// ── SLIDE 25 — Spotter Quiz ──────────────────────────────────
-{
-  section: "Spotter Quiz",
-  color: "#d2a8ff",
-  render: () => `
-    <div class="slide-title">🎯 Spotter — Manner of Separation</div>
-    <div class="quiz-wrap" id="quizSpotter">
-      <div class="quiz-q" style="background:#21262d;padding:14px;border-radius:10px;margin-bottom:4px">
-        <span style="color:#7d8590;font-size:12px;text-transform:uppercase;letter-spacing:1px">Scene Report</span><br><br>
-        Dismembered male, mid-30s. Limbs separated <strong>precisely at joints</strong>. Saw marks on femur shaft. <strong>No hesitation cuts</strong>. Minimal blood at scene.
-      </div>
-      <div class="quiz-q" style="color:#7d8590;font-size:14px;margin-top:4px">What does joint-level separation with no hesitation marks suggest?</div>
-      <button class="quiz-opt" onclick="answerQuiz('A','wrong','quizSpotter')">A — Animal scavenging</button>
-      <button class="quiz-opt" onclick="answerQuiz('B','wrong','quizSpotter')">B — Decomposition artefact</button>
-      <button class="quiz-opt" onclick="answerQuiz('C','wrong','quizSpotter')">C — Unskilled criminal dismemberment</button>
-      <button class="quiz-opt" onclick="answerQuiz('D','correct','quizSpotter')">D — Skilled person with anatomical knowledge</button>
-      <div id="fb-quizSpotter" class="quiz-feedback">
-        <strong>✔ D is correct.</strong><br>
-        Precise joint separation + no hesitation marks = perpetrator knows human anatomy.<br>
-        This narrows the suspect profile to <strong>medical, paramedical or butchery background</strong>.<br>
-        Minimal blood = body moved postmortem (secondary crime scene).
-      </div>
-    </div>`
-},
-
-// ── SLIDE 26 — High Yield Summary ───────────────────────────
-{
-  section: "High Yield",
-  color: "#ffa657",
-  render: () => `
-    <div class="slide-title">📋 High-Yield Exam Points</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      ${[
-        ["Sex","Pelvis ⭐ 95% accurate","#ffa657"],
-        ["Height","Femur ⭐ most accurate","#7ee787"],
-        ["Age","Teeth ⭐ most reliable","#58a6ff"],
-        ["DNA source","Tooth pulp + Petrous bone ⭐⭐","#7ee787"],
-        ["Identity","Superimposition + DNA","#58a6ff"],
-        ["Rot-resistant organs","Prostate + Uterus ⭐","#ffa657"],
-        ["Animal gnaw mark","Cortical spicules inward ⭐","#f78166"],
-        ["Perimortem #","Greenish, no callus ⭐","#ffa657"],
-        ["Strangulation","Hyoid # ⭐","#f78166"],
-        ["BNS 238","Evidence disappearance","#f78166"],
-        ["Skilled dismemberment","Joint separation, no hesitation","#a78bfa"],
-        ["PMI insects","Blowfly larval stage","#94a3b8"]
-      ].map(([label, val, c]) => `
-        <div style="display:flex;gap:8px;padding:8px 12px;background:#21262d;border-radius:8px;align-items:flex-start">
-          <span style="font-size:11px;color:#484f58;min-width:90px;text-transform:uppercase;letter-spacing:0.5px;padding-top:1px">${label}</span>
-          <span style="font-size:13px;color:${c};font-weight:500">${val}</span>
-        </div>`).join('')}
-    </div>`
-},
-
-// ── SLIDE 27 — End ───────────────────────────────────────────
-{
-  section: "End",
-  color: "#94a3b8",
-  render: () => `
-    <div class="slide-title">🏁 End — FM 2.16</div>
-    <div style="text-align:center;padding:20px 0">
-      <div style="font-size:40px;margin-bottom:16px">🦴</div>
-      <div style="font-size:20px;color:#e6edf3;font-style:italic;margin-bottom:20px">"When identity is destroyed —<br>Science restores it"</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div class="alert-box alert-yellow">🦴 <strong>Bones</strong> → Sex, Age, Height, Race</div>
-      <div class="alert-box alert-green">🦷 <strong>Teeth</strong> → Age + DNA gold standard</div>
-      <div class="alert-box" style="background:#1a1a2a;border:1px solid #2a2a4a">🐛 <strong>Insects</strong> → Time of death (PMI)</div>
-      <div class="alert-box alert-red">⚖️ <strong>BNS 238</strong> → Criminal mutilation charge</div>
-    </div>`
-}
-
-    ]
-  }
-  
-
-    // BATCH 2023: PREVIOUS CLASS
     "phosphorus": [
-      `💡 PHOSPHORUS IN TAMIL NADU\n\nHistory + Medicine + Forensics\n\n👉 Not just a poison\n👉 A complete story`,
-      `👨‍🔬 1669 — Henning Brand\n\nSearching for Philosopher’s Stone\n\nCollected:\n~5000 L urine\n\n👉 Boiled → paste → heated`,
-      `💡 DISCOVERY\n\nWhite waxy substance\nGlows in dark\nBurns in air\n\nName:\n“Phosphorus” = Bearer of Light`,
-      `🏭 SIVAKASI CONNECTION\n\nFirecracker industry\n\nUsed:\nWhite Phosphorus`,
-      `⚠️ PHOSSY JAW\n\nChronic exposure\n\n👉 Mandibular necrosis\n👉 Bone glows in dark\n\n📌 Occupational hazard`,
-      `🔄 SHIFT TO SAFETY\n\nWhite P → banned\n\nRed P used\n\n✔ Non-toxic\n✔ Stable`,
-      `🧪 RAT PASTE ERA (TN)\n\n3% Yellow Phosphorus\n\n💰 Cheap (₹10–15)\n🏪 Available everywhere`,
-      `⚠️ WHY DANGEROUS?\n\n❌ No severe pain\n❌ Easy to consume\n\n👉 Patient underestimates severity`,
-      `⏳ LUCID INTERVAL (24–72 hrs)\n\nPatient feels NORMAL\n\n🚨 MOST DANGEROUS PHASE\n\n👉 Intern mistake:\nDischarge patient`,
-      `🧬 REALITY\n\nDuring this time:\n\n👉 Liver destruction ongoing\n👉 Silent hepatotoxicity`,
-      `⚠️ AFTER 72 HOURS\n\nFulminant hepatic failure\n\n• Jaundice\n• Coagulopathy\n• Encephalopathy`,
-      `💀 PROGNOSIS\n\nMortality ~70%\n\n📉 Very high risk`,
-      `📍 THANDARAI CASE (2016)\n\nTiruvannamalai\n\n6 deaths in 25 days`,
-      `😨 INITIAL CONFUSION\n\nGhost?\nInfection?\nBrain fever?`,
-      `🔍 FORENSIC CLUE\n\nGarlic odour\nFatty liver`,
-      `⚖️ FINAL DIAGNOSIS\n\nYellow phosphorus poisoning\n\n👉 Food contamination (rasam)`,
-      `🚫 2022 BAN (TAMIL NADU)\n\nBased on:\n\n📊 Mortality ~70%\nStudies by MMC & Stanley`,
-      `📌 CURRENT REALITY\n\nStill seen due to:\n\n👉 Illegal stock\n👉 Old supply`,
-      `⚗️ ALLOTROPES\n\nWhite → TOXIC\nRed → SAFE\nBlack → Stable (no forensic role)`,
-      `🔥 WHITE PHOSPHORUS\n\n• Glows\n• Ignites at 30°C\n• Lipid soluble\n• Highly toxic`,
-      `🩺 STAGE 1 (0–24 hrs)\n\nGI phase\n\n• Burning pain\n• Vomiting\n• Garlic eructation`,
-      `✨ FORENSIC SIGNS\n\n• Luminescent vomitus\n• Smoking stools\n\n📌 Rare but exam favourite`,
-      `⏳ STAGE 2\n\nLucid interval\n\nPatient:\n“I feel fine”\n\n🚨 DO NOT TRUST`,
-      `🧬 STAGE 3\n\nHepatic failure\n\n• Jaundice\n• Bleeding\n• Encephalopathy`,
-      `🧫 POSTMORTEM — LIVER\n\nEnlarged\nYellow\nFatty change`,
-      `📍 HISTOLOGY\n\nZone 1 (periportal)\n\n🔥 HIGH-YIELD POINT`,
-      `🫀 HEART\n\n“Tiger lily heart”\n\nFatty degeneration`,
-      `💊 MANAGEMENT\n\n1. KMnO₄ lavage (1:5000)\n2. Activated charcoal\n3. NAC`,
-      `🚫 AVOID\n\n❌ Milk\n❌ Oil\n\n👉 Increases absorption`,
-      `📊 MONITOR\n\n• LFT\n• PT/INR\n\n👉 Even if asymptomatic`,
-      `⚖️ DIFFERENTIAL\n\nYellow P → Liver failure\nZinc phosphide → Shock + gas toxicity`,
-      `👃 ODOUR DIFFERENCE\n\nYellow P → Garlic\nZinc phosphide → Rotten fish`,
-      `🦴 CHRONIC POISONING\n\nPhossy jaw\n\n👉 Osteomyelitis\n👉 Non-healing extraction`,
-      `⚖️ MEDICOLEGAL\n\nSuicidal → common\nHomicidal → rare\nAccidental → children`,
-      `📜 LAW (BNS)\n\nSection 123 → Poisoning\nSection 103 → Murder`,
-      `🏁 END\n\n“Lucid interval kills, not the poison immediately”`
+      `💡 PHOSPHORUS IN TAMIL NADU\nHistory + Medicine + Forensics\n👉 Not just a poison\n👉 A complete story`,
+      `👨‍🔬 1669 — Henning Brand\nSearching for Philosopher’s Stone\nCollected: ~5000 L urine\n👉 Boiled → paste → heated`,
+      `💡 DISCOVERY\nWhite waxy substance\nGlows in dark\nBurns in air\nName: “Phosphorus” = Bearer of Light`,
+      `🏭 SIVAKASI CONNECTION\nFirecracker industry\nUsed: White Phosphorus`,
+      `⚠️ PHOSSY JAW\nChronic exposure\n👉 Mandibular necrosis\n👉 Bone glows in dark\n📌 Occupational hazard`,
+      `🔄 SHIFT TO SAFETY\nWhite P → banned\nRed P used\n✔ Non-toxic\n✔ Stable`,
+      `🧪 RAT PASTE ERA (TN)\n3% Yellow Phosphorus\n💰 Cheap (₹10–15)\n🏪 Available everywhere`,
+      `⚠️ WHY DANGEROUS?\n❌ No severe pain\n❌ Easy to consume\n👉 Patient underestimates severity`,
+      `⏳ LUCID INTERVAL (24–72 hrs)\nPatient feels NORMAL\n🚨 MOST DANGEROUS PHASE\n👉 Intern mistake: Discharge patient`,
+      `🧬 REALITY\nDuring this time:\n👉 Liver destruction ongoing\n👉 Silent hepatotoxicity`,
+      `⚠️ AFTER 72 HOURS\nFulminant hepatic failure\n• Jaundice • Coagulopathy • Encephalopathy`,
+      `💀 PROGNOSIS\nMortality ~70%\n📉 Very high risk`,
+      `📍 THANDARAI CASE (2016)\nTiruvannamalai\n6 deaths in 25 days`,
+      `😨 INITIAL CONFUSION\nGhost? Infection? Brain fever?`,
+      `🔍 FORENSIC CLUE\nGarlic odour\nFatty liver`,
+      `⚖️ FINAL DIAGNOSIS\nYellow phosphorus poisoning\n👉 Food contamination (rasam)`,
+      `🚫 2022 BAN (TAMIL NADU)\nBased on:\n📊 Mortality ~70%\nStudies by MMC & Stanley`,
+      `📌 CURRENT REALITY\nStill seen due to:\n👉 Illegal stock\n👉 Old supply`,
+      `⚗️ ALLOTROPES\nWhite → TOXIC\nRed → SAFE\nBlack → Stable (no forensic role)`,
+      `🔥 WHITE PHOSPHORUS\n• Glows\n• Ignites at 30°C\n• Lipid soluble\n• Highly toxic`,
+      `🩺 STAGE 1 (0–24 hrs)\nGI phase\n• Burning pain • Vomiting • Garlic eructation`,
+      `✨ FORENSIC SIGNS\n• Luminescent vomitus\n• Smoking stools\n📌 Rare but exam favourite`,
+      `⏳ STAGE 2\nLucid interval\nPatient: “I feel fine”\n🚨 DO NOT TRUST`,
+      `🧬 STAGE 3\nHepatic failure\n• Jaundice • Bleeding • Encephalopathy`,
+      `🧫 POSTMORTEM — LIVER\nEnlarged\nYellow\nFatty change`,
+      `📍 HISTOLOGY\nZone 1 (periportal)\n🔥 HIGH-YIELD POINT`,
+      `🫀 HEART\n“Tiger lily heart”\nFatty degeneration`,
+      `💊 MANAGEMENT\n1. KMnO₄ lavage (1:5000)\n2. Activated charcoal\n3. NAC`,
+      `🚫 AVOID\n❌ Milk\n❌ Oil\n👉 Increases absorption`,
+      `📊 MONITOR\n• LFT\n• PT/INR\n👉 Even if asymptomatic`,
+      `⚖️ DIFFERENTIAL\nYellow P → Liver failure\nZinc phosphide → Shock + gas toxicity`,
+      `👃 ODOUR DIFFERENCE\nYellow P → Garlic\nZinc phosphide → Rotten fish`,
+      `🦴 CHRONIC POISONING\nPhossy jaw\n👉 Osteomyelitis\n👉 Non-healing extraction`,
+      `⚖️ MEDICOLEGAL\nSuicidal → common\nHomicidal → rare\nAccidental → children`,
+      `📜 LAW (BNS)\nSection 123 → Poisoning\nSection 103 → Murder`,
+      `🏁 END\n“Lucid interval kills, not the poison immediately”`
     ]
   };
 
-  // --- CHANGED: LISTENER NOW READS TOPIC AND USES innerHTML ---
+  // ✅ THE LISTENER: Handles both Strings and Objects
   db.collection("slides").doc("current").onSnapshot((doc) => {
     if (!doc.exists) {
       slideEl.innerHTML = "No data found";
@@ -895,12 +167,18 @@
     }
 
     const data = doc.data();
-    // Default to 'fm216' if no topic is explicitly set in Firebase yet
     const topic = data.topic || "fm216"; 
     const index = Number(data.index) || 0;
 
-    // Use innerHTML so the CSS, bolding, and images render correctly
-    slideEl.innerHTML = allTopics[topic][index] || "End of Lecture";
+    const slideData = allTopics[topic][index];
+
+    if (!slideData) {
+      slideEl.innerHTML = "End of Lecture";
+    } else if (typeof slideData === "string") {
+      slideEl.innerHTML = slideData; // For Phosphorus
+    } else {
+      slideEl.innerHTML = slideData.render(); // For FM 2.16
+    }
 
   }, (error) => {
     slideEl.innerHTML = "Error: " + error.message;
