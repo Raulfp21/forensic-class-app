@@ -30,7 +30,6 @@
     .stat-box.red .stat-value { color: #ff4444; }
     .stat-box.yellow .stat-value { color: #fbbf24; }
     
-    /* Missing Students Panel */
     #missingWrap { background: #1a0f0f; border: 1px solid #3b0000; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; }
     .missing-pill { display: inline-block; background: #2d1215; color: #f78166; border: 1px solid #6e2128; border-radius: 4px; padding: 4px 8px; font-size: 11px; margin: 4px; }
     
@@ -77,14 +76,26 @@
 
 <div class="stats-row">
   <div class="stat-box green"><div class="stat-label">Currently Active</div><div class="stat-value" id="statActive">—</div></div>
-  <div class="stat-box red"><div class="stat-label">Tab Switches (Left)</div><div class="stat-value" id="statLeft">0</div></div>
+  <div class="stat-box red"><div class="stat-label">Tab Switches</div><div class="stat-value" id="statLeft">0</div></div>
   <div class="stat-box yellow"><div class="stat-label">Total Events</div><div class="stat-value" id="statTotal">0</div></div>
+</div>
+
+<div class="section-title">📊 Live Quiz Stats</div>
+<div class="stats-row">
+  <div class="stat-box" style="border-color:#00ff88;">
+    <div class="stat-label">Answered Correctly</div>
+    <div class="stat-value" id="quizCorrect" style="color:#00ff88;">0</div>
+  </div>
+  <div class="stat-box" style="border-color:#ff4444;">
+    <div class="stat-label">Answered Wrong</div>
+    <div class="stat-value" id="quizWrong" style="color:#ff4444;">0</div>
+  </div>
 </div>
 
 <div class="section-title" id="missingTitle">❌ Missing Students (2024 Batch)</div>
 <div id="missingWrap"><span class="no-flags">Waiting for data...</span></div>
 
-<div class="section-title">🚨 Flagged Students (Red: Left entirely | Orange: Split-Screen/Lost focus)</div>
+<div class="section-title">🚨 Flagged Students (Red: Left | Orange: Split-Screen/Lost focus)</div>
 <div id="flagList"><span class="no-flags">None yet</span></div>
 
 <div class="toolbar">
@@ -115,13 +126,13 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
 
-  // EXTRACTED 2024 BATCH MASTER LIST (253 Students)
+  // 253 Students Master List
   const masterList2024 = [
     "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABIRAMI SRINIVASAPERUMAI", "ADHITHYAN A T", "ADITHYA B", "AISHWARYA B", "AJEETH KUMAR R S", "AKASHSANG SIVAKUMAR", "AKSHITHA V", "AMIRTHA SHREE SHANMUGA", "ANNAPOORANI LAKSHMANA", "ARAVIND M", "ARJHITH A G", "ARJUN SURESH K", "ARSHAD KHAN Y", "ARUMUGALAKSHMI P", "ARUN BHARATHI E", "ARUNACHALAM E", "ARUNDHATI K P", "ARUN PANDI V", "ASHISH T. A", "ASHVEEKAA P", "ASMITHAH S", "ASWIN BALAJI", "BALA YOGESH S", "BARATH SHYLESH B", "BHAVIYATHAAR K", "BHAVNA G", "DEEKSHIKA PARTHIBAN CHAI", "DEEPIKA U S", "DEEPTHI V", "DEVA B", "DEVA MURUGESAN", "DHARANEESH M", "DHARANEESH N", "DHARANI M", "DHARMARAJ MAMATHA", "DHARSHINI J", "DHARSHINI P", "DHARSHINI V", "DHARUN A", "DHARUN KRISHNA B", "DHAYANAND S S", "DINESH P", "DIVYA VARSHINI JEYAPRAKAS", "DONI ABISHEK KUMAR A", "ELANSURIYAN A G", "ELANTHENDRAL C", "GAUTAMAN B V", "GAYADHARSHINI S", "GOPIKA U", "GOWTHAM K", "GURUMARAN B", "HAMEEM SYED EBRAHIM ABI", "HAMNA SAJAAN H", "HAMZA RAZAK AM", "HARI MANOJ V", "HARINI S", "HARISH P", "HARISH KUMARAN G", "HARISH PRABHU BS", "HARITHA R", "HARSHA S", "HARSHAD J", "HARSHINI P", "HARUNYAA K", "HEERA SHYAM", "HIMAVARSHA N", "HINDHUJA NAGARAJ", "HISHWANTH K", "INBAVEL P", "ISHWARYA T", "JADYN NIHARIKA R", "JAGADEESH S", "JANA S", "JANOVIA JJ", "JASHVANDH SELVA DEV S", "JEEVAN SAMRUDH TGS", "JEEVANA S", "JONES CALVIN T", "JOSHITHA R", "KAAVYASHREE B", "KABIL SRIVATSAN SL", "KALAIVANI H", "KANIGAA GM", "KANISHGA SRIHARINI K", "KARTHICK M", "KARTHIKA K", "KATHIROLI S", "KEERTHANA A", "KEERTHANA K", "KERAN MOZHI B", "KESHIKA V S", "KISHORE P", "KISHORITHA P", "KOHUL KRISHNA T", "LAKSHYASHRI V", "LAZEERA FATHIMANI", "LILAANIE S", "LOGESHWARI J", "MADHUMITHA S", "MADIHA BANU HATHI AHAMI", "MAHALAKSHMIG", "MAHALAKSHMI S", "MAI DEEPA SRI R", "MANOHARAN S", "MANORANJAN S R", "MANYAA P", "MARI MUTHU S", "MAYURANATH K", "MEGHNA NAIR", "MELWIN JONES A", "MITHUNCHANDER R", "MOHAMMED LUKMAAN A", "MOHAMEDHA SANIYA M", "MOHAMMED HUZAIFA M", "MOHAMMED RIYAS A", "MOHANA PRASATH S", "MOHANA SRI M", "MONISH BALAJI C", "MONISHRAGAVENDRA GOVIN", "MOSES KINGSBEU SELVAGANT", "MUKILAN A", "NANDHANA B", "NANDHITHA R", "NASREEN G", "NEERAJ GR", "NEERAJA G", "NEHA S", "NEHA PANDARAPARAMBIL LE", "NISHANTH V", "NISHITH G", "NITHYA SRI M", "NIVEDHA BALADHANDAUDH", "NOORUL HABIBA", "PADMAESH M K", "PAVANJ", "PAVITHRA M", "POOJAR", "POOJAMALAR PRIYA", "POOJASREE TRS", "PRAGADHEESAN R", "PRANAV ADARSH SENTHIL RA", "PRANITH M", "PRASANTH M", "PRATHYANKIRA ES", "PRAVEEN M", "PRAVIN BAALAJI PANDIAN", "PREETHIKA N", "PRIYADARSHINI", "PRIYADARSHINI SS", "PUGALARASAN R", "PUGAZHARASI VALARMATHI", "RADHA RUCKMANI R", "RAGAVI V P", "RAGHAV I", "RAGHUL M C", "RAMANA G", "RANJANA S", "REHANAA MR", "RENUGADEVI S", "RIJAI RENON J K", "RITHIKASREE S", "RIZZA FATHIMA K", "ROHINI PRIYA S", "ROSHITH K S", "SAANVIYA M", "SABITHA K", "SACHIN S", "SACHIN SAGGAR SP", "SAHANA SRIVARTHINI S", "SAKTHI SUDHARSHINI S", "SAKTHI SUNDARA MOORTHY", "SAMEEHA NEHMATH M", "SAMRUTA S", "SAMRUTHA R", "SAMUEL FREDERICCK B", "SANDHYA S", "SANJANA S", "SANJAY S 28.08.2005", "SANJAY S 29.08.2005", "SANJAY S 22.06.2006", "SANJAY RENUGOPAL", "SANTHOSH S V", "SARAN S", "SARAVANA SAKTHIVEL", "SASHDI SHRE N", "SATHYA P", "SHALINI V", "SHARUMATHI P", "SHIFA SHABEER AHMED S", "SHIFANA RAHMATH K", "SHIYAM KUMAR K", "SHREEHARISH RAVICHANDRA", "SHREYA PL", "SHRI PRAJAN S", "SHRUTHI M", "SHRUTI G", "SHUNMUGA SANTOSH S", "SIVASELVI S", "SREYA SWETHA RS", "SRI DHARANI P", "SRI VARSHA V S", "SRICHARAN T V", "SRIHARAN M", "SRIHARI R", "SRIMATHI K", "SRINIKKESH S", "SRINITHI MARAN", "SRINITHI RAMESH", "SRIPRIYA V", "SRIRAM E", "SRIVIDHYA S", "SRUTHI S", "SUDHAN P", "SUNIL BABU G", "SURUTHIKA SREE KARTHIKEY", "SUSHANA M", "SUVATHI V", "SYED SIDDIQ A", "TEJASRI J", "THALHA M", "THAYANITHY V S", "THENISAI M", "THIRUMAGAL M", "UKESHWARAN P", "VALAR NILAD T", "VARSHA BAVADARINI T", "VARTHINI K", "VARUN D", "VEDANTH K", "VEDHA VALLII S", "VIDUNAA M", "VIJAY P", "VIJAYAVARSHINI V", "VIKRAM S", "VINISHA MP", "VISHAL RUBAN KANAGAVEL", "VISHNU PRIYA S", "VISHNUSHREE M", "VISHWA V", "VISWAPPREYAA RU", "YALMOZHIYAN R", "YOGESHWARAA K", "CHINNAYA BALAJI C K", "RANJANA YADAV L", "SABARISH R", "SANTHOSH R", "SUNDAR KARTHIK S", "SANJAYAN R", "BHAVYA SRI B"
   ];
 
   const allTopics = {
-    "fm216": Array(27).fill(0).map((_, i) => `<b>FM 2.16 — Slide ${i+1}</b><br>Check student view for exact layout.`),
+    "fm216": Array(32).fill(0).map((_, i) => `<b>FM 2.16 — Slide ${i+1}</b><br>Check student view for exact layout.`),
     "phosphorus": Array(36).fill(0).map((_, i) => `<b>Phosphorus — Slide ${i+1}</b><br>Check student view for exact layout.`)
   };
 
@@ -159,6 +170,9 @@
   db.collection("activity_logs").orderBy("timestamp", "desc").limit(100).onSnapshot((snapshot) => {
       let leftCount = 0;
       let activeSet = new Set();
+      let quizCorrectCount = 0;
+      let quizWrongCount = 0;
+      let quizAnsweredStudents = new Set();
       const rows = [];
 
       snapshot.forEach((doc) => {
@@ -173,10 +187,19 @@
         if (event.includes("Lost Focus")) { flaggedStudentsBlur.add(student); }
         if (event.includes("Returned") || event.includes("Regained Focus") || event.includes("Multimedia")) { activeSet.add(student); }
 
+        if (event === "Quiz: Correct" && !quizAnsweredStudents.has(student)) {
+            quizCorrectCount++; quizAnsweredStudents.add(student);
+        }
+        if (event === "Quiz: Wrong" && !quizAnsweredStudents.has(student)) {
+            quizWrongCount++; quizAnsweredStudents.add(student);
+        }
+
         let tagClass = "tag-left";
         if (event.includes("Returned") || event.includes("Regained Focus") || event.includes("Multimedia")) tagClass = "tag-returned";
         else if (event.includes("Closed")) tagClass = "tag-closed";
         else if (event.includes("Lost Focus")) tagClass = "tag-blur";
+        else if (event.includes("Quiz: Correct")) tagClass = "tag-returned";
+        else if (event.includes("Quiz: Wrong")) tagClass = "tag-left";
 
         rows.push(`<tr>
           <td class="time-cell">${timeStr}</td>
@@ -190,19 +213,19 @@
       document.getElementById("statLeft").innerText = leftCount;
       document.getElementById("statTotal").innerText = snapshot.size;
       document.getElementById("statActive").innerText = activeSet.size;
+      
+      document.getElementById("quizCorrect").innerText = quizCorrectCount;
+      document.getElementById("quizWrong").innerText = quizWrongCount;
 
-      // --- MISSING STUDENTS LOGIC ---
       if (currentTopic === "fm216") {
         const missingStudents = masterList2024.filter(masterName => {
-          // Fuzzy match: If the typed name is inside the master name, they are marked present
           for(let activeName of activeSet) {
               let a = activeName.toUpperCase().trim();
               let m = masterName.toUpperCase().trim();
               if(m.includes(a) || a.includes(m)) return false; 
           }
-          return true; // Still missing
+          return true;
         });
-        
         document.getElementById("missingTitle").innerText = `❌ Missing Students (${missingStudents.length} / 253 Absent)`;
         document.getElementById("missingWrap").innerHTML = missingStudents.map(s => `<span class="missing-pill">${s}</span>`).join("");
       } else {
@@ -210,7 +233,6 @@
         document.getElementById("missingWrap").innerHTML = `<span class="no-flags">Switch to FM 2.16 to track 2024 Batch</span>`;
       }
 
-      // Combined Flags
       let combinedFlags = "";
       flaggedStudentsLeft.forEach(s => combinedFlags += `<span class="flag-pill">⚠ ${s} (Left)</span>`);
       flaggedStudentsBlur.forEach(s => {
