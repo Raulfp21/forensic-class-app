@@ -106,14 +106,24 @@
     return "Are you sure you want to leave the lecture?";
   };
 
-  // --- QUIZ LOGIC ---
+ // --- QUIZ LOGIC ---
   window.answerQuiz = function(choice, result, quizId) {
     const opts = document.querySelectorAll(`#${quizId} .quiz-opt`);
     opts.forEach(o => { o.disabled = true; o.style.cursor = 'default'; });
+    
     const clicked = opts[['A','B','C','D'].indexOf(choice)];
     if (clicked) clicked.classList.add(result);
+    
     const fb = document.getElementById(`fb-${quizId}`);
     if (fb) fb.className = `quiz-feedback ${result === 'correct' ? 'ok' : 'err'} show`;
+
+    // NEW: Send the result to the Teacher Dashboard
+    db.collection("activity_logs").add({
+      student: studentName,
+      event: result === 'correct' ? "Quiz: Correct" : "Quiz: Wrong",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      slideContext: `Selected Option: ${choice}`
+    });
   };
 
   // --- TOPIC LIBRARY (ALL 63 SLIDES) ---
