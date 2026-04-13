@@ -9,24 +9,17 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
     h1 { font-size: 20px; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 12px; }
-    
-    /* NEW: Stream Buttons Styling */
     .stream-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 15px; background: #111; border-radius: 8px; border: 1px solid #222; }
     .btn-stream { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; font-family: 'Courier New', monospace; }
     .btn-fm { background: #58a6ff; color: #000; }
     .btn-phos { background: #ffa657; color: #000; }
-
     .top-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
     button { padding: 10px 24px; font-size: 16px; font-family: 'Courier New', monospace; cursor: pointer; border: none; border-radius: 6px; font-weight: bold; }
     #btnPrev { background: #374151; color: #fff; }
     #btnNext { background: #00ff88; color: #000; }
-    
     #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
-    
-    /* CHANGED: Preview box now handles HTML */
     #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 150px; overflow-y: auto; line-height: 1.5; }
     #slidePreview img { max-height: 80px; width: auto; border-radius: 4px; display: block; margin-top: 5px; }
-
     .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
     .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
     .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; }
@@ -35,7 +28,6 @@
     .stat-box.green .stat-value { color: #00ff88; }
     .stat-box.red .stat-value { color: #ff4444; }
     .stat-box.yellow .stat-value { color: #fbbf24; }
-    
     #logTable { width: 100%; border-collapse: collapse; font-size: 13px; }
     #logTable th { text-align: left; padding: 8px 12px; color: #555; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; }
     #logTable td { padding: 8px 12px; border-bottom: 1px solid #111; vertical-align: top; }
@@ -70,7 +62,7 @@
   <div id="slideInfo">Topic: — | Slide: —</div>
 </div>
 
-<div class="section-title">Current Slide Preview (What students see)</div>
+<div class="section-title">Current Slide Preview</div>
 <div id="slidePreview">Loading...</div>
 
 <div class="stats-row">
@@ -91,12 +83,7 @@
 <div class="log-wrap">
   <table id="logTable">
     <thead>
-      <tr>
-        <th>Time</th>
-        <th>Student</th>
-        <th>Event</th>
-        <th>Slide Context</th>
-      </tr>
+      <tr><th>Time</th><th>Student</th><th>Event</th><th>Slide Context</th></tr>
     </thead>
     <tbody id="logBody">
       <tr><td colspan="4" style="color:#333; padding:16px;">Waiting for activity...</td></tr>
@@ -118,61 +105,25 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
 
-  // --- TOPIC LIBRARY FOR PREVIEW ---
+  // Topic Library for preview
   const allTopics = {
     "fm216": [
-      `<div style="color:#58a6ff; font-weight:bold;">🦴 FM 2.16: Mutilated Remains</div><br><b>Reddy:</b> Disfigured bodies where limbs/parts are lost but soft tissue is attached.<br><br><b>Modi:</b> Not always criminal; animals (rats, dogs, vultures) can disfigure bodies quickly.<br><br><b>Parikh:</b> Fragmentary remains = head, trunk, or limb only.`,
-      `<div style="color:#58a6ff; font-weight:bold;">🔍 Preliminary Examination</div><br><img src="https://i.postimg.cc/mD8gM3X9/Screenshot-20260412-143112-OneDrive.jpg"><br>Record container details (Knot analysis). Detect Anatomy Room artifacts (Formalin/Red Lead).<br><br><span style="color:#f78166"><b>Precipitin Test:</b></span> Mandatory for isolated tissue to confirm human origin.`,
-      `<div style="color:#58a6ff; font-weight:bold;">🐾 Animal vs Criminal Dismemberment</div><br><img src="https://i.postimg.cc/0jXyB6S6/Gemini-Generated-Image-xnmoitxnmoitxnmo.jpg"><br><b>Animal:</b> Scalloped edges, pits on bone, no vital reaction.<br><br><b>Criminal:</b> Clean-cut edges, joint separation (skilled), vital reaction present if antemortem.`,
-      `<div style="color:#58a6ff; font-weight:bold;">📏 Stature Calculation</div><br><b>Pearson's Factors:</b><br>Femur: Length x 3.7<br>Humerus: Length x 5.3<br><br><b>Trotter-Gleser (Male):</b><br>Stature = (2.32 x Femur) + 65.53<br><br><span style="color:#7ee787">Note: Living height is 2-4cm taller than skeletal height due to soft tissues.</span>`,
-      `<div style="color:#58a6ff; font-weight:bold;">⚖️ Legal (BNS 2023)</div><br><span style="color:#f78166"><b>Section 238 BNS:</b></span> Causing disappearance of evidence of an offence (formerly IPC 201).<br><br>Your report must conclude:<br>1. Are remains human?<br>2. Do they belong to one individual? (Check for reduplication).<br>3. Cause of death (Hyoid fracture/Skull trauma).`
+      { render: () => `<div style="color:#58a6ff; font-weight:bold;">🦴 FM 2.16: Mutilated Remains</div><br><b>Reddy:</b> Disfigured bodies where limbs/parts are lost but soft tissue is attached.` },
+      { render: () => `<div style="color:#58a6ff; font-weight:bold;">🔍 Preliminary Examination</div><br><img src="https://i.postimg.cc/mD8gM3X9/Screenshot-20260412-143112-OneDrive.jpg"><br>Record container details (Knot analysis).` },
+      { render: () => `<div style="color:#58a6ff; font-weight:bold;">🐾 Animal vs Criminal Dismemberment</div><br><img src="https://i.postimg.cc/0jXyB6S6/Gemini-Generated-Image-xnmoitxnmoitxnmo.jpg"><br><b>Animal:</b> Scalloped edges, pits on bone.` },
+      { render: () => `<div style="color:#58a6ff; font-weight:bold;">📏 Stature Calculation</div><br><b>Pearson's Factors:</b><br>Femur: Length x 3.7` },
+      { render: () => `<div style="color:#58a6ff; font-weight:bold;">⚖️ Legal (BNS 2023)</div><br><span style="color:#f78166"><b>Section 238 BNS:</b></span> Causing disappearance of evidence of an offence.` }
     ],
     "phosphorus": [
-      `💡 PHOSPHORUS IN TAMIL NADU\nHistory + Medicine + Forensics\n👉 Not just a poison\n👉 A complete story`,
-      `👨‍🔬 1669 — Henning Brand\nSearching for Philosopher’s Stone\nCollected: ~5000 L urine\n👉 Boiled → paste → heated`,
-      `💡 DISCOVERY\nWhite waxy substance\nGlows in dark\nBurns in air\nName: “Phosphorus” = Bearer of Light`,
-      `🏭 SIVAKASI CONNECTION\nFirecracker industry\nUsed: White Phosphorus`,
-      `⚠️ PHOSSY JAW\nChronic exposure\n👉 Mandibular necrosis\n👉 Bone glows in dark\n📌 Occupational hazard`,
-      `🔄 SHIFT TO SAFETY\nWhite P → banned\nRed P used\n✔ Non-toxic\n✔ Stable`,
-      `🧪 RAT PASTE ERA (TN)\n3% Yellow Phosphorus\n💰 Cheap (₹10–15)\n🏪 Available everywhere`,
-      `⚠️ WHY DANGEROUS?\n❌ No severe pain\n❌ Easy to consume\n👉 Patient underestimates severity`,
-      `⏳ LUCID INTERVAL (24–72 hrs)\nPatient feels NORMAL\n🚨 MOST DANGEROUS PHASE\n👉 Intern mistake: Discharge patient`,
-      `🧬 REALITY\nDuring this time:\n👉 Liver destruction ongoing\n👉 Silent hepatotoxicity`,
-      `⚠️ AFTER 72 HOURS\nFulminant hepatic failure\n• Jaundice • Coagulopathy • Encephalopathy`,
-      `💀 PROGNOSIS\nMortality ~70%\n📉 Very high risk`,
-      `📍 THANDARAI CASE (2016)\nTiruvannamalai\n6 deaths in 25 days`,
-      `😨 INITIAL CONFUSION\nGhost? Infection? Brain fever?`,
-      `🔍 FORENSIC CLUE\nGarlic odour\nFatty liver`,
-      `⚖️ FINAL DIAGNOSIS\nYellow phosphorus poisoning\n👉 Food contamination (rasam)`,
-      `🚫 2022 BAN (TAMIL NADU)\nBased on:\n📊 Mortality ~70%\nStudies by MMC & Stanley`,
-      `📌 CURRENT REALITY\nStill seen due to:\n👉 Illegal stock\n👉 Old supply`,
-      `⚗️ ALLOTROPES\nWhite → TOXIC\nRed → SAFE\nBlack → Stable (no forensic role)`,
-      `🔥 WHITE PHOSPHORUS\n• Glows\n• Ignites at 30°C\n• Lipid soluble\n• Highly toxic`,
-      `🩺 STAGE 1 (0–24 hrs)\nGI phase\n• Burning pain • Vomiting • Garlic eructation`,
-      `✨ FORENSIC SIGNS\n• Luminescent vomitus\n• Smoking stools\n📌 Rare but exam favourite`,
-      `⏳ STAGE 2\nLucid interval\nPatient: “I feel fine”\n🚨 DO NOT TRUST`,
-      `🧬 STAGE 3\nHepatic failure\n• Jaundice • Bleeding • Encephalopathy`,
-      `🧫 POSTMORTEM — LIVER\nEnlarged\nYellow\nFatty change`,
-      `📍 HISTOLOGY\nZone 1 (periportal)\n🔥 HIGH-YIELD POINT`,
-      `🫀 HEART\n“Tiger lily heart”\nFatty degeneration`,
-      `💊 MANAGEMENT\n1. KMnO₄ lavage (1:5000)\n2. Activated charcoal\n3. NAC`,
-      `🚫 AVOID\n❌ Milk\n❌ Oil\n👉 Increases absorption`,
-      `📊 MONITOR\n• LFT\n• PT/INR\n👉 Even if asymptomatic`,
-      `⚖️ DIFFERENTIAL\nYellow P → Liver failure\nZinc phosphide → Shock + gas toxicity`,
-      `👃 ODOUR DIFFERENCE\nYellow P → Garlic\nZinc phosphide → Rotten fish`,
-      `🦴 CHRONIC POISONING\nPhossy jaw\n👉 Osteomyelitis\n👉 Non-healing extraction`,
-      `⚖️ MEDICOLEGAL\nSuicidal → common\nHomicidal → rare\nAccidental → children`,
-      `📜 LAW (BNS)\nSection 123 → Poisoning\nSection 103 → Murder`,
-      `🏁 END\n“Lucid interval kills, not the poison immediately”`
+      `💡 PHOSPHORUS IN TAMIL NADU\nHistory + Medicine + Forensics`,
+      `👨‍🔬 1669 — Henning Brand\nSearching for Philosopher’s Stone`,
+      `⚠️ PHOSSY JAW\nChronic exposure → Mandibular necrosis`,
+      `⏳ LUCID INTERVAL (24–72 hrs)\nPatient feels NORMAL\n🚨 MOST DANGEROUS PHASE`
     ]
   };
 
-  // --- NEW: TOPIC SWITCHER ---
   function setTopic(topicName) {
-    ref.update({
-      topic: topicName,
-      index: 0 // Always reset to the first slide when changing topics
-    });
+    ref.update({ topic: topicName, index: 0 });
   }
 
   function next() { ref.update({ index: firebase.firestore.FieldValue.increment(1) }); }
@@ -181,30 +132,25 @@
   let currentTopic = "fm216";
   let currentIndex = 0;
 
-  // --- CHANGED: LISTENER UPDATES TOPIC PREVIEW ---
   ref.onSnapshot((doc) => {
     if (!doc.exists) return;
-    
     const data = doc.data();
     currentTopic = data.topic || "fm216";
     currentIndex = Number(data.index) || 0;
     
     const maxSlides = allTopics[currentTopic] ? allTopics[currentTopic].length : 0;
-    
     document.getElementById("slideInfo").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1} / ${maxSlides}`;
     
-    // Uses innerHTML so your image thumbnails and text colors show up!
-    document.getElementById("slidePreview").innerHTML = allTopics[currentTopic][currentIndex] || "End of Lecture";
+    const slideData = allTopics[currentTopic][currentIndex];
+    if (!slideData) document.getElementById("slidePreview").innerHTML = "End of Lecture";
+    else if (typeof slideData === "string") document.getElementById("slidePreview").innerHTML = slideData;
+    else document.getElementById("slidePreview").innerHTML = slideData.render();
   });
 
-  // --- ACTIVITY LOGGING (Unchanged) ---
   const tbody = document.getElementById("logBody");
   const flaggedStudents = new Set();
 
-  db.collection("activity_logs")
-    .orderBy("timestamp", "desc")
-    .limit(100)
-    .onSnapshot((snapshot) => {
+  db.collection("activity_logs").orderBy("timestamp", "desc").limit(100).onSnapshot((snapshot) => {
       let leftCount = 0;
       let activeSet = new Set();
       const rows = [];
@@ -220,8 +166,9 @@
         if (event.includes("Left") || event.includes("Switched")) { leftCount++; flaggedStudents.add(student); }
         if (event.includes("Returned")) activeSet.add(student);
 
+        // ✅ THIS WAS THE BUG. IT IS NOW FIXED.
         let tagClass = "tag-left";
-        if (event.includes("Returned")) tag: "tag-returned";
+        if (event.includes("Returned")) tagClass = "tag-returned";
         else if (event.includes("Closed")) tagClass = "tag-closed";
 
         rows.push(`<tr>
@@ -233,16 +180,13 @@
       });
 
       tbody.innerHTML = rows.length > 0 ? rows.join("") : `<tr><td colspan="4" style="color:#333;padding:16px;">No activity yet</td></tr>`;
-
       document.getElementById("statLeft").innerText = leftCount;
       document.getElementById("statTotal").innerText = snapshot.size;
       document.getElementById("statActive").innerText = activeSet.size;
       document.getElementById("logCount").innerText = `(${snapshot.size} events)`;
 
       const flagList = document.getElementById("flagList");
-      flagList.innerHTML = flaggedStudents.size === 0
-        ? `<span class="no-flags">None yet</span>`
-        : Array.from(flaggedStudents).map(s => `<span class="flag-pill">⚠ ${s}</span>`).join("");
+      flagList.innerHTML = flaggedStudents.size === 0 ? `<span class="no-flags">None yet</span>` : Array.from(flaggedStudents).map(s => `<span class="flag-pill">⚠ ${s}</span>`).join("");
     });
 
   async function clearLogs() {
