@@ -88,9 +88,22 @@
   function logActivity(eventName) {
     let ctx = slideEl.innerText.substring(0, 40);
     if (!ctx || ctx.trim() === "") ctx = "Multimedia Slide";
+    
+    // BUG FIX 1: Do not log anything if the class hasn't started or is locked
+    if (ctx.includes("Loading...") || ctx.includes("No data found") || ctx.includes("Session Ended")) {
+        return; 
+    }
+
+    // BUG FIX 2: Ignore "blur" (Lost Focus) events to stop penalizing mobile notifications
+    if (eventName === "Lost Focus (Possible Split-Screen/Notification)") {
+        return; 
+    }
+
     db.collection("activity_logs").add({
-      student: studentName, event: eventName,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: ctx
+      student: studentName, 
+      event: eventName,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(), 
+      slideContext: ctx
     });
   }
 
