@@ -127,15 +127,19 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
   async function exportAttendance() {
+  async function exportAttendance() {
     const snap = await db.collection("activity_logs").orderBy("timestamp", "asc").get();
     let attendanceData = {};
 
     snap.forEach(doc => {
         const d = doc.data();
-        const name = d.student || "Unknown";
+        const name = d.student || "Anonymous";
         const event = d.event || "";
         const slide = d.slideContext ? d.slideContext.replace(/,/g, "") : "N/A";
         const time = d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "N/A";
+
+        // Ignore Anonymous users completely if you want a clean report
+        if (name.includes("Anonymous")) return;
 
         if (!attendanceData[name]) {
             attendanceData[name] = { 
@@ -149,12 +153,30 @@
 
         attendanceData[name].Last_Seen = time;
 
-        // Track every time they leave or lose focus
-        if (event.includes("Left") || event.includes("Lost Focus") || event.includes("Closed")) {
+        // NEW FILTER: Only count the exit IF the slide is NOT "Loading..." or "No data found"
+        const isWaitingRoom = slide.includes("Loading...") || slide.includes("No data found");
+        
+        if (!isWaitingRoom && (event.includes("Left") || event.includes("Lost Focus") || event.includes("Closed"))) {
             attendanceData[name].Exit_Count++;
             attendanceData[name].Timeline.push(`[${time} at ${slide.substring(0,20)}]`);
         }
     });
+
+    let csvContent = "data:text/csv;charset=utf-8,Student Name,First Joined,Last Active,Total Exits,Exit Timeline (Time and Slide)\n";
+    
+    Object.values(attendanceData).forEach(row => {
+        const timelineStr = row.Timeline.join("; ");
+        csvContent += `"${row.Name}","${row.First_Seen}","${row.Last_Seen}","${row.Exit_Count}","${timelineStr}"\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Cleaned_Attendance_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
     // Create CSV with Detailed Columns
     let csvContent = "data:text/csv;charset=utf-8,Student Name,First Joined,Last Active,Total Exits,Exit Timeline (Time and Slide)\n";
