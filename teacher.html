@@ -127,7 +127,6 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
   async function exportAttendance() {
-  async function exportAttendance() {
     const snap = await db.collection("activity_logs").orderBy("timestamp", "asc").get();
     let attendanceData = {};
 
