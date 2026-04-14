@@ -126,6 +126,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
+
   async function exportAttendance() {
     const snap = await db.collection("activity_logs").orderBy("timestamp", "asc").get();
     let attendanceData = {};
@@ -137,7 +138,7 @@
         const slide = d.slideContext ? d.slideContext.replace(/,/g, "") : "N/A";
         const time = d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "N/A";
 
-        // Ignore Anonymous users completely if you want a clean report
+        // Ignore Anonymous users completely
         if (name.includes("Anonymous")) return;
 
         if (!attendanceData[name]) {
@@ -175,25 +176,7 @@
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-
-    // Create CSV with Detailed Columns
-    let csvContent = "data:text/csv;charset=utf-8,Student Name,First Joined,Last Active,Total Exits,Exit Timeline (Time and Slide)\n";
-    
-    Object.values(attendanceData).forEach(row => {
-        // We join the timeline with semicolons so it stays in one Excel cell
-        const timelineStr = row.Timeline.join("; ");
-        csvContent += `"${row.Name}","${row.First_Seen}","${row.Last_Seen}","${row.Exit_Count}","${timelineStr}"\n`;
-    });
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Detailed_Attendance_${new Date().toISOString().slice(0,10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
+  }
 
   // 253 Students Master List
   const masterList2024 = [
