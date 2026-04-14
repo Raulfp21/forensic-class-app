@@ -107,13 +107,32 @@
     });
   }
 
-  // ACTIVITY TRACKING
+// ACTIVITY TRACKING WITH GRACE PERIOD
+  let blurTimer;
+
+  // 1. Instant Exit (Tapping a notification and leaving the browser)
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === 'hidden') logActivity("Left Page / Switched Tab");
-    else logActivity("Returned to Page");
+    if (document.visibilityState === 'hidden') {
+        logActivity("Left App / Switched Tab");
+    } else {
+        logActivity("Returned to Page");
+    }
   });
-  window.addEventListener("blur", () => { logActivity("Lost Focus (Possible Split-Screen/Notification)"); });
-  window.addEventListener("focus", () => { logActivity("Regained Focus"); });
+
+  // 2. Glancing at a notification (Swiping down)
+  window.addEventListener("blur", () => { 
+      // Start a 10-second timer when they lose focus
+      blurTimer = setTimeout(() => {
+          logActivity("Lost Focus for > 10 Seconds"); 
+      }, 10000); 
+  });
+
+  // 3. Returning from the glance
+  window.addEventListener("focus", () => { 
+      // If they click back into the class before 10 seconds, cancel the timer!
+      clearTimeout(blurTimer); 
+  });
+
   window.onbeforeunload = function() {
     logActivity("Closed / Left Page");
     return "Are you sure you want to leave the lecture?";
