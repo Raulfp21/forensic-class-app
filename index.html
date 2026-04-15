@@ -72,7 +72,56 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const slideEl = document.getElementById("slide");
-  const studentName = prompt("Please enter your name for attendance:") || "Anonymous";
+  // --- 1. THE MASTER LISTS ---
+  const masterList2024 = [
+    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", // ... (add the rest of your 2024 list here)
+  ];
+  const masterList2023 = [
+    "2023 STUDENT 1", "2023 STUDENT 2", // ... (add the rest of your 2023 list here)
+  ];
+  const allCollegeStudents = masterList2024.concat(masterList2023);
+
+  // --- 2. DEVICE FINGERPRINTING (To catch shared phones) ---
+  let deviceId = localStorage.getItem("dsmch_device_id");
+  if (!deviceId) {
+      deviceId = "PHONE_" + Math.random().toString(36).substring(2, 10).toUpperCase();
+      localStorage.setItem("dsmch_device_id", deviceId);
+  }
+
+  // --- 3. THE STRICT GATEKEEPER ---
+  let studentName = localStorage.getItem("dsmch_student_name");
+  let isValid = false;
+
+  if (studentName) {
+      if (allCollegeStudents.includes(studentName) || studentName.startsWith("TEST-")) {
+          isValid = true; 
+      } else {
+          studentName = null; 
+      }
+  }
+
+  while (!isValid) {
+      let input = prompt("Please enter your EXACT registered name for attendance.\n\n(Faculty: Use prefix 'TEST-' before your name)");
+      
+      if (!input || input.trim() === "") continue;
+
+      input = input.trim().toUpperCase();
+
+      if (input.startsWith("TEST-")) {
+          studentName = input;
+          isValid = true;
+          alert(`Welcome, Faculty. You are logged in as: ${studentName}`);
+      } 
+      else if (allCollegeStudents.includes(input)) {
+          studentName = input;
+          isValid = true;
+      } 
+      else {
+          alert("❌ Name not found in the official records.\n\nPlease check your spelling, spaces, and initials to match your registered ID.");
+      }
+  }
+
+  localStorage.setItem("dsmch_student_name", studentName);
 
   // WATERMARK
   function applyWatermark(name) {
