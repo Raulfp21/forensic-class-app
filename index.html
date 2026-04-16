@@ -4,25 +4,37 @@
   <title>DSMCH Forensic Live Class</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; text-align: center; overflow-x: hidden; }
+    /* YOUR ORIGINAL CSS + NEW INTERACTIVE ELEMENTS */
+    body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#0f172a; color:white; overflow-x: hidden; }
     .slide-container { padding: 30px; max-width: 800px; margin: auto; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; }
-    .btn-action { background: #38bdf8; color: #0f172a; border: none; padding: 15px 25px; border-radius: 12px; cursor: pointer; margin: 10px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(0,118,255,0.39); transition: opacity 0.15s; }
-    .btn-action:hover { opacity: 0.85; }
-    .burn-zone { width: 160px; height: 160px; background: #1e293b; border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center; transition: 0.4s; cursor: pointer; border: 4px solid #334155; font-weight: bold; font-size: 18px; }
-    .diag-card { background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 12px; margin: 12px 0; cursor: pointer; text-align: left; transition: 0.2s; }
+    .slide-title { font-size: 26px; font-weight: bold; color: #58a6ff; margin-bottom: 15px; }
+    .slide-subtitle { font-size: 14px; color: #7d8590; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .alert-box { padding: 15px; border-radius: 8px; margin: 10px 0; border: 1px solid #333; font-size: 18px; line-height: 1.5; }
+    .alert-yellow { background: #2b2008; color: #ffa657; border-color: #6e4c0a; }
+    .alert-red { background: #2d1215; color: #f78166; border-color: #6e2128; }
+    .alert-green { background: #0d2a1a; color: #00ff88; border-color: #004422; }
+    
+    /* NEW: INTERACTIVE PHOSPHORUS CSS */
+    .btn-action { background:#38bdf8; color:#0f172a; border:none; padding:15px 25px; border-radius:12px; cursor:pointer; margin:10px; font-weight:bold; font-size: 16px; transition: 0.2s; }
+    .btn-action:hover { opacity: 0.8; }
+    .burn-zone { width:160px; height:160px; background:#1e293b; border-radius:50%; margin:20px auto; display:flex; align-items:center; justify-content:center; transition:0.4s; cursor:pointer; border: 4px solid #334155; font-weight: bold; font-size: 20px; }
+    .diag-card { background:#1e293b; border:1px solid #334155; padding:20px; border-radius:12px; margin:12px 0; cursor:pointer; text-align: left; transition: 0.2s; font-size: 18px; }
     .diag-card:hover { border-color: #38bdf8; background: #0f172a; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e293b; border-radius: 8px; overflow: hidden; }
-    th, td { padding: 12px; border: 1px solid #334155; text-align: left; }
-    th { background: #0f172a; color: #38bdf8; }
   </style>
 </head>
 <body>
-<div id="slide" class="slide-container">Verifying Identity and Device...</div>
+  
+  <div id="slide" class="slide-container">
+    <div style="text-align:center;">
+        <h2 style="color:#58a6ff;">Initializing Security Protocols...</h2>
+        <p style="color:#8b949e;">Please wait while we verify your device fingerprint.</p>
+    </div>
+  </div>
 
 <script>
-  /* ── FIREBASE CONFIG ── */
+  // --- 1. FIREBASE CONFIGURATION ---
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
     authDomain: "forensic-class-app.firebaseapp.com",
@@ -35,188 +47,68 @@
   const db = firebase.firestore();
   const slideEl = document.getElementById("slide");
 
-  /* ── MASTER STUDENT LIST ──
-     2023 batch: "REGISTER_NUMBER": "FULL NAME"
-     2024 batch: "FULL NAME": "FULL NAME"
-     Add all students below.
-  */
-  const studentsMaster = {
-    /* --- 2023 Batch --- */
-    "520022506042": "DHARSHANTH T S",
-    "520022506110": "MADHINI MADHURAANTHAGI S",
-    "520023506250": "YUVASHREE S",
-    /* ADD REMAINING 2023 STUDENTS HERE */
-
-    /* --- 2024 Batch --- */
-    "ABDULAHAD RAJMOHAMED": "ABDULAHAD RAJMOHAMED"
-    /* ADD REMAINING 2024 STUDENTS HERE */
+  // --- 2. MASTER LISTS ---
+  const students2023 = {
+    "520022506042": "DHARSHANTH T S", "520022506110": "MADHINI MADHURAANTHAGI S", "520022506132": "NITHYA M", 
+    "520022506179": "SANJAYAN R", "520022506195": "SHEREYA V", "520022506225": "THILESH HARRINI S", 
+    "520022506245": "YAZHINI S", "520023506001": "AADHARSHINI C", "520023506002": "AASHI S"
+    // Add the rest of your 251 students here...
   };
 
-  /* ── DEVICE FINGERPRINT ── */
+  const students2024 = [
+    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABINAYASRI S"
+    // Add the rest of your 253 students here...
+  ];
+
+  // --- 3. DEVICE FINGERPRINTING ---
   let deviceId = localStorage.getItem("dsmch_device_id");
   if (!deviceId) {
-    deviceId = "DEV_" + Math.random().toString(36).substring(2, 10).toUpperCase();
-    localStorage.setItem("dsmch_device_id", deviceId);
+      deviceId = "DEV_" + Math.random().toString(36).substring(2, 12).toUpperCase();
+      localStorage.setItem("dsmch_device_id", deviceId);
   }
 
-  /* ── AUTHENTICATION ── */
+  // --- 4. SECURE AUTHENTICATION LOOP ---
   let studentIdentity = "";
-
   async function authenticate() {
-    const saved = localStorage.getItem("dsmch_identity");
-    if (saved) return saved;
+      let saved = localStorage.getItem("dsmch_identity");
+      if (saved) return saved;
 
-    while (true) {
-      let input = prompt("Enter 12-digit Register Number (or your Name in CAPS for 2024 batch):");
-      if (!input) continue;
-      input = input.trim().toUpperCase();
+      while (true) {
+          let input = prompt("Enter 12-digit Register No (2023 Batch)\nOR Exact Name (2024 Batch):");
+          if (!input) continue;
+          input = input.trim().toUpperCase();
 
-      /* Faculty bypass */
-      if (input === "000000000000") {
-        const initial = (prompt("Enter Faculty Initial:") || "TESTER").toUpperCase().trim();
-        const facultyId = "FACULTY-" + initial;
-        localStorage.setItem("dsmch_identity", facultyId);
-        return facultyId;
-      }
+          // SECRET FACULTY BYPASS
+          if (input === "000000000000") {
+              let facultyInit = prompt("Faculty Login: Enter Name/Initial");
+              let id = "FACULTY - " + (facultyInit || "TESTER");
+              localStorage.setItem("dsmch_identity", id);
+              return id;
+          }
 
-      const matched = studentsMaster[input];
-      if (!matched) {
-        alert("ID not found. Check spelling or register number and try again.");
-        continue;
-      }
+          let finalIdentity = "";
+          let docKey = "";
 
-      /* For register-number entries, verify the name too */
-      if (/^\d+$/.test(input)) {
-        const nameInput = (prompt("Enter your Name EXACTLY as per college records:") || "").trim().toUpperCase();
-        if (matched !== nameInput) {
-          alert("Name mismatch. Please try again.");
-          continue;
-        }
-      }
+          // CHECK 2023 BATCH (Reg No -> Name verification)
+          if (students2023[input]) {
+              let nameVerify = prompt("Enter your Name (Exactly as per college records):").toUpperCase().trim();
+              if (students2023[input] === nameVerify) {
+                  finalIdentity = input + " - " + nameVerify;
+                  docKey = input; // Bind to Reg No
+              } else {
+                  alert("❌ Name does not match the Register Number.");
+                  continue;
+              }
+          } 
+          // CHECK 2024 BATCH (Name only)
+          else if (students2024.includes(input)) {
+              finalIdentity = input;
+              docKey = input; // Bind to Name
+          } 
+          else {
+              alert("❌ Identity not found in 2023 or 2024 records.");
+              continue;
+          }
 
-      /* Device binding — one device per ID */
-      const bindRef = db.collection("device_bindings").doc(input);
-      try {
-        const bindDoc = await bindRef.get();
-        if (bindDoc.exists && bindDoc.data().deviceId !== deviceId) {
-          alert("ACCESS DENIED: This ID is already bound to another device. Contact your teacher.");
-          continue;
-        }
-        if (!bindDoc.exists) {
-          await bindRef.set({
-            deviceId,
-            name: matched,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        }
-      } catch (err) {
-        alert("Network error during verification. Please refresh and try again.");
-        continue;
-      }
-
-      localStorage.setItem("dsmch_identity", input);
-      return input;
-    }
-  }
-
-  /* ── ACTIVITY LOGGER ── */
-  function logActivity(event) {
-    if (!studentIdentity) return;
-    db.collection("activity_logs").add({
-      student:      studentIdentity,
-      deviceId:     deviceId,
-      event:        event,
-      timestamp:    firebase.firestore.FieldValue.serverTimestamp(),
-      slideContext: document.title
-    }).catch(() => {});
-  }
-
-  /* ── VISIBILITY / TAB TRACKING ── */
-  document.addEventListener("visibilitychange", () => {
-    logActivity(document.hidden ? "Tab Hidden / Switched" : "Tab Visible");
-  });
-  window.addEventListener("blur",         () => logActivity("Window Blur (switched app)"));
-  window.addEventListener("focus",        () => logActivity("Window Focus (returned)"));
-  window.addEventListener("beforeunload", () => logActivity("Page Closed / Refreshed"));
-
-  /* ── SLIDE CONTENT ── */
-  const topics = {
-    "phosphorus": [
-      {
-        t: "Spontaneous Ignition",
-        h: `<h2>Reactive Element</h2>
-            <div class="burn-zone" onclick="
-              this.style.background='radial-gradient(#fff700, #ff4400)';
-              this.style.borderColor='#ff4400';
-              this.innerHTML='BURNING!';
-              document.getElementById('burnResult').style.display='block';
-              logActivity('Burn Reveal Triggered');
-            ">TOUCH TO IGNITE</div>
-            <p id="burnResult" style="display:none; color:#ff4400; font-weight:bold;">
-              INSTANTANEOUS COMBUSTION!<br>
-              Yellow Phosphorus ignites spontaneously on contact with air.
-            </p>`
-      },
-      {
-        t: "Toxic Forms of Phosphorus",
-        h: `<h3>Which form is acutely toxic?</h3>
-            <button class="btn-action" onclick="alert('Correct! Yellow Phosphorus is the highly toxic, air-reactive form.'); logActivity('Quiz: Picked Yellow - Correct');">Yellow Phosphorus</button>
-            <button class="btn-action" onclick="alert('Incorrect. Red Phosphorus is non-toxic and used in safety matches.'); logActivity('Quiz: Picked Red - Incorrect');">Red Phosphorus</button>`
-      },
-      {
-        t: "Stage 1 Symptoms",
-        h: `<h3>Stage 1: Local Irritation (First 24 hrs)</h3>
-            <div class="diag-card" onclick="alert('Pathognomonic: Garlic / Phosphorescent odour in breath, vomit, and faeces.'); logActivity('Explored: Garlic Smell');">Diagnostic Garlic Smell</div>
-            <div class="diag-card" onclick="alert('Luminous vomit — glows faint blue-green in the dark due to phosphine gas evolution.'); logActivity('Explored: Luminous Vomit');">Luminous Vomit (Blue-Green Glow)</div>
-            <div class="diag-card" onclick="alert('GI irritation: nausea, vomiting, diarrhoea. Followed by a deceptive symptom-free interval (Stage 2).'); logActivity('Explored: GI Symptoms');">GI Irritation &amp; Interval of Well-being</div>`
-      },
-      {
-        t: "Autopsy Findings",
-        h: `<h3>Internal Examination</h3>
-            <div class="diag-card" onclick="alert('Liver: Yellow, enlarged, doughy, fatty — Zone 1 (periportal) necrosis is characteristic.'); logActivity('Explored: Liver Findings');">Fatty Liver (Zone 1 Necrosis)</div>
-            <div class="diag-card" onclick="alert('Heart: Tiger Lily / Thrush-breast appearance — sub-endocardial haemorrhages with fatty degeneration.'); logActivity('Explored: Heart Findings');">Tiger Lily Heart</div>
-            <div class="diag-card" onclick="alert('Kidneys: Cloudy swelling and fatty degeneration. Smell of garlic may persist in organs.'); logActivity('Explored: Kidney Findings');">Kidney Changes + Garlic Odour</div>`
-      },
-      {
-        t: "Emergency Management",
-        h: `<h3>Critical Treatment Choice</h3>
-            <button class="btn-action" onclick="alert('Correct! KMnO4 (1:5000) gastric lavage oxidises phosphorus to non-toxic phosphate.'); logActivity('Treatment: KMnO4 - Correct');">KMnO4 Lavage</button>
-            <button class="btn-action" onclick="alert('FATAL ERROR! Fats and oils dramatically increase phosphorus absorption. Never give milk, oils, or egg yolk.'); logActivity('Treatment: Milk/Oils - Incorrect');">Give Milk / Oils</button>
-            <p style="color:#94a3b8; font-size:14px; margin-top:16px;">Also: Copper sulphate solution forms insoluble black cupric phosphide — useful as emetic + oxidiser.</p>`
-      }
-    ],
-
-    "fm216": [
-      /* Paste your FM 2.16 slides here following the same { t, h } pattern */
-      {
-        t: "FM 2.16 — Coming Soon",
-        h: `<h2>FM 2.16 Lecture</h2><p style="color:#94a3b8;">Slides will appear here when the lecture starts.</p>`
-      }
-    ]
-  };
-
-  /* ── INIT ── */
-  authenticate().then(id => {
-    studentIdentity = id;
-    logActivity("Joined Class");
-
-    db.collection("slides").doc("current").onSnapshot(doc => {
-      if (!doc.exists) {
-        slideEl.innerHTML = "<h2>Waiting for Lecture...</h2><p style='color:#475569;'>Your teacher will start the session shortly.</p>";
-        return;
-      }
-      const data = doc.data();
-      const list = topics[data.topic];
-      if (list && list[data.index] !== undefined) {
-        const s = list[data.index];
-        slideEl.innerHTML = s.h;
-        document.title    = s.t;
-        logActivity("Viewed: " + s.t);
-      } else {
-        slideEl.innerHTML = "<h2>Waiting for Lecture...</h2><p style='color:#475569;'>Your teacher will start the session shortly.</p>";
-      }
-    });
-  });
-</script>
-</body>
-</html>
+          // DEVICE BINDING CHECK (The Handcuff)
+          const bindRef = db.collection("device_bindings").
