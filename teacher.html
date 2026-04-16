@@ -1,119 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teacher Control - Forensic Master-App</title>
+  <title>Teacher Panel - DSMCH Forensic</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
-    h1 { font-size: 20px; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 12px; }
-    .stream-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 15px; background: #111; border-radius: 8px; border: 1px solid #222; }
-    .btn-stream { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; font-family: 'Courier New', monospace; }
-    .btn-fm { background: #58a6ff; color: #000; }
-    .btn-phos { background: #ffa657; color: #000; }
-    .top-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
-    button { padding: 10px 24px; font-size: 16px; font-family: 'Courier New', monospace; cursor: pointer; border: none; border-radius: 6px; font-weight: bold; }
-    #btnPrev { background: #374151; color: #fff; }
-    #btnNext { background: #00ff88; color: #000; }
-    .btn-lock { background: #ff4444; color: white; }
-    .btn-unlock { background: #0d2a1a; color: #00ff88; border: 1px solid #00ff88; }
-    #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
-    #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; line-height: 1.5; }
-    .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
-    .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-    .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; }
-    .stat-box .stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .stat-box .stat-value { font-size: 22px; font-weight: bold; }
-    .stat-box.green .stat-value { color: #00ff88; }
-    .stat-box.red .stat-value { color: #ff4444; }
-    .stat-box.yellow .stat-value { color: #fbbf24; }
-    
-    #missingWrap { background: #1a0f0f; border: 1px solid #3b0000; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; }
-    .missing-pill { display: inline-block; background: #2d1215; color: #f78166; border: 1px solid #6e2128; border-radius: 4px; padding: 4px 8px; font-size: 11px; margin: 4px; }
-    
-    #logTable { width: 100%; border-collapse: collapse; font-size: 13px; }
-    #logTable th { text-align: left; padding: 8px 12px; color: #555; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; }
-    #logTable td { padding: 8px 12px; border-bottom: 1px solid #111; vertical-align: top; }
-    .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-    .tag-left { background: #3b0000; color: #ff6b6b; }
-    .tag-blur { background: #4a2a00; color: #ffa657; }
-    .tag-returned { background: #0a2e1a; color: #00cc66; }
-    .tag-closed { background: #2a1a00; color: #ff9900; }
-    .student-name { color: #60a5fa; }
-    .slide-ctx { color: #555; font-size: 11px; }
-    .time-cell { color: #444; font-size: 11px; }
-    #clearBtn { background: #1a0000; color: #ff4444; border: 1px solid #3b0000; font-size: 12px; padding: 6px 14px; margin-left: auto; }
-    .toolbar { display: flex; align-items: center; margin-bottom: 10px; }
-    #flagList { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; margin-bottom: 24px; }
-    .flag-pill { background: #3b0000; color: #ff6b6b; border: 1px solid #5a0000; border-radius: 20px; padding: 4px 12px; font-size: 12px; }
-    .flag-pill.blur { background: #4a2a00; color: #ffa657; border-color: #663d00; }
-    .no-flags { color: #2a2a2a; font-size: 12px; }
-    .log-wrap { overflow-x: auto; border: 1px solid #1a1a1a; border-radius: 8px; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: white; padding: 25px; margin: 0; }
+    h1 { margin: 0 0 20px; color: #00ff88; }
+    .control-box { background: #111; border: 1px solid #222; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+    .control-box h3 { margin: 0 0 14px; }
+    .stat-row { display: flex; gap: 20px; margin-bottom: 20px; }
+    .stat-card { flex: 1; background: #111; border: 1px solid #222; padding: 15px; border-radius: 10px; text-align: center; }
+    .stat-card .num { color: #00ff88; font-size: 36px; font-weight: bold; }
+    .stat-card .lbl { font-size: 11px; text-transform: uppercase; color: #666; margin-top: 4px; }
+    .name-pill { background: #0d2a1a; color: #00ff88; border: 1px solid #004422; padding: 6px 14px; border-radius: 20px; font-size: 11px; margin: 4px; display: inline-block; font-weight: bold; }
+    .btn { padding: 12px 18px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; margin-right: 10px; margin-bottom: 8px; font-size: 14px; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.85; }
+    #status-msg { margin-top: 10px; font-size: 13px; color: #00ff88; min-height: 18px; }
   </style>
 </head>
 <body>
 
-<h1>⚗ Forensic Class — Teacher Panel</h1>
+<h1>Live Class Control</h1>
 
-<div class="stream-bar">
-  <button class="btn-stream btn-fm" onclick="setTopic('fm216')">📺 STREAM: FM 2.16 (2024 Batch)</button>
-  <button class="btn-stream btn-phos" onclick="setTopic('phosphorus')">📺 STREAM: Phosphorus (2023 Batch)</button>
-</div>
-
-<div class="top-bar">
-  <button id="btnPrev" onclick="prev()">◀ Prev</button>
-  <button id="btnNext" onclick="next()">Next ▶</button>
-  <span style="color:#444;">|</span>
-  <button class="btn-lock" onclick="setSessionStatus('locked')">🔒 End & Lock Class</button>
-  <button class="btn-unlock" onclick="setSessionStatus('live')">🔓 Unlock for Review</button>
-  <div id="slideInfo">Topic: — | Slide: —</div>
-</div>
-
-<div class="section-title">Current Slide Preview</div>
-<div id="slidePreview">Loading...</div>
-
-<div class="stats-row">
-  <div class="stat-box green"><div class="stat-label">Currently Active</div><div class="stat-value" id="statActive">—</div></div>
-  <div class="stat-box red"><div class="stat-label">Tab Switches</div><div class="stat-value" id="statLeft">0</div></div>
-  <div class="stat-box yellow"><div class="stat-label">Total Events</div><div class="stat-value" id="statTotal">0</div></div>
-</div>
-
-<div class="section-title">📊 Live Quiz Stats</div>
-<div class="stats-row">
-  <div class="stat-box" style="border-color:#00ff88;">
-    <div class="stat-label">Answered Correctly</div>
-    <div class="stat-value" id="quizCorrect" style="color:#00ff88;">0</div>
+<div class="stat-row">
+  <div class="stat-card">
+    <div class="num" id="activeCount">0</div>
+    <div class="lbl">Currently Active</div>
   </div>
-  <div class="stat-box" style="border-color:#ff4444;">
-    <div class="stat-label">Answered Wrong</div>
-    <div class="stat-value" id="quizWrong" style="color:#ff4444;">0</div>
+  <div class="stat-card">
+    <div class="num" id="totalCount">0</div>
+    <div class="lbl">Total Logged Today</div>
   </div>
 </div>
 
-<div class="section-title" id="missingTitle">❌ Missing Students (2024 Batch)</div>
-<div id="missingWrap"><span class="no-flags">Waiting for data...</span></div>
-
-<div class="section-title">🚨 Flagged Students (Red: Left | Orange: Split-Screen/Lost focus)</div>
-<div id="flagList"><span class="no-flags">None yet</span></div>
-
-<div class="toolbar">
-  <div class="section-title" style="margin:0;">Activity Log</div>
-  <button id="exportBtn" onclick="exportAttendance()" style="background: #00ff88; color: #000; margin-left: auto; margin-right: 10px;">Download Report (Excel)</button>
-  <button id="clearBtn" onclick="clearLogs()">Clear Logs</button>
+<div class="control-box">
+  <h3 style="color:#00ff88;">Verified Active Students</h3>
+  <div id="activeNamesWrap"><span style="color:#444;">No activity yet...</span></div>
 </div>
 
-<div class="log-wrap">
-  <table id="logTable">
-    <thead><tr><th>Time</th><th>Student</th><th>Event</th><th>Slide Context</th></tr></thead>
-    <tbody id="logBody">
-      <tr><td colspan="4" style="color:#333; padding:16px;">Waiting for activity...</td></tr>
-    </tbody>
-  </table>
+<div class="control-box">
+  <h3>Lecture Control</h3>
+  <button class="btn" style="background:#00ff88; color:#000;" onclick="setSlide('phosphorus', 0)">Start Phosphorus (2023)</button>
+  <button class="btn" style="background:#38bdf8; color:#000;" onclick="setSlide('fm216', 0)">Start FM 2.16 (2024)</button>
+  <button class="btn" style="background:#ff4400; color:#fff;" onclick="exportAttendance()">Download Attendance Excel</button>
+  <div id="status-msg"></div>
 </div>
 
 <script>
+// --- FIREBASE CONFIG ---
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
     authDomain: "forensic-class-app.firebaseapp.com",
@@ -125,186 +62,91 @@
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  const ref = db.collection("slides").doc("current");
 
+  /* ── SET SLIDE ── */
+  function setSlide(topic, index) {
+    db.collection("slides").doc("current")
+      .set({ topic, index, status: "live" })
+      .then(() => showStatus("Slide set: " + topic + " #" + index));
+  }
+
+  /* ── STATUS MESSAGE ── */
+  function showStatus(msg) {
+    const el = document.getElementById("status-msg");
+    el.innerText = msg;
+    setTimeout(() => el.innerText = "", 4000);
+  }
+
+  /* ── LIVE ACTIVE STUDENTS ──
+     Tracks most-recent event per student.
+     A student is "active" only if their latest event is NOT a Leave/Close.
+  */
+  db.collection("activity_logs")
+    .orderBy("timestamp", "desc")
+    .limit(500)
+    .onSnapshot(snap => {
+      const latestEvent = {};
+      const todaySet    = new Set();
+
+      snap.forEach(doc => {
+        const d = doc.data();
+        if (!d.student) return;
+        todaySet.add(d.student);
+        if (!(d.student in latestEvent)) {
+          latestEvent[d.student] = d.event || "";
+        }
+      });
+
+      const LEAVE_KEYWORDS = ["left", "closed", "hidden", "blur", "inactive"];
+      const activeSet = new Set(
+        Object.entries(latestEvent)
+          .filter(([, ev]) => !LEAVE_KEYWORDS.some(k => ev.toLowerCase().includes(k)))
+          .map(([id]) => id)
+      );
+
+      document.getElementById("activeCount").innerText = activeSet.size;
+      document.getElementById("totalCount").innerText  = todaySet.size;
+
+      const wrap = document.getElementById("activeNamesWrap");
+      wrap.innerHTML = activeSet.size
+        ? Array.from(activeSet).sort().map(name =>
+            `<span class="name-pill">${name}</span>`).join("")
+        : '<span style="color:#444;">No students currently active</span>';
+    });
+
+  /* ── EXPORT ATTENDANCE ── */
   async function exportAttendance() {
-    const snap = await db.collection("activity_logs").orderBy("timestamp", "asc").get();
-    let attendanceData = {};
+    showStatus("Fetching logs...");
+    try {
+      const snap = await db.collection("activity_logs")
+        .orderBy("timestamp", "asc")
+        .limit(2000)
+        .get();
 
-    snap.forEach(doc => {
+      const rows = [["Student", "Device ID", "Event", "Timestamp", "Slide Context"]];
+      snap.forEach(doc => {
         const d = doc.data();
-        const name = d.student || "Anonymous";
-        const event = d.event || "";
-        const slide = d.slideContext ? d.slideContext.replace(/,/g, "") : "N/A";
-        const time = d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "N/A";
-        
-        // Grab the secret Device ID from the log
-        const phoneId = d.deviceId || "No_ID_Found"; 
+        rows.push([
+          d.student      || "",
+          d.deviceId     || "",
+          d.event        || "",
+          d.timestamp    ? d.timestamp.toDate().toLocaleString() : "",
+          d.slideContext || ""
+        ]);
+      });
 
-        // Ignore Anonymous users completely
-        if (name.includes("Anonymous")) return;
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws["!cols"] = [{ wch: 30 }, { wch: 18 }, { wch: 25 }, { wch: 22 }, { wch: 20 }];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Attendance");
 
-        if (!attendanceData[name]) {
-            attendanceData[name] = { 
-                Name: name, 
-                Device_ID: phoneId, 
-                First_Seen: time, 
-                Last_Seen: time, 
-                Exit_Count: 0,
-                Timeline: [] 
-            };
-        }
-
-        attendanceData[name].Last_Seen = time;
-
-        const isWaitingRoom = slide.includes("Loading...") || slide.includes("No data found");
-        
-        if (!isWaitingRoom && (event.includes("Left") || event.includes("Lost Focus") || event.includes("Closed"))) {
-            attendanceData[name].Exit_Count++;
-            attendanceData[name].Timeline.push(`[${time} at ${slide.substring(0,20)}]`);
-        }
-    });
-
-    let csvContent = "data:text/csv;charset=utf-8,Student Name,Device ID,First Joined,Last Active,Total Exits,Exit Timeline\n";
-    
-    Object.values(attendanceData).forEach(row => {
-        const timelineStr = row.Timeline.join("; ");
-        csvContent += `"${row.Name}","${row.Device_ID}","${row.First_Seen}","${row.Last_Seen}","${row.Exit_Count}","${timelineStr}"\n`;
-    });
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Forensic_Attendance_${new Date().toISOString().slice(0,10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-  // 253 Students Master List
-  const masterList2024 = [
-    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABIRAMI SRINIVASAPERUMAI", "ADHITHYAN A T", "ADITHYA B", "AISHWARYA B", "AJEETH KUMAR R S", "AKASHSANG SIVAKUMAR", "AKSHITHA V", "AMIRTHA SHREE SHANMUGA", "ANNAPOORANI LAKSHMANA", "ARAVIND M", "ARJHITH A G", "ARJUN SURESH K", "ARSHAD KHAN Y", "ARUMUGALAKSHMI P", "ARUN BHARATHI E", "ARUNACHALAM E", "ARUNDHATI K P", "ARUN PANDI V", "ASHISH T. A", "ASHVEEKAA P", "ASMITHAH S", "ASWIN BALAJI", "BALA YOGESH S", "BARATH SHYLESH B", "BHAVIYATHAAR K", "BHAVNA G", "DEEKSHIKA PARTHIBAN CHAI", "DEEPIKA U S", "DEEPTHI V", "DEVA B", "DEVA MURUGESAN", "DHARANEESH M", "DHARANEESH N", "DHARANI M", "DHARMARAJ MAMATHA", "DHARSHINI J", "DHARSHINI P", "DHARSHINI V", "DHARUN A", "DHARUN KRISHNA B", "DHAYANAND S S", "DINESH P", "DIVYA VARSHINI JEYAPRAKAS", "DONI ABISHEK KUMAR A", "ELANSURIYAN A G", "ELANTHENDRAL C", "GAUTAMAN B V", "GAYADHARSHINI S", "GOPIKA U", "GOWTHAM K", "GURUMARAN B", "HAMEEM SYED EBRAHIM ABI", "HAMNA SAJAAN H", "HAMZA RAZAK AM", "HARI MANOJ V", "HARINI S", "HARISH P", "HARISH KUMARAN G", "HARISH PRABHU BS", "HARITHA R", "HARSHA S", "HARSHAD J", "HARSHINI P", "HARUNYAA K", "HEERA SHYAM", "HIMAVARSHA N", "HINDHUJA NAGARAJ", "HISHWANTH K", "INBAVEL P", "ISHWARYA T", "JADYN NIHARIKA R", "JAGADEESH S", "JANA S", "JANOVIA JJ", "JASHVANDH SELVA DEV S", "JEEVAN SAMRUDH TGS", "JEEVANA S", "JONES CALVIN T", "JOSHITHA R", "KAAVYASHREE B", "KABIL SRIVATSAN SL", "KALAIVANI H", "KANIGAA GM", "KANISHGA SRIHARINI K", "KARTHICK M", "KARTHIKA K", "KATHIROLI S", "KEERTHANA A", "KEERTHANA K", "KERAN MOZHI B", "KESHIKA V S", "KISHORE P", "KISHORITHA P", "KOHUL KRISHNA T", "LAKSHYASHRI V", "LAZEERA FATHIMANI", "LILAANIE S", "LOGESHWARI J", "MADHUMITHA S", "MADIHA BANU HATHI AHAMI", "MAHALAKSHMIG", "MAHALAKSHMI S", "MAI DEEPA SRI R", "MANOHARAN S", "MANORANJAN S R", "MANYAA P", "MARI MUTHU S", "MAYURANATH K", "MEGHNA NAIR", "MELWIN JONES A", "MITHUNCHANDER R", "MOHAMMED LUKMAAN A", "MOHAMEDHA SANIYA M", "MOHAMMED HUZAIFA M", "MOHAMMED RIYAS A", "MOHANA PRASATH S", "MOHANA SRI M", "MONISH BALAJI C", "MONISHRAGAVENDRA GOVIN", "MOSES KINGSBEU SELVAGANT", "MUKILAN A", "NANDHANA B", "NANDHITHA R", "NASREEN G", "NEERAJ GR", "NEERAJA G", "NEHA S", "NEHA PANDARAPARAMBIL LE", "NISHANTH V", "NISHITH G", "NITHYA SRI M", "NIVEDHA BALADHANDAUDH", "NOORUL HABIBA", "PADMAESH M K", "PAVANJ", "PAVITHRA M", "POOJAR", "POOJAMALAR PRIYA", "POOJASREE TRS", "PRAGADHEESAN R", "PRANAV ADARSH SENTHIL RA", "PRANITH M", "PRASANTH M", "PRATHYANKIRA ES", "PRAVEEN M", "PRAVIN BAALAJI PANDIAN", "PREETHIKA N", "PRIYADARSHINI", "PRIYADARSHINI SS", "PUGALARASAN R", "PUGAZHARASI VALARMATHI", "RADHA RUCKMANI R", "RAGAVI V P", "RAGHAV I", "RAGHUL M C", "RAMANA G", "RANJANA S", "REHANAA MR", "RENUGADEVI S", "RIJAI RENON J K", "RITHIKASREE S", "RIZZA FATHIMA K", "ROHINI PRIYA S", "ROSHITH K S", "SAANVIYA M", "SABITHA K", "SACHIN S", "SACHIN SAGGAR SP", "SAHANA SRIVARTHINI S", "SAKTHI SUDHARSHINI S", "SAKTHI SUNDARA MOORTHY", "SAMEEHA NEHMATH M", "SAMRUTA S", "SAMRUTHA R", "SAMUEL FREDERICCK B", "SANDHYA S", "SANJANA S", "SANJAY S 28.08.2005", "SANJAY S 29.08.2005", "SANJAY S 22.06.2006", "SANJAY RENUGOPAL", "SANTHOSH S V", "SARAN S", "SARAVANA SAKTHIVEL", "SASHDI SHRE N", "SATHYA P", "SHALINI V", "SHARUMATHI P", "SHIFA SHABEER AHMED S", "SHIFANA RAHMATH K", "SHIYAM KUMAR K", "SHREEHARISH RAVICHANDRA", "SHREYA PL", "SHRI PRAJAN S", "SHRUTHI M", "SHRUTI G", "SHUNMUGA SANTOSH S", "SIVASELVI S", "SREYA SWETHA RS", "SRI DHARANI P", "SRI VARSHA V S", "SRICHARAN T V", "SRIHARAN M", "SRIHARI R", "SRIMATHI K", "SRINIKKESH S", "SRINITHI MARAN", "SRINITHI RAMESH", "SRIPRIYA V", "SRIRAM E", "SRIVIDHYA S", "SRUTHI S", "SUDHAN P", "SUNIL BABU G", "SURUTHIKA SREE KARTHIKEY", "SUSHANA M", "SUVATHI V", "SYED SIDDIQ A", "TEJASRI J", "THALHA M", "THAYANITHY V S", "THENISAI M", "THIRUMAGAL M", "UKESHWARAN P", "VALAR NILAD T", "VARSHA BAVADARINI T", "VARTHINI K", "VARUN D", "VEDANTH K", "VEDHA VALLII S", "VIDUNAA M", "VIJAY P", "VIJAYAVARSHINI V", "VIKRAM S", "VINISHA MP", "VISHAL RUBAN KANAGAVEL", "VISHNU PRIYA S", "VISHNUSHREE M", "VISHWA V", "VISWAPPREYAA RU", "YALMOZHIYAN R", "YOGESHWARAA K", "CHINNAYA BALAJI C K", "RANJANA YADAV L", "SABARISH R", "SANTHOSH R", "SUNDAR KARTHIK S", "SANJAYAN R", "BHAVYA SRI B"
-  ];
-
-  const allTopics = {
-    "fm216": Array(32).fill(0).map((_, i) => `<b>FM 2.16 — Slide ${i+1}</b><br>Check student view for exact layout.`),
-    "phosphorus": Array(36).fill(0).map((_, i) => `<b>Phosphorus — Slide ${i+1}</b><br>Check student view for exact layout.`)
-  };
-
-  function setTopic(topicName) { ref.update({ topic: topicName, index: 0, status: "live" }); }
-  function next() { ref.update({ index: firebase.firestore.FieldValue.increment(1) }); }
-  function prev() { ref.update({ index: firebase.firestore.FieldValue.increment(-1) }); }
-  function setSessionStatus(newStatus) {
-    if (newStatus === 'locked' && !confirm("Lock class? Students will instantly lose access to slides.")) return;
-    ref.update({ status: newStatus });
-  }
-
-  let currentTopic = "fm216";
-  let currentIndex = 0;
-
-  ref.onSnapshot((doc) => {
-    if (!doc.exists) return;
-    const data = doc.data();
-    currentTopic = data.topic || "fm216";
-    currentIndex = Number(data.index) || 0;
-    
-    if (data.status === "locked") {
-      document.getElementById("slidePreview").innerHTML = "🔒 SESSION LOCKED BY INSTRUCTOR";
-    } else {
-      const maxSlides = allTopics[currentTopic] ? allTopics[currentTopic].length : 0;
-      document.getElementById("slideInfo").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1} / ${maxSlides}`;
-      if (currentIndex >= maxSlides) document.getElementById("slidePreview").innerHTML = "End of Lecture";
-      else document.getElementById("slidePreview").innerHTML = allTopics[currentTopic][currentIndex];
+      const date = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(wb, `DSMCH_Attendance_${date}.xlsx`);
+      showStatus("Excel downloaded!");
+    } catch (err) {
+      showStatus("Export failed: " + err.message);
     }
-  });
-
-  const tbody = document.getElementById("logBody");
-  const flaggedStudentsLeft = new Set();
-  const flaggedStudentsBlur = new Set();
-
-  db.collection("activity_logs").orderBy("timestamp", "desc").limit(100).onSnapshot((snapshot) => {
-      let leftCount = 0;
-      let activeSet = new Set();
-      let quizCorrectCount = 0;
-      let quizWrongCount = 0;
-      let quizAnsweredStudents = new Set();
-      const rows = [];
-
-      snapshot.forEach((doc) => {
-        const d = doc.data();
-        const event = d.event || "";
-        const student = d.student || "Unknown";
-        const ctx = d.slideContext || "";
-        const ts = d.timestamp ? d.timestamp.toDate() : null;
-        const timeStr = ts ? ts.toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit", second:"2-digit" }) : "—";
-
-        if (event.includes("Left") || event.includes("Switched") || event.includes("Closed")) { leftCount++; flaggedStudentsLeft.add(student); activeSet.delete(student); }
-        if (event.includes("Lost Focus")) { flaggedStudentsBlur.add(student); }
-        if (event.includes("Returned") || event.includes("Regained Focus") || event.includes("Multimedia")) { activeSet.add(student); }
-
-        if (event === "Quiz: Correct" && !quizAnsweredStudents.has(student)) {
-            quizCorrectCount++; quizAnsweredStudents.add(student);
-        }
-        if (event === "Quiz: Wrong" && !quizAnsweredStudents.has(student)) {
-            quizWrongCount++; quizAnsweredStudents.add(student);
-        }
-
-        let tagClass = "tag-left";
-        if (event.includes("Returned") || event.includes("Regained Focus") || event.includes("Multimedia")) tagClass = "tag-returned";
-        else if (event.includes("Closed")) tagClass = "tag-closed";
-        else if (event.includes("Lost Focus")) tagClass = "tag-blur";
-        else if (event.includes("Quiz: Correct")) tagClass = "tag-returned";
-        else if (event.includes("Quiz: Wrong")) tagClass = "tag-left";
-
-        rows.push(`<tr>
-          <td class="time-cell">${timeStr}</td>
-          <td class="student-name">${student}</td>
-          <td><span class="tag ${tagClass}">${event}</span></td>
-          <td class="slide-ctx">${ctx.replace(/<[^>]*>?/gm, '').substring(0, 30)}...</td>
-        </tr>`);
-      });
-
-      tbody.innerHTML = rows.length > 0 ? rows.join("") : `<tr><td colspan="4" style="color:#333;padding:16px;">No activity yet</td></tr>`;
-      document.getElementById("statLeft").innerText = leftCount;
-      document.getElementById("statTotal").innerText = snapshot.size;
-      document.getElementById("statActive").innerText = activeSet.size;
-      
-      document.getElementById("quizCorrect").innerText = quizCorrectCount;
-      document.getElementById("quizWrong").innerText = quizWrongCount;
-
-      if (currentTopic === "fm216") {
-        const missingStudents = masterList2024.filter(masterName => {
-          for(let activeName of activeSet) {
-              let a = activeName.toUpperCase().trim();
-              let m = masterName.toUpperCase().trim();
-              if(m.includes(a) || a.includes(m)) return false; 
-          }
-          return true;
-        });
-        document.getElementById("missingTitle").innerText = `❌ Missing Students (${missingStudents.length} / 253 Absent)`;
-        document.getElementById("missingWrap").innerHTML = missingStudents.map(s => `<span class="missing-pill">${s}</span>`).join("");
-      } else {
-        document.getElementById("missingTitle").innerText = `❌ Missing Students (Tracking disabled for non-2024 batches)`;
-        document.getElementById("missingWrap").innerHTML = `<span class="no-flags">Switch to FM 2.16 to track 2024 Batch</span>`;
-      }
-
-      let combinedFlags = "";
-      flaggedStudentsLeft.forEach(s => combinedFlags += `<span class="flag-pill">⚠ ${s} (Left)</span>`);
-      flaggedStudentsBlur.forEach(s => {
-        if (!flaggedStudentsLeft.has(s)) combinedFlags += `<span class="flag-pill blur">👀 ${s} (Split Screen)</span>`;
-      });
-      document.getElementById("flagList").innerHTML = combinedFlags === "" ? `<span class="no-flags">None yet</span>` : combinedFlags;
-    });
-
-  async function clearLogs() {
-    if (!confirm("Clear all activity logs?")) return;
-    const snap = await db.collection("activity_logs").get();
-    const batch = db.batch();
-    snap.forEach(doc => batch.delete(doc.ref));
-    await batch.commit();
-    flaggedStudentsLeft.clear();
-    flaggedStudentsBlur.clear();
   }
 </script>
-
 </body>
 </html>
