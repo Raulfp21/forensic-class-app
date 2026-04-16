@@ -7,16 +7,13 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 20px; overflow-x: hidden; }
+    body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
     h1 { font-size: 20px; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 12px; }
-    
-    .stream-bar { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; padding: 15px; background: #111; border-radius: 8px; border: 1px solid #222; align-items: center; }
-    .btn-stream { padding: 10px 15px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; font-family: 'Courier New', monospace; transition: 0.2s; }
-    .btn-stream:hover { opacity: 0.8; }
-    
-    .btn-start { background: #00ff88; color: #000; }
+    .stream-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 15px; background: #111; border-radius: 8px; border: 1px solid #222; align-items: center; }
+    .btn-stream { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; font-family: 'Courier New', monospace; }
+    .btn-phos { background: #00ff88; color: #000; }
     .btn-fm { background: #58a6ff; color: #000; }
-    .btn-nav { background: #e2e8f0; color: #000; }
+    .btn-nav { background: #444; color: #fff; }
     .btn-lock { background: #ff8c00; color: #000; }
     .btn-export { background: #ffcc00; color: #000; }
     .btn-danger { background: #ff4444; color: #fff; margin-left: auto; }
@@ -40,18 +37,17 @@
   <h1>Forensic Master Control Panel</h1>
 
   <div class="stream-bar">
-    <button class="btn-stream btn-start" onclick="startLecture('phosphorus')">▶ Start Phosphorus (2023)</button>
-    <button class="btn-stream btn-fm" onclick="startLecture('fm216')">▶ Start FM 2.16 (2024)</button>
-    <button class="btn-stream btn-lock" onclick="endSession()">🔒 End Session (Lock)</button>
+    <button class="btn-stream btn-phos" onclick="startLecture('phosphorus')">▶ Start Phosphorus</button>
+    <button class="btn-stream btn-fm" onclick="startLecture('fm216')">▶ Start FM 2.16</button>
+    <button class="btn-stream btn-lock" onclick="endSession()">🔒 End Session</button>
     
-    <button class="btn-stream btn-export" style="margin-left: 20px;" onclick="exportAttendance()">📥 Download Excel</button>
-    <button class="btn-stream btn-danger" onclick="clearLogs()">🗑 Clear Logs</button>
-  </div>
+    <button class="btn-stream btn-nav" onclick="prevSlide()" style="margin-left: 15px;">⏪ Prev</button>
+    <button class="btn-stream btn-nav" onclick="nextSlide()">Next ⏩</button>
+    
+    <span id="slideStatus" style="margin-left: 15px; color: #58a6ff; font-weight: bold;">Waiting to start...</span>
 
-  <div class="stream-bar" style="background: #0a192f; border-color: #1e3a8a;">
-    <button class="btn-stream btn-nav" onclick="prevSlide()">⏪ Previous Slide</button>
-    <button class="btn-stream btn-nav" onclick="nextSlide()">Next Slide ⏩</button>
-    <span id="slideStatus" style="margin-left: auto; color: #58a6ff; font-weight: bold; font-size: 16px;">Status: Waiting to start...</span>
+    <button class="btn-stream btn-export" style="margin-left: auto;" onclick="exportAttendance()">📥 Download Excel</button>
+    <button class="btn-stream btn-danger" onclick="clearLogs()">🗑 Clear Logs</button>
   </div>
 
   <div class="stream-bar">
@@ -70,7 +66,7 @@
   </div>
 
   <div class="section-title" style="color: #00ff88;">✅ Verified Active Students (Live)</div>
-  <div class="pill-container" id="activeNamesWrap"><span class="no-flags">Waiting for students to join...</span></div>
+  <div class="pill-container" id="activeNamesWrap"><span class="no-flags">Waiting for students...</span></div>
 
   <div class="section-title" id="missingTitle" style="color: #ff4444;">❌ Missing Students (2024 Tracker)</div>
   <div class="pill-container" id="missingWrap"><span class="no-flags">Tracker disabled until FM 2.16 starts...</span></div>
@@ -79,7 +75,7 @@
   <div class="pill-container" id="flagList"><span class="no-flags">No suspicious activity detected.</span></div>
 
 <script>
-  // --- 1. FIREBASE CONFIGURATION ---
+  // --- ADD YOUR FIREBASE CONFIG HERE ---
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
     authDomain: "forensic-class-app.firebaseapp.com",
@@ -91,54 +87,48 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // --- 2. THE 2024 MASTER LIST ---
+  // YOUR ORIGINAL MASTER LIST
   const masterList2024 = [
-    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABINAYASRI S",
-    // Paste the rest of your 253 students here for the missing tracker
+    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABINAYASRI S" // Make sure to add the rest here!
   ];
 
+  // --- SLIDE NAVIGATION LOGIC (NOW SYNCED SO PREV/NEXT WORKS) ---
   let currentTopic = "";
   let currentIndex = 0;
 
-  // --- 3. LECTURE NAVIGATION ---
-  function startLecture(topic) {
-      currentTopic = topic;
-      currentIndex = 0;
-      db.collection("slides").doc("current").set({ topic: topic, index: currentIndex, status: "live" });
-      updateDisplay();
-  }
-
-  function nextSlide() {
-      if (!currentTopic) return alert("Please start a lecture first.");
-      currentIndex++;
-      db.collection("slides").doc("current").update({ index: currentIndex });
-      updateDisplay();
-  }
-
-  function prevSlide() {
-      if (!currentTopic) return alert("Please start a lecture first.");
-      if (currentIndex > 0) {
-          currentIndex--;
-          db.collection("slides").doc("current").update({ index: currentIndex });
-          updateDisplay();
+  // This prevents buttons from breaking if you refresh the page
+  db.collection("slides").doc("current").onSnapshot((doc) => {
+      if (doc.exists) {
+          const data = doc.data();
+          currentTopic = data.topic || "";
+          currentIndex = data.index || 0;
+          
+          if (data.status === "locked") {
+              document.getElementById("slideStatus").innerText = "Status: 🔒 SESSION ENDED";
+              document.getElementById("slideStatus").style.color = "#ff8c00";
+          } else if (currentTopic !== "") {
+              document.getElementById("slideStatus").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1}`;
+              document.getElementById("slideStatus").style.color = "#58a6ff";
+          }
       }
-  }
+  });
 
+  function startLecture(topic) {
+      db.collection("slides").doc("current").set({ topic: topic, index: 0, status: "live" });
+  }
+  function nextSlide() {
+      if(currentTopic) db.collection("slides").doc("current").update({ index: currentIndex + 1 });
+  }
+  function prevSlide() {
+      if(currentTopic && currentIndex > 0) db.collection("slides").doc("current").update({ index: currentIndex - 1 });
+  }
   function endSession() {
       if(confirm("Lock the session? Students will see the 'Session Ended' screen.")) {
-          currentTopic = "";
           db.collection("slides").doc("current").update({ status: "locked" });
-          document.getElementById("slideStatus").innerText = "Status: 🔒 LOCKED";
-          document.getElementById("slideStatus").style.color = "#ff8c00";
       }
   }
 
-  function updateDisplay() {
-      document.getElementById("slideStatus").innerText = `Topic: ${currentTopic.toUpperCase()} | Slide: ${currentIndex + 1}`;
-      document.getElementById("slideStatus").style.color = "#58a6ff";
-  }
-
-  // --- 4. REAL-TIME ACTIVITY TRACKER ---
+  // --- YOUR ORIGINAL ACTIVITY LOGIC + GREEN PILLS ---
   db.collection("activity_logs").orderBy("timestamp", "desc").limit(200).onSnapshot((snapshot) => {
       let activeSet = new Set();
       let flaggedStudentsLeft = new Set();
@@ -150,18 +140,15 @@
           const student = d.student || "Unknown";
           const event = d.event || "";
 
-          if (student.includes("FACULTY") || student.includes("TEST")) return; 
+          if (student.includes("FACULTY")) return; // Hide your testing
 
           allPresentSet.add(student);
 
-          // Track Flags (Suspicious Activity)
-          if (event.includes("Left") || event.includes("Closed")) {
-              flaggedStudentsLeft.add(student);
-          } else if (event.includes("Lost Focus")) {
-              flaggedStudentsBlur.add(student);
-          }
+          // Track Suspicious (Your exact original logic)
+          if (event.includes("Left") || event.includes("Closed")) flaggedStudentsLeft.add(student);
+          else if (event.includes("Lost Focus")) flaggedStudentsBlur.add(student);
 
-          // Track Live Active 
+          // Track Active
           if (event.includes("Returned") || event.includes("Quiz") || event.includes("Multimedia") || event.includes("Focus")) {
               activeSet.add(student);
           }
@@ -170,36 +157,29 @@
           }
       });
 
-      // Update Active UI
+      // Update UI: Active
       document.getElementById("statActive").innerText = activeSet.size;
-      const activeWrap = document.getElementById("activeNamesWrap");
-      activeWrap.innerHTML = Array.from(activeSet).map(name => 
-          `<span class="active-pill">${name}</span>`
-      ).join("") || '<span class="no-flags">No students currently active</span>';
+      document.getElementById("activeNamesWrap").innerHTML = Array.from(activeSet).map(s => `<span class="active-pill">${s}</span>`).join("") || '<span class="no-flags">No active students</span>';
 
-      // Update Flags UI
-      let totalFlags = flaggedStudentsLeft.size + flaggedStudentsBlur.size;
-      document.getElementById("statFlags").innerText = totalFlags;
-      
+      // Update UI: Flags (Your exact original code)
       let combinedFlags = "";
       flaggedStudentsLeft.forEach(s => combinedFlags += `<span class="flag-pill">⚠ ${s} (Left)</span>`);
-      flaggedStudentsBlur.forEach(s => {
-          if (!flaggedStudentsLeft.has(s)) combinedFlags += `<span class="flag-pill blur">👀 ${s} (Split Screen)</span>`;
-      });
+      flaggedStudentsBlur.forEach(s => { if (!flaggedStudentsLeft.has(s)) combinedFlags += `<span class="flag-pill blur">👀 ${s} (Split Screen)</span>`; });
       document.getElementById("flagList").innerHTML = combinedFlags === "" ? `<span class="no-flags">None yet</span>` : combinedFlags;
+      document.getElementById("statFlags").innerText = flaggedStudentsLeft.size + flaggedStudentsBlur.size;
 
-      // Update Missing UI (Only for 2024 Batch)
+      // Update UI: Missing (Your exact original code)
       if (currentTopic === "fm216") {
           let missingStudents = masterList2024.filter(masterName => {
               for (let a of allPresentSet) {
                   let m = masterName.toUpperCase().trim();
-                  if (a.includes(m) || m.includes(a)) return false; 
+                  if(m.includes(a) || a.includes(m)) return false; 
               }
               return true;
           });
-          document.getElementById("statMissing").innerText = missingStudents.length;
-          document.getElementById("missingTitle").innerText = `❌ Missing Students (${missingStudents.length} / ${masterList2024.length} Absent)`;
+          document.getElementById("missingTitle").innerText = `❌ Missing Students (${missingStudents.length} Absent)`;
           document.getElementById("missingWrap").innerHTML = missingStudents.map(s => `<span class="missing-pill">${s}</span>`).join("");
+          document.getElementById("statMissing").innerText = missingStudents.length;
       } else {
           document.getElementById("statMissing").innerText = "-";
           document.getElementById("missingTitle").innerText = `❌ Missing Students (Tracking disabled for Phosphorus)`;
@@ -207,7 +187,7 @@
       }
   });
 
-  // --- 5. FORENSIC ATTENDANCE EXPORT (With Device IDs) ---
+  // --- YOUR ORIGINAL EXPORT FUNCTION + DEVICE ID ---
   async function exportAttendance() {
     const snap = await db.collection("activity_logs").orderBy("timestamp", "asc").get();
     let attendanceData = {};
@@ -223,27 +203,36 @@
         if (name.includes("Anonymous") || name.includes("FACULTY")) return;
 
         if (!attendanceData[name]) {
-            attendanceData[name] = { 
-                Name: name, 
-                Device_ID: phoneId, 
-                First_Seen: time, 
-                Last_Seen: time, 
-                Exit_Count: 0,
-                Timeline: [] 
-            };
+            attendanceData[name] = { Name: name, Device_ID: phoneId, First_Seen: time, Last_Seen: time, Exit_Count: 0, Timeline: [] };
         }
-
         attendanceData[name].Last_Seen = time;
 
-        const isWaitingRoom = slide.includes("Loading...") || slide.includes("Waiting");
-        if (!isWaitingRoom && (event.includes("Left") || event.includes("Lost Focus") || event.includes("Closed"))) {
+        if (!slide.includes("Loading...") && (event.includes("Left") || event.includes("Lost Focus") || event.includes("Closed"))) {
             attendanceData[name].Exit_Count++;
             attendanceData[name].Timeline.push(`[${time} at ${slide.substring(0,20)}]`);
         }
     });
 
     let csvContent = "data:text/csv;charset=utf-8,Student Name,Device ID,First Joined,Last Active,Total Exits,Exit Timeline\n";
-    
     Object.values(attendanceData).forEach(row => {
-        const timelineStr = row.Timeline.join("; ");
-        csvContent += `"${row.Name}","${row.Device_ID}","${row.First_Seen}","${row.Last_Seen
+        csvContent += `"${row.Name}","${row.Device_ID}","${row.First_Seen}","${row.Last_Seen}","${row.Exit_Count}","${row.Timeline.join("; ")}"\n`;
+    });
+
+    const link = document.createElement("a");
+    link.href = encodeURI(csvContent);
+    link.download = `Attendance_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+  }
+
+  // --- YOUR ORIGINAL CLEAR LOGS ---
+  async function clearLogs() {
+    if (!confirm("Clear all activity logs?")) return;
+    const snap = await db.collection("activity_logs").get();
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    alert("✅ Logs cleared.");
+  }
+</script>
+</body>
+    </html>
