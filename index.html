@@ -580,49 +580,215 @@
 
     // THE 6 NEW INTERACTIVE PHOSPHORUS SLIDES
     "phosphorus": [
+      // --- SECTION 1: THE ORIGIN & ELEMENT ---
+      { render: () => `
+        <div class="slide-title">⚗️ The "Cold Fire"</div>
+        <div class="slide-subtitle">History & Discovery (1669)</div>
+        <div class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;">
+          <strong style="color:#58a6ff">The Alchemist's Accident:</strong><br>
+          <span style="color:#c9d1d9">Henning Brand boiled 5,000 liters of putrefied urine hoping to create gold. Instead, he discovered a waxy substance that glowed in the dark.</span>
+        </div>
+        <div class="alert-box alert-yellow">
+          <strong>Chemiluminescence:</strong> Phosphorus emits light as it slowly oxidizes in the air.
+        </div>` 
+      },
       { render: () => `
         <div class="slide-title">🔥 Spontaneous Ignition</div>
+        <div class="slide-subtitle">WARNING: Highly Reactive Element</div>
         <div style="text-align:center;">
-          <div class="burn-zone" onclick="this.style.background='radial-gradient(circle, #fff700 0%, #ff4400 100%)'; this.style.boxShadow='0 0 50px #ff4400'; this.innerHTML='🔥'; document.getElementById('bt').style.display='block'; logActivity('Burn Reveal');">TOUCH</div>
-          <p id="bt" style="display:none; color:#f78166; font-size:20px; margin-top:20px;"><b>CHEMICAL BURN!</b><br>Yellow Phosphorus reacts violently with air.</p>
+          <div class="burn-zone" onclick="this.style.background='radial-gradient(circle, #fff700 0%, #ff4400 100%)'; this.style.boxShadow='0 0 50px #ff4400'; this.innerHTML='🔥'; document.getElementById('bt').style.display='block'; logActivity('Phosphorus Burn Reveal');">TOUCH</div>
+          <p id="bt" style="display:none; color:#f78166; font-size:20px; margin-top:20px;"><b>CHEMICAL BURN!</b><br>Yellow Phosphorus ignites at 30°C. It causes deep, necrotic 3rd-degree burns.</p>
         </div>` 
       },
       { render: () => `
         <div class="slide-title">🧪 Toxicology Gamification</div>
-        <div class="slide-subtitle">Which form is used in Rat Paste?</div>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <button class="diag-card" onclick="alert('✅ Correct! Yellow Phosphorus is highly toxic.'); logActivity('Pick: Yellow P');" style="background:#2b2008; border-color:#ffa657;">Yellow Phosphorus</button>
-          <button class="diag-card" onclick="alert('❌ Wrong! Red Phosphorus is generally non-toxic.'); logActivity('Pick: Red P');" style="background:#2d1215; border-color:#f78166;">Red Phosphorus</button>
+        <div class="slide-subtitle">Identify the lethal allotrope</div>
+        <div class="compare-grid">
+          <button class="diag-card" onclick="alert('✅ CORRECT! Yellow/White Phosphorus is highly toxic, smells like garlic, and is soluble in CS2.'); logActivity('Pick: Yellow P');" style="background:#2b2008; border-color:#ffa657;">🟡 Yellow/White Phosphorus</button>
+          <button class="diag-card" onclick="alert('❌ WRONG! Red Phosphorus is odorless, non-toxic, and used in matchbox strike pads.'); logActivity('Pick: Red P');" style="background:#2d1215; border-color:#f78166;">🔴 Red Phosphorus</button>
+        </div>` 
+      },
+
+      // --- SECTION 2: TAMIL NADU CONTEXT ---
+      { render: () => `
+        <div class="slide-title">🧨 The Sivakasi Link</div>
+        <div class="slide-subtitle">Industrial Exposure in Tamil Nadu</div>
+        <div class="alert-box" style="background:#1a1400; border:1px solid #3a2f00;">
+          <strong style="color:#ffa657">Historical Context:</strong><br>
+          <span style="color:#c9d1d9">Early fireworks and match industries in Sivakasi heavily utilized White Phosphorus, leading to severe occupational hazards before safety regulations mandated the switch to Red Phosphorus.</span>
         </div>` 
       },
       { render: () => `
-        <div class="slide-title">⚡ Fulminant Stage</div>
-        <div class="slide-subtitle">Poisoning (&gt;1g dose). Touch a symptom card to reveal:</div>
-        <div class="diag-card" onclick="alert('Death within 12 hours due to shock and cardiovascular collapse.'); logActivity('Viewed: Fulminant CVS');">🩺 Cardiovascular System</div>
-        <div class="diag-card" onclick="alert('Direct toxic effect on the myocardium and blood vessels.'); logActivity('Viewed: Fulminant Mechanism');">🫀 Mechanism</div>` 
+        <div class="slide-title">🐀 The Rat Paste Crisis</div>
+        <div class="slide-subtitle">Epidemiology of Poisoning</div>
+        <div class="alert-box alert-red">
+          <strong>The 3% Threat:</strong> Ratol and similar rodenticides contain 3% Yellow Phosphorus.
+        </div>
+        <ul style="font-size:18px; color:#c9d1d9; line-height:1.6; text-align:left; margin-left:20px;">
+          <li>Extremely cheap and accessible over-the-counter.</li>
+          <li>Painless initial ingestion makes it common for impulsive suicides.</li>
+          <li>Has a staggering mortality rate approaching 70% in severe cases.</li>
+        </ul>` 
       },
       { render: () => `
-        <div class="slide-title">🩺 Acute Stage 1</div>
-        <div class="slide-subtitle">Local Irritation. Touch a symptom card to diagnose:</div>
-        <div class="diag-card" onclick="alert('Garlic-like odor in breath and excreta.'); logActivity('Viewed: Stage 1 Smell');">🧄 Diagnostic Smell</div>
-        <div class="diag-card" onclick="alert('Vomit is luminous (glows in the dark).'); logActivity('Viewed: Stage 1 Vomit');">🤮 Luminous Vomit</div>` 
-      },
-      { render: () => `
-        <div class="slide-title">🔬 The Autopsy</div>
-        <div class="slide-subtitle">Internal Examination. Touch an organ to view findings:</div>
-        <div class="diag-card" onclick="alert('Yellow, enlarged, doughy liver (Zone 1 Necrosis).'); logActivity('Autopsy: Liver');">🟡 Fatty Liver</div>
-        <div class="diag-card" onclick="alert('Tiger Lily Heart (Thrush-breast appearance).'); logActivity('Autopsy: Heart');">🐅 Heart Findings</div>` 
-      },
-      { render: () => `
-        <div class="slide-title">🆘 Management</div>
-        <div class="slide-subtitle">What is your immediate life-saving intervention?</div>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <button class="diag-card" onclick="alert('✅ CORRECT! KMnO4 (1:5000) oxidizes phosphorus.'); logActivity('Rx: KMnO4');" style="background:#0d2a1a; border-color:#7ee787;">Lavage with KMnO4</button>
-          <button class="diag-card" onclick="alert('❌ FATAL! Oils/Milk accelerate absorption.'); logActivity('Rx: Milk');" style="background:#2d1215; border-color:#f78166;">Give Milk/Oils</button>
+        <div class="slide-title">⚖️ The 2022 TN Ban</div>
+        <div class="slide-subtitle">Public Health Intervention</div>
+        <div class="alert-box alert-green">
+          <strong>Government Action:</strong> Due to the high mortality rate and the Thandarai mass-poisoning tragedy, the Tamil Nadu Government officially banned 3% Yellow Phosphorus rat paste in 2022.
+        </div>
+        <div class="alert-box alert-yellow">
+          <strong>The Shift:</strong> Manufacturers have largely shifted to <i>Zinc Phosphide</i>, changing the clinical presentation in ERs.
         </div>` 
-      }
-    ]
-  };
+      },
+
+      // --- SECTION 3: CLINICAL TOXICOLOGY ---
+      { render: () => `
+        <div class="slide-title">⚡ Fulminant Poisoning</div>
+        <div class="slide-subtitle">Massive Ingestion (&gt;1g). Touch to reveal findings:</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="alert('Death usually occurs within 12 hours due to profound shock and cardiovascular collapse.'); logActivity('Viewed: Fulminant Timeline');">⏱️ Timeline</div>
+          <div class="diag-card" onclick="alert('Acts directly on the myocardium and peripheral blood vessels.'); logActivity('Viewed: Fulminant Mechanism');">🫀 Mechanism</div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🤢 Acute Stage 1</div>
+        <div class="slide-subtitle">GI Irritation (0 - 24 Hours). Touch to diagnose:</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="alert('Pathognomonic GARLIC-LIKE ODOR in breath, vomitus, and feces.'); logActivity('Viewed: Stage 1 Smell');">🧄 Diagnostic Smell</div>
+          <div class="diag-card" onclick="alert('Vomit and feces are LUMINESCENT (Glow in the dark) due to oxidation.'); logActivity('Viewed: Stage 1 Vomit');">🤮 Luminescence</div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🚨 Acute Stage 2: The Trap</div>
+        <div class="slide-subtitle">The Lucid Interval (24 - 72 Hours)</div>
+        <div class="alert-box alert-red" style="text-align:center;">
+          <h3 style="margin:0; color:#f78166;">THE FATAL MISTAKE</h3>
+          <p style="color:#c9d1d9; font-size:16px;">GI symptoms subside. The patient feels completely normal and requests discharge.</p>
+        </div>
+        <div class="alert-box alert-yellow">
+          <strong>Medicolegal Warning:</strong> Discharging the patient during this symptom-free period is a major cause of medical negligence lawsuits. The poison is actively absorbing.
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🟡 Acute Stage 3</div>
+        <div class="slide-subtitle">Systemic Toxicity (Post 72 Hours)</div>
+        <ul style="font-size:18px; color:#c9d1d9; line-height:1.6; text-align:left; margin-left:20px;">
+          <li><b>Hepatic:</b> Tender hepatomegaly, profound Jaundice.</li>
+          <li><b>Hematologic:</b> Hematemesis (Coffee-ground vomit), petechiae, inhibited blood clotting factors.</li>
+          <li><b>Renal:</b> Oliguria, hematuria, albuminuria.</li>
+          <li><b>CNS:</b> Delirium, convulsions, "Phosphorus coma".</li>
+        </ul>` 
+      },
+      { render: () => `
+        <div class="slide-title">💀 Fatal Statistics</div>
+        <div class="slide-subtitle">Textbook Values (Reddy/Parikh)</div>
+        <div class="stat-row">
+          <div class="stat-pill"><div class="sv" style="color:#f78166">60-120 mg</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">2 to 8 Days</div><div class="sl">Fatal Period</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#7ee787">Hepatic Failure</div><div class="sl">Primary Cause of Death</div></div>
+        </div>` 
+      },
+
+      // --- SECTION 4: CHRONIC & DIFFERENTIAL ---
+      { render: () => `
+        <div class="slide-title">🦴 Chronic Poisoning</div>
+        <div class="slide-subtitle">"Phossy Jaw"</div>
+        <div class="alert-box" style="background:#1a1400; border:1px solid #3a2f00;">
+          <strong style="color:#ffa657">Mechanism:</strong><br>
+          <span style="color:#c9d1d9">Chronic inhalation of fumes leads to periostitis, osteomyelitis, and eventual necrosis of the lower jaw (mandible). The bone literally rots and can glow in the dark.</span>
+        </div>
+        <div class="alert-box alert-yellow">
+          <strong>Historical Note:</strong> Led to the 1888 Matchgirls' Strike in London and the 1906 Berne Convention banning White P in matches.
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">⚖️ Differential Diagnosis</div>
+        <div class="slide-subtitle">ER Triage: Yellow P vs. Zinc Phosphide</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+          <thead><tr><th>Feature</th><th>Yellow Phosphorus</th><th>Zinc Phosphide</th></tr></thead>
+          <tbody>
+            <tr><td class="warn">Odor</td><td>Garlic-like</td><td class="toxic">Rotten fish / Acetylene</td></tr>
+            <tr><td class="warn">Primary Target</td><td>Liver (Hepatic Failure)</td><td class="toxic">Heart (CVS Collapse)</td></tr>
+            <tr><td class="warn">Active Toxin</td><td>Elemental Phosphorus</td><td class="toxic">Phosphine Gas ($PH_3$)</td></tr>
+          </tbody>
+        </table>` 
+      },
+
+      // --- SECTION 5: TREATMENT & AUTOPSY ---
+      { render: () => `
+        <div class="slide-title">🆘 ER Management</div>
+        <div class="slide-subtitle">Choose the correct intervention:</div>
+        <div class="compare-grid">
+          <button class="diag-card" onclick="alert('✅ CORRECT! 1:5000 KMnO4 acts as an oxidizing agent, converting toxic phosphorus to harmless phosphoric acid.'); logActivity('Rx: KMnO4');" style="background:#0d2a1a; border-color:#7ee787;">Lavage with KMnO4</button>
+          <button class="diag-card" onclick="alert('❌ FATAL! Phosphorus is highly fat-soluble. Milk and oils accelerate its absorption into the bloodstream.'); logActivity('Rx: Milk');" style="background:#2d1215; border-color:#f78166;">Give Milk/Castor Oil</button>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">💊 Adjunct Therapies</div>
+        <div class="slide-subtitle">Supportive Care</div>
+        <ul style="font-size:18px; color:#c9d1d9; line-height:1.6; text-align:left; margin-left:20px;">
+          <li><b>Activated Charcoal:</b> Administered post-lavage to adsorb remaining poison.</li>
+          <li><b>Vitamin K:</b> Administered IV to treat hypoprothrombinemia and combat hemorrhagic tendencies.</li>
+          <li><b>IV Fluids with Glucose:</b> To support liver glycogen stores.</li>
+        </ul>` 
+      },
+      { render: () => `
+        <div class="slide-title">🔬 Autopsy: External Findings</div>
+        <div class="slide-subtitle">Gross Pathology</div>
+        <div class="alert-box alert-yellow">
+          <strong>Classic Triad:</strong>
+          <ol style="margin-top:10px; padding-left:20px;">
+            <li>Profound icterus (Jaundice) in the sclera and skin.</li>
+            <li>Multiple petechial hemorrhages (ecchymoses) over the skin and mucous membranes.</li>
+            <li>Garlic odor emanating from the body cavities upon opening.</li>
+          </ol>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🔬 Autopsy: Internal Organs</div>
+        <div class="slide-subtitle">Touch an organ to view findings:</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="alert('Enlarged, yellow, and doughy. Hallmark is ACUTE FATTY DEGENERATION.'); logActivity('Autopsy: Liver');">🟡 The Liver</div>
+          <div class="diag-card" onclick="alert('Sub-endocardial fatty infiltration creates yellow streaks, known as TIGER LILY or THRUSH-BREAST heart.'); logActivity('Autopsy: Heart');">🐅 The Heart</div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🔬 Histopathology</div>
+        <div class="slide-subtitle">Microscopic Distinctions</div>
+        <div class="alert-box" style="background:#1a1400; border:1px solid #3a2f00;">
+          <strong style="color:#ffa657">Zone 1 Necrosis:</strong><br>
+          <span style="color:#c9d1d9">Phosphorus specifically causes <b>Periportal (Zone 1)</b> fatty change and necrosis. This is highly distinct from Paracetamol or CCl4 poisoning, which typically cause Centrilobular (Zone 3) necrosis.</span>
+        </div>` 
+      },
+
+      // --- SECTION 6: MEDICOLEGAL & QUIZZES ---
+      { render: () => `
+        <div class="slide-title">⚖️ Medicolegal Circumstances</div>
+        <div class="slide-subtitle">Manner of Poisoning</div>
+        <div class="compare-grid">
+          <div class="compare-card"><h3 style="color:#f78166">Suicidal</h3><span style="color:#c9d1d9">Most common in India. Cheap, highly accessible rodenticide pastes.</span></div>
+          <div class="compare-card"><h3 style="color:#ffa657">Accidental</h3><span style="color:#c9d1d9">Children mistaking rat paste (often applied on tomatoes/biscuits) for food, or chewing on Diwali firecrackers.</span></div>
+          <div class="compare-card safe-card"><h3 style="color:#7ee787">Homicidal</h3><span style="color:#c9d1d9">Rare due to the garlicky odor, but sometimes masked in heavily spiced Indian curries.</span></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">📜 The Legal Framework</div>
+        <div class="slide-subtitle">Bharatiya Nyaya Sanhita (BNS 2023)</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+          <thead><tr><th>Old IPC</th><th>New BNS</th><th>Offense</th></tr></thead>
+          <tbody>
+            <tr><td>IPC 328</td><td class="toxic"><b>Section 123 BNS</b></td><td>Causing hurt by means of poison with intent to commit an offense.</td></tr>
+            <tr><td>IPC 302</td><td class="warn"><b>Section 103 BNS</b></td><td>Murder (if homicidal poisoning is proven).</td></tr>
+          </tbody>
+        </table>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 ER Spotter Quiz</div>
+        <div class="quiz-wrap" id="quizPhos1">
+          <div class="quiz-q" style="background:#21262d;padding:14px;border-radius:10px;">
+            A 22-year-old female is brought to the ER with garlic-smelling vomit. Gastric lavage is ordered. Which of the following should be <b>STRICTLY AVOIDED</b> during treatment?
+          </div>
+          <button class="quiz-opt" onclick="answerQuiz('A','wrong','quizPhos1')">A — Potassium Permanganate (1:50
 
   // --- START THE APP ---
   async function initApp() {
