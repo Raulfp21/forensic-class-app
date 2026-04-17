@@ -945,4 +945,69 @@
 index (10).html
 General Info
 TypeHTML
-Displaying index (10).html.
+Displaying index (10).html.        <div class="diag-card" onclick="alert('Multiple smaller and large hemorrhages in various places.'); logActivity('Viewed: PM Hemorrhage');">Hemorrhages (TOUCH)</div>
+        
+        <div style="display:flex; gap:15px; margin-top:15px;">
+            <div style="flex:1;">
+                <p style="color:#ffa657; font-weight:bold; margin-bottom:5px;">LIVER (TOUCH IMAGE)</p>
+                <img class="img-btn" src="Click on image to zoom.jpeg.jpg" onclick="alert('Same info. On survival: Acute yellow atrophy of liver.'); logActivity('Viewed: PM Liver Image');" alt="Liver">
+            </div>
+            <div style="flex:1;">
+                <p style="color:#58a6ff; font-weight:bold; margin-bottom:5px;">KIDNEY (TOUCH IMAGE)</p>
+                <img class="img-btn" src="Click on image to zoom.jpeg 2.jpg" onclick="alert('Severe fatty degeneration and nephritis.'); logActivity('Viewed: PM Kidney Image');" alt="Kidney">
+            </div>
+        </div>`
+      },
+
+      // 6. CHRONIC POISONING
+      { render: () => `
+        <div class="slide-title">💀 Chronic Poisoning</div>
+        <div class="diag-card" onclick="alert('Phossy jaw (osteomyelitis and necrosis) due to inhalation of fumes -> necrosis of lower jaw with decayed tooth.'); logActivity('Viewed: Phossy Jaw');">Phossy Jaw Details (TOUCH)</div>
+        <div class="diag-card" onclick="alert('Tooth ache, swelling of jaw, loosing of teeth, necrosis of gums.'); logActivity('Viewed: Clinical Picture');">Clinical Picture (TOUCH)</div>
+        <div class="diag-card" onclick="alert('Nausea, vomiting, foul smell, loss of weight.'); logActivity('Viewed: Others');">Others (TOUCH)</div>`
+      },
+
+      // 7. MLI
+      { render: () => `
+        <div class="slide-title">⚖️ Medicolegal Importance</div>
+        <div class="compare-grid">
+            <div class="diag-card" onclick="alert('Accidental poisoning.'); logActivity('Viewed: Accidental MLI');">Accidental (TOUCH)</div>
+            <div class="diag-card" onclick="alert('Homicidal poisoning.'); logActivity('Viewed: Homicidal MLI');">Homicidal (TOUCH)</div>
+            <div class="diag-card" onclick="alert('Medicolegal aspects of war.'); logActivity('Viewed: War MLI');">War (TOUCH)</div>
+            <div class="diag-card" onclick="alert('MLI for arson.'); logActivity('Viewed: Arson MLI');">Arson (TOUCH)</div>
+        </div>`
+      }
+    ],
+
+    "fm216": [
+      { render: () => `<div class="slide-title">🦴 FM 2.16</div><div class="slide-subtitle">Medicolegal Examination of Bones</div><div class="alert-box alert-yellow"><strong>When identity is destroyed — Science restores it</strong></div>` }
+    ]
+  };
+
+  async function initApp() {
+      studentName = await authenticateStudent();
+      applyWatermark(studentName);
+
+      db.collection("slides").doc("current").onSnapshot((doc) => {
+        if (!doc.exists) { slideEl.innerHTML = "No data found"; return; }
+        
+        const data = doc.data();
+        if (data.status === "locked") {
+          slideEl.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px; margin-bottom:20px;">🔒</div><h2 style="color:#f78166;">Session Ended</h2><p style="color:#8b949e; font-size:18px;">The live lecture has concluded. Materials are currently locked by the instructor.</p></div>`;
+          return; 
+        }
+
+        const topic = data.topic || "fm216"; 
+        const index = Number(data.index) || 0;
+        const slideData = allTopics[topic] ? allTopics[topic][index] : null;
+
+        if (!slideData) slideEl.innerHTML = "End of Lecture";
+        else slideEl.innerHTML = slideData.render(); 
+      });
+  }
+
+  initApp();
+
+</script>
+</body>
+</html>
