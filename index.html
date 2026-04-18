@@ -32,6 +32,8 @@
     
     @keyframes neonPulse { 0% { box-shadow: 0 0 5px #7ee787; border-color: #7ee787; color: #e6edf3; } 100% { box-shadow: 0 0 20px #00ff88; border-color: #00ff88; color: #00ff88; } }
     .diagnostic-glow { animation: neonPulse 1.5s infinite alternate; padding:10px; border-radius:8px; border: 1px solid; margin: 10px 0; font-weight: bold; background: #0d2a1a;}
+    
+    @keyframes ping { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
   </style>
 </head>
 
@@ -44,6 +46,14 @@
         <button onclick="localStorage.clear(); location.reload();" style="background:#334155; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-size:16px; width:100%;">🔄 Reset Device Memory</button>
     </div>
   </div>
+</div>
+
+<div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.95); z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; backdrop-filter: blur(5px);">
+    <button onclick="document.getElementById('lightbox').style.display='none'" style="position:absolute; top:20px; right:20px; background:#f78166; color:white; border:none; padding:10px 20px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; z-index:10001; box-shadow:0 4px 15px rgba(0,0,0,0.5);">❌ CLOSE</button>
+    <div style="position:relative; display:inline-block; max-width:100%; max-height:75vh;">
+        <img id="lb-img" style="max-width:100%; max-height:75vh; border-radius:8px; border:3px solid #58a6ff; object-fit:contain; cursor:crosshair; box-shadow:0 10px 30px rgba(0,0,0,0.8);">
+    </div>
+    <div id="lb-text" style="color:white; font-size:16px; text-align:center; margin-top:20px; max-width:800px; line-height:1.5; background:#1e293b; padding:15px; border-radius:8px; border-left:4px solid #58a6ff;"></div>
 </div>
 
 <script>
@@ -120,6 +130,29 @@
     db.collection("activity_logs").add({ student: studentName, deviceId: deviceId, event: eventName, timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: ctx });
   }
 
+  // --- ZOOM / PINPOINT LIGHTBOX LOGIC ---
+  let currentZoomId = "";
+  window.openZoom = function(src, text, id) {
+      document.getElementById("lb-img").src = src;
+      document.getElementById("lb-text").innerHTML = text;
+      document.getElementById("lightbox").style.display = "flex";
+      currentZoomId = id;
+      logActivity("🔍 Opened Zoom: " + id);
+  };
+
+  document.getElementById("lb-img").addEventListener("click", function(e) {
+      const rect = e.target.getBoundingClientRect();
+      const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+      const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+      
+      logActivity(`🎯 Pinpoint [${currentZoomId}] at X:${x}% Y:${y}%`);
+      
+      let dot = document.createElement('div');
+      dot.style.cssText = `position:absolute; width:30px; height:30px; background:rgba(0,255,136,0.6); border: 2px solid #00ff88; border-radius:50%; top:${e.clientY-15}px; left:${e.clientX-15}px; z-index:10000; pointer-events:none; box-shadow:0 0 15px #00ff88; animation: ping 1s ease-out forwards;`;
+      document.body.appendChild(dot);
+      setTimeout(() => dot.remove(), 1000);
+  });
+
   // --- GAMES & INTERACTIONS ---
   let currentP_Q = 0;
   window.playAllotrope = function(ans) {
@@ -127,7 +160,7 @@
       res.style.display = "block";
       if(currentP_Q === 0) {
           if(ans === 'Red') { 
-              res.innerHTML = "✅ <b>Correct!</b> Match stick striking surfaces use Red Phosphorus.<br><br><button onclick='nextPQ()' style='padding:5px 15px;background:#58a6ff;border:none;border-radius:4px;cursor:pointer;margin-top:10px;'>Next Question ▶</button>"; 
+              res.innerHTML = "✅ <b>Correct!</b> Match stick striking surfaces use Red Phosphorus.<br><br><button onclick='nextPQ()' style='padding:5px 15px;background:#58a6ff;border:none;border-radius:4px;cursor:pointer;margin-top:10px;font-weight:bold;color:white;'>Next Question ▶</button>"; 
               res.className = "alert-box alert-green"; logActivity("Game: Match P -> Correct"); 
           }
           else { res.innerHTML = "❌ <b>Wrong!</b> That form is too dangerous for matches."; res.className = "alert-box alert-red"; logActivity("Game: Match P -> Wrong"); }
@@ -141,7 +174,7 @@
   };
   window.nextPQ = function() {
       currentP_Q = 1;
-      document.getElementById("q-text").innerHTML = "Rat Paste (Ratol)<br><img src='https://i.postimg.cc/CxBKHyxG/Ratol.webp' style='height:120px; border-radius:8px; margin-top:10px;'>";
+      document.getElementById("q-text").innerHTML = "Rat Paste (Ratol)<br><img src='https://i.postimg.cc/CxBKHyxG/Ratol.webp' style='height:120px; border-radius:8px; margin-top:10px; border:2px solid #f78166;'>";
       document.getElementById("gameRes").style.display = "none";
   }
 
@@ -250,8 +283,11 @@
           <div class="stat-pill" style="border-color:#ffa657"><div class="sv" style="color:#ffa657">2–8 Days</div><div class="sl">Fatal Period</div></div>
         </div>
         <div class="text-block" style="border-left:4px solid #58a6ff;"><b>1️⃣ First Stage (Local Irritation):</b> Symptoms occur within mins to hours, last up to 3 days. Burning pain in throat/abdomen, thirst, nausea, severe abdominal pain.<br><br><div class="diagnostic-glow">✨ Breath and excreta have garlic-like odor. Luminescent vomit and faeces are diagnostic.</div>
-          <div class="diag-card" onclick="document.getElementById('b-img').style.display='block'; this.style.display='none'; logActivity('Viewed: Skin Contact Burns');" style="text-align:center;border-color:#f78166;margin:0;">🩹 Skin Contact (TOUCH TO EXPAND)</div>
-          <div id="b-img" style="display:none;text-align:center;"><p style="font-size:13px;color:#f78166;">Produces painful penetrating 2nd and 3rd degree burns which heal slowly.</p><img src="burn.jpg" style="width:100%;max-height:140px;border-radius:8px;"></div>
+          <div class="diag-card" onclick="document.getElementById('b-img').style.display='block'; this.style.display='none'; logActivity('Viewed: Skin Contact Burns Reveal');" style="text-align:center;border-color:#f78166;margin:0;">🩹 Skin Contact (TOUCH TO EXPAND)</div>
+          <div id="b-img" style="display:none;text-align:center;">
+             <p style="font-size:13px;color:#f78166;">Produces painful penetrating 2nd and 3rd degree burns which heal slowly. (Tap image to zoom)</p>
+             <img src="burn.jpg" style="width:100%;max-height:140px;border-radius:8px;cursor:zoom-in;" onclick="openZoom('burn.jpg', 'Produces painful penetrating 2nd and 3rd degree burns which heal slowly.', 'Phos Skin Burns')">
+          </div>
         </div>
         <div class="text-block" style="border-left:4px solid #ffa657;"><b>2️⃣ Second Stage (The Trap):</b> This is a symptom-free period lasting for 2 to 3 days.</div>
         <div class="text-block" style="border-left:4px solid #f78166;"><b>3️⃣ Third Stage (Systemic Toxicity):</b> Hemorrhages occur due to injured blood vessels and inhibited clotting. Death may result from shock, hepatic failure, CNS damage, or renal insufficiency.
@@ -284,12 +320,12 @@
         <div class="text-block"><b>Acute Poisoning:</b><br>• The body usually shows signs of jaundice.<br>• Gastric and intestinal contents may smell of garlic and be luminous.<br>• Mucous membranes of stomach/intestine are yellowish/greyish-white, softened, inflamed, corroded in patches.<br>• Multiple smaller or larger hemorrhages seen in skin, serosal/mucosal membranes, endocardium, lungs, brain.<br>• The heart is flabby, pale. Blood may appear tarry.</div>
         <div style="display:flex;gap:10px;margin-bottom:10px;">
           <div style="flex:1;text-align:center;">
-            <p style="font-size:12px;color:#ffa657;margin-bottom:4px;font-weight:bold;">LIVER (TOUCH)</p>
-            <img src="https://i.postimg.cc/jSwjQVSZ/Phosphorus-Liver-jpeg.png" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('The liver becomes swollen, yellow, soft, fatty and is easily ruptured. Small hemorrhages may be seen on the surface and in the substance.'); logActivity('Viewed: PM Liver');">
+            <p style="font-size:12px;color:#ffa657;margin-bottom:4px;font-weight:bold;">LIVER (TAP TO ZOOM)</p>
+            <img src="https://i.postimg.cc/jSwjQVSZ/Phosphorus-Liver-jpeg.png" class="img-btn" style="margin:0;max-height:120px;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/jSwjQVSZ/Phosphorus-Liver-jpeg.png', '<b>LIVER:</b><br>The liver becomes swollen, yellow, soft, fatty and is easily ruptured. Small hemorrhages may be seen on the surface and in the substance.', 'PM Liver');">
           </div>
           <div style="flex:1;text-align:center;">
-            <p style="font-size:12px;color:#58a6ff;margin-bottom:4px;font-weight:bold;">KIDNEYS (TOUCH)</p>
-            <img src="https://i.postimg.cc/8zJCB8zZ/Phosphorus-Kidney-jpeg-2.png" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('The kidneys are large, greasy, yellow and show hemorrhages on the surface.'); logActivity('Viewed: PM Kidney');">
+            <p style="font-size:12px;color:#58a6ff;margin-bottom:4px;font-weight:bold;">KIDNEYS (TAP TO ZOOM)</p>
+            <img src="https://i.postimg.cc/8zJCB8zZ/Phosphorus-Kidney-jpeg-2.png" class="img-btn" style="margin:0;max-height:120px;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/8zJCB8zZ/Phosphorus-Kidney-jpeg-2.png', '<b>KIDNEYS:</b><br>The kidneys are large, greasy, yellow and show hemorrhages on the surface.', 'PM Kidney');">
           </div>
         </div>
         <div class="alert-box alert-yellow" style="font-size:12px;"><b>Acute Yellow Atrophy (In persons who survive > 1 week):</b><br>• Size: Smaller, irregular, wrinkled capsule (vs P: Enlarged at first).<br>• Color: Bright yellow earlier, deep red later (vs P: Marbled).<br>• Consistency: Very soft and flabby (vs P: Soft, greasy).<br>• Structure: Disintegration/necrosis of most cells (vs P: Fatty degeneration).</div>` 
@@ -329,17 +365,17 @@
         <div class="text-block">Grows all over India. The entire plant is poisonous, though the seeds are the most toxic.</div>
         <div style="position:relative; margin-bottom:10px;">
           <img src="https://i.postimg.cc/76Y897n1/Full-castor-plant-bush.jpg" style="width:100%;border-radius:8px;">
-          <div style="position:absolute;top:20%;left:25%;width:60px;height:60px;border-radius:50%;background:rgba(0,255,0,0.5);border:2px solid #fff;cursor:pointer;" onclick="document.getElementById('rf').style.display='flex'; logActivity('Viewed: Castor Fruit');"></div>
-          <div style="position:absolute;bottom:25%;right:25%;width:60px;height:60px;border-radius:50%;background:rgba(255,100,0,0.5);border:2px solid #fff;cursor:pointer;" onclick="document.getElementById('rs').style.display='flex'; logActivity('Viewed: Castor Seeds');"></div>
+          <div style="position:absolute;top:20%;left:25%;width:60px;height:60px;border-radius:50%;background:rgba(0,255,0,0.5);border:2px solid #fff;cursor:pointer;" onclick="document.getElementById('rf').style.display='flex'; logActivity('Viewed: Castor Fruit Reveal');"></div>
+          <div style="position:absolute;bottom:25%;right:25%;width:60px;height:60px;border-radius:50%;background:rgba(255,100,0,0.5);border:2px solid #fff;cursor:pointer;" onclick="document.getElementById('rs').style.display='flex'; logActivity('Viewed: Castor Seeds Reveal');"></div>
         </div>
         <div class="alert-box alert-yellow" style="text-align:center;font-size:14px;">Touch the Green Fruit or Seeds on the plant above.</div>
         <div id="rf" class="text-block" style="display:none; align-items:center; border-left:4px solid #7ee787;">
-          <div style="flex:1;"><b>FRUIT:</b> 1.2–2.5 cm long, three-lobed, softly spiny. Blue-green or rose-red when immature, turns brown and bristly when ripe/dry.</div>
-          <img src="https://i.postimg.cc/PxrsyZQm/Green-castor-fruit.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;">
+          <div style="flex:1;"><b>FRUIT:</b> 1.2–2.5 cm long, three-lobed, softly spiny. Blue-green or rose-red when immature. (Tap to zoom)</div>
+          <img src="https://i.postimg.cc/PxrsyZQm/Green-castor-fruit.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/PxrsyZQm/Green-castor-fruit.jpg', '<b>CASTOR FRUIT:</b><br>1.2–2.5 cm long, three-lobed, softly spiny. Blue-green or rose-red when immature, turns brown and bristly when ripe/dry.', 'Castor Fruit')">
         </div>
         <div id="rs" class="text-block" style="display:none; align-items:center; border-left:4px solid #ffa657;">
-          <div style="flex:1;"><b>SEEDS:</b> Smooth, flattened-oval, mottled. Light/dark-brown, white with markings, or black/red. Come in big/small sizes and resemble croton seeds.</div>
-          <img src="https://i.postimg.cc/NMfqDTk7/Castor-seeds.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;">
+          <div style="flex:1;"><b>SEEDS:</b> Smooth, flattened-oval, mottled. Resemble croton seeds. (Tap to zoom)</div>
+          <img src="https://i.postimg.cc/NMfqDTk7/Castor-seeds.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/NMfqDTk7/Castor-seeds.jpg', '<b>CASTOR SEEDS:</b><br>Smooth, flattened-oval, mottled. Light/dark-brown, white with markings, or black/red. Come in big/small sizes and resemble croton seeds.', 'Castor Seeds')">
         </div>` 
       },
       // 13. Ricinus Tap-To-Sort Game
@@ -389,12 +425,12 @@
         <div class="slide-subtitle">Croton vs. Castor Comparison</div>
         <div style="display:flex;gap:10px;margin-top:20px;">
           <div style="flex:1;text-align:center;">
-            <p style="color:#f78166;font-weight:bold;margin-bottom:8px;">CROTON SEEDS (TOUCH)</p>
-            <img src="https://i.postimg.cc/j5d0cN4H/Croton-seeds.jpg" class="img-btn" style="height:140px;object-fit:cover;" onclick="alert('CROTON SEEDS:\\nSlightly smaller (about 1.3 cm long). Dull, brownish-yellow, and not distinctly mottled or glossy. The dorsal surface is more convex.'); logActivity('Viewed: Croton Seed Info');">
+            <p style="color:#f78166;font-weight:bold;margin-bottom:8px;">CROTON (TAP TO ZOOM)</p>
+            <img src="https://i.postimg.cc/j5d0cN4H/Croton-seeds.jpg" class="img-btn" style="height:140px;object-fit:cover;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/j5d0cN4H/Croton-seeds.jpg', '<b>CROTON SEEDS:</b><br>Slightly smaller (about 1.3 cm long). Dull, brownish-yellow, and not distinctly mottled or glossy. The dorsal surface is more convex.', 'Croton Seeds');">
           </div>
           <div style="flex:1;text-align:center;">
-            <p style="color:#7ee787;font-weight:bold;margin-bottom:8px;">CASTOR SEEDS (TOUCH)</p>
-            <img src="https://i.postimg.cc/NMfqDTk7/Castor-seeds.jpg" class="img-btn" style="height:140px;object-fit:cover;" onclick="alert('CASTOR SEEDS:\\nLarger, flattened-oval. Highly smooth, glossy, and distinctly mottled with grey, brown, or black markings.'); logActivity('Viewed: Castor Seed Info');">
+            <p style="color:#7ee787;font-weight:bold;margin-bottom:8px;">CASTOR (TAP TO ZOOM)</p>
+            <img src="https://i.postimg.cc/NMfqDTk7/Castor-seeds.jpg" class="img-btn" style="height:140px;object-fit:cover;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/NMfqDTk7/Castor-seeds.jpg', '<b>CASTOR SEEDS:</b><br>Larger, flattened-oval. Highly smooth, glossy, and distinctly mottled with grey, brown, or black markings.', 'Castor Seeds');">
           </div>
         </div>` 
       },
@@ -420,10 +456,10 @@
         <div class="slide-title" style="color:#a78bfa;">🌿 Abrus precatorius</div>
         <div class="slide-subtitle">Seed Identification</div>
         <div style="text-align:center;margin-bottom:15px;">
-          <img src="https://i.postimg.cc/8zJCB8zT/The-red-black-Abrus-seeds.jpg" class="img-btn" style="max-height:200px;width:auto;" onclick="alert('The seeds are egg-shaped, bright scarlet color with a large black spot at one end. They are 8 mm long, 6 mm broad, and weigh 105 mg on average.'); logActivity('Viewed: Abrus Seed Info');">
+          <img src="https://i.postimg.cc/8zJCB8zT/The-red-black-Abrus-seeds.jpg" class="img-btn" style="max-height:200px;width:auto;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/8zJCB8zT/The-red-black-Abrus-seeds.jpg', '<b>ABRUS SEEDS:</b><br>The seeds are egg-shaped, bright scarlet color with a large black spot at one end. They are 8 mm long, 6 mm broad, and weigh 105 mg on average.', 'Abrus Seeds');">
         </div>
         <div class="text-block" style="text-align:center;"><b>Synonyms:</b> Indian liquorice, rosary bead, gunchi, ratti, Gulganji.</div>
-        <div class="alert-box alert-yellow" style="text-align:center;">Touch seed image for physical characteristics.</div>` 
+        <div class="alert-box alert-yellow" style="text-align:center;">Tap the seed image to view details.</div>` 
       },
       // 20. Abrus Active Principles
       { render: () => `
@@ -464,10 +500,10 @@
         <div class="slide-title" style="color:#a78bfa;">🌿 Semecarpus anacardium</div>
         <div class="slide-subtitle">Marking Nut / Bhilawa</div>
         <div style="text-align:center; margin-bottom:10px;">
-          <img src="https://i.postimg.cc/6513v6t7/The-black-Marking-Nut.jpg" class="img-btn" style="max-height:180px;width:auto;">
+          <img src="https://i.postimg.cc/6513v6t7/The-black-Marking-Nut.jpg" class="img-btn" style="max-height:180px;width:auto;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/6513v6t7/The-black-Marking-Nut.jpg', '<b>MARKING NUT:</b><br>The nut is black and heart-shaped. Its pericarp is thick and spongy, containing a highly acrid, black, oily juice.', 'Marking Nut');">
         </div>
         <div class="alert-box alert-yellow" style="text-align:center;">Known as "Marking Nut" because its juice is traditionally used by washermen (dhobis) to mark clothes.</div>
-        <div class="text-block"><b>Identification:</b> The nut is black and heart-shaped. Its pericarp is thick and spongy, containing a highly acrid, black, oily juice.</div>
+        <div class="text-block"><b>Identification:</b> The nut is black and heart-shaped. Its pericarp is thick and spongy, containing a highly acrid, black, oily juice. (Tap image to zoom)</div>
         <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('The dangerous chemicals in the juice are:\\n1. Semecarpol (a monophenol)\\n2. Bhilawanol (an ortho-diphenol)'); logActivity('Viewed: Marking Nut Chem');">🧪 Active Principles (TOUCH TO REVEAL)</div>` 
       },
       // 25. Semecarpus Signs
@@ -498,9 +534,9 @@
         <div class="slide-title" style="color:#a78bfa;">🌿 Calotropis gigantea / procera</div>
         <div class="slide-subtitle">Identification & Active Principles</div>
         <div style="text-align:center;margin-bottom:10px;">
-          <img src="https://i.postimg.cc/V61L8dBV/Calotropis-plant-flower-jpeg.png" class="img-btn" style="max-height:180px;width:auto;">
+          <img src="https://i.postimg.cc/V61L8dBV/Calotropis-plant-flower-jpeg.png" class="img-btn" style="max-height:180px;width:auto;cursor:zoom-in;" onclick="openZoom('https://i.postimg.cc/V61L8dBV/Calotropis-plant-flower-jpeg.png', '<b>CALOTROPIS (Madar/Erukku):</b><br>C. gigantea has purple/white flowers. The entire plant contains a thick, highly irritating milky sap (latex).', 'Calotropis Plant');">
         </div>
-        <div class="text-block"><b>Common Names:</b> Erukku (Tamil), Madar, Aak, Arka, Swallowwort, Giant Milkweed. <i>C. gigantea</i> has purple/white flowers, <i>C. procera</i> has smaller, pale purple flowers.</div>
+        <div class="text-block"><b>Common Names:</b> Erukku (Tamil), Madar, Aak, Arka, Swallowwort, Giant Milkweed. (Tap image to zoom).</div>
         <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('The entire plant contains a thick, tenacious, MILKY SAP (latex) which is highly irritating.'); logActivity('Viewed: Calotropis Latex');">🥛 Distinct Feature (TOUCH TO REVEAL)</div>
         <div class="alert-box alert-yellow">Active: Contains cardiac glycosides, primarily <b>Calotropin</b>, Uscharin, Calotoxin, Gigantin, Calactine. These have a strong effect on the heart.</div>` 
       },
