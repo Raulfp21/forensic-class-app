@@ -978,6 +978,100 @@ Displaying index (10).html.        <div class="diag-card" onclick="alert('Multip
         </div>`
       }
     ],
+// ══════════════════════════════════════════════════════
+      // ORGANIC IRRITANT: RICINUS COMMUNIS (CASTOR)
+      // ══════════════════════════════════════════════════════
+      
+      // SLIDE R1 — BOTANICAL PROFILE & IMAGES
+      { render: () => `
+        <div class="slide-title">🌿 Ricinus communis (Castor)</div>
+        <div class="slide-subtitle">Physical Characters & Identification</div>
+        <div style="display:flex; gap:10px; margin-bottom:15px;">
+          <div style="flex:1;">
+            <p style="color:#7ee787; font-weight:bold; font-size:12px; margin-bottom:5px; text-align:center;">PLANT (TOUCH)</p>
+            <img class="img-btn" src="Screenshot_20260417-211432_Chrome.jpg" 
+                 onclick="alert('CASTOR PLANT:\\nGrows all over India. The entire plant is poisonous, though the seeds are the most toxic.'); logActivity('Viewed: Castor Plant');" 
+                 alt="Plant" style="height:120px; width:100%; object-fit:cover;">
+          </div>
+          <div style="flex:1;">
+            <p style="color:#ffa657; font-weight:bold; font-size:12px; margin-bottom:5px; text-align:center;">FRUIT (TOUCH)</p>
+            <img class="img-btn" src="Screenshot_20260417-211338_Chrome.jpg" 
+                 onclick="alert('FRUIT:\\n1.2 to 2.5 cm long, three-lobed, softly spiny.\\nBlue-green or rose-red when immature, turning brown and bristly when ripe and dry.'); logActivity('Viewed: Castor Fruit');" 
+                 alt="Fruit" style="height:120px; width:100%; object-fit:cover;">
+          </div>
+          <div style="flex:1;">
+            <p style="color:#f78166; font-weight:bold; font-size:12px; margin-bottom:5px; text-align:center;">SEEDS (TOUCH)</p>
+            <img class="img-btn" src="Screenshot_20260417-211212_Chrome.jpg" 
+                 onclick="alert('SEEDS:\\nMottled, flattened-oval, smooth. Come in big and small sizes. They closely resemble croton seeds.'); logActivity('Viewed: Castor Seeds');" 
+                 alt="Seeds" style="height:120px; width:100%; object-fit:cover;">
+          </div>
+        </div>
+        <div class="alert-box alert-yellow" style="text-align:center;"><strong>Touch the images</strong> to reveal botanical identification features.</div>`
+      },
+
+      // SLIDE R2 — ACTIVE PRINCIPLES
+      { render: () => `
+        <div class="slide-title">🧪 Active Principles</div>
+        <div class="slide-subtitle">Toxalbumin Ricin & Allergen CBA</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="alert('RICIN (Toxalbumin):\\nA water-soluble glycoprotein found at the highest level in the seeds. It possesses a special binding protein that allows it to access the ER in GI mucosal cells, causing severe diarrhea.\\n\\nIt can be absorbed via inhalation, ingestion, injection, and skin contact.'); logActivity('Viewed: Ricin');">☠️ Ricin (TOUCH)</div>
+          <div class="diag-card" onclick="alert('CASTOR OIL:\\nContains ricinoleic acid but DOES NOT contain toxalbumin. Therefore, Castor Oil is NON-POISONOUS.'); logActivity('Viewed: Castor Oil');">🛢️ Castor Oil (TOUCH)</div>
+          <div class="diag-card" onclick="alert('PRESS CAKE:\\nThe residue left over after oil extraction. It contains ricin and IS POISONOUS.'); logActivity('Viewed: Press Cake');">🧱 Press Cake (TOUCH)</div>
+          <div class="diag-card" onclick="alert('ALLERGEN (CBA):\\nThe seeds also contain a powerful allergen.'); logActivity('Viewed: Allergen');">🤧 Allergen (TOUCH)</div>
+        </div>
+        <div class="alert-box alert-green" style="margin-top:10px;">
+          📌 <strong>Key Fact:</strong> Unbroken seeds swallowed whole, and seeds that are thoroughly cooked, are <b>non-poisonous</b>.
+        </div>`
+      },
+
+      // SLIDE R3 — SIGNS & SYMPTOMS
+      { render: () => `
+        <div class="slide-title">🩺 Signs & Symptoms</div>
+        <div class="slide-subtitle">Routes of Exposure & Clinical Presentation</div>
+        <div class="diag-card" onclick="alert('DUST INHALATION / CONTACT:\\nWatering of the eyes, conjunctivitis, sneezing, acute nasal inflammation, headache, pharyngitis, asthmatic bronchitis, dermatitis, and gastric upset.'); logActivity('Viewed: Inhalation/Contact');">💨 Dust Inhalation / Contact (TOUCH)</div>
+        <div class="diag-card" onclick="alert('INGESTION (GI):\\nBurning in mouth/throat/stomach. Burns on oral mucosa resemble ALKALI BURNS. Salivation, bloody diarrhea, severe abdominal pain, nausea, vomiting, thirst.'); logActivity('Viewed: Ingestion');">🤮 Ingestion (TOUCH)</div>
+        <div class="diag-card" onclick="alert('SYSTEMIC:\\nImpaired sight, weak rapid pulse, calf/abdominal cramps, hemolysis, drowsiness, delirium, convulsions, shallow breathing, uremia, jaundice, dehydration, collapse, and death.'); logActivity('Viewed: Systemic Ricin');">🩸 Systemic Effects (TOUCH)</div>
+        <div class="alert-box alert-yellow">
+          <strong>Action Time:</strong> Ricin is poorly absorbed. Full effect takes up to 5 days to manifest. It is excreted by the intestinal epithelium.
+        </div>`
+      },
+
+      // SLIDE R4 — FATAL STATS & TREATMENT
+      { render: () => `
+        <div class="slide-title">🆘 Fatal Stats & Treatment</div>
+        <div class="stat-row" style="justify-content:center;">
+          <div class="stat-pill"><div class="sv" style="color:#f78166">5–10</div><div class="sl">Fatal Seeds</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#f78166">60 mg</div><div class="sl">Fatal Ricin Dose</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">2–5 Days</div><div class="sl">Fatal Period</div></div>
+        </div>
+        <div class="compare-grid" style="margin-top:15px;">
+          <div class="diag-card" onclick="alert('Gastric Lavage • Activated Charcoal • Whole Bowel Irrigation'); logActivity('Viewed: Decontamination Ricin');" style="text-align:center;">🧼 Decontamination</div>
+          <div class="diag-card" onclick="alert('Demulcents • Cathartics • Symptomatic Care'); logActivity('Viewed: Supportive Rx Ricin');" style="text-align:center;">💊 Supportive Rx</div>
+        </div>`
+      },
+
+      // SLIDE R5 — POSTMORTEM SIGNS
+      { render: () => `
+        <div class="slide-title">🔬 Postmortem Signs</div>
+        <div class="slide-subtitle">Autopsy Findings</div>
+        <div class="diag-card" onclick="alert('Mucosa is congested, softened, and inflamed with occasional erosions and submucous hemorrhages.\\n\\n⭐ HIGH YIELD: Ricin produces hemorrhagic inflammation of the GIT even when given SUBCUTANEOUSLY!'); logActivity('Viewed: PM GIT Ricin');">🫁 GIT Mucosa (TOUCH)</div>
+        <div class="diag-card" onclick="alert('Dilation of the heart. Hemorrhages in the pleura and pericardium.'); logActivity('Viewed: PM Thorax Ricin');">🫀 Heart & Pleura (TOUCH)</div>
+        <div class="diag-card" onclick="alert('Edema of the liver, kidneys, spleen, and lungs. Hemorrhages in the internal organs.'); logActivity('Viewed: PM Organs Ricin');">🟡 Visceral Edema (TOUCH)</div>
+        <div class="alert-box alert-red" style="margin-top:10px;">
+          📌 <strong>Evidence Collection:</strong> Fragments of seeds may be found in the stomach or intestines.
+        </div>`
+      },
+
+      // SLIDE R6 — MEDICOLEGAL IMPORTANCE
+      { render: () => `
+        <div class="slide-title">⚖️ Circumstances of Poisoning</div>
+        <div class="slide-subtitle">Medicolegal Importance (MLI)</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="alert('Most common. Children eating the attractive, mottled seeds.'); logActivity('Viewed: Accidental Ricin');">🧒 Accidental (TOUCH)</div>
+          <div class="diag-card" onclick="alert('Rarely are powdered seeds given for homicide.\\n\\nNote: Powder applied to eyes causes conjunctivitis.'); logActivity('Viewed: Homicidal Ricin');">🔪 Homicidal (TOUCH)</div>
+          <div class="diag-card" style="grid-column: span 2; background:#2d1215; border-color:#6e2128;" onclick="alert('Bioterrorism:\\nPoisoning water or food, inoculation via ricin-laced projectiles, aerosolization of liquid ricin, or distribution of a powder.'); logActivity('Viewed: Terrorist Ricin');">☠️ Terrorist Use / Biowarfare (TOUCH)</div>
+        </div>`
+      }
 
     "fm216": [
       { render: () => `<div class="slide-title">🦴 FM 2.16</div><div class="slide-subtitle">Medicolegal Examination of Bones</div><div class="alert-box alert-yellow"><strong>When identity is destroyed — Science restores it</strong></div>` }
