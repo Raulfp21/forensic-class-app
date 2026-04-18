@@ -121,12 +121,30 @@
     db.collection("activity_logs").add({ student: studentName, deviceId: deviceId, event: eventName, timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: ctx });
   }
 
-  // --- GAMES ---
+  // --- GAMES & INTERACTIONS ---
+  let currentP_Q = 0;
   window.playAllotrope = function(ans) {
-      let res = document.getElementById("gameRes"); res.style.display = "block";
-      if(ans === 'Red') { res.innerHTML = "✅ Correct! Match stick striking surface uses Red P."; res.className = "alert-box alert-green"; logActivity("Game: Match P -> Correct"); }
-      else { res.innerHTML = "❌ Wrong Allotrope."; res.className = "alert-box alert-red"; logActivity("Game: Match P -> Wrong"); }
+      let res = document.getElementById("gameRes");
+      res.style.display = "block";
+      if(currentP_Q === 0) {
+          if(ans === 'Red') { 
+              res.innerHTML = "✅ <b>Correct!</b> Match stick striking surfaces use Red Phosphorus.<br><br><button onclick='nextPQ()' style='padding:5px 15px;background:#58a6ff;border:none;border-radius:4px;cursor:pointer;'>Next Question ▶</button>"; 
+              res.className = "alert-box alert-green"; logActivity("Game: Match P -> Correct"); 
+          }
+          else { res.innerHTML = "❌ <b>Wrong!</b> That form is too dangerous for matches."; res.className = "alert-box alert-red"; logActivity("Game: Match P -> Wrong"); }
+      } else {
+          if(ans === 'White') { 
+              res.innerHTML = "✅ <b>Correct!</b> Rat pastes (like Ratol) use the highly toxic Yellow/White Phosphorus."; 
+              res.className = "alert-box alert-green"; logActivity("Game: Rat Paste -> Correct"); 
+          }
+          else { res.innerHTML = "❌ <b>Wrong!</b> Rat poison requires the highly toxic allotrope."; res.className = "alert-box alert-red"; logActivity("Game: Rat Paste -> Wrong"); }
+      }
   };
+  window.nextPQ = function() {
+      currentP_Q = 1;
+      document.getElementById("q-text").innerText = "Rat Paste (Ratol)";
+      document.getElementById("gameRes").style.display = "none";
+  }
 
   // Castor Classification Game Logic
   let castorSelected = null;
@@ -140,13 +158,13 @@
       let res = document.getElementById("castorRes");
       res.style.display = "block";
       
-      // Logic: Toxalbumin in seeds (press cake), NOT in oil or whole unbroken seeds. Crushed seeds = toxic.
+      // Toxalbumin is in seeds (press cake, crushed seeds). Not in oil or unbroken seeds.
       if (zone === "SAFE") {
           if (castorSelected === "Unbroken Seed" || castorSelected === "Pure Castor Oil") {
               res.innerHTML = `✅ <b>Correct!</b> ${castorSelected} is non-poisonous.`;
               res.className = "alert-box alert-green"; logActivity(`Game: Castor ${castorSelected} -> Safe (Correct)`);
           } else {
-              res.innerHTML = `❌ <b>Wrong!</b> ${castorSelected} contains the deadly toxalbumin Ricin.`;
+              res.innerHTML = `❌ <b>Wrong!</b> ${castorSelected} exposes the body to the deadly toxalbumin Ricin.`;
               res.className = "alert-box alert-red"; logActivity(`Game: Castor ${castorSelected} -> Safe (Wrong)`);
           }
       } else if (zone === "TOXIC") {
@@ -177,24 +195,48 @@
           <div class="diag-card" onclick="alert('The Rat Paste Ban: In India, Yellow Phosphorus was widely used in 3% rodenticide pastes (e.g., Ratol). Due to mass suicidal poisonings and extreme mortality, the Tamil Nadu Government officially banned its use.'); logActivity('Viewed: India Context');">🇮🇳 Indian Context (TOUCH)</div>
         </div>` 
       },
-      // 2. Allotrope Game
+      // 2. Allotropes Teaching
       { render: () => `
-        <div class="slide-title">🧪 Allotrope Game</div>
-        <div style="text-align:center;font-size:20px;color:#7ee787;margin:15px;font-weight:bold;">Match stick striking surface</div>
-        <div style="display:flex;gap:10px;">
-          <button class="diag-card" style="flex:1;background:#2d1215;border-color:#f78166;text-align:center;" onclick="playAllotrope('Red')">🔴 RED</button>
-          <button class="diag-card" style="flex:1;background:#2b2008;border-color:#ffa657;text-align:center;" onclick="playAllotrope('Yellow')">🟡 YELLOW</button>
-          <button class="diag-card" style="flex:1;background:#0d1a2a;border-color:#58a6ff;text-align:center;" onclick="playAllotrope('White')">⚪ WHITE</button>
-        </div>
-        <div id="gameRes" class="alert-box" style="display:none;"></div>` 
+        <div class="slide-title">🧪 Allotropes of Phosphorus</div>
+        <div class="compare-grid">
+          <div class="diag-card" style="border-color:#58a6ff;">
+            <h3 style="color:#58a6ff;margin-top:0;">⚪/🟡 White (Yellow) Phosphorus</h3>
+            <ul style="padding-left:15px;margin-bottom:0;">
+              <li><b>Highly toxic</b> protoplasmic poison.</li>
+              <li>Spontaneously ignites in air.</li>
+              <li>Shows luminescence (glows).</li>
+              <li>Used in: Old matches, <b>Rat poison (Ratol)</b>.</li>
+              <li style="margin-top:5px;color:#aaa;"><i>Note: Yellow is simply White P with impurities.</i></li>
+            </ul>
+          </div>
+          <div class="diag-card" style="border-color:#f78166;">
+            <h3 style="color:#f78166;margin-top:0;">🔴 Red Phosphorus</h3>
+            <ul style="padding-left:15px;margin-bottom:0;">
+              <li><b>Stable</b> and non-volatile.</li>
+              <li>Does <b>not</b> ignite spontaneously.</li>
+              <li>Much less toxic.</li>
+              <li>Used in: <b>Safety matches (striking surface)</b>.</li>
+            </ul>
+          </div>
+        </div>` 
       },
-      // 3. Mechanism
+      // 3. Allotrope Game
+      { render: () => `
+        <div class="slide-title">🎮 Allotrope Knowledge Check</div>
+        <div style="text-align:center;font-size:20px;color:#7ee787;margin:15px;font-weight:bold;" id="q-text">Match stick striking surface</div>
+        <div style="display:flex;gap:10px;">
+          <button class="diag-card" style="flex:1;background:#2d1215;border-color:#f78166;text-align:center;font-size:16px;" onclick="playAllotrope('Red')">🔴 RED</button>
+          <button class="diag-card" style="flex:1;background:#0d1a2a;border-color:#58a6ff;text-align:center;font-size:16px;" onclick="playAllotrope('White')">⚪/🟡 WHITE or YELLOW</button>
+        </div>
+        <div id="gameRes" class="alert-box" style="display:none; text-align:center;"></div>` 
+      },
+      // 4. Mechanism
       { render: () => `
         <div class="slide-title">⚙️ Mechanism of Action</div>
         <div class="alert-box alert-yellow"><strong>Primary Action:</strong> Phosphorus disrupts fundamental metabolic processes by affecting <b>cellular oxidation</b>.</div>
         <div class="diag-card" style="border-color:#f78166;text-align:center;padding:25px;" onclick="alert('PROTOPLASMIC POISON:\\nA substance that damages or kills living cells by destroying their basic structure and functional components (protoplasm), such as organelles and proteins.'); logActivity('Viewed: Protoplasmic Poison');">☠️ It is a Protoplasmic Poison (TOUCH TO EXPAND)</div>` 
       },
-      // 4. Fulminating
+      // 5. Fulminating
       { render: () => `
         <div class="slide-title">⚡ Fulminating Poisoning</div>
         <div class="alert-box alert-yellow">Occurs when more than <strong>one gram</strong> is ingested.</div>
@@ -202,7 +244,7 @@
         <div class="text-block" style="border-left: 4px solid #ffa657;"><b>🤢 Symptoms:</b> Intense thirst, severe nausea, vomiting, and retching. Those who survive more than 12 hours may become restless, delirious and sometimes maniacal before death.</div>
         <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('MECHANISM:\\nPhosphorus has direct action on the heart and blood vessels.'); logActivity('Viewed: Fulminant Mech');">🫀 Mechanism (TOUCH TO REVEAL)</div>` 
       },
-      // 5. Acute Stages
+      // 6. Acute Stages
       { render: () => `
         <div class="slide-title">🩺 Acute Poisoning Stages</div>
         <div class="stat-row">
@@ -222,7 +264,7 @@
           </div>
         </div>` 
       },
-      // 6. Treatment (Strict 1-10 Order)
+      // 7. Treatment (Strict 1-10 Order)
       { render: () => `
         <div class="slide-title">🆘 Treatment & Management</div>
         <div class="text-block" style="font-size:15px; padding:15px;">
@@ -238,23 +280,23 @@
           <b>10. Contact Burns:</b> Should be thoroughly washed with 1% copper sulphate solution in water.
         </div>` 
       },
-      // 7. PM Appearances
+      // 8. PM Appearances
       { render: () => `
         <div class="slide-title">🔬 Postmortem Appearances</div>
         <div class="text-block"><b>Acute Poisoning:</b><br>• The body usually shows signs of jaundice.<br>• Gastric and intestinal contents may smell of garlic and be luminous.<br>• Mucous membranes of stomach/intestine are yellowish/greyish-white, softened, inflamed, corroded in patches.<br>• Multiple smaller or larger hemorrhages seen in skin, serosal/mucosal membranes, endocardium, lungs, brain.<br>• The heart is flabby, pale. Blood may appear tarry.</div>
         <div style="display:flex;gap:10px;margin-bottom:10px;">
           <div style="flex:1;text-align:center;">
             <p style="font-size:12px;color:#ffa657;margin-bottom:4px;font-weight:bold;">LIVER (TOUCH)</p>
-            <img src="Click on image to zoom.jpeg.jpg" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('The liver becomes swollen, yellow, soft, fatty and is easily ruptured. Small hemorrhages may be seen on the surface and in the substance.'); logActivity('Viewed: PM Liver');">
+            <img src="Click%20on%20image%20to%20zoom.jpeg.jpg" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('The liver becomes swollen, yellow, soft, fatty and is easily ruptured. Small hemorrhages may be seen on the surface and in the substance.'); logActivity('Viewed: PM Liver');">
           </div>
           <div style="flex:1;text-align:center;">
             <p style="font-size:12px;color:#58a6ff;margin-bottom:4px;font-weight:bold;">KIDNEYS (TOUCH)</p>
-            <img src="Click on image to zoom.jpeg 2.jpg" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('The kidneys are large, greasy, yellow and show hemorrhages on the surface.'); logActivity('Viewed: PM Kidney');">
+            <img src="Click%20on%20image%20to%20zoom.jpeg%202.jpg" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('The kidneys are large, greasy, yellow and show hemorrhages on the surface.'); logActivity('Viewed: PM Kidney');">
           </div>
         </div>
         <div class="alert-box alert-yellow" style="font-size:12px;"><b>Acute Yellow Atrophy (In persons who survive > 1 week):</b><br>• Size: Smaller, irregular, wrinkled capsule (vs P: Enlarged at first).<br>• Color: Bright yellow earlier, deep red later (vs P: Marbled).<br>• Consistency: Very soft and flabby (vs P: Soft, greasy).<br>• Structure: Disintegration/necrosis of most cells (vs P: Fatty degeneration).</div>` 
       },
-      // 8. Chronic
+      // 9. Chronic
       { render: () => `
         <div class="slide-title">💀 Chronic Poisoning</div>
         <div class="text-block" style="padding:20px;">
@@ -265,7 +307,7 @@
           <p><b>Systemic:</b> Nausea, vomiting, anorexia, pain in stomach, purging, pain in joints, loss of weight, bronchitis, jaundice, anemia.</p>
         </div>` 
       },
-      // 9. MLI
+      // 10. MLI
       { render: () => `
         <div class="slide-title">⚖️ Medicolegal Importance</div>
         <div class="compare-grid">
@@ -275,14 +317,14 @@
           <div class="diag-card">⚠️ <b>Other:</b> Abortifacient use (introduced vaginally or orally).</div>
         </div>` 
       },
-      // 10. Plants Intro (Toxalbumins)
+      // 11. Plants Intro (Toxalbumins)
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🌿 Organic Irritant Plant Poisons</div>
         <div class="slide-subtitle">Introduction to Toxalbumins</div>
         <div class="text-block">Toxalbumins are a group of toxic albumins found in certain plants, bacteria, and snake venom. <br><br><b>Examples:</b><br>• Phytotoxins: Ricin, crotin, and abrin.<br>• Animal Toxalbumins: Snake and scorpion venoms.</div>
         <div class="diag-card" style="border-color:#a78bfa;text-align:center;padding:20px;" onclick="alert('MECHANISM OF ACTION:\\nThey block protein synthesis by inhibition of RNA polymerase II in ribosomes. They are highly cytotoxic and vasculotoxic. They produce hemorrhagic tendencies and can cause disseminated intravascular coagulation (DIC).'); logActivity('Viewed: Toxalbumin Mechanism');">⚙️ Mechanism of Action (TOUCH TO REVEAL)</div>` 
       },
-      // 11. Ricinus Ident
+      // 12. Ricinus Ident
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🌱 Ricinus communis</div>
         <div class="slide-subtitle">Castor Plant Identification</div>
@@ -302,7 +344,7 @@
           <img src="6275876753918070466.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;">
         </div>` 
       },
-      // 12. Ricinus Tap-To-Sort Game
+      // 13. Ricinus Tap-To-Sort Game
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🧪 Active Principles</div>
         <div class="text-block">The plant contains a powerful allergen (CBA).</div>
@@ -326,7 +368,7 @@
           <div id="castorRes" class="alert-box" style="display:none; margin-top:15px;"></div>
         </div>` 
       },
-      // 13. Ricinus Signs & PM
+      // 14. Ricinus Signs & PM
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🩺 Clinical & Autopsy Findings</div>
         <div class="text-block"><b>💨 Inhalation/Contact:</b> Dust of seeds causes watering eyes, conjunctivitis, sneezing, pharyngitis, asthmatic bronchitis, dermatitis.</div>
@@ -335,7 +377,7 @@
         <div class="text-block"><b>🔬 Autopsy:</b> Mucosa of GIT is congested, softened, inflamed with erosions and submucous hemorrhages. Dilation of heart, edema of liver, kidneys, spleen, lungs. Fragments of seeds may be found in stomach.</div>
         <div class="diag-card" style="border-color:#f78166;text-align:center;padding:15px; margin-top:20px;" onclick="alert('Ricin produces hemorrhagic inflammation of the gastrointestinal tract EVEN WHEN GIVEN SUBCUTANEOUSLY.'); logActivity('Viewed: Ricin High Yield PM');">⭐ HIGH YIELD AUTOPSY FACT (TOUCH TO REVEAL)</div>` 
       },
-      // 14. Croton Intro
+      // 15. Croton Intro
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🌿 Croton tiglium</div>
         <div class="slide-subtitle">Jamalgota</div>
@@ -343,7 +385,7 @@
         <div class="text-block"><b>1. Crotin:</b> A highly toxic glycoprotein <i>toxalbumin</i> found in the seeds. Like ricin, it is destroyed by boiling or cooking.</div>
         <div class="text-block"><b>2. Croton Oil:</b> A yellowish-brown oil found in the seeds. It does NOT contain toxalbumin, but it is an extremely powerful <b>purgative</b> (causing severe diarrhea) and a severe <b>vesicant</b> (causing blisters on contact).</div>` 
       },
-      // 15. Croton vs Castor Seed Comparison
+      // 16. Croton vs Castor Seed Comparison
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🔍 Seed Identification</div>
         <div class="slide-subtitle">Croton vs. Castor Comparison</div>
@@ -358,7 +400,7 @@
           </div>
         </div>` 
       },
-      // 16. Croton Signs & Stats
+      // 17. Croton Signs & Stats
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🩺 Symptoms & Fatal Stats</div>
         <div class="stat-row">
@@ -369,13 +411,13 @@
         <div class="text-block"><b>Ingestion:</b> Severe burning pain from mouth to stomach, violent vomiting, and severe purging (watery diarrhea). Leads to rapid dehydration, cramps, collapse, and death.</div>
         <div class="text-block"><b>Treatment:</b> Stomach wash, demulcents, aggressive IV fluid therapy to correct dehydration, symptomatic care.</div>` 
       },
-      // 17. Croton PM
+      // 18. Croton PM
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🔬 Postmortem Findings</div>
         <div class="text-block" style="padding:20px; font-size:16px;"><b>Internal Findings:</b><br><br>Typical signs of severe gastrointestinal irritation. The mucosa of the stomach and bowels is deeply congested, softened, inflamed, and may show submucous hemorrhages.</div>
         <div class="diag-card" style="border-color:#f78166;text-align:center;padding:20px;margin-top:20px;" onclick="alert('Check the mouth and face carefully. If croton oil was ingested or applied, you may find distinct vesication (blistering) on the skin of the face, lips, and oral mucosa.'); logActivity('Viewed: Croton Vesication Check');">⭐ HIGH YIELD AUTOPSY FACT (TOUCH)</div>` 
       },
-      // 18. Abrus Intro
+      // 19. Abrus Intro
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🌿 Abrus precatorius</div>
         <div class="slide-subtitle">Seed Identification</div>
@@ -385,14 +427,14 @@
         <div class="text-block" style="text-align:center;"><b>Synonyms:</b> Indian liquorice, rosary bead, gunchi, ratti, Gulganji.</div>
         <div class="alert-box alert-yellow" style="text-align:center;">Touch seed image for physical characteristics.</div>` 
       },
-      // 19. Abrus Active Principles
+      // 20. Abrus Active Principles
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🧪 Active Principles (Abrin)</div>
         <div class="alert-box alert-yellow"><b>ALL PARTS</b> of the plant are poisonous, but the seeds contain <b>Abrin</b>, a highly toxic toxalbumin.</div>
         <div class="text-block"><b>Mechanism:</b> Abrin inhibits protein synthesis and causes cell death.</div>
         <div class="diag-card" style="border-color:#f78166;text-align:center;padding:20px;" onclick="alert('Abrin is similar in action to VIPERINE SNAKE VENOM.\\n\\nIt is both a human and animal poison.\\n\\nNote: Subcutaneously, abrin is 100 times as toxic as by the oral route.'); logActivity('Viewed: Abrin High Yield');">⭐ High-Yield Tox Facts (TOUCH TO EXPAND)</div>` 
       },
-      // 20. Abrus Signs
+      // 21. Abrus Signs
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🩺 Symptoms & Fatal Stats</div>
         <div class="stat-row">
@@ -402,7 +444,7 @@
         <div class="text-block"><b>Ingestion:</b> Symptoms delayed by few hours to 2 or 3 days. Causes severe irritation of upper GI tract, bloody diarrhea, weak rapid pulse, miosis, rectal bleeding. Delayed cytotoxic effects in CNS, liver, kidneys, adrenals (2 to 5 days).</div>
         <div class="text-block"><b>Injection:</b> At site, painful swelling, ecchymosis, inflammation, necrosis develops. Systemic faintness, vertigo, dyspnea, convulsions precede cardiac failure.</div>` 
       },
-      // 21. Abrus Rx & PM
+      // 22. Abrus Rx & PM
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🆘 Treatment & Autopsy</div>
         <div class="text-block"><b>Standard Rx:</b> Gastric lavage, activated charcoal, purgatives. <br><i>Injection Rx:</i> The injected needle must be dissected out surgically.</div>
@@ -410,7 +452,7 @@
         <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('Give Sodium bicarbonate 10 g orally per day.\\n\\nThis maintains alkalinity of urine, prevents agglutination of red cells, and stops the blocking of renal tubules with hemoglobin G.'); logActivity('Viewed: Sod Bicarb Rx');">🛡️ Systemic Protection (TOUCH TO REVEAL)</div>
         <div class="text-block"><b>Autopsy Findings:</b> Edema at injection site. Petechial hemorrhages under skin, pleura, pericardium, peritoneum. Internal organs congested/hemorrhagic. Fragments of needle may be found.</div>` 
       },
-      // 22. Abrus MLI (Sui)
+      // 23. Abrus MLI (Sui)
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">⚖️ MLI & "Sui" Poisoning</div>
         <div class="slide-subtitle">Cattle Assassination & Homicide</div>
@@ -419,7 +461,7 @@
         <div class="text-block"><b>Homicide:</b> The needle is kept between two fingers, and the victim is slapped, driving needle into body.</div>
         <div class="text-block"><b>Other Uses:</b> Powdered seeds used by malingerers to produce conjunctivitis. Used internally to prevent conception or as abortifacient.</div>` 
       },
-      // 23. Semecarpus Intro
+      // 24. Semecarpus Intro
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🌿 Semecarpus anacardium</div>
         <div class="slide-subtitle">Marking Nut / Bhilawa</div>
@@ -430,7 +472,7 @@
         <div class="text-block"><b>Identification:</b> The nut is black and heart-shaped. Its pericarp is thick and spongy, containing a highly acrid, black, oily juice.</div>
         <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('The dangerous chemicals in the juice are:\\n1. Semecarpol (a monophenol)\\n2. Bhilawanol (an ortho-diphenol)'); logActivity('Viewed: Marking Nut Chem');">🧪 Active Principles (TOUCH TO REVEAL)</div>` 
       },
-      // 24. Semecarpus Signs
+      // 25. Semecarpus Signs
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🩺 Routes of Exposure & Symptoms</div>
         <div class="stat-row">
@@ -440,31 +482,31 @@
         <div class="text-block"><b>Skin Contact:</b> The juice is a powerful vesicant. Application causes intense itching, redness (erythema), and formation of painful blisters containing acrid serum.</div>
         <div class="text-block"><b>Ingestion:</b> Causes blisters in mouth/throat, severe GI irritation, dysphagia, violent vomiting, bloody diarrhea. Systemically causes dyspnea, cyanosis, delirium, coma, death.</div>` 
       },
-      // 25. Semecarpus PM & Rx
+      // 26. Semecarpus PM & Rx
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🆘 Treatment & Autopsy Findings</div>
         <div class="text-block"><b>Treatment:</b><br>- Local: Wash affected skin thoroughly with warm water/soap, or swab with alcohol to remove oily juice. Apply soothing bland ointments.<br>- Systemic: Stomach wash with warm water (if ingested), demulcents, symptomatic management.</div>
         <div class="text-block"><b>Postmortem Appearances:</b> Blisters may be visible on skin, lips, oral mucosa. Internal GI mucosa is congested, inflamed, and may show distinct blisters. General signs of visceral congestion.</div>` 
       },
-      // 26. Semecarpus MLI
+      // 27. Semecarpus MLI
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">⚖️ MLI & Malingering</div>
         <div class="slide-subtitle">The Artificial Bruise</div>
         <div class="text-block"><b>Criminal Abortion:</b> The juice is sometimes applied locally to the os uteri using an abortion stick to induce criminal abortion.</div>
         <div class="diag-card" style="border-color:#f78166;padding:15px;margin-top:15px;" onclick="alert('Malingerers apply juice to create an artificial bruise.\\n\\nHow to differentiate from a real bruise:\\n1. Color: Does not undergo typical Hb degradation color changes.\\n2. Blistering: Shows typical vesication containing acrid serum.\\n3. Margins: Highly regular/well-defined where juice was painted.\\n4. Sensation: Causes severe itching (real bruise causes pain).\\n5. Chemistry: Analysis detects Semecarpol/Bhilawanol.'); logActivity('Viewed: Artificial Bruise Points');">🕵️ THE ARTIFICIAL BRUISE (TOUCH TO EXPAND)</div>` 
       },
-      // 27. Calotropis Intro
+      // 28. Calotropis Intro
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🌿 Calotropis gigantea / procera</div>
         <div class="slide-subtitle">Identification & Active Principles</div>
         <div style="text-align:center;margin-bottom:10px;">
-          <img src="Akanda Crown Flower (Calotropis Gigantea ) Plant - Nestreeo.com.jpeg.jpg" class="img-btn" style="max-height:180px;width:auto;">
+          <img src="Akanda%20Crown%20Flower%20(Calotropis%20Gigantea%20)%20Plant%20-%20Nestreeo.com.jpeg.jpg" class="img-btn" style="max-height:180px;width:auto;">
         </div>
         <div class="text-block"><b>Common Names:</b> Erukku (Tamil), Madar, Aak, Arka, Swallowwort, Giant Milkweed. <i>C. gigantea</i> has purple/white flowers, <i>C. procera</i> has smaller, pale purple flowers.</div>
         <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('The entire plant contains a thick, tenacious, MILKY SAP (latex) which is highly irritating.'); logActivity('Viewed: Calotropis Latex');">🥛 Distinct Feature (TOUCH TO REVEAL)</div>
         <div class="alert-box alert-yellow">Active: Contains cardiac glycosides, primarily <b>Calotropin</b>, Uscharin, Calotoxin, Gigantin, Calactine. These have a strong effect on the heart.</div>` 
       },
-      // 28. Calotropis Signs
+      // 29. Calotropis Signs
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🩺 Routes of Exposure & Symptoms</div>
         <div class="stat-row">
@@ -474,13 +516,13 @@
         <div class="text-block"><b>Local Application (Skin/Eyes):</b> Causes intense pain, redness, blistering on skin. Application to eyes leads to severe conjunctivitis, keratitis, and temporary or permanent <b>blindness</b>.</div>
         <div class="text-block"><b>Ingestion:</b> Acrid juice causes burning in mouth/throat/stomach. Nausea, vomiting, diarrhea, intense abdominal pain, weak pulse, dilated pupils, delirium, convulsions, collapse. <b>Death from cardiac failure.</b></div>` 
       },
-      // 29. Calotropis PM & Rx
+      // 30. Calotropis PM & Rx
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">🆘 Treatment & Autopsy</div>
         <div class="text-block"><b>Treatment:</b><br>- Skin/Eyes: Wash thoroughly with water. Instill local anesthetics and atropine in the eye to reduce pain/inflammation.<br>- Ingestion: Stomach wash, demulcents, supportive therapy to manage cardiac failure.</div>
         <div class="text-block"><b>Postmortem Appearances:</b><br>General signs of an irritant poison are present. GI mucosa is congested, inflamed, may show distinct blisters. <b>Visceral congestion</b> and signs of cardiac failure (dilated heart, pulmonary edema).</div>` 
       },
-      // 30. Calotropis MLI
+      // 31. Calotropis MLI
       { render: () => `
         <div class="slide-title" style="color:#a78bfa;">⚖️ Medicolegal Importance</div>
         <div class="diag-card" style="border-color:#f78166;padding:15px;" onclick="alert('Locally used for criminal abortion, applied to the os uteri using an abortion stick to cause uterine irritation and expulsion of the fetus.'); logActivity('Viewed: Calotropis Abortion');">⚠️ Abortifacient (TOUCH TO EXPAND)</div>
