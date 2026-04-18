@@ -23,25 +23,28 @@
     #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
     #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; line-height: 1.5; }
     
-    .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-size: 14px; font-weight:bold; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; margin-top: 20px; border-bottom:1px solid #333; padding-bottom:5px;}
     .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
     .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; flex: 1; }
     .stat-box .stat-label { font-size: 10px; color: #555; text-transform: uppercase; margin-bottom: 4px; }
     .stat-box .stat-value { font-size: 24px; font-weight: bold; }
-    .stat-box.green .stat-value { color: #00ff88; }
-    .stat-box.red .stat-value { color: #ff4444; }
-    .stat-box.gray .stat-value { color: #a0a0a0; }
     
     #missingWrap { background: #1a0f0f; border: 1px solid #3b0000; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; }
-    .missing-pill { display: inline-block; background: #2d1215; color: #f78166; border: 1px solid #6e2128; border-radius: 4px; padding: 4px 8px; font-size: 11px; margin: 4px; }
+    .missing-pill { display: inline-block; background: #2d1215; color: #f78166; border: 1px solid #6e2128; border-radius: 4px; padding: 4px 8px; font-size: 12px; margin: 4px; }
     
     #logTable { width: 100%; border-collapse: collapse; font-size: 13px; }
     #logTable th { text-align: left; padding: 10px; color: #555; font-size: 10px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; background: #111; }
     #logTable td { padding: 10px; border-bottom: 1px solid #111; vertical-align: top; }
     
-    #activeNamesWrap, #idleWrap { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; margin-bottom: 24px; }
-    .flag-pill { border-radius: 20px; padding: 4px 12px; font-size: 12px; border:1px solid #004422; background:#0d2a1a; color:#00ff88;}
-    .flag-pill.idle { background: #2a2a2a; color: #a0a0a0; border-color: #444; }
+    .names-container { display: flex; flex-wrap: wrap; gap: 8px; min-height: 45px; margin-bottom: 15px; background:#111; padding:15px; border-radius:8px; border:1px solid #222;}
+    
+    /* Name Pill Styles */
+    .flag-pill { border-radius: 6px; padding: 6px 12px; font-size: 14px; font-weight:bold; font-family: 'Segoe UI', sans-serif;}
+    .pill-active { background: #00ff88; color: #000; }
+    .pill-idle { background: #ffcc00; color: #000; border: 2px solid #b38f00;}
+    .pill-left { background: #ff4444; color: #fff; border: 2px solid #cc0000;}
+
+    @keyframes ping { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
   </style>
 </head>
 <body>
@@ -62,26 +65,37 @@
   <div id="slideInfo">Topic: — | Slide: —</div>
 </div>
 
-<div class="section-title">Current Slide Preview</div>
+<div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(10,10,10,0.95); z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
+    <button onclick="document.getElementById('lightbox').style.display='none'" style="position:absolute; top:20px; right:20px; background:#f78166; color:white; border:none; padding:10px 20px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; z-index:10001;">❌ CLOSE DEMO</button>
+    <div style="position:relative; display:inline-block; max-width:100%; max-height:75vh;">
+        <img id="lb-img" style="max-width:100%; max-height:75vh; border-radius:8px; border:3px solid #58a6ff; object-fit:contain; cursor:crosshair;">
+    </div>
+    <div id="lb-text" style="color:white; font-size:16px; text-align:center; margin-top:20px; max-width:800px; line-height:1.5; background:#111; padding:15px; border-radius:8px; border-left:4px solid #58a6ff;"></div>
+</div>
+
+<div class="section-title" style="color:#58a6ff;">Current Slide Preview</div>
 <div id="slidePreview">Loading...</div>
 
 <div class="stats-row">
-  <div class="stat-box green"><div class="stat-label">Actively Interacting</div><div class="stat-value" id="statInteracted">0</div></div>
-  <div class="stat-box gray"><div class="stat-label">Logged In but Idle</div><div class="stat-value" id="statIdle">0</div></div>
-  <div class="stat-box red"><div class="stat-label">Left/Switched Tabs</div><div class="stat-value" id="statLeft">0</div></div>
+  <div class="stat-box"><div class="stat-label">Actively Touching</div><div class="stat-value" id="statInteracted" style="color:#00ff88;">0</div></div>
+  <div class="stat-box"><div class="stat-label">NO TOUCH (Idle)</div><div class="stat-value" id="statIdle" style="color:#ffcc00;">0</div></div>
+  <div class="stat-box"><div class="stat-label">Switched Tabs / Left</div><div class="stat-value" id="statLeft" style="color:#ff4444;">0</div></div>
 </div>
 
-<div class="section-title" style="color: #00ff88;">✅ Actively Interacting Users</div>
-<div id="activeNamesWrap"><span style="color:#444;font-size:12px;">Waiting for interactions...</span></div>
+<div class="section-title" style="color: #ff4444;">🔴 Switched Tabs / Left App (Call Them Back)</div>
+<div class="names-container" id="leftWrap"><span style="color:#444;font-size:12px;">No one has left the app.</span></div>
 
-<div class="section-title" style="color: #a0a0a0;">💤 Idle Students (Logged in, but no recent clicks)</div>
-<div id="idleWrap"><span style="color:#444;font-size:12px;">Waiting for data...</span></div>
+<div class="section-title" style="color: #ffcc00;">🟡 NO TOUCH / Idle (Ask them to interact)</div>
+<div class="names-container" id="idleWrap"><span style="color:#444;font-size:12px;">Waiting for data...</span></div>
 
-<div class="section-title" id="missingTitle">❌ Missing Students (2023 Batch Tracker)</div>
+<div class="section-title" style="color: #00ff88;">🟢 Actively Touching & Interacting</div>
+<div class="names-container" id="activeNamesWrap"><span style="color:#444;font-size:12px;">Waiting for interactions...</span></div>
+
+<div class="section-title" id="missingTitle" style="color:#aaa;">❌ Absent Students (2023 Batch)</div>
 <div id="missingWrap"><span style="color:#444;font-size:12px;">Waiting for data...</span></div>
 
-<div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
-  <div class="section-title" style="margin:0;">Live Activity Log</div>
+<div style="display:flex; justify-content:space-between; margin-bottom:10px; margin-top:30px; align-items:center;">
+  <div class="section-title" style="margin:0; color:#58a6ff;">Live Activity Log</div>
   <div>
     <button onclick="exportAttendance()" style="background:#00ff88;color:#000;padding:6px 14px;font-size:12px;border:none;border-radius:4px;cursor:pointer;">Download Attendance CSV</button>
     <button onclick="clearLogs()" style="background:#1a0000;color:#ff4444;border:1px solid #3b0000;padding:6px 14px;font-size:12px;border-radius:4px;cursor:pointer;margin-left:10px;">Clear Live Logs</button>
@@ -159,10 +173,30 @@
     document.getElementById("slidePreview").innerHTML = allTopics[topic][idx] || "End of Lecture";
   });
 
-  // --- LIVE ACTIVITY TRACKING & ABSENTEE LOGIC ---
-  const flaggedStudentsLeft = new Set(); // Tracks students who leave/switch tabs
+  // --- ZOOM / PINPOINT LIGHTBOX LOGIC FOR TEACHERS ---
+  let currentZoomId = "";
+  window.openZoom = function(src, text, id) {
+      document.getElementById("lb-img").src = src;
+      document.getElementById("lb-text").innerHTML = text;
+      document.getElementById("lightbox").style.display = "flex";
+      currentZoomId = id;
+  };
 
-  db.collection("activity_logs").orderBy("timestamp", "desc").limit(200).onSnapshot((snap) => {
+  document.getElementById("lb-img").addEventListener("click", function(e) {
+      const rect = e.target.getBoundingClientRect();
+      const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+      const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+      
+      let dot = document.createElement('div');
+      dot.style.cssText = `position:absolute; width:30px; height:30px; background:rgba(0,255,136,0.6); border: 2px solid #00ff88; border-radius:50%; top:${e.clientY-15}px; left:${e.clientX-15}px; z-index:10000; pointer-events:none; box-shadow:0 0 15px #00ff88; animation: ping 1s ease-out forwards;`;
+      document.body.appendChild(dot);
+      setTimeout(() => dot.remove(), 1000);
+  });
+
+  // --- LIVE ACTIVITY TRACKING & ABSENTEE LOGIC ---
+  const flaggedStudentsLeft = new Set(); 
+
+  db.collection("activity_logs").orderBy("timestamp", "desc").limit(300).onSnapshot((snap) => {
       let allPresentSet = new Set(); // Anyone who has ever joined
       let interactedSet = new Set(); // Anyone who has actively clicked something
       let leftCount = 0;
@@ -174,32 +208,32 @@
         
         allPresentSet.add(d.student);
         
-        // Logic for tracking interactions vs leaving
         if (d.event.includes("Left") || d.event.includes("Closed") || d.event.includes("Switched")) { 
             leftCount++; 
             flaggedStudentsLeft.add(d.student); 
         }
-        if (d.event.includes("Game") || d.event.includes("Viewed") || d.event.includes("Quiz") || d.event.includes("Burn") || d.event.includes("Returned")) { 
+        if (d.event.includes("Game") || d.event.includes("Viewed") || d.event.includes("Quiz") || d.event.includes("Burn") || d.event.includes("Returned") || d.event.includes("Pinpoint") || d.event.includes("Zoom")) { 
             interactedSet.add(d.student); 
-            flaggedStudentsLeft.delete(d.student); // Removes them from "Left" if they come back and click
+            flaggedStudentsLeft.delete(d.student); 
         }
 
         // Format Log Table rows
-        let eventColor = d.event.includes("Left") ? "#ff4444" : "#00cc66";
+        let eventColor = d.event.includes("Left") ? "#ff4444" : (d.event.includes("Pinpoint") ? "#58a6ff" : "#00cc66");
+        let eventWeight = d.event.includes("Pinpoint") ? "bold" : "normal";
         let timeStr = d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "-";
         let ctxShort = (d.slideContext || "").substring(0, 30) + "...";
         
         rows.push(`<tr>
             <td style="color:#777;">${timeStr}</td>
             <td style="color:#60a5fa; font-weight:bold;">${d.student}</td>
-            <td style="color:${eventColor};">${d.event}</td>
+            <td style="color:${eventColor}; font-weight:${eventWeight};">${d.event}</td>
             <td style="color:#aaa;">${ctxShort}</td>
         </tr>`);
       });
       
       document.getElementById("logBody").innerHTML = rows.length > 0 ? rows.join("") : `<tr><td colspan="4" style="padding:16px; color:#444;">No activity yet</td></tr>`;
       
-      // Calculate Idle Students (Present, but haven't clicked anything, and haven't left)
+      // Calculate Idle Students
       let idleStudents = Array.from(allPresentSet).filter(s => !interactedSet.has(s) && !flaggedStudentsLeft.has(s));
       
       // Update Top Stat Boxes
@@ -207,9 +241,10 @@
       document.getElementById("statIdle").innerText = idleStudents.length;
       document.getElementById("statLeft").innerText = leftCount;
       
-      // Render Pill Boxes
-      document.getElementById("activeNamesWrap").innerHTML = Array.from(interactedSet).map(s => `<span class="flag-pill">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Waiting for interactions...</span>';
-      document.getElementById("idleWrap").innerHTML = idleStudents.map(s => `<span class="flag-pill idle">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Everyone logged in is active!</span>';
+      // EXPLICITLY RENDER THE NAMES IN THE PILL BOXES
+      document.getElementById("activeNamesWrap").innerHTML = Array.from(interactedSet).map(s => `<span class="flag-pill pill-active">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Waiting for interactions...</span>';
+      document.getElementById("idleWrap").innerHTML = idleStudents.map(s => `<span class="flag-pill pill-idle">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Everyone logged in is actively participating!</span>';
+      document.getElementById("leftWrap").innerHTML = Array.from(flaggedStudentsLeft).map(s => `<span class="flag-pill pill-left">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">No one has left the app.</span>';
 
       // --- 2023 BATCH MISSING TRACKER ---
       const missingStudents = [];
@@ -221,7 +256,7 @@
           if(!found) missingStudents.push(`${regNo} - ${name}`);
       });
       
-      document.getElementById("missingTitle").innerText = `❌ Missing Students (${missingStudents.length} Absent)`;
+      document.getElementById("missingTitle").innerText = `❌ Missing / Absent Students (${missingStudents.length} Absent)`;
       document.getElementById("missingWrap").innerHTML = missingStudents.map(s => `<span class="missing-pill">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Everyone is present!</span>';
   });
 
@@ -245,20 +280,23 @@
         if (!d.student || d.student.includes("FACULTY")) return;
         
         if (!data[d.student]) {
-            data[d.student] = { interactions: 0, exits: 0, firstSeen: d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "N/A" };
+            data[d.student] = { interactions: 0, pinpoints: 0, exits: 0, firstSeen: d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "N/A" };
         }
         
-        if (d.event.includes("Game") || d.event.includes("Viewed") || d.event.includes("Quiz") || d.event.includes("Burn")) {
+        if (d.event.includes("Game") || d.event.includes("Viewed") || d.event.includes("Quiz") || d.event.includes("Burn") || d.event.includes("Zoom")) {
             data[d.student].interactions++;
+        }
+        if (d.event.includes("Pinpoint")) {
+            data[d.student].pinpoints++;
         }
         if (d.event.includes("Left") || d.event.includes("Switched")) {
             data[d.student].exits++;
         }
     });
     
-    let csv = "data:text/csv;charset=utf-8,Student Identity,First Seen,Total Interactions,Tab Switches/Exits\n";
+    let csv = "data:text/csv;charset=utf-8,Student Identity,First Seen,General Interactions,Pinpoint Interactions,Tab Switches/Exits\n";
     Object.keys(data).forEach(k => {
-        csv += `"${k}","${data[k].firstSeen}","${data[k].interactions}","${data[k].exits}"\n`;
+        csv += `"${k}","${data[k].firstSeen}","${data[k].interactions}","${data[k].pinpoints}","${data[k].exits}"\n`;
     });
     
     const link = document.createElement("a");
