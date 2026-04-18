@@ -8,21 +8,26 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
     h1 { font-size: 20px; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 12px; }
+    
     .stream-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 15px; background: #111; border-radius: 8px; border: 1px solid #222; }
-    .btn-stream { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; font-family: 'Courier New', monospace; background: #58a6ff; color:#000;}
+    .btn-stream { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; font-family: 'Courier New', monospace; background: #58a6ff; color:#000; transition: transform 0.2s;}
+    .btn-stream:hover { transform: scale(1.02); }
+    
     .top-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
     button { padding: 10px 24px; font-size: 16px; font-family: 'Courier New', monospace; cursor: pointer; border: none; border-radius: 6px; font-weight: bold; }
     #btnPrev { background: #374151; color: #fff; }
     #btnNext { background: #00ff88; color: #000; }
     .btn-lock { background: #ff4444; color: white; }
     .btn-unlock { background: #0d2a1a; color: #00ff88; border: 1px solid #00ff88; }
+    
     #slideInfo { font-size: 13px; color: #666; padding: 8px 14px; background: #111; border: 1px solid #222; border-radius: 6px; }
     #slidePreview { font-family: Arial, sans-serif; font-size: 14px; color: #e0e0e0; background: #111; border: 1px solid #1e3a2f; border-radius: 8px; padding: 15px; margin-bottom: 24px; max-height: 200px; overflow-y: auto; line-height: 1.5; }
+    
     .section-title { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
     .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-    .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; }
+    .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 18px; min-width: 120px; flex: 1; }
     .stat-box .stat-label { font-size: 10px; color: #555; text-transform: uppercase; margin-bottom: 4px; }
-    .stat-box .stat-value { font-size: 22px; font-weight: bold; }
+    .stat-box .stat-value { font-size: 24px; font-weight: bold; }
     .stat-box.green .stat-value { color: #00ff88; }
     .stat-box.red .stat-value { color: #ff4444; }
     .stat-box.gray .stat-value { color: #a0a0a0; }
@@ -31,10 +36,11 @@
     .missing-pill { display: inline-block; background: #2d1215; color: #f78166; border: 1px solid #6e2128; border-radius: 4px; padding: 4px 8px; font-size: 11px; margin: 4px; }
     
     #logTable { width: 100%; border-collapse: collapse; font-size: 13px; }
-    #logTable th { text-align: left; padding: 8px; color: #555; font-size: 10px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; }
-    #logTable td { padding: 8px; border-bottom: 1px solid #111; vertical-align: top; }
+    #logTable th { text-align: left; padding: 10px; color: #555; font-size: 10px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; background: #111; }
+    #logTable td { padding: 10px; border-bottom: 1px solid #111; vertical-align: top; }
+    
     #activeNamesWrap, #idleWrap { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; margin-bottom: 24px; }
-    .flag-pill { border-radius: 20px; padding: 4px 12px; font-size: 12px; border:1px solid #004422;}
+    .flag-pill { border-radius: 20px; padding: 4px 12px; font-size: 12px; border:1px solid #004422; background:#0d2a1a; color:#00ff88;}
     .flag-pill.idle { background: #2a2a2a; color: #a0a0a0; border-color: #444; }
   </style>
 </head>
@@ -50,9 +56,9 @@
   <button id="btnPrev" onclick="prev()">◀ Prev</button>
   <button id="btnNext" onclick="next()">Next ▶</button>
   <span style="color:#444;">|</span>
-  <button class="btn-lock" onclick="setSessionStatus('locked')">🔒 End & Lock</button>
-  <button class="btn-unlock" onclick="setSessionStatus('live')">🔓 Unlock</button>
-  <button class="btn-unlock" style="background:#ffcc00; color:#000; margin-left:auto;" onclick="unblockStudent()">🔓 Unblock ID</button>
+  <button class="btn-lock" onclick="setSessionStatus('locked')">🔒 End & Lock Class</button>
+  <button class="btn-unlock" onclick="setSessionStatus('live')">🔓 Unlock Class</button>
+  <button class="btn-unlock" style="background:#ffcc00; color:#000; margin-left:auto;" onclick="unblockStudent()">🔓 Unblock a Device ID</button>
   <div id="slideInfo">Topic: — | Slide: —</div>
 </div>
 
@@ -62,34 +68,35 @@
 <div class="stats-row">
   <div class="stat-box green"><div class="stat-label">Actively Interacting</div><div class="stat-value" id="statInteracted">0</div></div>
   <div class="stat-box gray"><div class="stat-label">Logged In but Idle</div><div class="stat-value" id="statIdle">0</div></div>
-  <div class="stat-box red"><div class="stat-label">Left/Switched</div><div class="stat-value" id="statLeft">0</div></div>
+  <div class="stat-box red"><div class="stat-label">Left/Switched Tabs</div><div class="stat-value" id="statLeft">0</div></div>
 </div>
 
 <div class="section-title" style="color: #00ff88;">✅ Actively Interacting Users</div>
-<div id="activeNamesWrap"><span style="color:#444;font-size:12px;">Waiting...</span></div>
+<div id="activeNamesWrap"><span style="color:#444;font-size:12px;">Waiting for interactions...</span></div>
 
-<div class="section-title" style="color: #a0a0a0;">💤 Idle Students (Logged in, but no clicks)</div>
-<div id="idleWrap"><span style="color:#444;font-size:12px;">Waiting...</span></div>
+<div class="section-title" style="color: #a0a0a0;">💤 Idle Students (Logged in, but no recent clicks)</div>
+<div id="idleWrap"><span style="color:#444;font-size:12px;">Waiting for data...</span></div>
 
-<div class="section-title" id="missingTitle">❌ Missing Students (2023 Batch)</div>
+<div class="section-title" id="missingTitle">❌ Missing Students (2023 Batch Tracker)</div>
 <div id="missingWrap"><span style="color:#444;font-size:12px;">Waiting for data...</span></div>
 
 <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
   <div class="section-title" style="margin:0;">Live Activity Log</div>
   <div>
-    <button onclick="exportAttendance()" style="background:#00ff88;color:#000;padding:6px 14px;font-size:12px;border:none;border-radius:4px;cursor:pointer;">Download Report</button>
-    <button onclick="clearLogs()" style="background:#1a0000;color:#ff4444;border:1px solid #3b0000;padding:6px 14px;font-size:12px;border-radius:4px;cursor:pointer;">Clear Logs</button>
+    <button onclick="exportAttendance()" style="background:#00ff88;color:#000;padding:6px 14px;font-size:12px;border:none;border-radius:4px;cursor:pointer;">Download Attendance CSV</button>
+    <button onclick="clearLogs()" style="background:#1a0000;color:#ff4444;border:1px solid #3b0000;padding:6px 14px;font-size:12px;border-radius:4px;cursor:pointer;margin-left:10px;">Clear Live Logs</button>
   </div>
 </div>
 
 <div style="overflow-x:auto; border:1px solid #1a1a1a; border-radius:8px;">
   <table id="logTable">
-    <thead><tr><th>Time</th><th>Student</th><th>Event</th><th>Context</th></tr></thead>
-    <tbody id="logBody"><tr><td colspan="4" style="padding:16px;">Waiting...</td></tr></tbody>
+    <thead><tr><th>Time</th><th>Student Identity</th><th>Event Action</th><th>Context</th></tr></thead>
+    <tbody id="logBody"><tr><td colspan="4" style="padding:16px; color:#444;">Waiting for student activity...</td></tr></tbody>
   </table>
 </div>
 
 <script>
+  // --- FIREBASE CONFIGURATION ---
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
     authDomain: "forensic-class-app.firebaseapp.com",
@@ -102,75 +109,110 @@
   const db = firebase.firestore();
   const ref = db.collection("slides").doc("current");
 
-  // 2023 Batch Register Numbers and Names
+  // --- FULL 2023 BATCH LIST FOR ABSENTEE TRACKING ---
   const students2023 = {
     "520022506042": "DHARSHANTH T S", "520022506110": "MADHINI MADHURAANTHAGI S", "520022506132": "NITHYA M", "520022506179": "SANJAYAN R", "520022506195": "SHEREYA V", "520022506225": "THILESH HARRINI S", "520022506245": "YAZHINI S", "520023506001": "AADHARSHINI C", "520023506002": "AASHI S", "520023506003": "ABILESH N T", "520023506004": "ABIRAMI S M", "520023506005": "ABIRAMI S", "520023506006": "ABISHEK ARJUNAN", "520023506007": "ABISHEKA BHARATHI K J", "520023506008": "ADHARSH S", "520023506009": "AFDEEN SULTHAN M", "520023506010": "AGALYAA MARIKANNAN", "520023506011": "AGNES ABISHEKHA ANANDAN", "520023506012": "AISHWARYA JAYASANKAR", "520023506013": "AJEETH K A", "520023506014": "AKASH A", "520023506015": "AKASH G", "520023506016": "AKILARASAN N", "520023506017": "AKSAI A M", "520023506018": "AKSHAYA B", "520023506019": "ALISHA SABEER", "520023506020": "AMNA BAI", "520023506021": "AMRITHAA B S", "520023506022": "ANANDA SUDHAN K L", "520023506023": "ARSHAD DARWESH A", "520023506024": "ARUN PRASATH C", "520023506025": "ARUNA D", "520023506026": "ASLINAV D SAHAAY", "520023506027": "ASWIN KUMAR K", "520023506028": "ATCHAYA AHI S A", "520023506029": "AVANEESH H", "520023506030": "AVANTHIKA P", "520023506031": "AVINASSVISWA M", "520023506032": "BALANANDAN B", "520023506033": "BHARATHI R R", "520023506034": "BHAVATARINI AK", "520023506035": "BHUVANESH S M", "520023506036": "BRINDHA DEVI S", "520023506037": "CHANDRU P", "520023506038": "CHARAN M", "520023506040": "CYRIL ABRAHAM", "520023506042": "DEEPAK S", "520023506043": "DEEPIKA C S", "520023506044": "DEVI SREE V", "520023506045": "DEVRAJ V", "520023506046": "DHANASHSRI S", "520023506047": "DHANVEER A S", "520023506048": "DHARANI R", "520023506049": "DHARSAN K J", "520023506050": "DHARSHINIPRIYA R", "520023506051": "DHARUNIKA A", "520023506052": "DHILLESH A", "520023506053": "DHIVYA SHRI B A", "520023506054": "DHIVYABHASHINI S", "520023506055": "DITCHITHAMATHI R", "520023506056": "DIYA E", "520023506057": "GOKUL R", "520023506058": "GOKULESHWAR K", "520023506059": "GOWTHAM S A", "520023506060": "GUNAVATHI M", "520023506061": "GURU ELAKKIYA SACHIDANANDAM", "520023506062": "GURUCHANDRU M", "520023506063": "HANIN F", "520023506064": "HARI ADHARSAN N", "520023506065": "HARI KRISHANTH R", "520023506066": "HARI PRAKASH C S", "520023506067": "HARINI DINESH BABU", "520023506068": "HARINIPPRIYA N", "520023506069": "HARISH S M", "520023506070": "HARISH KUMAR K L", "520023506071": "HARSHA SHYAM", "520023506072": "HASEEN SHAJINA A", "520023506073": "HEMA MUTHU PRABHA P N", "520023506074": "HOMA SRI R N", "520023506075": "ILLAKIYA PRIYA K P", "520023506076": "INBABHUSHAN G R", "520023506077": "INDHUJA P", "520023506078": "INIYA G", "520023506079": "ISWARYAVALLI P", "520023506080": "JAGADEESHWARAN K", "520023506081": "JAISHRINIDHI K T", "520023506082": "JAYA THARANI M", "520023506083": "JAYAKRISHNA A", "520023506084": "JESSICA JOSEPHINE A", "520023506085": "KAARTHIKA SHRI S", "520023506086": "KAILESHWARAN K K", "520023506087": "KAMALIKA P", "520023506088": "KAMESH P", "520023506089": "KANIKA V", "520023506090": "KANTHIMATHI S", "520023506091": "KAVIN NARAYANAN T", "520023506092": "KAVIYA R", "520023506093": "KAVIYA R T J", "520023506094": "KAVYA M", "520023506095": "KEERTHANA M", "520023506096": "KEERTHIKA GANESAN", "520023506097": "KHIRTHAN B", "520023506098": "KIRAN SAJ", "520023506099": "KIRUTHIKA K", "520023506100": "KOWSHIKA S", "520023506101": "KRISHIK M", "520023506102": "KRITHICKRAMAN T", "520023506103": "LAKSHMI PRABHA S", "520023506104": "LAKSHMIKANTH S S", "520023506105": "LALITH GURUPRAKASH J", "520023506106": "LEXMIDHARAN S S", "520023506107": "LOGAKAVIN E", "520023506108": "LOKAJITH V", "520023506109": "MADHANRAJ R", "520023506110": "MADHAV V NAIR", "520023506111": "MADHUMITHA B", "520023506112": "MADHUMITHA M", "520023506113": "MADHUMITHA V", "520023506114": "MADHUMITHA JEYASRI S", "520023506115": "MAHESHWARI M", "520023506116": "MANISHA R", "520023506117": "MANISSHA M", "520023506118": "MARY SANIA R", "520023506119": "MOHAMED AKSHAN M", "520023506120": "MOHAMED VASEM M", "520023506121": "MOHANA HARI M", "520023506122": "MONIKA R", "520023506123": "MOUNISHAA P", "520023506124": "MRIETHULA R", "520023506125": "MUHAMMED ZAID ABDUL WAHAB", "520023506126": "MUTHUPRIYA M", "520023506127": "NAMBI VARTHARAJAN J", "520023506128": "NAVANITH R", "520023506129": "NIHITHA S K", "520023506130": "NISHANTH D", "520023506131": "NITHEESH R V", "520023506132": "NITHISH PRANAV T", "520023506133": "NITHYA V V", "520023506134": "PARTHASARATHI S", "520023506135": "PATHMAVATHI B", "520023506136": "PAVAN R", "520023506137": "PIRANAV KASINATHAN B", "520023506138": "POOJA M", "520023506139": "PRADIBA N", "520023506140": "PRAGATHEESWARI SARAVANAN", "520023506141": "PRAGATHESH V S", "520023506142": "PRAKATI M", "520023506143": "PRAMOTH AARYA M", "520023506144": "PRANAV R V", "520023506145": "PRANAV MUKESH G", "520023506146": "PRATHISTHA R", "520023506147": "PRAVEEN A", "520023506148": "PRAVEEN S", "520023506149": "PREETHIVI R", "520023506150": "PREMNATHAN J", "520023506151": "PRIYADHARSHINI E", "520023506152": "PRIYAVARSHINI K", "520023506153": "PUSHPA ABINAYA T", "520023506154": "RABIN BABU S", "520023506155": "RAGAVI D", "520023506156": "RAGHINYA S R", "520023506157": "RAJ SHREE J", "520023506158": "RAJALAKSHMI V", "520023506159": "RAKSHIKA MOHANARANGAN", "520023506160": "RAMANA KAAVYA T", "520023506162": "REVANTH P", "520023506163": "REYGANTHAN K", "520023506164": "RIDUMIKA G", "520023506165": "RISHI S", "520023506166": "RITHISH P", "520023506167": "ROHINI D", "520023506168": "ROHITH S", "520023506169": "ROHINI SILVIA FERNANDO", "520023506170": "RUBESHVAR J", "520023506171": "RUPIKA G", "520023506173": "SAHANA SARASWATHI S", "520023506174": "SAHITYA R", "520023506175": "SAKTHI PRADEEPA S", "520023506176": "SAKTHIVISHAL M", "520023506177": "SAMARJIT M R", "520023506178": "SAMEER BABU M", "520023506179": "SANCHANA R", "520023506180": "SANDRA MARY BLOSSOM S", "520023506181": "SANJAI PRASANNAA S", "520023506182": "SANJAY VISWANATHAN", "520023506183": "SANJIT G", "520023506185": "SANTHOSH RAJ T", "520023506186": "SANTHOSHI U J", "520023506187": "SARA BARVEEN A", "520023506188": "SASTHA J V", "520023506189": "SATVI SRI S", "520023506190": "SELLA PREETHI SRI S", "520023506191": "SELVAM EVELIN", "520023506192": "SHAARAV N", "520023506193": "SHAMBHAVI R", "520023506194": "SHANKAR K", "520023506195": "SHANMUGA SRI VARSHINI M", "520023506196": "SHARMILA S", "520023506197": "SHARVINI R R", "520023506198": "SHIFA ZARIN M", "520023506199": "SHIFANA M", "520023506200": "SHIVANI S", "520023506201": "SHOBIKATHARUNI G", "520023506202": "SHREE RAM R", "520023506203": "SHREYA D K", "520023506204": "SHRIKARTHICK A", "520023506205": "SHUBHIKSHA RAAJ S", "520023506206": "SINDHUJA H", "520023506207": "SREE NITHI VL", "520023506208": "SREE VAIHUNDH K", "520023506209": "SRI AKSHYA R V", "520023506210": "SRIGA T", "520023506211": "SRIHARINI K", "520023506212": "SRINITHI P", "520023506213": "SRINIVASAN R", "520023506214": "SRIVATS S", "520023506215": "SUBASHREE E P", "520023506216": "SUBHA SHREE D", "520023506217": "SUBHASHINI R B", "520023506218": "SUJITHA SHREE M", "520023506220": "SUNDARESWARAN B", "520023506221": "SUSHMA K", "520023506222": "SWARNA S", "520023506223": "SWEDHASSHREE T", "520023506224": "SWETHA M", "520023506225": "SWETHA RAM P", "520023506226": "SWETHA SUDHARSAN", "520023506227": "THAMIZHINIAN T", "520023506228": "THARUN N", "520023506229": "THARUNIKA S", "520023506230": "THEEKSHITHA MARY E", "520023506231": "THOONGA DEVAN K", "520023506232": "THRISHA P", "520023506233": "TRINETHRA N", "520023506234": "VAISHNAVE D M", "520023506235": "VARSHA C", "520023506236": "VARSHA S G", "520023506237": "VARSHIKA S", "520023506238": "VARSHITHA T", "520023506239": "VEDAVARSHINI K", "520023506240": "VIGNESH BALA M R", "520023506241": "VIGNESH KUMAR K", "520023506242": "VIJI A", "520023506243": "VISHWA JEEVA J", "520023506244": "VISVA K", "520023506245": "VISVA HARSINI K G", "520023506246": "VITHUN VELAN B", "520023506247": "YASEEN AHAMED J M", "520023506248": "YAZHINI A", "520023506249": "YOUVASHREE E", "520023506250": "YUVASHREE S"
   };
 
+  // --- TOPIC TRACKER (30 SLIDES TOTAL) ---
+  // Slides 1-9: Phosphorus. Slides 10-30: Plant Poisons.
   const allTopics = {
     "phosphorus": Array(30).fill(0).map((_, i) => {
-        if(i < 9) return `<b>Phosphorus — Slide ${i+1}</b><br>Preview only visible to students.`;
-        else return `<b>Plant Poisons — Slide ${i+1}</b><br>Preview only visible to students.`;
+        if(i < 9) return `<b>Phosphorus — Slide ${i+1}</b><br>Preview only visible on student devices.`;
+        else return `<b>Organic Plant Poisons — Slide ${i+1}</b><br>Preview only visible on student devices.`;
     })
   };
 
+  // --- SLIDE CONTROLS ---
   function setTopic(topicName) { ref.update({ topic: topicName, index: 0, status: "live" }); }
   function next() { ref.update({ index: firebase.firestore.FieldValue.increment(1) }); }
   function prev() { ref.update({ index: firebase.firestore.FieldValue.increment(-1) }); }
-  function setSessionStatus(ns) { ref.update({ status: ns }); }
+  function setSessionStatus(ns) { 
+      if (ns === 'locked' && !confirm("Are you sure you want to end and lock the class?")) return;
+      ref.update({ status: ns }); 
+  }
 
+  // --- UNBLOCK STUDENT ---
   async function unblockStudent() {
       let reg = prompt("Enter 12-digit Register Number to unblock:");
       if (!reg) return;
-      await db.collection("device_bindings").doc(reg.trim()).delete();
-      alert("✅ Unblocked!");
+      try {
+          await db.collection("device_bindings").doc(reg.trim()).delete();
+          alert("✅ Success! That ID has been unblocked.");
+      } catch (error) {
+          alert("❌ Error: Could not unblock. Check connection.");
+      }
   }
 
+  // --- REALTIME SLIDE PREVIEW ---
   ref.onSnapshot((doc) => {
     if (!doc.exists) return;
     const d = doc.data();
-    if (d.status === "locked") { document.getElementById("slidePreview").innerHTML = "🔒 LOCKED"; return; }
+    if (d.status === "locked") { 
+        document.getElementById("slidePreview").innerHTML = "🔒 SESSION LOCKED"; 
+        return; 
+    }
     let topic = d.topic || "phosphorus";
     let idx = Number(d.index) || 0;
     let max = allTopics[topic] ? allTopics[topic].length : 0;
-    document.getElementById("slideInfo").innerText = `Topic: ${topic.toUpperCase()} | Slide: ${idx + 1} / ${max}`;
+    
+    document.getElementById("slideInfo").innerText = `Topic: COMBINED LECTURE | Slide: ${idx + 1} / ${max}`;
     document.getElementById("slidePreview").innerHTML = allTopics[topic][idx] || "End of Lecture";
   });
 
-  const flaggedStudentsLeft = new Set();
+  // --- LIVE ACTIVITY TRACKING & ABSENTEE LOGIC ---
+  const flaggedStudentsLeft = new Set(); // Tracks students who leave/switch tabs
 
-  db.collection("activity_logs").orderBy("timestamp", "desc").limit(100).onSnapshot((snap) => {
-      let allPresentSet = new Set();
-      let interactedSet = new Set();
+  db.collection("activity_logs").orderBy("timestamp", "desc").limit(200).onSnapshot((snap) => {
+      let allPresentSet = new Set(); // Anyone who has ever joined
+      let interactedSet = new Set(); // Anyone who has actively clicked something
       let leftCount = 0;
       let rows = [];
 
       snap.forEach(doc => {
         const d = doc.data();
-        if (d.student.includes("FACULTY")) return;
+        if (!d.student || d.student.includes("FACULTY")) return;
         
         allPresentSet.add(d.student);
         
-        if (d.event.includes("Left")) { leftCount++; flaggedStudentsLeft.add(d.student); }
+        // Logic for tracking interactions vs leaving
+        if (d.event.includes("Left") || d.event.includes("Closed") || d.event.includes("Switched")) { 
+            leftCount++; 
+            flaggedStudentsLeft.add(d.student); 
+        }
         if (d.event.includes("Game") || d.event.includes("Viewed") || d.event.includes("Quiz") || d.event.includes("Burn") || d.event.includes("Returned")) { 
             interactedSet.add(d.student); 
-            flaggedStudentsLeft.delete(d.student); 
+            flaggedStudentsLeft.delete(d.student); // Removes them from "Left" if they come back and click
         }
 
-        rows.push(`<tr><td style="color:#444;">${d.timestamp ? d.timestamp.toDate().toLocaleTimeString() : "-"}</td><td style="color:#60a5fa;">${d.student}</td><td style="color:#00cc66;">${d.event}</td><td style="color:#555;">${d.slideContext.substring(0,25)}...</td></tr>`);
+        // Format Log Table rows
+        let eventColor = d.event.includes("Left") ? "#ff4444" : "#00cc66";
+        let timeStr = d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "-";
+        let ctxShort = (d.slideContext || "").substring(0, 30) + "...";
+        
+        rows.push(`<tr>
+            <td style="color:#777;">${timeStr}</td>
+            <td style="color:#60a5fa; font-weight:bold;">${d.student}</td>
+            <td style="color:${eventColor};">${d.event}</td>
+            <td style="color:#aaa;">${ctxShort}</td>
+        </tr>`);
       });
-      document.getElementById("logBody").innerHTML = rows.join("");
       
+      document.getElementById("logBody").innerHTML = rows.length > 0 ? rows.join("") : `<tr><td colspan="4" style="padding:16px; color:#444;">No activity yet</td></tr>`;
+      
+      // Calculate Idle Students (Present, but haven't clicked anything, and haven't left)
       let idleStudents = Array.from(allPresentSet).filter(s => !interactedSet.has(s) && !flaggedStudentsLeft.has(s));
       
+      // Update Top Stat Boxes
       document.getElementById("statInteracted").innerText = interactedSet.size;
       document.getElementById("statIdle").innerText = idleStudents.length;
       document.getElementById("statLeft").innerText = leftCount;
       
-      document.getElementById("activeNamesWrap").innerHTML = Array.from(interactedSet).map(s => `<span class="flag-pill" style="background:#0d2a1a;color:#00ff88;">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Waiting...</span>';
-      document.getElementById("idleWrap").innerHTML = idleStudents.map(s => `<span class="flag-pill idle">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Waiting...</span>';
+      // Render Pill Boxes
+      document.getElementById("activeNamesWrap").innerHTML = Array.from(interactedSet).map(s => `<span class="flag-pill">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Waiting for interactions...</span>';
+      document.getElementById("idleWrap").innerHTML = idleStudents.map(s => `<span class="flag-pill idle">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Everyone logged in is active!</span>';
 
-      // 2023 MISSING TRACKER LOGIC
+      // --- 2023 BATCH MISSING TRACKER ---
       const missingStudents = [];
       Object.entries(students2023).forEach(([regNo, name]) => {
           let found = false;
@@ -184,30 +226,48 @@
       document.getElementById("missingWrap").innerHTML = missingStudents.map(s => `<span class="missing-pill">${s}</span>`).join("") || '<span style="color:#444;font-size:12px;">Everyone is present!</span>';
   });
 
+  // --- SYSTEM FUNCTIONS ---
   async function clearLogs() {
-    if(!confirm("Clear all logs?")) return;
+    if(!confirm("Are you sure you want to clear ALL live activity logs? This cannot be undone.")) return;
     const snap = await db.collection("activity_logs").get();
     const batch = db.batch();
     snap.forEach(doc => batch.delete(doc.ref));
     await batch.commit();
     flaggedStudentsLeft.clear();
+    alert("Logs cleared successfully.");
   }
 
   async function exportAttendance() {
     const snap = await db.collection("activity_logs").orderBy("timestamp", "asc").get();
     let data = {};
+    
     snap.forEach(doc => {
         const d = doc.data();
-        if (d.student.includes("FACULTY")) return;
-        if (!data[d.student]) data[d.student] = { interactions: 0 };
-        data[d.student].interactions++;
+        if (!d.student || d.student.includes("FACULTY")) return;
+        
+        if (!data[d.student]) {
+            data[d.student] = { interactions: 0, exits: 0, firstSeen: d.timestamp ? d.timestamp.toDate().toLocaleTimeString("en-IN") : "N/A" };
+        }
+        
+        if (d.event.includes("Game") || d.event.includes("Viewed") || d.event.includes("Quiz") || d.event.includes("Burn")) {
+            data[d.student].interactions++;
+        }
+        if (d.event.includes("Left") || d.event.includes("Switched")) {
+            data[d.student].exits++;
+        }
     });
-    let csv = "data:text/csv;charset=utf-8,Student Identity,Total Interactions\n";
-    Object.keys(data).forEach(k => csv += `"${k}","${data[k].interactions}"\n`);
+    
+    let csv = "data:text/csv;charset=utf-8,Student Identity,First Seen,Total Interactions,Tab Switches/Exits\n";
+    Object.keys(data).forEach(k => {
+        csv += `"${k}","${data[k].firstSeen}","${data[k].interactions}","${data[k].exits}"\n`;
+    });
+    
     const link = document.createElement("a");
     link.href = encodeURI(csv);
-    link.download = `Attendance_2023_Batch_${new Date().toISOString().slice(0,10)}.csv`;
-    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    link.download = `Forensic_Attendance_2023_Batch_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(link); 
+    link.click(); 
+    document.body.removeChild(link);
   }
 </script>
 </body>
