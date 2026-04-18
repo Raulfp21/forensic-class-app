@@ -582,6 +582,971 @@
     // THE 6 NEW INTERACTIVE PHOSPHORUS SLIDES
     "phosphorus": [
       // ═══════════════════════════════════════════════════
+      // P1 — TN CONTEXT FIRST, GLOBAL HISTORY ON TOUCH
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🧨 Phosphorus in Tamil Nadu</div>
+        <div class="slide-subtitle">Indian &amp; TN Context — Touch to explore global history</div>
+        <div class="alert-box alert-red" style="margin-bottom:10px;">
+          <strong>Sivakasi — The TN Connection:</strong><br>
+          <span style="color:#c9d1d9">Tamil Nadu's fireworks capital used White Phosphorus for decades. Workers developed <b>Phossy Jaw</b>. The same chemical that lit Sivakasi's sky poisoned its workers' bones.</span>
+        </div>
+        <div class="alert-box alert-yellow" style="margin-bottom:10px;">
+          <strong>Today in TN ERs:</strong> Rat paste (Ratol) poisoning — 3% Yellow P — accounts for suicidal and accidental admissions. <b>~70% mortality</b> in acute cases.
+        </div>
+        <div class="diag-card" onclick="document.getElementById('p1-global').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('History: Global context');" style="text-align:center; font-size:18px;">🌍 Touch: Global History of Phosphorus Discovery</div>
+        <div id="p1-global" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c; margin-top:10px;">
+          <strong style="color:#58a6ff">1669 — Henning Brand, Hamburg:</strong><br>
+          <span style="color:#c9d1d9">German alchemist boiled 5,000 litres of putrefied urine searching for gold. Isolated a waxy substance that <b>glowed in the dark</b> — named it <b>Phosphorus</b> (Bearer of Light). Same chemiluminescent property ignites spontaneously at <b>34°C</b> — auto-flammable, burns human tissue from inside out.</span>
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P2 — MATCHSTICK GIRLS → INDIA 1913 → TN 2022
+      // Touch reveals each era
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🏭 From Matchstick Girls to TN Ban</div>
+        <div class="slide-subtitle">The Road to Banning White Phosphorus — Touch each era</div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+          <div class="diag-card" onclick="document.getElementById('era1888').style.display='block'; this.style.borderColor='#f78166'; logActivity('History: 1888');" style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:22px; min-width:50px; text-align:center; color:#f78166; font-weight:700;">1888</span>
+            <span style="color:#c9d1d9;">Bryant &amp; May Matchgirls' Strike — London</span>
+          </div>
+          <div id="era1888" style="display:none;" class="alert-box alert-red">Young female workers at Bryant &amp; May match factory inhaled White P fumes → developed <b>Phossy Jaw</b> (osteomyelitis + necrosis of mandible). Their historic strike forced global attention onto industrial White P use.</div>
+          
+          <div class="diag-card" onclick="document.getElementById('era1906').style.display='block'; this.style.borderColor='#ffa657'; logActivity('History: 1906');" style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:22px; min-width:50px; text-align:center; color:#ffa657; font-weight:700;">1906</span>
+            <span style="color:#c9d1d9;">Berne Convention — White P banned in matches worldwide</span>
+          </div>
+          <div id="era1906" style="display:none;" class="alert-box alert-yellow">International treaty banned White Phosphorus in match manufacture. <b>Red Phosphorus</b> (non-toxic, non-luminous, ignites only at 260°C) adopted for safety match <b>striking surfaces</b> — used to this day. <em>Note: The match head contains Potassium Chlorate — not Red P.</em></div>
+          
+          <div class="diag-card" onclick="document.getElementById('era1913').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('History: 1913 India');" style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:22px; min-width:50px; text-align:center; color:#58a6ff; font-weight:700;">1913</span>
+            <span style="color:#c9d1d9;">India bans White Phosphorus in matches (Nadia/colonial law)</span>
+          </div>
+          <div id="era1913" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;">Under British colonial legislation in 1913, India prohibited White Phosphorus in match manufacture. <b>Sivakasi (Tamil Nadu)</b> — India's match capital — transitioned to Red P strike pads. Yet White P continued legally in rodenticides for another century.</div>
+          
+          <div class="diag-card" onclick="document.getElementById('era2022').style.display='block'; this.style.borderColor='#7ee787'; logActivity('History: 2022 TN');" style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:22px; min-width:50px; text-align:center; color:#7ee787; font-weight:700;">2022</span>
+            <span style="color:#c9d1d9;">Tamil Nadu bans 3% Yellow Phosphorus rat paste</span>
+          </div>
+          <div id="era2022" style="display:none;" class="alert-box alert-green">Following the <b>Thandarai mass poisoning (2016)</b> — 6 deaths from contaminated rasam — and mortality data (~70%) from MMC &amp; Stanley Medical College, TN Govt banned Yellow P rat paste (Ratol). ERs now see Zinc Phosphide cases instead.</div>
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P3 — ALLOTROPES TABLE (CORRECTED — Red P = striking surface)
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">⚗️ Allotropes of Phosphorus</div>
+        <div class="slide-subtitle">Table 28.1 — Reddy's Textbook (Corrected)</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:8px; font-size:15px;">
+          <thead><tr><th>Trait</th><th style="color:#ffa657">White / Yellow P ☠️</th><th style="color:#7ee787">Red P ✅</th></tr></thead>
+          <tbody>
+            <tr><td>Color</td><td class="warn">White or yellow</td><td class="safe">Reddish-brown</td></tr>
+            <tr><td>Appearance</td><td class="warn">Translucent, waxy cylinders</td><td class="safe">Amorphous solid mass</td></tr>
+            <tr><td>Smell</td><td class="toxic">Garlicky ⭐</td><td class="safe">Odourless</td></tr>
+            <tr><td>Luminosity</td><td class="toxic">Luminous in dark ⭐</td><td class="safe">Non-luminous</td></tr>
+            <tr><td>Ignition temp</td><td class="toxic">34°C — spontaneous ⭐</td><td class="safe">~260°C — non-flammable</td></tr>
+            <tr><td>Solubility</td><td class="warn">CS₂ and oils</td><td class="safe">Insoluble</td></tr>
+            <tr><td>Toxicity</td><td class="toxic">Highly toxic — 60–120 mg fatal</td><td class="safe">Non-toxic</td></tr>
+            <tr><td><strong>Use</strong></td><td class="warn">Fertilizers, rodenticides, bombs</td><td class="safe"><strong>Matchbox striking surface ⭐</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-green" style="margin-top:10px; font-size:15px;">
+          📌 <strong>Key correction:</strong> Red P is used on the <em>striking surface</em> (side of box). The match head contains Potassium Chlorate. This distinction is commonly confused in exams.
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P4 — TN BAN + RATOL IMAGE (on click)
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🐀 The Ratol Crisis &amp; TN Ban</div>
+        <div class="slide-subtitle">3% Yellow Phosphorus — Tamil Nadu Epidemiology</div>
+        <div class="alert-box alert-red" style="margin-bottom:10px;">
+          <strong>Ratol — 3% Yellow Phosphorus paste:</strong> Sold openly for ₹10–15. Painless initial ingestion. Garlic smell easily masked.
+        </div>
+        <div class="diag-card" onclick="document.getElementById('ratol-img').style.display='block'; this.style.borderColor='#ffa657'; logActivity('Ratol image shown');" style="text-align:center; font-size:18px;">
+          🖼️ Touch to view Ratol Paste (Yellow Phosphorus)
+        </div>
+        <div id="ratol-img" style="display:none; margin-top:10px;">
+          <img src="https://i.postimg.cc/mD8gM3X9/Screenshot-20260412-143112-OneDrive.jpg" 
+               style="width:100%; max-height:200px; object-fit:contain; border-radius:10px; background:#21262d;"
+               onerror="this.parentElement.innerHTML='<div class=alert-box alert-yellow>Image unavailable — upload to postimg.cc and replace URL</div>'">
+        </div>
+        <ul style="font-size:16px; color:#c9d1d9; line-height:1.9; margin-left:20px; margin-top:10px;">
+          <li>Mortality approaching <b style="color:#f78166">70%</b> in acute cases</li>
+          <li>Commonly used for <b>impulsive suicides</b> — cheap and accessible</li>
+          <li>Homicidal use — Thandarai 2016 (6 deaths, rasam contamination)</li>
+          <li>TN Govt <b>banned in 2022</b> — but old stock persists illegally</li>
+          <li>ERs now see <b>Zinc Phosphide</b> cases — different clinical presentation</li>
+        </ul>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P5 — FULMINANT POISONING (>1g, symptoms on touch)
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">⚡ Fulminant Poisoning</div>
+        <div class="slide-subtitle">Ingestion of More Than 1 Gram</div>
+        <div class="stat-row" style="justify-content:center; margin-bottom:12px;">
+          <div class="stat-pill"><div class="sv" style="color:#f78166">&gt;1 g</div><div class="sl">Dose threshold</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">&lt;12 hrs</div><div class="sl">Time to death</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#7ee787">CV Collapse</div><div class="sl">Mechanism</div></div>
+        </div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="document.getElementById('fv-sx').style.display='block'; this.style.borderColor='#ffa657'; logActivity('Fulminant: Symptoms');" style="text-align:center; font-size:20px;">🤢 Symptoms</div>
+          <div class="diag-card" onclick="document.getElementById('fv-mech').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('Fulminant: Mechanism');" style="text-align:center; font-size:20px;">🫀 Mechanism</div>
+        </div>
+        <div id="fv-sx" style="display:none;" class="alert-box alert-yellow">
+          <strong>Symptoms (0–12 hours):</strong><br>
+          Intense thirst • Severe nausea • Profuse vomiting • Retching • Severe abdominal pain • Diarrhoea<br>
+          → Rapid deterioration → Cardiovascular collapse → Death. <em>No time to reach hepatic or renal stage.</em>
+        </div>
+        <div id="fv-mech" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;">
+          <strong style="color:#58a6ff">Direct cardiac toxicity:</strong> Phosphorus acts directly on the myocardium and peripheral blood vessels → profound shock → cardiovascular collapse. <em>Mechanism is independent of hepatic metabolism.</em>
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P6 — ACUTE STAGE 1: GI + CONTACT BURNS + SIGNS
+      // Image 3 (postimg contact burn image) shown here
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🤢 Acute Poisoning — Stage 1</div>
+        <div class="slide-subtitle">0 to 24 Hours — Local Effects. Touch each to reveal:</div>
+        <img src="https://i.postimg.cc/0jXyB6S6/Gemini-Generated-Image-xnmoitxnmoitxnmo.jpg" 
+             style="width:100%; max-height:150px; object-fit:cover; border-radius:10px; margin-bottom:10px;"
+             onerror="this.style.display='none'">
+        <div class="compare-grid">
+          <div class="diag-card" onclick="document.getElementById('s1-gi').style.display='block'; this.style.borderColor='#ffa657'; logActivity('Stage1: GI symptoms');" style="font-size:17px; text-align:center;">🔥 Ingestion Symptoms</div>
+          <div class="diag-card" onclick="document.getElementById('s1-contact').style.display='block'; this.style.borderColor='#f78166'; logActivity('Stage1: Contact burns');" style="font-size:17px; text-align:center;">🩹 Contact Injury</div>
+          <div class="diag-card" onclick="document.getElementById('s1-smell').style.display='block'; this.style.borderColor='#7ee787'; logActivity('Stage1: Garlic smell');" style="font-size:17px; text-align:center;">🧄 Diagnostic Signs</div>
+          <div class="diag-card" onclick="document.getElementById('s1-lumi').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('Stage1: Luminescence');" style="font-size:17px; text-align:center;">✨ Luminescence</div>
+        </div>
+        <div id="s1-gi" style="display:none;" class="alert-box alert-yellow"><strong>Ingestion symptoms (8 hrs – 3 days):</strong><br>Burning pain in throat and abdomen • Intense thirst • Severe nausea and vomiting • Diarrhoea • Severe abdominal pain.</div>
+        <div id="s1-contact" style="display:none;" class="alert-box alert-red"><strong>Contact Injury (Skin / Mucous Membrane):</strong><br>Phosphorus causes <b>painful penetrating 2nd and 3rd degree burns</b> on skin contact. Burns heal slowly. First aid: <b>Wash immediately with 1% Copper Sulphate solution in water</b>.</div>
+        <div id="s1-smell" style="display:none;" class="alert-box alert-green"><strong>Pathognomonic Garlic Odour:</strong><br>Breath, vomitus, and faeces carry a distinctive garlic-like smell. Noted even from the corridor. <b>Diagnostic.</b></div>
+        <div id="s1-lumi" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;"><strong style="color:#58a6ff">Luminescent vomit and faeces ⭐:</strong><br>In a darkened room, vomitus and faeces may visibly glow due to oxidation of phosphorus. <b>Pathognomonic</b> — exam favourite. Also called "smoking stools".</div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P7 — STAGE 2: LUCID INTERVAL (unchanged — correct)
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🚨 Stage 2 — The Lucid Interval</div>
+        <div class="slide-subtitle">24 to 72 Hours — The Fatal Trap</div>
+        <div class="alert-box alert-red" style="text-align:center; margin-bottom:12px;">
+          <h3 style="margin:0 0 8px 0; color:#f78166; font-size:22px;">THE FATAL MISTAKE</h3>
+          <span style="color:#c9d1d9; font-size:16px;">All GI symptoms completely disappear. Patient feels normal. Requests discharge.</span>
+        </div>
+        <div class="alert-box alert-yellow">
+          <strong>What is actually happening inside:</strong><br>
+          Phosphorus is being absorbed from the gut and actively destroying hepatocytes. LFTs silently rising. PT/INR deteriorating. Lucid interval lasts <b>2 to 3 days.</b>
+        </div>
+        <div class="alert-box alert-red">
+          <strong>⚖️ Medicolegal Warning:</strong> Discharging a patient during the lucid interval is a cause of medical negligence lawsuits. Symptoms may persist for a long time — <b>do not discharge.</b>
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P8 — STAGE 3: SYSTEMIC + FATAL STATS ON SAME SLIDE
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🟡 Stage 3 — Systemic Toxicity</div>
+        <div class="slide-subtitle">Post 72 Hours — Touch each system. Fatal stats below.</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="document.getElementById('s3-liver').style.display='block'; this.style.borderColor='#ffa657'; logActivity('Stage3: Liver');" style="font-size:18px; text-align:center;">🟡 Liver</div>
+          <div class="diag-card" onclick="document.getElementById('s3-heme').style.display='block'; this.style.borderColor='#f78166'; logActivity('Stage3: Hemorrhage');" style="font-size:18px; text-align:center;">🩸 Haemorrhage</div>
+          <div class="diag-card" onclick="document.getElementById('s3-renal').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('Stage3: Renal');" style="font-size:18px; text-align:center;">🫘 Renal Damage</div>
+          <div class="diag-card" onclick="document.getElementById('s3-cns').style.display='block'; this.style.borderColor='#a78bfa'; logActivity('Stage3: CNS');" style="font-size:18px; text-align:center;">🧠 CNS</div>
+        </div>
+        <div id="s3-liver" style="display:none;" class="alert-box alert-yellow"><strong>Hepatic:</strong> Tender hepatomegaly • Profound jaundice (icterus) • <b>Pruritus</b> (itching — bile salt deposits in skin) • Coffee-ground haematemesis • Inhibition of blood clotting factors • Liver tenderness and enlargement.</div>
+        <div id="s3-heme" style="display:none;" class="alert-box alert-red"><strong>Haemorrhage / Petechiae:</strong> Multiple petechial haemorrhages and ecchymoses over <b>skin and mucous membranes</b> • Haemorrhages in subcutaneous tissues, muscles, serosal membranes, GIT, pericardium, leptomeninges. Inhibition of blood vessels and clotting.</div>
+        <div id="s3-renal" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;"><strong style="color:#58a6ff">Renal Damage:</strong> Oliguria • Haematuria • Casts in urine • Albuminuria • Anuria in severe cases. Renal damage from direct tubular toxicity and circulatory shock.</div>
+        <div id="s3-cns" style="display:none;" class="alert-box" style="background:#1a0d2a; border:1px solid #3a1a5c;"><strong style="color:#a78bfa">CNS:</strong> Restlessness → Delirium → Convulsions → <b>Phosphorus Coma</b>. Involvement of CNS causes convulsions, delirium and coma. Death from shock, hepatic failure, CNS damage, haematemesis or renal insufficiency.</div>
+        <div class="stat-row" style="margin-top:12px; justify-content:center;">
+          <div class="stat-pill"><div class="sv" style="color:#f78166">60–120 mg</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">2–8 Days</div><div class="sl">Fatal Period</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#7ee787">~70%</div><div class="sl">Mortality</div></div>
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P9 — MANAGEMENT (separate slide, all on touch)
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🆘 Treatment Protocol</div>
+        <div class="slide-subtitle">Touch each box to expand — Reddy Chapter 28</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="document.getElementById('rx-kmno4').style.display='block'; this.style.borderColor='#7ee787'; logActivity('Rx: KMnO4');" style="text-align:center; font-size:16px;">💧 Gastric Lavage<br><small style="color:#7d8590;">KMnO4 1:5000</small></div>
+          <div class="diag-card" onclick="document.getElementById('rx-cuso4').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('Rx: CuSO4');" style="text-align:center; font-size:16px;">🟦 Copper Sulphate<br><small style="color:#7d8590;">0.2% — every 5 min</small></div>
+          <div class="diag-card" onclick="document.getElementById('rx-char').style.display='block'; this.style.borderColor='#ffa657'; logActivity('Rx: Charcoal');" style="text-align:center; font-size:16px;">⬛ Activated Charcoal<br><small style="color:#7d8590;">+ MgSO4 purgative</small></div>
+          <div class="diag-card" onclick="document.getElementById('rx-heme').style.display='block'; this.style.borderColor='#f78166'; logActivity('Rx: Haemorrhage');" style="text-align:center; font-size:16px;">🩸 Haemorrhage /<br>Petechiae</div>
+          <div class="diag-card" onclick="document.getElementById('rx-organ').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('Rx: Organ support');" style="text-align:center; font-size:16px;">🫘 Renal &amp; Liver<br>Failure</div>
+          <div class="diag-card" onclick="document.getElementById('rx-burns').style.display='block'; this.style.borderColor='#a78bfa'; logActivity('Rx: Contact burns');" style="text-align:center; font-size:16px;">🩹 Contact Burns</div>
+        </div>
+        <div id="rx-kmno4" style="display:none;" class="alert-box alert-green"><strong>Gastric Lavage — 1:5,000 KMnO4:</strong> Potassium Permanganate oxidises phosphorus into harmless phosphoric acid. Bowel should be washed out and repeated at intervals for several days.</div>
+        <div id="rx-cuso4" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;"><strong style="color:#58a6ff">0.2% Copper Sulphate — every 5 minutes until vomiting occurs:</strong> Coats phosphorus particles with insoluble copper phosphide film (relatively harmless). <br>⚠️ <b>Caution: prolonged use → risk of acute copper poisoning.</b></div>
+        <div id="rx-char" style="display:none;" class="alert-box alert-yellow"><strong>Activated Charcoal:</strong> Absorbs remaining phosphorus in the gut after lavage. Follow with <b>Magnesium Sulphate</b> as saline purgative to evacuate bowel.</div>
+        <div id="rx-heme" style="display:none;" class="alert-box alert-red"><strong>Haemorrhage / Petechiae — Vitamin K 20 mg IV in repeated doses:</strong> Combats hypoprothrombinemia. Blood transfusion may be required in severe haemorrhagic cases.</div>
+        <div id="rx-organ" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;"><strong style="color:#58a6ff">Renal &amp; Liver Failure:</strong> IV Glucose-Saline + Plasma with proteins (liver support) • Noradrenaline for shock • <b>Peritoneal dialysis or haemodialysis</b> for severe renal failure.</div>
+        <div id="rx-burns" style="display:none;" class="alert-box" style="background:#2a1a2a; border:1px solid #5a1a5c;"><strong style="color:#d2a8ff">Contact Burns:</strong> Wash burns thoroughly with <b>1% Copper Sulphate solution in water</b> to neutralise surface phosphorus.</div>
+        <div class="alert-box" style="background:#2d1215; border:1px solid #6e2128; margin-top:10px;">
+          <strong style="color:#f78166">⛔ STRICTLY AVOID:</strong> Milk • Castor oil • Fats • Oils — Phosphorus is <b>highly lipid-soluble</b>; fats dramatically accelerate absorption into bloodstream.
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P10 — PM APPEARANCES (Liver + Kidney with SVG diagram on click)
+      // PMC image 403-blocks externally — SVG organ diagrams used
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🔬 Postmortem Appearances</div>
+        <div class="slide-subtitle">Touch each finding to expand</div>
+        <div class="compare-grid">
+          <div class="diag-card" onclick="document.getElementById('pm-ext').style.display='block'; this.style.borderColor='#ffa657'; logActivity('PM: External');" style="text-align:center; font-size:17px;">🟡 External &amp; Odour</div>
+          <div class="diag-card" onclick="document.getElementById('pm-git').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('PM: GIT');" style="text-align:center; font-size:17px;">🫁 GIT Mucosa</div>
+          <div class="diag-card" onclick="document.getElementById('pm-heme').style.display='block'; this.style.borderColor='#f78166'; logActivity('PM: Haemorrhage');" style="text-align:center; font-size:17px;">🩸 Haemorrhage</div>
+          <div class="diag-card" onclick="document.getElementById('pm-liver').style.display='block'; this.style.borderColor='#ffa657'; logActivity('PM: Liver image');" style="text-align:center; font-size:28px;">🟡<br><small style="font-size:13px; color:#7d8590;">Liver</small></div>
+          <div class="diag-card" onclick="document.getElementById('pm-kidney').style.display='block'; this.style.borderColor='#58a6ff'; logActivity('PM: Kidney image');" style="text-align:center; font-size:28px;">🫘<br><small style="font-size:13px; color:#7d8590;">Kidney</small></div>
+          <div class="diag-card" onclick="document.getElementById('pm-heart').style.display='block'; this.style.borderColor='#f78166'; logActivity('PM: Heart');" style="text-align:center; font-size:28px;">🐅<br><small style="font-size:13px; color:#7d8590;">Heart</small></div>
+        </div>
+        <div id="pm-ext" style="display:none;" class="alert-box alert-yellow"><strong>External:</strong> Deep jaundice — yellow colour change in sclera and skin • Garlic odour on opening body cavities • Luminous material visible in stomach contents in dark room.</div>
+        <div id="pm-git" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;"><strong style="color:#58a6ff">GIT Mucous Membrane:</strong> Mucosa of stomach and intestine appears <b>greyish-white in colour</b>, softened, thickened, inflamed and <b>corroded in patches</b>. Multiple smaller and larger haemorrhages visible. Contents smell of garlic and may be luminous.</div>
+        <div id="pm-heme" style="display:none;" class="alert-box alert-red"><strong>Haemorrhages:</strong> Multiple smaller and larger haemorrhages in — skin • subcutaneous tissues • muscles • serosal &amp; mucosal membranes of GIT • pericardium • epicardium • peritoneum • lungs • brain • leptomeninges • uterus. Blood appears tarry. Coagulability diminished.</div>
+        <div id="pm-liver" style="display:none;" class="alert-box alert-yellow">
+          <strong>Liver:</strong> Enlarged, yellow, soft, fatty and easily ruptured. Small haemorrhages on surface and in substance.<br>
+          <b>On survival (1 week+): Acute Yellow Atrophy of liver.</b><br>
+          Histology: <b>Periportal (Zone 1) fatty change and necrosis</b> — distinct from Paracetamol/CCl4 (Zone 3 centrilobular).
+          <div style="margin-top:10px; padding:10px; background:#1a1400; border-radius:8px; border:1px solid #3a2f00;">
+            <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-height:90px;">
+              <ellipse cx="80" cy="50" rx="70" ry="40" fill="#3a2f00" stroke="#ffa657" stroke-width="2"/>
+              <text x="80" y="38" text-anchor="middle" fill="#ffa657" font-size="11" font-weight="bold">LIVER</text>
+              <text x="80" y="54" text-anchor="middle" fill="#c9d1d9" font-size="9">Enlarged, yellow, soft</text>
+              <text x="80" y="67" text-anchor="middle" fill="#f78166" font-size="9">Fatty — easily ruptured</text>
+              <line x1="155" y1="50" x2="175" y2="50" stroke="#ffa657" stroke-width="1.5" marker-end="url(#arr)"/>
+              <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ffa657"/></marker></defs>
+              <rect x="178" y="20" width="78" height="60" rx="6" fill="#2b2008" stroke="#ffa657" stroke-width="1"/>
+              <text x="217" y="36" text-anchor="middle" fill="#ffa657" font-size="9" font-weight="bold">Zone 1 Necrosis</text>
+              <text x="217" y="50" text-anchor="middle" fill="#c9d1d9" font-size="8">Periportal</text>
+              <text x="217" y="63" text-anchor="middle" fill="#7d8590" font-size="8">(not Zone 3)</text>
+            </svg>
+          </div>
+        </div>
+        <div id="pm-kidney" style="display:none;" class="alert-box" style="background:#0d1a2a; border:1px solid #1a3a5c;">
+          <strong style="color:#58a6ff">Kidneys:</strong> Large, greasy, yellow with haemorrhages on surface. Fatty degeneration of tubular epithelium. Blood appears tarry.
+          <div style="margin-top:10px; padding:10px; background:#0a1a2a; border-radius:8px; border:1px solid #1a3a5c;">
+            <svg viewBox="0 0 260 90" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-height:80px;">
+              <ellipse cx="50" cy="45" rx="32" ry="38" fill="#0d2040" stroke="#58a6ff" stroke-width="2"/>
+              <text x="50" y="40" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="bold">KIDNEY</text>
+              <text x="50" y="54" text-anchor="middle" fill="#c9d1d9" font-size="8">Large, greasy</text>
+              <ellipse cx="160" cy="45" rx="32" ry="38" fill="#0d2040" stroke="#58a6ff" stroke-width="2"/>
+              <text x="160" y="40" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="bold">KIDNEY</text>
+              <text x="160" y="54" text-anchor="middle" fill="#c9d1d9" font-size="8">Yellow, fatty</text>
+              <text x="105" y="20" text-anchor="middle" fill="#f78166" font-size="9">Haemorrhages on surface</text>
+              <text x="105" y="75" text-anchor="middle" fill="#7d8590" font-size="8">Fatty degeneration of tubular epithelium</text>
+            </svg>
+          </div>
+        </div>
+        <div id="pm-heart" style="display:none;" class="alert-box" style="background:#2d1215; border:1px solid #6e2128;"><strong style="color:#f78166">Heart:</strong> Flabby, pale. Sub-endocardial fatty infiltration creates yellow streaks → <b>Tiger Lily Heart</b> or <b>Thrush-Breast Heart ⭐</b>. Fat emboli may be found in pulmonary arterioles and capillaries.</div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P11 — CHRONIC POISONING: PHOSSY JAW
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">🦴 Chronic Poisoning — "Phossy Jaw"</div>
+        <div class="slide-subtitle">Osteomyelitis &amp; Necrosis — due to inhalation of fumes</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657;font-size:12px;">→</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title" style="color:#ffa657">Route of Entry</div>
+              <div class="tl-points">Chronic inhalation of White Phosphorus fumes → fumes act on jaw via <b>carious (decayed) tooth</b> or interspace due to missing tooth where suppurative microorganisms are already present → periostitis → necrosis of lower jaw</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot" style="background:#2d1215;color:#f78166;font-size:12px;">Sx</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title" style="color:#f78166">Clinical Picture — Local</div>
+              <div class="tl-points"><b>Toothache</b> (initial symptom) → <b>Swelling of jaw</b> → <b>Loosening of teeth</b> → <b>Necrosis of gums</b> → Sequestration of bone in mandible → Multiple discharging sinuses with foul-smelling pus</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff;font-size:12px;">Sx</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title" style="color:#58a6ff">Clinical Picture — Systemic</div>
+              <div class="tl-points">Nausea • Vomiting • Foul smell • Loss of weight • Anorexia • Pain in joints • Bronchitis • Jaundice • Anaemia • Indigestion</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787;font-size:12px;">End</div></div>
+            <div class="tl-body">
+              <div class="tl-title" style="color:#7ee787">Result</div>
+              <div class="tl-points"><b>Osteomyelitis and necrosis of the lower jaw</b> — bone can glow in the dark. Condition known as "Phossy Jaw" or "Glass Jaw". Led to the 1888 Matchgirls' Strike.</div>
+            </div>
+          </div>
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P12 — DIFFERENTIAL: YELLOW P VS ZINC PHOSPHIDE
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">⚖️ Differential Diagnosis</div>
+        <div class="slide-subtitle">ER Triage — Yellow Phosphorus vs Zinc Phosphide</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:8px; font-size:15px;">
+          <thead><tr><th>Feature</th><th style="color:#ffa657">Yellow Phosphorus (Ratol)</th><th style="color:#f78166">Zinc Phosphide</th></tr></thead>
+          <tbody>
+            <tr><td class="warn">Odour</td><td>Garlic-like ⭐</td><td class="toxic">Rotten fish / Acetylene gas</td></tr>
+            <tr><td class="warn">Active toxin</td><td>Elemental phosphorus</td><td class="toxic">Phosphine gas (PH₃)</td></tr>
+            <tr><td class="warn">Primary target</td><td>Liver → Hepatic failure</td><td class="toxic">Heart → CVS collapse</td></tr>
+            <tr><td class="warn">Fatal period</td><td>2–8 days</td><td class="toxic">Hours (faster)</td></tr>
+            <tr><td class="warn">Lavage</td><td class="safe">KMnO4 1:5000</td><td>Sodium Bicarbonate</td></tr>
+            <tr><td class="warn">Avoid</td><td class="toxic">Fats, oils, milk</td><td>—</td></tr>
+            <tr><td class="warn">Legal status in TN</td><td class="safe">Banned 2022</td><td class="toxic">Still legal — now dominant</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-red" style="margin-top:10px;">
+          📌 <strong>TN ER 2024 reality:</strong> Most new rodenticide cases are now Zinc Phosphide. Know both presentations.
+        </div>` 
+      },
+
+      // ═══════════════════════════════════════════════════
+      // P13 — MLI (Suicidal prominent, Accidental, Homicidal, War/Arson)
+      // ═══════════════════════════════════════════════════
+      { render: () => `
+        <div class="slide-title">⚖️ Medicolegal Importance</div>
+        <div class="slide-subtitle">Circumstances of Phosphorus Poisoning</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="compare-card danger">
+            <h3 style="color:#f78166; margin-bottom:6px;">☠️ Suicidal — Most Common in India</h3>
+            <span style="color:#c9d1d9; font-size:15px; line-height:1.8;">Cheap and accessible (₹10–15) • Painless initial ingestion • Impulsive suicidal attempts • Lucid interval delays presentation to hospital</span>
+          </div>
+          <div class="compare-grid" style="margin-top:0;">
+            <div class="compare-card" style="background:#1a1400; border-color:#3a2f00;">
+              <h3 style="color:#ffa657; margin-bottom:6px;">🍛 Accidental</h3>
+              <ul style="color:#c9d1d9; font-size:14px; line-height:1.8;">
+                <li>Children eating rat paste placed on food</li>
+                <li>Children chewing Diwali firecrackers</li>
+                <li>Sivakasi workers — occupational (Phossy Jaw)</li>
+              </ul>
+            </div>
+            <div class="compare-card" style="background:#2b1a00; border-color:#5a3a00;">
+              <h3 style="color:#ffa657; margin-bottom:6px;">🔪 Homicidal</h3>
+              <ul style="color:#c9d1d9; font-size:14px; line-height:1.8;">
+                <li>Rare — garlic odour gives it away</li>
+                <li>Mixed in spiced curries / alcohol / coffee</li>
+                <li>Thandarai 2016: 6 deaths, rasam contamination</li>
+                <li>Symptoms resemble acute liver disease → delay</li>
+                <li>Sometimes introduced vaginally for abortion</li>
+              </ul>
+            </div>
+          </div>
+          <div class="compare-card safe-card">
+            <h3 style="color:#7ee787; margin-bottom:6px;">⚔️ War &amp; Arson ⭐</h3>
+            <span style="color:#c9d1d9; font-size:15px; line-height:1.8;">
+              <b>War:</b> Fragments of hand grenades, bombs, bullets introduce phosphorus into body<br>
+              <b>Arson:</b> White P covered with dung or wet cloth thrown on huts — when covering dries the roof catches fire spontaneously
+            </span>
+          </div>
+        </div>
+        <div class="alert-box" style="background:#1a1400; border:1px solid #3a2f00; margin-top:8px; font-size:14px;">
+          <strong style="color:#ffa657">BNS 2023:</strong> Sec 123 (hurt by means of poison) | Sec 103 (murder — homicidal) | Old: IPC 328 / 302
+        </div>` 
+      }
+    ]
+  };
+  };
+
+
+  // --- START THE APP ---
+  async function initApp() {
+      // 1. Run the login prompt and wait for the student
+      studentName = await authenticateStudent();
+      
+      // 2. Apply the background watermark
+      applyWatermark(studentName);
+
+      // 3. Connect to Firebase and listen to the teacher's slides
+      db.collection("slides").doc("current").onSnapshot((doc) => {
+        if (!doc.exists) { slideEl.innerHTML = "No data found"; return; }
+        
+        const data = doc.data();
+        if (data.status === "locked") {
+          slideEl.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px; margin-bottom:20px;">🔒</div><h2 style="color:#f78166;">Session Ended</h2><p style="color:#8b949e; font-size:18px;">The live lecture has concluded. Materials are currently locked by the instructor.</p></div>`;
+          return; 
+        }
+
+        const topic = data.topic || "fm216"; 
+        const index = Number(data.index) || 0;
+        const slideData = allTopics[topic] ? allTopics[topic][index] : null;
+
+        if (!slideData) slideEl.innerHTML = "End of Lecture";
+        else slideEl.innerHTML = slideData.render(); 
+      });
+  }
+
+  // Execute the initialization
+  initApp();
+
+</script>
+</body>
+</html>
+index (11).html
+General Info
+TypeHTML
+Displaying index (11).html.
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 16px; position: relative; padding-bottom: 18px; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; min-width: 36px; }
+    .tl-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+    .tl-line { width: 2px; flex: 1; background: #30363d; margin-top: 4px; }
+    .tl-body { padding-top: 6px; }
+    .tl-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .tl-points { font-size: 14px; color: #8b949e; line-height: 1.7; }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th { background: #21262d; color: #7d8590; padding: 8px; text-align: left; border-bottom: 1px solid #30363d; }
+    td { padding: 8px; border-bottom: 1px solid #21262d; font-size: 14px; }
+    .toxic { color: #f78166; font-weight: bold; }
+    .safe { color: #7ee787; font-weight: bold; }
+    .warn { color: #ffa657; font-weight: bold; }
+
+    /* PHOSPHORUS INTERACTIVE CSS */
+    .burn-zone { width:160px; height:160px; background:#1e293b; border-radius:50%; margin:20px auto; display:flex; align-items:center; justify-content:center; transition:0.4s; cursor:pointer; border: 4px solid #334155; font-weight: bold; font-size: 20px; }
+    .diag-card { background:#21262d; border:1px solid #30363d; padding:20px; border-radius:12px; margin:12px 0; cursor:pointer; text-align: left; transition: 0.2s; font-size: 18px; }
+    .diag-card:hover { border-color: #58a6ff; }
+  </style>
+</head>
+
+<body>
+<div style="display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px;">
+  <div style="max-width:850px; width:100%; background:#1e293b; padding:30px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+    
+    <div id="slide" style="font-size:24px; line-height:1.6; white-space:pre-wrap; margin:0; text-align:center;">
+        <h2 style="color:#58a6ff;">Initializing Security...</h2>
+        <p style="color:#8b949e; font-size: 16px; margin-bottom:30px;">Please wait while we verify your device.</p>
+        <button onclick="localStorage.clear(); location.reload();" style="background:#334155; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-size:16px;">🔄 Reset Device Memory</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
+    authDomain: "forensic-class-app.firebaseapp.com",
+    projectId: "forensic-class-app",
+    storageBucket: "forensic-class-app.firebasestorage.app",
+    messagingSenderId: "905219571923",
+    appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const slideEl = document.getElementById("slide");
+
+  // --- MASTER LISTS ---
+  const students2023 = {
+    "520022506042": "DHARSHANTH T S", "520022506110": "MADHINI MADHURAANTHAGI S", "520022506132": "NITHYA M", "520022506179": "SANJAYAN R", "520022506195": "SHEREYA V", "520022506225": "THILESH HARRINI S", "520022506245": "YAZHINI S", "520023506001": "AADHARSHINI C", "520023506002": "AASHI S", "520023506003": "ABILESH N T", "520023506004": "ABIRAMI S M", "520023506005": "ABIRAMI S", "520023506006": "ABISHEK ARJUNAN", "520023506007": "ABISHEKA BHARATHI K J", "520023506008": "ADHARSH S", "520023506009": "AFDEEN SULTHAN M", "520023506010": "AGALYAA MARIKANNAN", "520023506011": "AGNES ABISHEKHA ANANDAN", "520023506012": "AISHWARYA JAYASANKAR", "520023506013": "AJEETH K A", "520023506014": "AKASH A", "520023506015": "AKASH G", "520023506016": "AKILARASAN N", "520023506017": "AKSAI A M", "520023506018": "AKSHAYA B", "520023506019": "ALISHA SABEER", "520023506020": "AMNA BAI", "520023506021": "AMRITHAA B S", "520023506022": "ANANDA SUDHAN K L", "520023506023": "ARSHAD DARWESH A", "520023506024": "ARUN PRASATH C", "520023506025": "ARUNA D", "520023506026": "ASLINAV D SAHAAY", "520023506027": "ASWIN KUMAR K", "520023506028": "ATCHAYA AHI S A", "520023506029": "AVANEESH H", "520023506030": "AVANTHIKA P", "520023506031": "AVINASSVISWA M", "520023506032": "BALANANDAN B", "520023506033": "BHARATHI R R", "520023506034": "BHAVATARINI AK", "520023506035": "BHUVANESH S M", "520023506036": "BRINDHA DEVI S", "520023506037": "CHANDRU P", "520023506038": "CHARAN M", "520023506040": "CYRIL ABRAHAM", "520023506042": "DEEPAK S", "520023506043": "DEEPIKA C S", "520023506044": "DEVI SREE V", "520023506045": "DEVRAJ V", "520023506046": "DHANASHSRI S", "520023506047": "DHANVEER A S", "520023506048": "DHARANI R", "520023506049": "DHARSAN K J", "520023506050": "DHARSHINIPRIYA R", "520023506051": "DHARUNIKA A", "520023506052": "DHILLESH A", "520023506053": "DHIVYA SHRI B A", "520023506054": "DHIVYABHASHINI S", "520023506055": "DITCHITHAMATHI R", "520023506056": "DIYA E", "520023506057": "GOKUL R", "520023506058": "GOKULESHWAR K", "520023506059": "GOWTHAM S A", "520023506060": "GUNAVATHI M", "520023506061": "GURU ELAKKIYA SACHIDANANDAM", "520023506062": "GURUCHANDRU M", "520023506063": "HANIN F", "520023506064": "HARI ADHARSAN N", "520023506065": "HARI KRISHANTH R", "520023506066": "HARI PRAKASH C S", "520023506067": "HARINI DINESH BABU", "520023506068": "HARINIPPRIYA N", "520023506069": "HARISH S M", "520023506070": "HARISH KUMAR K L", "520023506071": "HARSHA SHYAM", "520023506072": "HASEEN SHAJINA A", "520023506073": "HEMA MUTHU PRABHA P N", "520023506074": "HOMA SRI R N", "520023506075": "ILLAKIYA PRIYA K P", "520023506076": "INBABHUSHAN G R", "520023506077": "INDHUJA P", "520023506078": "INIYA G", "520023506079": "ISWARYAVALLI P", "520023506080": "JAGADEESHWARAN K", "520023506081": "JAISHRINIDHI K T", "520023506082": "JAYA THARANI M", "520023506083": "JAYAKRISHNA A", "520023506084": "JESSICA JOSEPHINE A", "520023506085": "KAARTHIKA SHRI S", "520023506086": "KAILESHWARAN K K", "520023506087": "KAMALIKA P", "520023506088": "KAMESH P", "520023506089": "KANIKA V", "520023506090": "KANTHIMATHI S", "520023506091": "KAVIN NARAYANAN T", "520023506092": "KAVIYA R", "520023506093": "KAVIYA R T J", "520023506094": "KAVYA M", "520023506095": "KEERTHANA M", "520023506096": "KEERTHIKA GANESAN", "520023506097": "KHIRTHAN B", "520023506098": "KIRAN SAJ", "520023506099": "KIRUTHIKA K", "520023506100": "KOWSHIKA S", "520023506101": "KRISHIK M", "520023506102": "KRITHICKRAMAN T", "520023506103": "LAKSHMI PRABHA S", "520023506104": "LAKSHMIKANTH S S", "520023506105": "LALITH GURUPRAKASH J", "520023506106": "LEXMIDHARAN S S", "520023506107": "LOGAKAVIN E", "520023506108": "LOKAJITH V", "520023506109": "MADHANRAJ R", "520023506110": "MADHAV V NAIR", "520023506111": "MADHUMITHA B", "520023506112": "MADHUMITHA M", "520023506113": "MADHUMITHA V", "520023506114": "MADHUMITHA JEYASRI S", "520023506115": "MAHESHWARI M", "520023506116": "MANISHA R", "520023506117": "MANISSHA M", "520023506118": "MARY SANIA R", "520023506119": "MOHAMED AKSHAN M", "520023506120": "MOHAMED VASEM M", "520023506121": "MOHANA HARI M", "520023506122": "MONIKA R", "520023506123": "MOUNISHAA P", "520023506124": "MRIETHULA R", "520023506125": "MUHAMMED ZAID ABDUL WAHAB", "520023506126": "MUTHUPRIYA M", "520023506127": "NAMBI VARTHARAJAN J", "520023506128": "NAVANITH R", "520023506129": "NIHITHA S K", "520023506130": "NISHANTH D", "520023506131": "NITHEESH R V", "520023506132": "NITHISH PRANAV T", "520023506133": "NITHYA V V", "520023506134": "PARTHASARATHI S", "520023506135": "PATHMAVATHI B", "520023506136": "PAVAN R", "520023506137": "PIRANAV KASINATHAN B", "520023506138": "POOJA M", "520023506139": "PRADIBA N", "520023506140": "PRAGATHEESWARI SARAVANAN", "520023506141": "PRAGATHESH V S", "520023506142": "PRAKATI M", "520023506143": "PRAMOTH AARYA M", "520023506144": "PRANAV R V", "520023506145": "PRANAV MUKESH G", "520023506146": "PRATHISTHA R", "520023506147": "PRAVEEN A", "520023506148": "PRAVEEN S", "520023506149": "PREETHIVI R", "520023506150": "PREMNATHAN J", "520023506151": "PRIYADHARSHINI E", "520023506152": "PRIYAVARSHINI K", "520023506153": "PUSHPA ABINAYA T", "520023506154": "RABIN BABU S", "520023506155": "RAGAVI D", "520023506156": "RAGHINYA S R", "520023506157": "RAJ SHREE J", "520023506158": "RAJALAKSHMI V", "520023506159": "RAKSHIKA MOHANARANGAN", "520023506160": "RAMANA KAAVYA T", "520023506162": "REVANTH P", "520023506163": "REYGANTHAN K", "520023506164": "RIDUMIKA G", "520023506165": "RISHI S", "520023506166": "RITHISH P", "520023506167": "ROHINI D", "520023506168": "ROHITH S", "520023506169": "ROSHINI SILVIA FERNANDO", "520023506170": "RUBESHVAR J", "520023506171": "RUPIKA G", "520023506173": "SAHANA SARASWATHI S", "520023506174": "SAHITYA R", "520023506175": "SAKTHI PRADEEPA S", "520023506176": "SAKTHIVISHAL M", "520023506177": "SAMARJIT M R", "520023506178": "SAMEER BABU M", "520023506179": "SANCHANA R", "520023506180": "SANDRA MARY BLOSSOM S", "520023506181": "SANJAI PRASANNAA S", "520023506182": "SANJAY VISWANATHAN", "520023506183": "SANJIT G", "520023506185": "SANTHOSH RAJ T", "520023506186": "SANTHOSHI U J", "520023506187": "SARA BARVEEN A", "520023506188": "SASTHA J V", "520023506189": "SATVI SRI S", "520023506190": "SELLA PREETHI SRI S", "520023506191": "SELVAM EVELIN", "520023506192": "SHAARAV N", "520023506193": "SHAMBHAVI R", "520023506194": "SHANKAR K", "520023506195": "SHANMUGA SRI VARSHINI M", "520023506196": "SHARMILA S", "520023506197": "SHARVINI R R", "520023506198": "SHIFA ZARIN M", "520023506199": "SHIFANA M", "520023506200": "SHIVANI S", "520023506201": "SHOBIKATHARUNI G", "520023506202": "SHREE RAM R", "520023506203": "SHREYA D K", "520023506204": "SHRIKARTHICK A", "520023506205": "SHUBHIKSHA RAAJ S", "520023506206": "SINDHUJA H", "520023506207": "SREE NITHI VL", "520023506208": "SREE VAIHUNDH K", "520023506209": "SRI AKSHYA R V", "520023506210": "SRIGA T", "520023506211": "SRIHARINI K", "520023506212": "SRINITHI P", "520023506213": "SRINIVASAN R", "520023506214": "SRIVATS S", "520023506215": "SUBASHREE E P", "520023506216": "SUBHA SHREE D", "520023506217": "SUBHASHINI R B", "520023506218": "SUJITHA SHREE M", "520023506220": "SUNDARESWARAN B", "520023506221": "SUSHMA K", "520023506222": "SWARNA S", "520023506223": "SWEDHASSHREE T", "520023506224": "SWETHA M", "520023506225": "SWETHA RAM P", "520023506226": "SWETHA SUDHARSAN", "520023506227": "THAMIZHINIAN T", "520023506228": "THARUN N", "520023506229": "THARUNIKA S", "520023506230": "THEEKSHITHA MARY E", "520023506231": "THOONGA DEVAN K", "520023506232": "THRISHA P", "520023506233": "TRINETHRA N", "520023506234": "VAISHNAVE D M", "520023506235": "VARSHA C", "520023506236": "VARSHA S G", "520023506237": "VARSHIKA S", "520023506238": "VARSHITHA T", "520023506239": "VEDAVARSHINI K", "520023506240": "VIGNESH BALA M R", "520023506241": "VIGNESH KUMAR K", "520023506242": "VIJI A", "520023506243": "VISHWA JEEVA J", "520023506244": "VISVA K", "520023506245": "VISVA HARSINI K G", "520023506246": "VITHUN VELAN B", "520023506247": "YASEEN AHAMED J M", "520023506248": "YAZHINI A", "520023506249": "YOUVASHREE E", "520023506250": "YUVASHREE S"
+  };
+
+  const students2024 = [
+    "ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABIRAMI SRINIVASAPERUMAI", "ADHITHYAN A T", "ADITHYA B", "AISHWARYA B", "AJEETH KUMAR R S", "AKASHSANG SIVAKUMAR", "AKSHITHA V", "AMIRTHA SHREE SHANMUGA", "ANNAPOORANI LAKSHMANA", "ARAVIND M", "ARJHITH A G", "ARJUN SURESH K", "ARSHAD KHAN Y", "ARUMUGALAKSHMI P", "ARUN BHARATHI E", "ARUNACHALAM E", "ARUNDHATI K P", "ARUN PANDI V", "ASHISH T. A", "ASHVEEKAA P", "ASMITHAH S", "ASWIN BALAJI", "BALA YOGESH S", "BARATH SHYLESH B", "BHAVIYATHAAR K", "BHAVNA G", "DEEKSHIKA PARTHIBAN CHAI", "DEEPIKA U S", "DEEPTHI V", "DEVA B", "DEVA MURUGESAN", "DHARANEESH M", "DHARANEESH N", "DHARANI M", "DHARMARAJ MAMATHA", "DHARSHINI J", "DHARSHINI P", "DHARSHINI V", "DHARUN A", "DHARUN KRISHNA B", "DHAYANAND S S", "DINESH P", "DIVYA VARSHINI JEYAPRAKAS", "DONI ABISHEK KUMAR A", "ELANSURIYAN A G", "ELANTHENDRAL C", "GAUTAMAN B V", "GAYADHARSHINI S", "GOPIKA U", "GOWTHAM K", "GURUMARAN B", "HAMEEM SYED EBRAHIM ABI", "HAMNA SAJAAN H", "HAMZA RAZAK AM", "HARI MANOJ V", "HARINI S", "HARISH P", "HARISH KUMARAN G", "HARISH PRABHU BS", "HARITHA R", "HARSHA S", "HARSHAD J", "HARSHINI P", "HARUNYAA K", "HEERA SHYAM", "HIMAVARSHA N", "HINDHUJA NAGARAJ", "HISHWANTH K", "INBAVEL P", "ISHWARYA T", "JADYN NIHARIKA R", "JAGADEESH S", "JANA S", "JANOVIA JJ", "JASHVANDH SELVA DEV S", "JEEVAN SAMRUDH TGS", "JEEVANA S", "JONES CALVIN T", "JOSHITHA R", "KAAVYASHREE B", "KABIL SRIVATSAN SL", "KALAIVANI H", "KANIGAA GM", "KANISHGA SRIHARINI K", "KARTHICK M", "KARTHIKA K", "KATHIROLI S", "KEERTHANA A", "KEERTHANA K", "KERAN MOZHI B", "KESHIKA V S", "KISHORE P", "KISHORITHA P", "KOHUL KRISHNA T", "LAKSHYASHRI V", "LAZEERA FATHIMANI", "LILAANIE S", "LOGESHWARI J", "MADHUMITHA S", "MADIHA BANU HATHI AHAMI", "MAHALAKSHMIG", "MAHALAKSHMI S", "MAI DEEPA SRI R", "MANOHARAN S", "MANORANJAN S R", "MANYAA P", "MARI MUTHU S", "MAYURANATH K", "MEGHNA NAIR", "MELWIN JONES A", "MITHUNCHANDER R", "MOHAMMED LUKMAAN A", "MOHAMEDHA SANIYA M", "MOHAMMED HUZAIFA M", "MOHAMMED RIYAS A", "MOHANA PRASATH S", "MOHANA SRI M", "MONISH BALAJI C", "MONISHRAGAVENDRA GOVIN", "MOSES KINGSBEU SELVAGANT", "MUKILAN A", "NANDHANA B", "NANDHITHA R", "NASREEN G", "NEERAJ GR", "NEERAJA G", "NEHA S", "NEHA PANDARAPARAMBIL LE", "NISHANTH V", "NISHITH G", "NITHYA SRI M", "NIVEDHA BALADHANDAUDH", "NOORUL HABIBA", "PADMAESH M K", "PAVANJ", "PAVITHRA M", "POOJAR", "POOJAMALAR PRIYA", "POOJASREE TRS", "PRAGADHEESAN R", "PRANAV ADARSH SENTHIL RA", "PRANITH M", "PRASANTH M", "PRATHYANKIRA ES", "PRAVEEN M", "PRAVIN BAALAJI PANDIAN", "PREETHIKA N", "PRIYADARSHINI", "PRIYADARSHINI SS", "PUGALARASAN R", "PUGAZHARASI VALARMATHI", "RADHA RUCKMANI R", "RAGAVI V P", "RAGHAV I", "RAGHUL M C", "RAMANA G", "RANJANA S", "REHANAA MR", "RENUGADEVI S", "RIJAI RENON J K", "RITHIKASREE S", "RIZZA FATHIMA K", "ROHINI PRIYA S", "ROSHITH K S", "SAANVIYA M", "SABITHA K", "SACHIN S", "SACHIN SAGGAR SP", "SAHANA SRIVARTHINI S", "SAKTHI SUDHARSHINI S", "SAKTHI SUNDARA MOORTHY", "SAMEEHA NEHMATH M", "SAMRUTA S", "SAMRUTHA R", "SAMUEL FREDERICCK B", "SANDHYA S", "SANJANA S", "SANJAY S 28.08.2005", "SANJAY S 29.08.2005", "SANJAY S 22.06.2006", "SANJAY RENUGOPAL", "SANTHOSH S V", "SARAN S", "SARAVANA SAKTHIVEL", "SASHDI SHRE N", "SATHYA P", "SHALINI V", "SHARUMATHI P", "SHIFA SHABEER AHMED S", "SHIFANA RAHMATH K", "SHIYAM KUMAR K", "SHREEHARISH RAVICHANDRA", "SHREYA PL", "SHRI PRAJAN S", "SHRUTHI M", "SHRUTI G", "SHUNMUGA SANTOSH S", "SIVASELVI S", "SREYA SWETHA RS", "SRI DHARANI P", "SRI VARSHA V S", "SRICHARAN T V", "SRIHARAN M", "SRIHARI R", "SRIMATHI K", "SRINIKKESH S", "SRINITHI MARAN", "SRINITHI RAMESH", "SRIPRIYA V", "SRIRAM E", "SRIVIDHYA S", "SRUTHI S", "SUDHAN P", "SUNIL BABU G", "SURUTHIKA SREE KARTHIKEY", "SUSHANA M", "SUVATHI V", "SYED SIDDIQ A", "TEJASRI J", "THALHA M", "THAYANITHY V S", "THENISAI M", "THIRUMAGAL M", "UKESHWARAN P", "VALAR NILAD T", "VARSHA BAVADARINI T", "VARTHINI K", "VARUN D", "VEDANTH K", "VEDHA VALLII S", "VIDUNAA M", "VIJAY P", "VIJAYAVARSHINI V", "VIKRAM S", "VINISHA MP", "VISHAL RUBAN KANAGAVEL", "VISHNU PRIYA S", "VISHNUSHREE M", "VISHWA V", "VISWAPPREYAA RU", "YALMOZHIYAN R", "YOGESHWARAA K", "CHINNAYA BALAJI C K", "RANJANA YADAV L", "SABARISH R", "SANTHOSH R", "SUNDAR KARTHIK S", "SANJAYAN R", "BHAVYA SRI B"
+  ];
+
+  // --- DEVICE FINGERPRINTING & HANDCUFF LOGIC ---
+  let deviceId = localStorage.getItem("dsmch_device_id");
+  if (!deviceId) {
+      deviceId = "DEV_" + Math.random().toString(36).substring(2, 12).toUpperCase();
+      localStorage.setItem("dsmch_device_id", deviceId);
+  }
+
+  let studentName = ""; // Global variable for the student's name
+
+  async function authenticateStudent() {
+    let savedReg = localStorage.getItem("dsmch_reg");
+    let savedName = localStorage.getItem("dsmch_name");
+
+    if (!savedReg) {
+      let auth = false;
+      while (!auth) {
+        let input = prompt("Enter 12-digit Register No (2023 Batch)\nOR Exact Name (2024 Batch):");
+        if (!input) continue;
+        input = input.trim().toUpperCase();
+        
+        // SECRET FACULTY BYPASS
+        if (input === "000000000000") {
+            let facName = prompt("Faculty Login: Enter Name");
+            localStorage.setItem("dsmch_reg", "FACULTY");
+            localStorage.setItem("dsmch_name", facName || "TESTER");
+            return "FACULTY - " + (facName || "TESTER");
+        }
+
+        let finalIdentity = "";
+        let dbKey = "";
+
+        // 2023 Batch Check
+        if (students2023[input]) {
+            let nameInput = prompt("Enter Name (EXACTLY as per college records):").toUpperCase().trim();
+            if (students2023[input] === nameInput) {
+                finalIdentity = input + " - " + nameInput;
+                dbKey = input;
+            } else {
+                alert("❌ Name does not match the Register Number.");
+                continue;
+            }
+        } 
+        // 2024 Batch Check
+        else if (students2024.includes(input)) {
+            finalIdentity = input;
+            dbKey = input;
+        } 
+        else {
+            alert("❌ INVALID: Identity not found in records.");
+            continue;
+        }
+
+        // --- FIRESTORE DEVICE BINDING CHECK ---
+        const bindingRef = db.collection("device_bindings").doc(dbKey);
+        const doc = await bindingRef.get();
+
+        if (doc.exists && doc.data().deviceId !== deviceId) {
+            alert("❌ ACCESS DENIED: This Identity is already bound to a different device.");
+        } else {
+            if (!doc.exists) {
+                await bindingRef.set({ deviceId: deviceId, name: finalIdentity, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+            }
+            localStorage.setItem("dsmch_reg", dbKey);
+            localStorage.setItem("dsmch_name", finalIdentity);
+            return finalIdentity;
+        }
+      }
+    }
+    return savedName; // If they already logged in before
+  }
+
+  // WATERMARK
+  function applyWatermark(name) {
+    const watermark = document.createElement("div");
+    watermark.style.cssText = `position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9999; opacity:0.04; display:flex; flex-wrap:wrap; overflow:hidden; font-size:24px; font-weight:bold; color:white; transform:rotate(-30deg) scale(1.5);`;
+    let pattern = "";
+    for(let i=0; i<100; i++) { pattern += `${name} - DSMCH &nbsp;&nbsp;&nbsp; `; }
+    watermark.innerHTML = pattern;
+    document.body.appendChild(watermark);
+  }
+
+  function logActivity(eventName) {
+    let ctx = slideEl.innerText.substring(0, 40);
+    if (!ctx || ctx.trim() === "") ctx = "Multimedia Slide";
+    
+    // Do not log anything if the class hasn't started or is locked
+    if (ctx.includes("Initializing") || ctx.includes("Loading...") || ctx.includes("No data found") || ctx.includes("Session Ended")) {
+        return; 
+    }
+    // Ignore "blur" (Lost Focus) events to stop penalizing mobile notifications
+    if (eventName === "Lost Focus (Possible Split-Screen/Notification)") {
+        return; 
+    }
+
+    db.collection("activity_logs").add({
+      student: studentName, 
+      deviceId: deviceId, // Included for the Teacher Excel sheet
+      event: eventName,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(), 
+      slideContext: ctx
+    });
+  }
+
+  // ACTIVITY TRACKING WITH GRACE PERIOD
+  let blurTimer;
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'hidden') logActivity("Left App / Switched Tab");
+    else logActivity("Returned to Page");
+  });
+  window.addEventListener("blur", () => { 
+      blurTimer = setTimeout(() => { logActivity("Lost Focus for > 10 Seconds"); }, 10000); 
+  });
+  window.addEventListener("focus", () => { clearTimeout(blurTimer); });
+  window.onbeforeunload = function() {
+    logActivity("Closed / Left Page");
+    return "Are you sure you want to leave the lecture?";
+  };
+
+  // QUIZ LOGIC
+  window.answerQuiz = function(choice, result, quizId) {
+    const opts = document.querySelectorAll(`#${quizId} .quiz-opt`);
+    opts.forEach(o => { o.disabled = true; o.style.cursor = 'default'; });
+    const clicked = opts[['A','B','C','D'].indexOf(choice)];
+    if (clicked) clicked.classList.add(result);
+    const fb = document.getElementById(`fb-${quizId}`);
+    if (fb) fb.className = `quiz-feedback ${result === 'correct' ? 'ok' : 'err'} show`;
+    db.collection("activity_logs").add({
+      student: studentName, deviceId: deviceId, event: result === 'correct' ? "Quiz: Correct" : "Quiz: Wrong",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: `Selected Option: ${choice}`
+    });
+  };
+
+  // TOPIC LIBRARY (Your FM216 Slides + The 6 Interactive Phosphorus Slides)
+  const allTopics = {
+    "fm216": [
+      { render: () => `
+        <div class="slide-title">🦴 FM 2.16</div>
+        <div class="slide-subtitle">Medicolegal Examination of Mutilated, Decomposed Bodies & Bones</div>
+        <div class="stat-row">
+          <div class="stat-pill"><div class="sv" style="color:#f78166">10</div><div class="sl">Questions to Answer</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">95%</div><div class="sl">Pelvis for Sex</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#7ee787">Femur</div><div class="sl">Best for Stature</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#58a6ff">Teeth</div><div class="sl">Best for Age + DNA</div></div>
+        </div>
+        <div class="alert-box alert-yellow" style="margin-top:16px"><strong>When identity is destroyed — Science restores it</strong></div>` 
+      },
+      { render: () => `
+        <div class="slide-title">📖 Textbook Definitions</div>
+        <div class="alert-box" style="background:#0d1a2a;border:1px solid #1a3a5c"><strong style="color:#58a6ff">Reddy:</strong><br><span style="color:#c9d1d9">"Mutilated bodies — extensively disfigured, or limb/part lost but <strong>soft tissues still attached to bones</strong>"</span></div>
+        <div class="alert-box" style="background:#1a1400;border:1px solid #3a2f00"><strong style="color:#ffa657">Modi:</strong><br><span style="color:#c9d1d9">"Mutilation is <strong>NOT always criminal</strong> — animals can mutilate in a very short time"</span></div>
+        <div class="alert-box" style="background:#0d2a1a;border:1px solid #1a4426"><strong style="color:#7ee787">Parikh:</strong><br><span style="color:#c9d1d9">"<strong>Fragmentary remains</strong> — only fragments such as head, trunk or limb"</span></div>` 
+      },
+      { render: () => `
+        <div class="slide-title">⚡ Causes of Mutilation</div>
+        <div class="compare-grid">
+          <div class="compare-card danger"><h3 style="color:#f78166">Criminal</h3><ul><li>Concealment of identity</li><li>Easier disposal of body</li><li>Skilled — joint separation</li></ul></div>
+          <div class="compare-card"><h3 style="color:#a78bfa">Animal Scavenging</h3><ul><li>Rats, dogs, jackals, vultures</li><li>Haphazard wounds</li><li>Gnaw marks on bone</li></ul></div>
+          <div class="compare-card safe-card"><h3 style="color:#7ee787">Natural / Accidental</h3><ul><li>Decomposition — ligament separation</li><li>Moving vehicles (RTA)</li><li>Bomb explosions</li></ul></div>
+          <div class="compare-card"><h3 style="color:#ffa657">📌 Key Point</h3><ul><li>Each cause leaves <strong>different marks</strong></li><li>Determining manner is critical for court</li></ul></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 10 Questions to Answer</div>
+        <div class="slide-subtitle">Primary goal of examining mutilated remains</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          ${[["1","Human or Animal?","#f78166"],["2","Same individual or multiple?","#f78166"],["3","Age","#ffa657"],["4","Sex","#ffa657"],["5","Stature","#ffa657"],["6","Race","#ffa657"],["7","Identity","#7ee787"],["8","Manner of separation","#7ee787"],["9","Cause of death","#58a6ff"],["10","Time since death","#58a6ff"]].map(([n,q,c]) => `
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#21262d;border-radius:8px;border:1px solid #30363d">
+              <span style="font-size:18px;font-weight:700;color:${c};min-width:24px">${n}</span><span style="font-size:15px;color:#c9d1d9">${q}</span>
+            </div>`).join('')}
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🧠 The Diagnostic Sequence</div>
+        <div class="slide-subtitle">The strict logical dependency of skeletal analysis</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2d1215;color:#f78166">1</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#f78166">Origin: Human vs. Animal</div><div class="tl-points"><strong>The Threshold:</strong> If tests prove animal origin, the investigation concludes immediately.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">2</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Determine Sex</div><div class="tl-points"><strong>Why before Age/Stature?</strong> Male and female skeletons develop at different rates. Guessing sex ruins stature accuracy because formulae are sex-specific.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">3</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#58a6ff">Estimate Age</div><div class="tl-points"><strong>Why before Stature?</strong> Stature formulae are <em>only valid for fully grown adults</em>. You cannot apply adult formulae to growing children.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">4</div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Calculate Stature</div><div class="tl-points"><strong>The Final Synthesis:</strong> Relies entirely on the demographic profile established in Steps 2 and 3.</div></div></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">❓ Q1 — Human or Animal?</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">1</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Gross Examination</div><div class="tl-points">Shape, structure and weight usually distinguish human remains from animal.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">2</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#58a6ff">For Isolated Soft Tissue</div><div class="tl-points"><strong>Precipitin test ⭐</strong> — confirms human protein. Anti-globulin inhibition test — alternative.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">3</div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Anatomy Room Artefacts — Rule Out</div><div class="tl-points">Formalin odour. Red lead injected in blood vessels. Preserved, non-decomposed appearance.</div></div></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">❓ Q2 — Same Individual?</div>
+        <div class="compare-grid">
+          <div class="compare-card"><h3 style="color:#ffa657">Assembly Method</h3><ul><li>Anatomically align all parts</li><li>Jigsaw method</li><li>Check consistent skin colour</li></ul></div>
+          <div class="compare-card danger"><h3 style="color:#f78166">⭐ Reduplication Rule</h3><ul><li>Two RIGHT humeri = Minimum TWO victims</li><li>Count all unpaired bones</li><li>MNI — Minimum Number of Individuals</li></ul></div>
+        </div>
+        <div class="alert-box alert-green"><strong>Confirmation:</strong> Blood grouping + DNA profiling ⭐ — definitive proof.</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">♀♂ Q3 — Determining Sex</div>
+        <div class="alert-box alert-yellow"><strong>From decomposed soft tissue:</strong><br>Prostate (male) and non-pregnant uterus (female) are <strong>rot-resistant</strong> ⭐ — confirm sex even in advanced decomposition.</div>
+        <div class="compare-grid">
+          <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c"><h3 style="color:#58a6ff">Female Pelvis</h3><ul><li>Subpubic angle <strong>&gt;90°</strong></li><li>Circular pelvic inlet</li><li>Wide greater sciatic notch</li></ul></div>
+          <div class="compare-card" style="background:#2a1a2a;border-color:#4a2a4a"><h3 style="color:#d2a8ff">Male Pelvis</h3><ul><li>Subpubic angle <strong>&lt;70°</strong></li><li>Heart-shaped inlet</li><li>Narrow sciatic notch</li></ul></div>
+        </div>
+        <div class="alert-box alert-green"><strong>Pelvis = 95% accurate ⭐⭐</strong> — most reliable bone for sex determination.</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">💀 Sex from Skull</div>
+        <table>
+          <thead><tr><th>Feature</th><th>Female</th><th>Male</th></tr></thead>
+          <tbody>
+            <tr><td>Overall</td><td class="safe">Smooth, rounded</td><td class="warn">Rugged, angular</td></tr>
+            <tr><td>Mastoid process</td><td class="safe">Small</td><td class="warn">Large, prominent</td></tr>
+            <tr><td>Supraorbital ridges</td><td class="safe">Absent / faint</td><td class="warn">Prominent</td></tr>
+            <tr><td>Chin</td><td class="safe">Pointed</td><td class="warn">Square</td></tr>
+            <tr><td>Forehead</td><td class="safe">Vertical, rounded</td><td class="warn">Sloping</td></tr>
+            <tr><td>Orbital margins</td><td class="safe">Sharp</td><td class="warn">Rounded/blunt</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-yellow">📌 Skull accuracy = 90% &nbsp;•&nbsp; Pelvis accuracy = 95% &nbsp;•&nbsp; <strong>Always prefer pelvis</strong></div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎂 Q4 — Determining Age</div>
+        <div class="compare-grid">
+          <div class="compare-card"><h3 style="color:#ffa657">From Bones</h3><ul><li>Epiphyseal union — growing age</li><li>Cranial suture closure — adult</li><li>Pubic symphysis changes</li></ul></div>
+          <div class="compare-card safe-card"><h3 style="color:#7ee787">From Teeth ⭐ Most Reliable</h3><ul><li>Children: Eruption sequence / Demirjian method</li><li>Adults: Attrition / wear / Root transparency</li><li>Adults: Secondary dentine / Cementum annulation</li></ul></div>
+        </div>
+        <div class="alert-box alert-green"><strong>Teeth = most reliable for age in all age groups ⭐</strong></div>` 
+      },
+      { render: () => `
+        <div class="slide-title">📏 Q5 — Stature from Long Bones</div>
+        <div class="slide-subtitle">Based on constant ratio of bone length to total height</div>
+        <div class="stat-row">
+          <div class="stat-pill"><div class="sv" style="color:#7ee787">Femur</div><div class="sl">Most accurate ⭐</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#58a6ff">Tibia</div><div class="sl">2nd choice</div></div>
+          <div class="stat-pill"><div class="sv" style="color:#ffa657">Humerus</div><div class="sl">Upper limb</div></div>
+        </div>
+        <div class="alert-box alert-yellow"><strong>Two methods:</strong><br>A) Karl Pearson Multiplication Factors — quick, single bone<br>B) Trotter-Gleser Regression Equations — more precise</div>
+        <div class="alert-box alert-green"><strong>Living height = Skeletal height + 2 to 4 cm</strong> (soft tissues — intervertebral discs, scalp)</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">📐 Pearson Multiplication Factors</div>
+        <table>
+          <thead><tr><th>Bone</th><th>Factor</th><th>Example (45 cm bone)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Femur ⭐</strong></td><td class="safe" style="font-size:18px;">× 3.7</td><td style="color:#7ee787">45 × 3.7 = <strong>166.5 cm</strong></td></tr>
+            <tr><td>Tibia</td><td class="warn" style="font-size:18px;">× 4.3</td><td style="color:#ffa657">45 × 4.3 = 193.5 cm</td></tr>
+            <tr><td>Humerus</td><td class="toxic" style="font-size:18px;">× 5.3</td><td style="color:#f78166">45 × 5.3 = 238.5 cm</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-yellow"><strong>Limitations:</strong> Simple but less accurate. Use only when single bone found. No population correction.</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🔬 Trotter-Gleser Regression</div>
+        <div class="alert-box" style="background:#0d2a1a;border:1px solid #1a4426;text-align:center">
+          <span style="color:#7ee787;font-size:18px;font-weight:600">Stature (cm) = (2.32 × Femur length) + 65.53 ± 3.94</span><br>
+          <span style="color:#c9d1d9;font-size:14px">For male — general formula</span>
+        </div>
+        <div class="alert-box alert-green"><strong>Add 2–4 cm</strong> for living stature (soft tissue correction)</div>
+        <div class="alert-box alert-yellow"><strong>Subtract 1.5%</strong> for dry ancient bone (shrinkage correction)</div>
+        <div class="alert-box" style="background:#0d1a2a;border:1px solid #1a3a5c"><strong style="color:#58a6ff">Fragmentary bone?</strong> Use <strong>Steele & McKern method</strong> — estimate full bone length first, then apply formula.</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🌍 Q6 — Race from Skull</div>
+        <table>
+          <thead><tr><th>Feature</th><th>Caucasoid</th><th>Negroid</th><th>Mongoloid</th></tr></thead>
+          <tbody>
+            <tr><td>Nasal aperture</td><td>Narrow, pointed</td><td class="toxic">Wide, flat</td><td>Medium</td></tr>
+            <tr><td>Prognathism</td><td>Orthognathic</td><td class="toxic">Prognathic</td><td>Flat face</td></tr>
+            <tr><td>Incisors</td><td>Normal</td><td>Normal</td><td class="warn">Shovel-shaped ⭐</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-red"><strong>⚠ Least reliable parameter</strong> — significant overlap between groups.</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🪪 Q7 — Establishing Identity</div>
+        <div class="compare-grid">
+          <div class="compare-card safe-card"><h3 style="color:#7ee787">Scientific Methods ⭐</h3><ul><li>DNA profiling — tooth pulp + petrous bone</li><li>Dental records — ante vs postmortem</li><li>Fingerprints — skin slip method</li><li>Superimposition photography</li></ul></div>
+          <div class="compare-card"><h3 style="color:#ffa657">Physical Evidence</h3><ul><li>Jewellery, clothing</li><li>Surgical implants — serial numbers</li><li>Tattoos — even in decomposition</li></ul></div>
+        </div>
+        <div class="alert-box alert-yellow"><strong>Best for fire/disaster victims:</strong> Dental records + DNA<br><strong>Best for decomposed:</strong> Tooth root pulp DNA ⭐⭐</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 Superimposition Photography</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">1</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Technique</div><div class="tl-points">Victim's antemortem photograph overlaid on the recovered skull. Bony landmarks and dental pattern are checked for match.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">2</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#58a6ff">Used When</div><div class="tl-points">Missing persons • Historical cases • No DNA available • Disaster Victim Identification (DVI)</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">3</div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Modern Method</div><div class="tl-points">3D digital superimposition — more precise landmark mapping.</div></div></div>
+        </div>
+        <div class="alert-box alert-red">📌 <strong>Confirmatory but not conclusive alone</strong> — always combine with other methods</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🚨 Mass Disasters & DVI</div>
+        <div class="slide-subtitle">Disaster Victim Identification (INTERPOL Protocol)</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2d1215;color:#f78166">1</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#f78166">Phase 1: Scene Assessment</div><div class="tl-points">Grid search, tagging fragments, preventing comingling of body parts.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787">2</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Phase 2: Postmortem (PM) Data</div><div class="tl-points">Autopsy, taking DNA from petrous bone/teeth, fingerprints from skin slip, dental charting.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0a1628;color:#58a6ff">3</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#58a6ff">Phase 3: Antemortem (AM) Data</div><div class="tl-points">Collecting medical/dental records, DNA from personal items (toothbrush) from families.</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657">4</div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Phase 4: Reconciliation</div><div class="tl-points">Matching AM data with PM data to formally declare identity.</div></div></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">✂️ Q8 — Manner of Separation</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="compare-card danger"><h3 style="color:#f78166">🔪 Criminal Dismemberment</h3><span style="color:#c9d1d9">Clean cuts / saw marks on bone • <strong>Precise joint-level separation (Skilled = anatomical knowledge)</strong> • Minimal hesitation marks • Evidence of planning</span></div>
+          <div class="compare-card"><h3 style="color:#a78bfa">🐾 Animal Scavenging</h3><span style="color:#c9d1d9">Haphazard, irregular wounds • Gnaw marks visible • <strong>Medulla eaten → cortical bone spicules pushed inward ⭐</strong></span></div>
+          <div class="compare-card safe-card"><h3 style="color:#7ee787">🌿 Decomposition / Natural</h3><span style="color:#c9d1d9">Soft tissue + ligament separation • <strong>No vital reaction</strong> • Can mimic traumatic dismemberment</span></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🔧 Tool Marks on Bone</div>
+        <table>
+          <thead><tr><th>Tool</th><th>Mark Type</th><th>Bone Appearance</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mechanical/hand saw</strong></td><td class="safe">Saw marks</td><td>Parallel striations, initial hesitation marks visible</td></tr>
+            <tr><td><strong>Axe / Cleaver</strong></td><td class="warn">Chop marks</td><td>V-shaped groove, bone splitting at impact point</td></tr>
+            <tr><td><strong>Knife</strong></td><td class="toxic">Cut marks</td><td>Shallow, smooth, direction of stroke visible</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-yellow"><strong>Forensic anthropologist can determine:</strong><br>→ Blade width • Number of strokes • Direction of force • Right or left-handed operator</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">💀 Q9 — Cause of Death</div>
+        <div class="alert-box alert-red">Often <strong>difficult to determine</strong> due to decomposition and fragmentation</div>
+        <div class="compare-grid">
+          <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c"><h3 style="color:#58a6ff">Definitive Trauma Evidence</h3><ul><li>Skull fractures</li><li><strong>Hyoid bone fracture ⭐</strong> (strangulation)</li><li>Knife marks on cervical vertebrae</li><li>Retained bullets / pellets</li></ul></div>
+          <div class="compare-card danger"><h3 style="color:#f78166">Chemical Analysis</h3><ul><li>Arsenic ⭐ — resists putrefaction</li><li>Antimony — detectable months/years later</li><li>Detectable even in skeletal remains</li></ul></div>
+        </div>
+        <div class="alert-box alert-yellow">📌 Hyoid fracture is pathognomonic of manual strangulation — never miss it</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🧪 Toxicology in Decomposed Bodies</div>
+        <div class="slide-subtitle">Poisons that resist putrefaction (Parikh)</div>
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+          <thead><tr><th>Category</th><th>Poisons Found in Fragments/Bones</th></tr></thead>
+          <tbody>
+            <tr><td class="warn">Heavy Metals</td><td>Arsenic, Antimony, Lead, Mercury, Thallium</td></tr>
+            <tr><td class="toxic">Agrochemicals</td><td>Endrin, Organophosphorus compounds</td></tr>
+            <tr><td class="safe">Plant/Alkaloids</td><td>Dhatura, Strychnine, Yellow Oleander, Nicotine</td></tr>
+            <tr><td class="warn">Gases & Others</td><td>Carbon Monoxide, Cyanides, Fluorides, Barbiturates</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-red" style="margin-top:15px;">
+          <strong>Never skip chemical analysis:</strong> Even in skeletonized remains, heavy metals like Arsenic can be detected. Maggots can also be tested for drugs.
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🦴 Fracture Timing</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#0d2a1a;color:#7ee787;font-size:11px">ANTE</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#7ee787">Antemortem (Before Death)</div><div class="tl-points">Signs of healing • <strong>Callus formation ⭐</strong> • Periosteal reaction</div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#2b2008;color:#ffa657;font-size:10px">PERI</div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-title" style="color:#ffa657">Perimortem (At Time of Death)</div><div class="tl-points"><strong>Greenish bone tinge ⭐</strong> (wet bone reaction) • Plastic deformation • <strong>No callus, no remodelling</strong></div></div></div>
+          <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#1a1a1a;color:#555;font-size:10px">POST</div></div><div class="tl-body"><div class="tl-title" style="color:#555">Postmortem (After Death)</div><div class="tl-points">Clean, pale, angular edges • No haemorrhage in marrow • No vital reaction</div></div></div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🔫 Gunshot Wounds in Skull</div>
+        <div class="compare-grid">
+          <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c"><h3 style="color:#58a6ff">Entry Wound</h3><ul><li>Bevelling <strong>INWARD</strong> (internal table)</li><li>Smaller hole</li><li>Radiating fractures outward</li><li>Clean punched-out margins</li></ul></div>
+          <div class="compare-card danger"><h3 style="color:#f78166">Exit Wound</h3><ul><li>Bevelling <strong>OUTWARD</strong> (external table)</li><li>Larger, irregular hole</li><li>More fragmentation</li></ul></div>
+        </div>
+        <div class="alert-box alert-red">⭐ <strong>OPPOSITE to soft tissue wounds</strong><br>Soft tissue: entry bevels outward • Bone: entry bevels <strong>INWARD</strong></div>` 
+      },
+      { render: () => `
+        <div class="slide-title">⏱️ Q10 — Time Since Death</div>
+        <div class="compare-grid">
+          <div class="compare-card"><h3 style="color:#ffa657">Putrefaction Stages</h3><ul><li>Day 0–3: Fresh</li><li>Day 3–7: Bloat + green staining</li><li>Week 1–2: Active decay</li><li>Week 2+: Advanced</li><li>Months+: Skeletonisation</li></ul></div>
+          <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c"><h3 style="color:#58a6ff">Entomological Evidence</h3><ul><li>Blowfly — arrives within minutes</li><li>Maggot stage = PMI estimate</li><li>Most reliable in early stages</li><li>Species + temperature dependent</li></ul></div>
+        </div>
+        <div class="alert-box alert-yellow">📌 Putrefaction stage + insect evidence combined = best PMI estimate</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">📅 Age of the Bone Itself</div>
+        <div class="slide-subtitle">How long has this bone been here?</div>
+        <table>
+          <thead><tr><th>Feature</th><th>Fresh Bone</th><th>Old Bone (&gt;50 yr)</th></tr></thead>
+          <tbody>
+            <tr><td>Feel</td><td class="safe">Greasy</td><td class="toxic">Dry, brittle</td></tr>
+            <tr><td>Smell</td><td class="safe">Organic odour</td><td class="toxic">No smell</td></tr>
+            <tr><td>Flexibility</td><td class="safe">Slight flexibility</td><td class="toxic">Chalky, crumbles</td></tr>
+            <tr><td>Benzidine test</td><td class="safe">+ve (blood present)</td><td class="toxic">–ve</td></tr>
+            <tr><td>UV fluorescence</td><td class="safe">Blue-white glow</td><td class="toxic">Brown / no glow</td></tr>
+            <tr><td>Histology (Kerley)</td><td>Few secondary osteons</td><td class="warn">Many secondary osteons</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-yellow">📌 Kerley method: count osteons histologically — more secondary osteons = older individual</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🧬 DNA from Bones</div>
+        <div class="compare-grid">
+          <div class="compare-card safe-card"><h3 style="color:#7ee787">Best Sources ⭐⭐</h3><ul><li><strong>Tooth root pulp</strong> — most DNA</li><li><strong>Petrous bone</strong> — best preservation</li><li>Dense cortical bone</li></ul></div>
+          <div class="compare-card" style="background:#0d1a2a;border-color:#1a3a5c"><h3 style="color:#58a6ff">Techniques</h3><ul><li>STR profiling — identity</li><li>mtDNA — maternal lineage</li><li>Y-STR — paternal lineage</li></ul></div>
+        </div>
+        <div class="alert-box alert-yellow"><strong>Use when:</strong> All soft tissue gone • Fire victims • Mass disasters (DVI) • Historical remains</div>` 
+      },
+      { render: () => `
+        <div class="slide-title">⚖️ Legal Framework</div>
+        <table>
+          <thead><tr><th>Old IPC</th><th>New BNS 2023</th><th>Relevance</th></tr></thead>
+          <tbody>
+            <tr><td>IPC 201</td><td class="toxic"><strong>Section 238 BNS</strong></td><td>Causing disappearance of evidence — criminal mutilation / secret disposal of body</td></tr>
+            <tr><td>CrPC 176</td><td class="warn"><strong>BNSS Section 194</strong></td><td>Inquest by Magistrate — mandatory for all unidentified bodies</td></tr>
+            <tr><td>IPC 302</td><td class="toxic">Section 103 BNS</td><td>Murder — when cause of death established from skeletal evidence</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-red">📌 <strong>All unidentified remains → Mandatory Magistrate inquest under BNSS Sec 194</strong></div>` 
+      },
+      { render: () => `
+        <div class="slide-title">⚖️ Landmark Case Law</div>
+        <div class="alert-box alert-yellow" style="text-align:center;">
+          <strong>Mahesh Dhanaji Shinde v State of Maharashtra</strong><br>
+          <span style="font-size:14px;color:#c9d1d9;">(Cited in Modi's Medical Jurisprudence)</span>
+        </div>
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h3 style="color:#f78166">The Crime</h3>
+            7 unidentified, mutilated dead bodies were found dumped on hillocks in Sindhudurg over several days.
+          </div>
+          <div class="compare-card safe-card">
+            <h3 style="color:#7ee787">The Identification</h3>
+            Police and Forensics successfully identified the victims using recovered clothes, broken briefcases, blood-stained diaries, and DNA profiling.
+          </div>
+        </div>
+        <div class="alert-box" style="background:#1a1a2a;border:1px solid #333;margin-top:10px;">
+          📌 <strong>Forensic Takeaway:</strong> Even when bodies are dumped to destroy evidence, trace physical evidence (like trouser hooks) combined with DNA can secure a conviction.
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 Spotter Quiz 1 — Separation</div>
+        <div class="quiz-wrap" id="quizSpotter">
+          <div class="quiz-q" style="background:#21262d;padding:14px;border-radius:10px;">
+            <span style="color:#7d8590;font-size:12px;text-transform:uppercase;letter-spacing:1px">Scene Report</span><br><br>
+            Dismembered male, mid-30s. Limbs separated <strong>precisely at joints</strong>. Saw marks on femur shaft. <strong>No hesitation cuts</strong>. Minimal blood at scene.
+          </div>
+          <div class="quiz-q" style="color:#7d8590;font-size:16px;">What does joint-level separation with no hesitation marks suggest?</div>
+          <button class="quiz-opt" onclick="answerQuiz('A','wrong','quizSpotter')">A — Animal scavenging</button>
+          <button class="quiz-opt" onclick="answerQuiz('B','wrong','quizSpotter')">B — Decomposition artefact</button>
+          <button class="quiz-opt" onclick="answerQuiz('C','wrong','quizSpotter')">C — Unskilled criminal dismemberment</button>
+          <button class="quiz-opt" onclick="answerQuiz('D','correct','quizSpotter')">D — Skilled person with anatomical knowledge</button>
+          <div id="fb-quizSpotter" class="quiz-feedback">
+            <strong>✔ D is correct.</strong><br>Precise joint separation + no hesitation marks = perpetrator knows human anatomy.<br>This narrows the suspect profile to <strong>medical, paramedical or butchery background</strong>.
+          </div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🎯 Spotter Quiz 2 — DVI</div>
+        <div class="quiz-wrap" id="quizSpotter2">
+          <div class="quiz-q" style="background:#21262d;padding:14px;border-radius:10px;">
+            <span style="color:#7d8590;font-size:12px;text-transform:uppercase;letter-spacing:1px">Disaster Report</span><br><br>
+            Following a train collision, a highly charred body is recovered. Only the skull and a portion of the femur remain intact. The family provides the victim's hairbrush.
+          </div>
+          <div class="quiz-q" style="color:#7d8590;font-size:16px;">What is the most reliable method for identification here?</div>
+          <button class="quiz-opt" onclick="answerQuiz('A','wrong','quizSpotter2')">A — Stature estimation from femur</button>
+          <button class="quiz-opt" onclick="answerQuiz('B','wrong','quizSpotter2')">B — Race determination from skull</button>
+          <button class="quiz-opt" onclick="answerQuiz('C','correct','quizSpotter2')">C — DNA matching (Petrous bone to Hairbrush)</button>
+          <button class="quiz-opt" onclick="answerQuiz('D','wrong','quizSpotter2')">D — Superimposition photography</button>
+          <div id="fb-quizSpotter2" class="quiz-feedback">
+            <strong>✔ C is correct.</strong><br>In severe burns where soft tissue and fingerprints are lost, extracting DNA from the protected petrous part of the temporal bone and matching it with Antemortem (AM) DNA from a personal item is the gold standard for INTERPOL DVI.
+          </div>
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">📋 High-Yield Exam Points</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          ${[["Sex","Pelvis ⭐ 95% accurate","#ffa657"],["Height","Femur ⭐ most accurate","#7ee787"],["Age","Teeth ⭐ most reliable","#58a6ff"],["DNA source","Tooth pulp + Petrous bone ⭐⭐","#7ee787"],["Identity","Superimposition + DNA","#58a6ff"],["Rot-resistant organs","Prostate + Uterus ⭐","#ffa657"],["Animal gnaw mark","Cortical spicules inward ⭐","#f78166"],["Perimortem #","Greenish, no callus ⭐","#ffa657"],["Strangulation","Hyoid # ⭐","#f78166"],["BNS 238","Evidence disappearance","#f78166"],["Skilled dismemberment","Joint separation, no hesitation","#a78bfa"],["PMI insects","Blowfly larval stage","#94a3b8"]].map(([label, val, c]) => `
+            <div style="display:flex;gap:8px;padding:8px 12px;background:#21262d;border-radius:8px;align-items:flex-start">
+              <span style="font-size:12px;color:#484f58;min-width:100px;text-transform:uppercase;letter-spacing:0.5px;">${label}</span>
+              <span style="font-size:15px;color:${c};font-weight:500">${val}</span>
+            </div>`).join('')}
+        </div>` 
+      },
+      { render: () => `
+        <div class="slide-title">🏁 End — FM 2.16</div>
+        <div style="text-align:center;padding:20px 0">
+          <div style="font-size:50px;margin-bottom:16px">🦴</div>
+          <div style="font-size:24px;color:#e6edf3;font-style:italic;margin-bottom:20px">"When identity is destroyed —<br>Science restores it"</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="alert-box alert-yellow">🦴 <strong>Bones</strong> → Sex, Age, Height, Race</div>
+          <div class="alert-box alert-green">🦷 <strong>Teeth</strong> → Age + DNA gold standard</div>
+          <div class="alert-box" style="background:#1a1a2a;border:1px solid #2a2a4a">🐛 <strong>Insects</strong> → Time of death (PMI)</div>
+          <div class="alert-box alert-red">⚖️ <strong>BNS 238</strong> → Criminal mutilation charge</div>
+        </div>` 
+      }
+    ],
+
+    // THE 6 NEW INTERACTIVE PHOSPHORUS SLIDES
+    "phosphorus": [
+      // ═══════════════════════════════════════════════════
       // SLIDE P1 — HISTORY: GLOBAL CONTEXT
       // ═══════════════════════════════════════════════════
       { render: () => `
