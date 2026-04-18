@@ -129,6 +129,23 @@
     let ctx = slideEl.innerText.substring(0, 40);
     db.collection("activity_logs").add({ student: studentName, deviceId: deviceId, event: eventName, timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: ctx });
   }
+  // TRACK TAB SWITCHING AND MINIMIZING
+  document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
+          logActivity("⚠️ Switched Tabs / Left App");
+      } else {
+          logActivity("✅ Returned to Class");
+      }
+  });
+
+  // TRACK LOST FOCUS (Pulling down notifications / floating apps)
+  window.addEventListener("blur", function() {
+      logActivity("⚠️ Lost Focus (Notification/Split Screen)");
+  });
+
+  window.addEventListener("focus", function() {
+      // Optional: log returning focus, but visibilitychange usually covers this
+  });
 
   // --- ZOOM / PINPOINT LIGHTBOX LOGIC ---
   let currentZoomId = "";
