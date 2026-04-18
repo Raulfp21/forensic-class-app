@@ -7,7 +7,7 @@
   
   <style>
     body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#0f172a; color:white; overflow-x: hidden;}
-    .slide-title { font-size: 24px; font-weight: bold; color: #58a6ff; margin-bottom: 10px; }
+    .slide-title { font-size: 24px; font-weight: bold; color: #58a6ff; margin-bottom: 10px; line-height: 1.2; }
     .slide-subtitle { font-size: 14px; color: #7d8590; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
     .alert-box { padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #333; font-size: 15px; line-height: 1.5; }
     .alert-yellow { background: #2b2008; color: #ffa657; border-color: #6e4c0a; }
@@ -24,6 +24,7 @@
     .img-btn { width: 100%; border-radius: 8px; border: 2px solid #1a3a5c; cursor: pointer; transition: 0.3s; margin-top: 10px; object-fit: cover; background: #000;}
     .img-btn:hover { border-color: #58a6ff; transform: scale(1.02); }
     .text-block { background:#1e293b; padding:12px; border-radius:8px; margin-bottom:10px; font-size: 14px; line-height: 1.5; color: #c9d1d9;}
+    .touch-text { color: #58a6ff; cursor: pointer; font-weight: bold; text-decoration: underline; }
   </style>
 </head>
 
@@ -33,6 +34,7 @@
     <div id="slide" style="font-size:18px; line-height:1.6; margin:0;">
         <h2 style="color:#58a6ff; text-align:center;">Initializing Security...</h2>
         <p style="color:#8b949e; text-align:center; font-size: 16px; margin-bottom:30px;">Please wait while we verify your device.</p>
+        <button onclick="localStorage.clear(); location.reload();" style="background:#334155; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-size:16px; width:100%;">🔄 Reset Device Memory</button>
     </div>
   </div>
 </div>
@@ -50,28 +52,52 @@
   const db = firebase.firestore();
   const slideEl = document.getElementById("slide");
 
-  const students2024 = ["ABDULAHAD RAJMOHAMED", "ABI A", "ABINAYA R", "ABINAYA SHRI R", "ABIRAMI SRINIVASAPERUMAI", "ADHITHYAN A T", "ADITHYA B", "AISHWARYA B", "AJEETH KUMAR R S", "AKASHSANG SIVAKUMAR", "AKSHITHA V", "AMIRTHA SHREE SHANMUGA", "ANNAPOORANI LAKSHMANA", "ARAVIND M", "ARJHITH A G", "ARJUN SURESH K", "ARSHAD KHAN Y", "ARUMUGALAKSHMI P", "ARUN BHARATHI E", "ARUNACHALAM E", "ARUNDHATI K P", "ARUN PANDI V", "ASHISH T. A", "ASHVEEKAA P", "ASMITHAH S", "ASWIN BALAJI", "BALA YOGESH S", "BARATH SHYLESH B", "BHAVIYATHAAR K", "BHAVNA G", "DEEKSHIKA PARTHIBAN CHAI", "DEEPIKA U S", "DEEPTHI V", "DEVA B", "DEVA MURUGESAN", "DHARANEESH M", "DHARANEESH N", "DHARANI M", "DHARMARAJ MAMATHA", "DHARSHINI J", "DHARSHINI P", "DHARSHINI V", "DHARUN A", "DHARUN KRISHNA B", "DHAYANAND S S", "DINESH P", "DIVYA VARSHINI JEYAPRAKAS", "DONI ABISHEK KUMAR A", "ELANSURIYAN A G", "ELANTHENDRAL C", "GAUTAMAN B V", "GAYADHARSHINI S", "GOPIKA U", "GOWTHAM K", "GURUMARAN B", "HAMEEM SYED EBRAHIM ABI", "HAMNA SAJAAN H", "HAMZA RAZAK AM", "HARI MANOJ V", "HARINI S", "HARISH P", "HARISH KUMARAN G", "HARISH PRABHU BS", "HARITHA R", "HARSHA S", "HARSHAD J", "HARSHINI P", "HARUNYAA K", "HEERA SHYAM", "HIMAVARSHA N", "HINDHUJA NAGARAJ", "HISHWANTH K", "INBAVEL P", "ISHWARYA T", "JADYN NIHARIKA R", "JAGADEESH S", "JANA S", "JANOVIA JJ", "JASHVANDH SELVA DEV S", "JEEVAN SAMRUDH TGS", "JEEVANA S", "JONES CALVIN T", "JOSHITHA R", "KAAVYASHREE B", "KABIL SRIVATSAN SL", "KALAIVANI H", "KANIGAA GM", "KANISHGA SRIHARINI K", "KARTHICK M", "KARTHIKA K", "KATHIROLI S", "KEERTHANA A", "KEERTHANA K", "KERAN MOZHI B", "KESHIKA V S", "KISHORE P", "KISHORITHA P", "KOHUL KRISHNA T", "LAKSHYASHRI V", "LAZEERA FATHIMANI", "LILAANIE S", "LOGESHWARI J", "MADHUMITHA S", "MADIHA BANU HATHI AHAMI", "MAHALAKSHMIG", "MAHALAKSHMI S", "MAI DEEPA SRI R", "MANOHARAN S", "MANORANJAN S R", "MANYAA P", "MARI MUTHU S", "MAYURANATH K", "MEGHNA NAIR", "MELWIN JONES A", "MITHUNCHANDER R", "MOHAMMED LUKMAAN A", "MOHAMEDHA SANIYA M", "MOHAMMED HUZAIFA M", "MOHAMMED RIYAS A", "MOHANA PRASATH S", "MOHANA SRI M", "MONISH BALAJI C", "MONISHRAGAVENDRA GOVIN", "MOSES KINGSBEU SELVAGANT", "MUKILAN A", "NANDHANA B", "NANDHITHA R", "NASREEN G", "NEERAJ GR", "NEERAJA G", "NEHA S", "NEHA PANDARAPARAMBIL LE", "NISHANTH V", "NISHITH G", "NITHYA SRI M", "NIVEDHA BALADHANDAUDH", "NOORUL HABIBA", "PADMAESH M K", "PAVANJ", "PAVITHRA M", "POOJAR", "POOJAMALAR PRIYA", "POOJASREE TRS", "PRAGADHEESAN R", "PRANAV ADARSH SENTHIL RA", "PRANITH M", "PRASANTH M", "PRATHYANKIRA ES", "PRAVEEN M", "PRAVIN BAALAJI PANDIAN", "PREETHIKA N", "PRIYADARSHINI", "PRIYADARSHINI SS", "PUGALARASAN R", "PUGAZHARASI VALARMATHI", "RADHA RUCKMANI R", "RAGAVI V P", "RAGHAV I", "RAGHUL M C", "RAMANA G", "RANJANA S", "REHANAA MR", "RENUGADEVI S", "RIJAI RENON J K", "RITHIKASREE S", "RIZZA FATHIMA K", "ROHINI PRIYA S", "ROSHITH K S", "SAANVIYA M", "SABITHA K", "SACHIN S", "SACHIN SAGGAR SP", "SAHANA SRIVARTHINI S", "SAKTHI SUDHARSHINI S", "SAKTHI SUNDARA MOORTHY", "SAMEEHA NEHMATH M", "SAMRUTA S", "SAMRUTHA R", "SAMUEL FREDERICCK B", "SANDHYA S", "SANJANA S", "SANJAY S 28.08.2005", "SANJAY S 29.08.2005", "SANJAY S 22.06.2006", "SANJAY RENUGOPAL", "SANTHOSH S V", "SARAN S", "SARAVANA SAKTHIVEL", "SASHDI SHRE N", "SATHYA P", "SHALINI V", "SHARUMATHI P", "SHIFA SHABEER AHMED S", "SHIFANA RAHMATH K", "SHIYAM KUMAR K", "SHREEHARISH RAVICHANDRA", "SHREYA PL", "SHRI PRAJAN S", "SHRUTHI M", "SHRUTI G", "SHUNMUGA SANTOSH S", "SIVASELVI S", "SREYA SWETHA RS", "SRI DHARANI P", "SRI VARSHA V S", "SRICHARAN T V", "SRIHARAN M", "SRIHARI R", "SRIMATHI K", "SRINIKKESH S", "SRINITHI MARAN", "SRINITHI RAMESH", "SRIPRIYA V", "SRIRAM E", "SRIVIDHYA S", "SRUTHI S", "SUDHAN P", "SUNIL BABU G", "SURUTHIKA SREE KARTHIKEY", "SUSHANA M", "SUVATHI V", "SYED SIDDIQ A", "TEJASRI J", "THALHA M", "THAYANITHY V S", "THENISAI M", "THIRUMAGAL M", "UKESHWARAN P", "VALAR NILAD T", "VARSHA BAVADARINI T", "VARTHINI K", "VARUN D", "VEDANTH K", "VEDHA VALLII S", "VIDUNAA M", "VIJAY P", "VIJAYAVARSHINI V", "VIKRAM S", "VINISHA MP", "VISHAL RUBAN KANAGAVEL", "VISHNU PRIYA S", "VISHNUSHREE M", "VISHWA V", "VISWAPPREYAA RU", "YALMOZHIYAN R", "YOGESHWARAA K", "CHINNAYA BALAJI C K", "RANJANA YADAV L", "SABARISH R", "SANTHOSH R", "SUNDAR KARTHIK S", "SANJAYAN R", "BHAVYA SRI B"];
+  const students2023 = {
+    "520022506042": "DHARSHANTH T S", "520022506110": "MADHINI MADHURAANTHAGI S", "520022506132": "NITHYA M", "520022506179": "SANJAYAN R", "520022506195": "SHEREYA V", "520022506225": "THILESH HARRINI S", "520022506245": "YAZHINI S", "520023506001": "AADHARSHINI C", "520023506002": "AASHI S", "520023506003": "ABILESH N T", "520023506004": "ABIRAMI S M", "520023506005": "ABIRAMI S", "520023506006": "ABISHEK ARJUNAN", "520023506007": "ABISHEKA BHARATHI K J", "520023506008": "ADHARSH S", "520023506009": "AFDEEN SULTHAN M", "520023506010": "AGALYAA MARIKANNAN", "520023506011": "AGNES ABISHEKHA ANANDAN", "520023506012": "AISHWARYA JAYASANKAR", "520023506013": "AJEETH K A", "520023506014": "AKASH A", "520023506015": "AKASH G", "520023506016": "AKILARASAN N", "520023506017": "AKSAI A M", "520023506018": "AKSHAYA B", "520023506019": "ALISHA SABEER", "520023506020": "AMNA BAI", "520023506021": "AMRITHAA B S", "520023506022": "ANANDA SUDHAN K L", "520023506023": "ARSHAD DARWESH A", "520023506024": "ARUN PRASATH C", "520023506025": "ARUNA D", "520023506026": "ASLINAV D SAHAAY", "520023506027": "ASWIN KUMAR K", "520023506028": "ATCHAYA AHI S A", "520023506029": "AVANEESH H", "520023506030": "AVANTHIKA P", "520023506031": "AVINASSVISWA M", "520023506032": "BALANANDAN B", "520023506033": "BHARATHI R R", "520023506034": "BHAVATARINI AK", "520023506035": "BHUVANESH S M", "520023506036": "BRINDHA DEVI S", "520023506037": "CHANDRU P", "520023506038": "CHARAN M", "520023506040": "CYRIL ABRAHAM", "520023506042": "DEEPAK S", "520023506043": "DEEPIKA C S", "520023506044": "DEVI SREE V", "520023506045": "DEVRAJ V", "520023506046": "DHANASHSRI S", "520023506047": "DHANVEER A S", "520023506048": "DHARANI R", "520023506049": "DHARSAN K J", "520023506050": "DHARSHINIPRIYA R", "520023506051": "DHARUNIKA A", "520023506052": "DHILLESH A", "520023506053": "DHIVYA SHRI B A", "520023506054": "DHIVYABHASHINI S", "520023506055": "DITCHITHAMATHI R", "520023506056": "DIYA E", "520023506057": "GOKUL R", "520023506058": "GOKULESHWAR K", "520023506059": "GOWTHAM S A", "520023506060": "GUNAVATHI M", "520023506061": "GURU ELAKKIYA SACHIDANANDAM", "520023506062": "GURUCHANDRU M", "520023506063": "HANIN F", "520023506064": "HARI ADHARSAN N", "520023506065": "HARI KRISHANTH R", "520023506066": "HARI PRAKASH C S", "520023506067": "HARINI DINESH BABU", "520023506068": "HARINIPPRIYA N", "520023506069": "HARISH S M", "520023506070": "HARISH KUMAR K L", "520023506071": "HARSHA SHYAM", "520023506072": "HASEEN SHAJINA A", "520023506073": "HEMA MUTHU PRABHA P N", "520023506074": "HOMA SRI R N", "520023506075": "ILLAKIYA PRIYA K P", "520023506076": "INBABHUSHAN G R", "520023506077": "INDHUJA P", "520023506078": "INIYA G", "520023506079": "ISWARYAVALLI P", "520023506080": "JAGADEESHWARAN K", "520023506081": "JAISHRINIDHI K T", "520023506082": "JAYA THARANI M", "520023506083": "JAYAKRISHNA A", "520023506084": "JESSICA JOSEPHINE A", "520023506085": "KAARTHIKA SHRI S", "520023506086": "KAILESHWARAN K K", "520023506087": "KAMALIKA P", "520023506088": "KAMESH P", "520023506089": "KANIKA V", "520023506090": "KANTHIMATHI S", "520023506091": "KAVIN NARAYANAN T", "520023506092": "KAVIYA R", "520023506093": "KAVIYA R T J", "520023506094": "KAVYA M", "520023506095": "KEERTHANA M", "520023506096": "KEERTHIKA GANESAN", "520023506097": "KHIRTHAN B", "520023506098": "KIRAN SAJ", "520023506099": "KIRUTHIKA K", "520023506100": "KOWSHIKA S", "520023506101": "KRISHIK M", "520023506102": "KRITHICKRAMAN T", "520023506103": "LAKSHMI PRABHA S", "520023506104": "LAKSHMIKANTH S S", "520023506105": "LALITH GURUPRAKASH J", "520023506106": "LEXMIDHARAN S S", "520023506107": "LOGAKAVIN E", "520023506108": "LOKAJITH V", "520023506109": "MADHANRAJ R", "520023506110": "MADHAV V NAIR", "520023506111": "MADHUMITHA B", "520023506112": "MADHUMITHA M", "520023506113": "MADHUMITHA V", "520023506114": "MADHUMITHA JEYASRI S", "520023506115": "MAHESHWARI M", "520023506116": "MANISHA R", "520023506117": "MANISSHA M", "520023506118": "MARY SANIA R", "520023506119": "MOHAMED AKSHAN M", "520023506120": "MOHAMED VASEM M", "520023506121": "MOHANA HARI M", "520023506122": "MONIKA R", "520023506123": "MOUNISHAA P", "520023506124": "MRIETHULA R", "520023506125": "MUHAMMED ZAID ABDUL WAHAB", "520023506126": "MUTHUPRIYA M", "520023506127": "NAMBI VARTHARAJAN J", "520023506128": "NAVANITH R", "520023506129": "NIHITHA S K", "520023506130": "NISHANTH D", "520023506131": "NITHEESH R V", "520023506132": "NITHISH PRANAV T", "520023506133": "NITHYA V V", "520023506134": "PARTHASARATHI S", "520023506135": "PATHMAVATHI B", "520023506136": "PAVAN R", "520023506137": "PIRANAV KASINATHAN B", "520023506138": "POOJA M", "520023506139": "PRADIBA N", "520023506140": "PRAGATHEESWARI SARAVANAN", "520023506141": "PRAGATHESH V S", "520023506142": "PRAKATI M", "520023506143": "PRAMOTH AARYA M", "520023506144": "PRANAV R V", "520023506145": "PRANAV MUKESH G", "520023506146": "PRATHISTHA R", "520023506147": "PRAVEEN A", "520023506148": "PRAVEEN S", "520023506149": "PREETHIVI R", "520023506150": "PREMNATHAN J", "520023506151": "PRIYADHARSHINI E", "520023506152": "PRIYAVARSHINI K", "520023506153": "PUSHPA ABINAYA T", "520023506154": "RABIN BABU S", "520023506155": "RAGAVI D", "520023506156": "RAGHINYA S R", "520023506157": "RAJ SHREE J", "520023506158": "RAJALAKSHMI V", "520023506159": "RAKSHIKA MOHANARANGAN", "520023506160": "RAMANA KAAVYA T", "520023506162": "REVANTH P", "520023506163": "REYGANTHAN K", "520023506164": "RIDUMIKA G", "520023506165": "RISHI S", "520023506166": "RITHISH P", "520023506167": "ROHINI D", "520023506168": "ROHITH S", "520023506169": "ROHINI SILVIA FERNANDO", "520023506170": "RUBESHVAR J", "520023506171": "RUPIKA G", "520023506173": "SAHANA SARASWATHI S", "520023506174": "SAHITYA R", "520023506175": "SAKTHI PRADEEPA S", "520023506176": "SAKTHIVISHAL M", "520023506177": "SAMARJIT M R", "520023506178": "SAMEER BABU M", "520023506179": "SANCHANA R", "520023506180": "SANDRA MARY BLOSSOM S", "520023506181": "SANJAI PRASANNAA S", "520023506182": "SANJAY VISWANATHAN", "520023506183": "SANJIT G", "520023506185": "SANTHOSH RAJ T", "520023506186": "SANTHOSHI U J", "520023506187": "SARA BARVEEN A", "520023506188": "SASTHA J V", "520023506189": "SATVI SRI S", "520023506190": "SELLA PREETHI SRI S", "520023506191": "SELVAM EVELIN", "520023506192": "SHAARAV N", "520023506193": "SHAMBHAVI R", "520023506194": "SHANKAR K", "520023506195": "SHANMUGA SRI VARSHINI M", "520023506196": "SHARMILA S", "520023506197": "SHARVINI R R", "520023506198": "SHIFA ZARIN M", "520023506199": "SHIFANA M", "520023506200": "SHIVANI S", "520023506201": "SHOBIKATHARUNI G", "520023506202": "SHREE RAM R", "520023506203": "SHREYA D K", "520023506204": "SHRIKARTHICK A", "520023506205": "SHUBHIKSHA RAAJ S", "520023506206": "SINDHUJA H", "520023506207": "SREE NITHI VL", "520023506208": "SREE VAIHUNDH K", "520023506209": "SRI AKSHYA R V", "520023506210": "SRIGA T", "520023506211": "SRIHARINI K", "520023506212": "SRINITHI P", "520023506213": "SRINIVASAN R", "520023506214": "SRIVATS S", "520023506215": "SUBASHREE E P", "520023506216": "SUBHA SHREE D", "520023506217": "SUBHASHINI R B", "520023506218": "SUJITHA SHREE M", "520023506220": "SUNDARESWARAN B", "520023506221": "SUSHMA K", "520023506222": "SWARNA S", "520023506223": "SWEDHASSHREE T", "520023506224": "SWETHA M", "520023506225": "SWETHA RAM P", "520023506226": "SWETHA SUDHARSAN", "520023506227": "THAMIZHINIAN T", "520023506228": "THARUN N", "520023506229": "THARUNIKA S", "520023506230": "THEEKSHITHA MARY E", "520023506231": "THOONGA DEVAN K", "520023506232": "THRISHA P", "520023506233": "TRINETHRA N", "520023506234": "VAISHNAVE D M", "520023506235": "VARSHA C", "520023506236": "VARSHA S G", "520023506237": "VARSHIKA S", "520023506238": "VARSHITHA T", "520023506239": "VEDAVARSHINI K", "520023506240": "VIGNESH BALA M R", "520023506241": "VIGNESH KUMAR K", "520023506242": "VIJI A", "520023506243": "VISHWA JEEVA J", "520023506244": "VISVA K", "520023506245": "VISVA HARSINI K G", "520023506246": "VITHUN VELAN B", "520023506247": "YASEEN AHAMED J M", "520023506248": "YAZHINI A", "520023506249": "YOUVASHREE E", "520023506250": "YUVASHREE S"
+  };
 
   let deviceId = localStorage.getItem("dsmch_device_id");
   if (!deviceId) { deviceId = "DEV_" + Math.random().toString(36).substring(2, 12).toUpperCase(); localStorage.setItem("dsmch_device_id", deviceId); }
   let studentName = "";
 
   async function authenticateStudent() {
+    let savedReg = localStorage.getItem("dsmch_reg");
     let savedName = localStorage.getItem("dsmch_name");
-    if (savedName) return savedName;
+    if (savedReg && savedName) return savedName;
+
     while (true) {
-      let input = prompt("Enter Exact Name (2024 Batch):");
+      let input = prompt("Enter your 12-digit Register Number (2023 Batch):");
       if (!input) continue;
-      input = input.trim().toUpperCase();
-      if (input === "0000") { let fac = prompt("Faculty Name:"); let final = "FACULTY - " + fac; localStorage.setItem("dsmch_name", final); return final; }
-      if (students2024.includes(input)) {
-        try {
-          const bRef = db.collection("device_bindings").doc(input);
-          const doc = await bRef.get();
-          if (doc.exists && doc.data().deviceId !== deviceId) alert("❌ This ID is bound to another phone.");
-          else { if (!doc.exists) await bRef.set({ deviceId: deviceId, name: input, ts: firebase.firestore.FieldValue.serverTimestamp() }); localStorage.setItem("dsmch_name", input); return input; }
-        } catch(e) { return "TESTER"; }
-      } else alert("❌ Name not found in 2024 list.");
+      input = input.trim();
+      
+      if (input === "000000000000") { 
+          let fac = prompt("Faculty Name:"); 
+          let final = "FACULTY - " + (fac || "TESTER"); 
+          localStorage.setItem("dsmch_reg", "FACULTY"); 
+          localStorage.setItem("dsmch_name", final); 
+          return final; 
+      }
+
+      if (students2023[input]) {
+        let nameInput = prompt("Enter Name (Exactly as per records):").toUpperCase().trim();
+        if (students2023[input] === nameInput) {
+            let finalIdentity = input + " - " + nameInput;
+            try {
+              const bRef = db.collection("device_bindings").doc(input);
+              const doc = await bRef.get();
+              if (doc.exists && doc.data().deviceId !== deviceId) {
+                  alert("❌ This ID is bound to another phone.");
+              } else { 
+                  if (!doc.exists) await bRef.set({ deviceId: deviceId, name: finalIdentity, ts: firebase.firestore.FieldValue.serverTimestamp() }); 
+                  localStorage.setItem("dsmch_reg", input);
+                  localStorage.setItem("dsmch_name", finalIdentity); 
+                  return finalIdentity; 
+              }
+            } catch(e) { return "TESTER"; }
+        } else {
+            alert("❌ Name mismatch. Please try again.");
+        }
+      } else alert("❌ Register Number not found in 2023 records.");
     }
   }
 
@@ -87,79 +113,327 @@
     db.collection("activity_logs").add({ student: studentName, deviceId: deviceId, event: eventName, timestamp: firebase.firestore.FieldValue.serverTimestamp(), slideContext: ctx });
   }
 
+  // Games
   window.playAllotrope = function(ans) {
       let res = document.getElementById("gameRes"); res.style.display = "block";
-      if(ans === 'Red') { res.innerHTML = "✅ Correct! Matches use Red P."; res.className = "alert-box alert-green"; logActivity("Game: Correct"); }
-      else { res.innerHTML = "❌ Wrong Allotrope."; res.className = "alert-box alert-red"; logActivity("Game: Wrong"); }
+      if(ans === 'Red') { res.innerHTML = "✅ Correct! Match stick striking surface uses Red P."; res.className = "alert-box alert-green"; logActivity("Game: Match P -> Correct"); }
+      else { res.innerHTML = "❌ Wrong Allotrope."; res.className = "alert-box alert-red"; logActivity("Game: Match P -> Wrong"); }
   };
-  window.playCroton = function(ans) {
+  window.playRicinus = function(ans) {
       let res = document.getElementById("gameResC"); res.style.display = "block";
-      if(ans === 'C') { res.innerHTML = "✅ Correct! Press cake contains toxalbumin."; res.className = "alert-box alert-green"; logActivity("Quiz: Correct"); }
-      else { res.innerHTML = "❌ Wrong. Oil/unbroken seeds are safe."; res.className = "alert-box alert-red"; logActivity("Quiz: Wrong"); }
+      if(ans === 'C') { res.innerHTML = "✅ Correct! The press cake contains concentrated ricin and is highly poisonous."; res.className = "alert-box alert-green"; logActivity("Quiz: Ricin Tox -> Correct"); }
+      else { res.innerHTML = "❌ Wrong. Pure castor oil has no toxalbumin, and unbroken seeds are safe when swallowed whole."; res.className = "alert-box alert-red"; logActivity("Quiz: Ricin Tox -> Wrong"); }
   };
 
   const allTopics = {
     "phosphorus": [
-      // S1: Phos Intro
-      { render: () => `<div class="slide-title">🔥 Element & Background</div><div style="text-align:center;"><div class="burn-zone" onclick="this.style.background='radial-gradient(circle, #fff700 0%, #ff4400 100%)'; this.style.boxShadow='0 0 50px #ff4400'; this.innerHTML='🔥'; document.getElementById('hist-data').style.display='block'; logActivity('Burn Reveal');">TOUCH TO BURN</div></div><div id="hist-data" style="display:none; margin-top:15px;"><div class="alert-box alert-red"><b>Revealed: White/Yellow Phosphorus</b><br>Ignites spontaneously in air!</div><div class="diag-card" onclick="alert('Discovery: 1669 Henning Brand.\\nGlobal: Match stick girls got Phossy Jaw. Banned white phosphorus.'); logActivity('Viewed: Global');">🌍 Global Background (TOUCH)</div><div class="diag-card" onclick="alert('India: Ratol rat paste banned in TN due to high mortality.'); logActivity('Viewed: India');">🇮🇳 Indian Context (TOUCH)</div></div>` },
-      // S2: Allotrope Game
-      { render: () => `<div class="slide-title">🧪 Allotrope Game</div><div style="text-align:center;font-size:20px;color:#7ee787;margin:15px;">Match stick striking surface</div><div style="display:flex;gap:10px;"><button class="diag-card" style="flex:1;background:#2d1215;border-color:#f78166;" onclick="playAllotrope('Red')">🔴 RED</button><button class="diag-card" style="flex:1;background:#2b2008;border-color:#ffa657;" onclick="playAllotrope('Yellow')">🟡 YELLOW</button><button class="diag-card" style="flex:1;background:#0d1a2a;border-color:#58a6ff;" onclick="playAllotrope('White')">⚪ WHITE</button></div><div id="gameRes" class="alert-box" style="display:none;"></div>` },
-      // S3: Mechanism
-      { render: () => `<div class="slide-title">⚙️ Mechanism of Action</div><div class="alert-box alert-yellow"><strong>Primary Action:</strong> Disrupts cellular oxidation.</div><div class="diag-card" style="border-color:#f78166;text-align:center;" onclick="alert('PROTOPLASMIC POISON:\\nDamages or kills living cells by destroying basic structure (protoplasm) like organelles and proteins.'); logActivity('Viewed: Protoplasmic');">☠️ Protoplasmic Poison (TOUCH)</div>` },
-      // S4: Fulminating
-      { render: () => `<div class="slide-title">⚡ Fulminating Poisoning</div><div class="alert-box alert-yellow">Occurs when > <strong>1 gram</strong> is ingested.</div><div class="text-block"><b>⏱️ Timeline:</b> Death within 12 hours due to shock/cardiovascular collapse.</div><div class="text-block"><b>🤢 Symptoms:</b> Intense thirst, severe nausea, vomiting. Restless/delirious before death.</div><div class="diag-card" style="text-align:center;" onclick="alert('Direct action on heart and blood vessels.'); logActivity('Viewed: Fulminant Mech');">🫀 Mechanism (TOUCH)</div>` },
-      // S5: Acute Stages
-      { render: () => `<div class="slide-title">🩺 Acute Poisoning Stages</div><div class="stat-row"><div class="stat-pill"><div class="sv" style="color:#f78166">60-120 mg</div><div class="sl">Fatal Dose</div></div><div class="stat-pill"><div class="sv" style="color:#ffa657">2-8 Days</div><div class="sl">Fatal Period</div></div></div><div class="text-block"><b>1️⃣ First Stage:</b> GI pain, thirst, nausea. Breath/excreta have garlic odor. Luminescent vomit is diagnostic.<div class="diag-card" onclick="document.getElementById('b-img').style.display='block'; logActivity('Viewed: P Burns');">🩹 Skin Contact (TOUCH)</div><img id="b-img" src="httpswww.moph.gov.lbuserfilesfilesPreventionPHEOCWhite20Phosphorus20TEZ-1.pdf.jpeg.jpg" style="display:none;width:100%;max-height:150px;border-radius:8px;"></div><div class="text-block"><b>2️⃣ Second Stage:</b> Symptom-free trap (2-3 days).</div><div class="text-block"><b>3️⃣ Third Stage:</b> Systemic toxicity.<div style="display:flex;gap:5px;margin-top:5px;"><div class="diag-card" style="flex:1;text-align:center;" onclick="alert('Jaundice, hepatomegaly, pruritis.');">🟡 Liver</div><div class="diag-card" style="flex:1;text-align:center;" onclick="alert('Oliguria, hematuria.');">🫘 Renal</div><div class="diag-card" style="flex:1;text-align:center;" onclick="alert('Delirium, coma.');">🧠 CNS</div></div></div>` },
-      // S6: Treatment
-      { render: () => `<div class="slide-title">🆘 Treatment Protocol</div><div class="alert-box alert-red">⛔ STRICTLY AVOID Oils and fats.</div><div class="text-block"><b>1.</b> <span style="color:#58a6ff;cursor:pointer;" onclick="alert('KMnO4 1:5000 oxidizes to harmless phosphates.'); logActivity('Viewed Rx: Lavage');">💧 Gastric Lavage (TOUCH)</span><br><b>2.</b> Activated Charcoal.<br><b>3.</b> 0.2% Copper Sulphate (Emetic). <i>Warning: Can cause Cu poisoning!</i><br><b>4.</b> <span style="color:#58a6ff;cursor:pointer;" onclick="alert('Vit K 20mg IV for hemorrhage.'); logActivity('Viewed Rx: VitK');">🩸 Vitamin K (TOUCH)</span><br><b>5.</b> Bowel Evacuation.<br><b>6.</b> Wash contact burns with 1% Copper Sulphate.</div>` },
-      // S7: Autopsy
-      { render: () => `<div class="slide-title">🔬 PM Appearances</div><div class="text-block"><b>Acute:</b> Jaundice, garlic smell, luminous GIT. GIT mucosa greyish-white, corroded. Hemorrhages in organs.</div><div style="display:flex;gap:10px;"><div style="flex:1;text-align:center;"><p style="font-size:12px;color:#ffa657;">LIVER (TOUCH)</p><img src="Click on image to zoom.jpeg.jpg" class="img-btn" onclick="alert('Yellow, soft, fatty, small hemorrhages.'); logActivity('Viewed: P Liver');"></div><div style="flex:1;text-align:center;"><p style="font-size:12px;color:#58a6ff;">KIDNEY (TOUCH)</p><img src="Click on image to zoom.jpeg 2.jpg" class="img-btn" onclick="alert('Large, greasy, yellow, hemorrhages.'); logActivity('Viewed: P Kidney');"></div></div><div class="text-block" style="margin-top:10px;"><b>Acute Yellow Atrophy Table:</b> If survived > 1 week, liver becomes smaller, deep red, cells disintegrate.</div>` },
-      // S8: Chronic
-      { render: () => `<div class="slide-title">💀 Chronic Poisoning</div><div class="text-block"><b>Phossy Jaw:</b> Inhalation over years causes necrosis of lower jaw via decayed tooth.</div><div class="text-block"><b>Progression:</b> Toothache → Jaw swelling → Loose teeth → Necrosis → Osteomyelitis (Glass Jaw) discharging pus.</div>` },
-      // S9: MLI
-      { render: () => `<div class="slide-title">⚖️ MLI (Phosphorus)</div><div class="compare-grid"><div class="diag-card">Accidental: Children rat paste.</div><div class="diag-card">Homicidal: Rare (garlic odor).</div><div class="diag-card">War: Grenades, Arson (wet dung).</div><div class="diag-card">Other: Abortifacient.</div></div>` },
-      // S10: Plants Intro
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🌿 Plant Poisons</div><div class="slide-subtitle">Intro to Toxalbumins</div><div class="text-block">Toxic albumins found in plants (Ricin, Crotin, Abrin) and animal venoms (Snake/Scorpion).</div><div class="diag-card" style="border-color:#a78bfa;text-align:center;" onclick="alert('Blocks protein synthesis (inhibits RNA polymerase II). Cytotoxic and vasculotoxic (causes DIC).'); logActivity('Viewed: Toxalbumin Mech');">⚙️ Mechanism (TOUCH)</div>` },
-      // S11: Ricinus Ident
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🌱 Ricinus communis</div><div class="slide-subtitle">Identification</div><div style="position:relative;"><img src="6275876753918070468.jpg" style="width:100%;border-radius:8px;"><div style="position:absolute;top:20%;left:20%;width:50px;height:50px;border-radius:50%;background:rgba(0,255,0,0.4);cursor:pointer;" onclick="document.getElementById('rf').style.display='block'; logActivity('Viewed: Castor Fruit');"></div><div style="position:absolute;bottom:20%;right:20%;width:50px;height:50px;border-radius:50%;background:rgba(255,100,0,0.4);cursor:pointer;" onclick="document.getElementById('rs').style.display='block'; logActivity('Viewed: Castor Seeds');"></div></div><div class="alert-box alert-yellow">Touch green fruit (top left) or seeds (bottom right) on image.</div><div id="rf" class="text-block" style="display:none;border-left:4px solid green;"><b>Fruit:</b> 3-lobed, softly spiny. <img src="6275876753918070467.jpg" style="width:100px;vertical-align:middle;margin-left:10px;"></div><div id="rs" class="text-block" style="display:none;border-left:4px solid orange;"><b>Seeds:</b> Flattened-oval, mottled, glossy. <img src="6275876753918070466.jpg" style="width:100px;vertical-align:middle;margin-left:10px;"></div>` },
-      // S12: Ricinus Quiz
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🧪 Active Principles</div><div class="alert-box alert-yellow">Active principle: <b>Ricin (Toxalbumin)</b> and Allergen CBA.</div><p>Which of these is POISONOUS?</p><div class="diag-card" onclick="playCroton('A')">[A] Unbroken Swallowed Seeds</div><div class="diag-card" onclick="playCroton('B')">[B] Pure Castor Oil</div><div class="diag-card" onclick="playCroton('C')">[C] Press Cake</div><div id="gameResC" class="alert-box" style="display:none;"></div>` },
-      // S13: Ricinus Signs
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🩺 Clinical & Autopsy</div><div class="text-block"><b>Signs:</b> Alkali-like mouth burns, bloody diarrhea, hemolysis, jaundice. Full effect takes 5 days.</div><div class="text-block"><b>Autopsy:</b> GIT inflamed/eroded. Edema of solid organs. Seed fragments in stomach.</div><div class="diag-card" style="border-color:#f78166;text-align:center;" onclick="alert('Ricin produces hemorrhagic inflammation of GIT EVEN WHEN GIVEN SUBCUTANEOUSLY.'); logActivity('Viewed: Ricin High Yield');">⭐ High Yield Autopsy Fact (TOUCH)</div>` },
-      // S14: Croton Intro
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🌿 Croton tiglium</div><div class="slide-subtitle">Jamalgota</div><div class="alert-box alert-yellow">Contains two dangerous components: <b>Crotin</b> and <b>Croton Oil</b>.</div><div class="text-block"><b>Crotin:</b> Toxalbumin in seeds. Destroyed by heat.<br><br><b>Croton Oil:</b> No toxalbumin, but is an extremely powerful purgative and severe vesicant.</div>` },
-      // S15: Seed Comparison
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🔍 Seed Comparison</div><div style="display:flex;gap:10px;"><div style="flex:1;text-align:center;"><p style="color:#f78166;">CROTON (TOUCH)</p><img src="6275876753918070469.jpg" class="img-btn" onclick="alert('Slightly smaller, dull, brownish-yellow, not distinctly mottled. Dorsal surface more convex.'); logActivity('Viewed: Croton Seed Desc');"></div><div style="flex:1;text-align:center;"><p style="color:#7ee787;">CASTOR (TOUCH)</p><img src="6275876753918070466.jpg" class="img-btn" onclick="alert('Larger, flattened-oval. Highly smooth, glossy, distinctly mottled.'); logActivity('Viewed: Castor Seed Desc');"></div></div>` },
-      // S16: Croton Signs
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🩺 Croton Symptoms</div><div class="stat-row"><div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">4-5 Seeds</div><div class="sl">Fatal Dose</div></div><div class="stat-pill"><div class="sv" style="color:#ffa657">4-24 Hrs</div><div class="sl">Fatal Period</div></div></div><div class="text-block"><b>Skin:</b> Powerful vesicant (blisters).<br><b>Ingestion:</b> Severe burning, violent vomiting, severe purging (watery diarrhea), rapid dehydration, collapse.<br><b>Treatment:</b> Stomach wash, IV fluids for dehydration.</div>` },
-      // S17: Croton PM
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🔬 Croton Autopsy</div><div class="text-block"><b>Internal:</b> Severe GI irritation, deeply congested, softened, inflamed with submucous hemorrhages.</div><div class="diag-card" style="border-color:#f78166;text-align:center;" onclick="alert('Check mouth/face carefully for distinct vesication (blistering) from oil contact.'); logActivity('Viewed: Croton PM Fact');">⭐ High Yield Fact (TOUCH)</div>` },
-      // S18: Abrus Intro
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🌿 Abrus precatorius</div><div class="slide-subtitle">Ratti / Gunchi</div><img src="IMG_0383.jpg" class="img-btn" style="max-height:200px;" onclick="alert('Seeds are egg-shaped, bright scarlet with a large black spot at one end. Weigh 105 mg avg.'); logActivity('Viewed: Abrus Seed');"><div class="alert-box alert-yellow" style="text-align:center;">Touch seed image for description.</div>` },
-      // S19: Abrus Active
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🧪 Active Principles</div><div class="alert-box alert-yellow"><b>All parts</b> are poisonous. Active principle: <b>Abrin</b> (Toxalbumin).</div><div class="text-block">Inhibits protein synthesis causing cell death.</div><div class="diag-card" style="border-color:#f78166;text-align:center;" onclick="alert('Similar action to VIPERINE SNAKE VENOM. Both human and animal poison. Subcutaneously 100x more toxic than oral.'); logActivity('Viewed: Abrin Facts');">⭐ High Yield Tox (TOUCH)</div>` },
-      // S20: Abrus Signs
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🩺 Abrus Symptoms</div><div class="stat-row"><div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">1-2 Seeds</div><div class="sl">Fatal Dose</div></div><div class="stat-pill"><div class="sv" style="color:#ffa657">3-5 Days</div><div class="sl">Fatal Period</div></div></div><div class="text-block"><b>Ingestion:</b> Delayed 2-3 days. Bloody diarrhea, delayed CNS/liver/kidney effects.<br><b>Injection:</b> Site necrosis. Faintness, dyspnea, convulsions, cardiac failure.</div>` },
-      // S21: Abrus PM
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🆘 Abrus Rx & Autopsy</div><div class="alert-box alert-red"><b>WARNING:</b> Antiabrin is completely ineffective.</div><div class="diag-card" onclick="alert('Give Sodium Bicarbonate 10g/day to maintain alkaline urine and stop renal tubule blockage with hemoglobin G.'); logActivity('Viewed: Abrus Rx');">🛡️ Systemic Protection (TOUCH)</div><div class="text-block"><b>Autopsy:</b> Injection site edema. Petechial hemorrhages under skin, pleura. Fragments of needle may be found.</div>` },
-      // S22: Abrus MLI
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">⚖️ Sui Poisoning</div><div class="diag-card" onclick="alert('Sui/Sutari: Spikes made of decorticated seeds + datura/opium/onion paste. 15mm long, 90-120mg.'); logActivity('Viewed: Sui Def');">📌 The Sui/Sutari (TOUCH)</div><div class="text-block"><b>Cattle Assassination:</b> Struck into animal by leather workers for hides. Mimics snake bite.<br><b>Homicide:</b> Kept between fingers and slapped into victim.<br><b>Other:</b> Malingering (conjunctivitis), abortifacient.</div>` },
-      // S23: Semecarpus Intro
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🌿 Semecarpus anacardium</div><div class="slide-subtitle">Marking Nut / Bhilawa</div><img src="IMG_0384.jpeg" class="img-btn" style="max-height:200px;"><div class="alert-box alert-yellow">Juice used by washermen to mark clothes.</div><div class="diag-card" style="text-align:center;border-color:#58a6ff;" onclick="alert('Semecarpol (monophenol) & Bhilawanol (ortho-diphenol).'); logActivity('Viewed: Semecarpus Chemistry');">🧪 Active Principles (TOUCH)</div>` },
-      // S24: Semecarpus Signs
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🩺 Semecarpus Symptoms</div><div class="stat-row"><div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">5-10 g</div><div class="sl">Fatal Dose</div></div><div class="stat-pill"><div class="sv" style="color:#ffa657">12-24 Hrs</div><div class="sl">Fatal Period</div></div></div><div class="text-block"><b>Skin:</b> Powerful vesicant. Intense itching, blisters with acrid serum.<br><b>Ingestion:</b> Blisters in mouth, violent vomiting, bloody diarrhea, dyspnea, coma.</div>` },
-      // S25: Semecarpus PM
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🆘 Semecarpus PM & Rx</div><div class="text-block"><b>Treatment:</b> Wash skin with warm water/soap/alcohol to remove oily juice. Apply soothing ointment.<br><br><b>Autopsy:</b> Blisters on skin/lips. GI mucosa inflamed with distinct blisters. Visceral congestion.</div>` },
-      // S26: Semecarpus MLI
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">⚖️ The Artificial Bruise</div><div class="text-block"><b>Abortifacient:</b> Juice applied to os uteri via abortion stick.</div><div class="diag-card" style="border-color:#f78166;text-align:center;padding:15px;" onclick="alert('Differentiating from real bruise:\\n1. No color changes.\\n2. Shows blisters.\\n3. Regular margins.\\n4. Severe itching (not tender).\\n5. Chem analysis detects Bhilawanol.'); logActivity('Viewed: Artificial Bruise');">🕵️ THE ARTIFICIAL BRUISE (TOUCH)</div>` },
-      // S27: Calotropis Intro
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🌿 Calotropis</div><div class="slide-subtitle">Erukku / Madar / Giant Milkweed</div><img src="Akanda Crown Flower (Calotropis Gigantea ) Plant - Nestreeo.com.jpeg.jpg" class="img-btn" style="max-height:180px;"><div class="diag-card" onclick="alert('Contains thick, tenacious milky sap (latex) which is highly irritating.'); logActivity('Viewed: Calotropis Latex');">🥛 Distinct Feature (TOUCH)</div><div class="alert-box alert-yellow">Active: <b>Calotropin</b> (Cardiac Glycoside).</div>` },
-      // S28: Calotropis Signs
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🩺 Calotropis Symptoms</div><div class="stat-row"><div class="stat-pill"><div class="sv" style="color:#f78166">Uncertain</div><div class="sl">Fatal Dose</div></div><div class="stat-pill"><div class="sv" style="color:#ffa657">1-12 Hrs</div><div class="sl">Fatal Period</div></div></div><div class="text-block"><b>Skin/Eyes:</b> Blisters. Temporary/permanent blindness if in eyes.<br><b>Ingestion:</b> Burning, vomiting, dilated pupils, convulsions. Death from <b>cardiac failure</b>.</div>` },
-      // S29: Calotropis PM
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">🆘 Calotropis PM & Rx</div><div class="text-block"><b>Treatment:</b> Wash skin/eyes. Eye drops (atropine). Stomach wash, supportive cardiac care.<br><br><b>Autopsy:</b> Irritant poison signs. GI mucosa inflamed/blistered. <b>Visceral congestion & dilated heart</b>.</div>` },
-      // S30: Calotropis MLI
-      { render: () => `<div class="slide-title" style="color:#a78bfa;">⚖️ Calotropis MLI</div><div class="diag-card" onclick="alert('Locally used for criminal abortion via abortion stick causing uterine irritation.'); logActivity('Viewed: Calotropis Abortion');">⚠️ Abortifacient (TOUCH)</div><div class="text-block"><b>Infanticide:</b> Given orally or rectally.<br><b>Malingering:</b> Create artificial ulcers or blindness to escape duties.<br><b>Other:</b> Cattle poison (rectal). Poisonous to snakes.</div>` }
+      // 1. Phos Intro
+      { render: () => `
+        <div class="slide-title">🔥 Phosphorus</div>
+        <div class="slide-subtitle">Element & Background</div>
+        <div style="text-align:center;">
+          <div class="burn-zone" onclick="this.style.background='radial-gradient(circle, #fff700 0%, #ff4400 100%)'; this.style.boxShadow='0 0 50px #ff4400'; this.innerHTML='🔥'; document.getElementById('hist-data').style.display='block'; logActivity('Burn Reveal');">TOUCH TO BURN</div>
+        </div>
+        <div id="hist-data" style="display:none; margin-top:15px;">
+          <div class="alert-box alert-red"><b>CHEMICAL BURN:</b><br>White/Yellow Phosphorus is a protoplasmic poison that ignites spontaneously in air at 30°C.</div>
+          <div class="diag-card" onclick="alert('Discovery: 1669 Henning Brand boiled urine.\\nGlobal Impact: Match stick girls got Phossy Jaw. Led to global ban on white P in matches.'); logActivity('Viewed: Global Context');">🌍 Global Background (TOUCH)</div>
+          <div class="diag-card" onclick="alert('The Rat Paste Ban: Yellow P was used in 3% rodenticide pastes (Ratol). High mortality led to a strict ban in Tamil Nadu.'); logActivity('Viewed: India Context');">🇮🇳 Indian Context (TOUCH)</div>
+        </div>` 
+      },
+      // 2. Allotrope Game
+      { render: () => `
+        <div class="slide-title">🧪 Allotrope Game</div>
+        <div style="text-align:center;font-size:20px;color:#7ee787;margin:15px;font-weight:bold;">Match stick striking surface</div>
+        <div style="display:flex;gap:10px;">
+          <button class="diag-card" style="flex:1;background:#2d1215;border-color:#f78166;text-align:center;" onclick="playAllotrope('Red')">🔴 RED</button>
+          <button class="diag-card" style="flex:1;background:#2b2008;border-color:#ffa657;text-align:center;" onclick="playAllotrope('Yellow')">🟡 YELLOW</button>
+          <button class="diag-card" style="flex:1;background:#0d1a2a;border-color:#58a6ff;text-align:center;" onclick="playAllotrope('White')">⚪ WHITE</button>
+        </div>
+        <div id="gameRes" class="alert-box" style="display:none;"></div>` 
+      },
+      // 3. Mechanism
+      { render: () => `
+        <div class="slide-title">⚙️ Mechanism of Action</div>
+        <div class="alert-box alert-yellow"><strong>Primary Action:</strong> Disrupts fundamental metabolic processes by affecting <b>cellular oxidation</b>.</div>
+        <div class="diag-card" style="border-color:#f78166;text-align:center;padding:25px;" onclick="alert('PROTOPLASMIC POISON:\\nA substance that damages or kills living cells by destroying their basic structure and functional components (protoplasm), such as organelles and proteins.'); logActivity('Viewed: Protoplasmic Poison');">☠️ Protoplasmic Poison (TOUCH TO EXPAND)</div>` 
+      },
+      // 4. Fulminating
+      { render: () => `
+        <div class="slide-title">⚡ Fulminating Poisoning</div>
+        <div class="alert-box alert-yellow">Occurs when more than <strong>one gram</strong> is ingested.</div>
+        <div class="text-block"><b>⏱️ Timeline:</b> Death typically occurs within 12 hours due to shock and cardiovascular collapse.</div>
+        <div class="text-block"><b>🤢 Symptoms:</b> Intense thirst, severe nausea, vomiting, and retching. Those who survive more than 12 hours may become restless, delirious and sometimes maniacal before death.</div>
+        <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('MECHANISM:\\nPhosphorus has direct action on the heart and blood vessels.'); logActivity('Viewed: Fulminant Mech');">🫀 Mechanism (TOUCH TO REVEAL)</div>` 
+      },
+      // 5. Acute Stages
+      { render: () => `
+        <div class="slide-title">🩺 Acute Poisoning Stages</div>
+        <div class="stat-row">
+          <div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">60–120 mg</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill" style="border-color:#ffa657"><div class="sv" style="color:#ffa657">2–8 Days</div><div class="sl">Fatal Period</div></div>
+        </div>
+        <div class="text-block" style="border-left:4px solid #58a6ff;"><b>1️⃣ First Stage:</b> Symptoms occur within mins to hours, last up to 3 days. Burning pain, thirst, nausea, severe abdominal pain.<br><br>✨ <i>Breath and excreta have garlic odor. Luminescent vomit and faeces are diagnostic.</i><br><br>
+          <div class="diag-card" onclick="document.getElementById('b-img').style.display='block'; this.style.display='none'; logActivity('Viewed: Skin Burns');" style="text-align:center;border-color:#f78166;margin:0;">🩹 Skin Contact (TOUCH)</div>
+          <div id="b-img" style="display:none;text-align:center;"><p style="font-size:13px;color:#f78166;">Painful penetrating 2nd/3rd degree burns.</p><img src="httpswww.moph.gov.lbuserfilesfilesPreventionPHEOCWhite20Phosphorus20TEZ-1.pdf.jpeg.jpg" style="width:100%;max-height:140px;border-radius:8px;"></div>
+        </div>
+        <div class="text-block" style="border-left:4px solid #ffa657;"><b>2️⃣ Second Stage:</b> The Trap. Symptom-free period lasting 2 to 3 days.</div>
+        <div class="text-block" style="border-left:4px solid #f78166;"><b>3️⃣ Third Stage:</b> Systemic toxicity, hemorrhages, death from organ failure.
+          <div style="display:flex;gap:5px;margin-top:8px;">
+            <div class="diag-card" style="flex:1;text-align:center;padding:8px;" onclick="alert('LIVER:\\nNausea, hematemesis, liver tenderness, jaundice, and pruritus.'); logActivity('Viewed: Stage 3 Liver');">🟡 Liver</div>
+            <div class="diag-card" style="flex:1;text-align:center;padding:8px;" onclick="alert('RENAL:\\nOliguria, hematuria, casts, albuminuria, anuria.'); logActivity('Viewed: Stage 3 Renal');">🫘 Renal</div>
+            <div class="diag-card" style="flex:1;text-align:center;padding:8px;" onclick="alert('CNS:\\nConvulsions, delirium, coma.'); logActivity('Viewed: Stage 3 CNS');">🧠 CNS</div>
+          </div>
+        </div>` 
+      },
+      // 6. Treatment
+      { render: () => `
+        <div class="slide-title">🆘 Treatment & Management</div>
+        <div class="alert-box alert-red" style="text-align:center;">⛔ <b>STRICTLY AVOID Oils and fats.</b> They dissolve phosphorus and promote absorption.</div>
+        <div class="text-block" style="font-size:15px; padding:15px;">
+          <b>1.</b> <span class="touch-text" onclick="alert('Gastric lavage using 1:5,000 solution of potassium permanganate oxidizes phosphorus into harmless phosphoric acid and phosphates.'); logActivity('Viewed: KMnO4 Lavage');">💧 Gastric Lavage (TOUCH)</span><br><br>
+          <b>2. Activated Charcoal:</b> Absorbs the poison.<br><br>
+          <b>3. Copper Sulphate (Emetic):</b> 0.2% solution wash or 0.2g every 5 mins until vomiting. Coats P with harmless copper phosphide. <i>⚠️ WARNING: Can cause acute copper poisoning!</i><br><br>
+          <b>4.</b> <span class="touch-text" onclick="alert('Vitamin K, 20 mg IV in repeated doses to combat hypoprothrombinemia or blood transfusion.'); logActivity('Viewed: Vitamin K');">🩸 Vitamin K Rx (TOUCH)</span><br><br>
+          <b>5. Bowel Evacuation:</b> With magnesium sulphate.<br><br>
+          <b>6. Bowel Wash:</b> Repeat at intervals for several days.<br><br>
+          <b>7. Systemic Support:</b> Transfusion of glucose-saline, plasma, vitamins, noradrenaline for shock.<br><br>
+          <b>8. Renal Failure:</b> Peritoneal or hemodialysis if severe.<br><br>
+          <b>9. Contact Burns:</b> Wash thoroughly with 1% copper sulphate solution.
+        </div>` 
+      },
+      // 7. PM Appearances
+      { render: () => `
+        <div class="slide-title">🔬 Postmortem Appearances</div>
+        <div class="text-block"><b>Acute Poisoning:</b> Jaundice. Garlic/luminous GI contents. GIT mucosa greyish-white, corroded. Multiple hemorrhages in organs/serosa. Blood is tarry.</div>
+        <div style="display:flex;gap:10px;margin-bottom:10px;">
+          <div style="flex:1;text-align:center;">
+            <p style="font-size:12px;color:#ffa657;margin-bottom:4px;font-weight:bold;">LIVER (TOUCH)</p>
+            <img src="Click on image to zoom.jpeg.jpg" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('LIVER:\\nSwollen, yellow, soft, fatty. Small hemorrhages on surface/substance.'); logActivity('Viewed: PM Liver');">
+          </div>
+          <div style="flex:1;text-align:center;">
+            <p style="font-size:12px;color:#58a6ff;margin-bottom:4px;font-weight:bold;">KIDNEY (TOUCH)</p>
+            <img src="Click on image to zoom.jpeg 2.jpg" class="img-btn" style="margin:0;max-height:120px;" onclick="alert('KIDNEYS:\\nLarge, greasy, yellow. Hemorrhages on surface.'); logActivity('Viewed: PM Kidney');">
+          </div>
+        </div>
+        <div class="alert-box alert-yellow" style="font-size:13px;"><b>Acute Yellow Atrophy:</b> If patient survives > 1 week.<br>• Size: Smaller, irregular (vs P: Enlarged/fatty).<br>• Color: Bright yellow/deep red (vs P: Marbled).<br>• Cells: Disintegration of most cells (vs P: Fatty degen).</div>` 
+      },
+      // 8. Chronic
+      { render: () => `
+        <div class="slide-title">💀 Chronic Poisoning</div>
+        <div class="text-block" style="padding:20px;">
+          <h3 style="color:#f78166; margin-top:0;">Phossy Jaw (Glass Jaw)</h3>
+          <p><b>Cause:</b> Frequent inhalation of fumes over years causes necrosis of lower jaw in the region of a decayed/missing tooth.</p>
+          <p><b>Progression:</b><br>1. Toothache<br>2. Swelling of jaw<br>3. Loosening of teeth<br>4. Necrosis of gums<br>5. Sequestration of bone in mandible</p>
+          <p><b>Result:</b> Osteomyelitis and necrosis with multiple sinuses discharging foul-smelling pus.</p>
+          <p><b>Systemic:</b> Nausea, vomiting, anorexia, joint pain, jaundice, anemia.</p>
+        </div>` 
+      },
+      // 9. MLI
+      { render: () => `
+        <div class="slide-title">⚖️ Medicolegal Importance</div>
+        <div class="compare-grid">
+          <div class="diag-card">🧒 <b>Accidental:</b> Children eating rat paste or chewing firecrackers.</div>
+          <div class="diag-card">🔪 <b>Homicidal:</b> Rare due to garlic odor. Often mixed in strongly flavored food.</div>
+          <div class="diag-card">💣 <b>War/Arson:</b> Fragments of grenades. Arson using White P covered in wet dung.</div>
+          <div class="diag-card">⚠️ <b>Other:</b> Abortifacient use (vaginally or orally).</div>
+        </div>` 
+      },
+      // 10. Plants Intro (Toxalbumins)
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🌿 Organic Plant Poisons</div>
+        <div class="slide-subtitle">Introduction to Toxalbumins</div>
+        <div class="text-block">Toxalbumins are a group of toxic albumins found in certain plants, bacteria, and snake venom. <br><br>Examples: Ricin, Crotin, Abrin (Phytotoxins) & Snake/Scorpion venoms.</div>
+        <div class="diag-card" style="border-color:#a78bfa;text-align:center;padding:20px;" onclick="alert('MECHANISM:\\nBlocks protein synthesis by inhibition of RNA polymerase II in ribosomes. Cytotoxic and vasculotoxic (causes DIC).'); logActivity('Viewed: Toxalbumin Mechanism');">⚙️ Mechanism of Action (TOUCH)</div>` 
+      },
+      // 11. Ricinus Ident
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🌱 Ricinus communis</div>
+        <div class="slide-subtitle">Castor Plant Identification</div>
+        <div style="position:relative; margin-bottom:10px;">
+          <img src="6275876753918070468.jpg" style="width:100%;border-radius:8px;">
+          <div style="position:absolute;top:20%;left:25%;width:60px;height:60px;border-radius:50%;background:rgba(0,255,0,0.5);border:2px solid #fff;cursor:pointer;" onclick="document.getElementById('rf').style.display='flex'; logActivity('Viewed: Castor Fruit');"></div>
+          <div style="position:absolute;bottom:25%;right:25%;width:60px;height:60px;border-radius:50%;background:rgba(255,100,0,0.5);border:2px solid #fff;cursor:pointer;" onclick="document.getElementById('rs').style.display='flex'; logActivity('Viewed: Castor Seeds');"></div>
+        </div>
+        <div class="alert-box alert-yellow" style="text-align:center;font-size:14px;">Touch the Green Fruit or Seeds on the plant above.</div>
+        <div id="rf" class="text-block" style="display:none; align-items:center; border-left:4px solid #7ee787;">
+          <div style="flex:1;"><b>FRUIT:</b> 1.2–2.5 cm long, 3-lobed, softly spiny. Blue-green/rose-red when immature.</div>
+          <img src="6275876753918070467.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;">
+        </div>
+        <div id="rs" class="text-block" style="display:none; align-items:center; border-left:4px solid #ffa657;">
+          <div style="flex:1;"><b>SEEDS:</b> Flattened-oval, smooth, glossy, distinctly mottled. Look like croton seeds.</div>
+          <img src="6275876753918070466.jpg" style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-left:10px;">
+        </div>` 
+      },
+      // 12. Ricinus Quiz
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🧪 Active Principles</div>
+        <div class="alert-box alert-yellow">The active principle is <b>Ricin, a water-soluble glycoprotein toxalbumin</b> in the seeds, plus a powerful allergen (CBA).</div>
+        <p style="font-weight:bold;">Based on Ricin chemistry, which is highly POISONOUS?</p>
+        <div class="diag-card" onclick="playRicinus('A')">[A] Unbroken Swallowed Seeds</div>
+        <div class="diag-card" onclick="playRicinus('B')">[B] Pure Castor Oil</div>
+        <div class="diag-card" onclick="playRicinus('C')">[C] Press Cake</div>
+        <div id="gameResC" class="alert-box" style="display:none;"></div>` 
+      },
+      // 13. Ricinus Signs & PM
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🩺 Clinical & Autopsy</div>
+        <div class="text-block"><b>Inhalation:</b> Seed dust causes conjunctivitis, asthmatic bronchitis, dermatitis.</div>
+        <div class="text-block"><b>Ingestion:</b> Oral mucosa burns similar to alkali burn. Bloody diarrhea, abdominal pain.</div>
+        <div class="text-block"><b>Systemic:</b> Hemolysis, uremia, jaundice. <i>Full effect takes up to 5 days.</i></div>
+        <div class="text-block"><b>Autopsy:</b> GIT congested/softened. Edema of solid organs. Dilation of heart.</div>
+        <div class="diag-card" style="border-color:#f78166;text-align:center;padding:15px;" onclick="alert('Ricin produces hemorrhagic inflammation of the gastrointestinal tract EVEN WHEN GIVEN SUBCUTANEOUSLY.'); logActivity('Viewed: Ricin High Yield PM');">⭐ HIGH YIELD AUTOPSY FACT (TOUCH)</div>` 
+      },
+      // 14. Croton Intro
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🌿 Croton tiglium</div>
+        <div class="slide-subtitle">Jamalgota</div>
+        <div class="alert-box alert-yellow">The plant contains two distinct dangerous components: <b>Crotin</b> and <b>Croton Oil</b>.</div>
+        <div class="text-block"><b>Crotin:</b> A highly toxic glycoprotein toxalbumin in the seeds. Destroyed by boiling/cooking.</div>
+        <div class="text-block"><b>Croton Oil:</b> A yellowish-brown oil. Does NOT contain toxalbumin, but is an extremely powerful <b>purgative</b> and severe <b>vesicant</b>.</div>` 
+      },
+      // 15. Croton vs Castor Seed
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🔍 Seed Identification</div>
+        <div class="slide-subtitle">Croton vs Castor Comparison</div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          <div style="flex:1;text-align:center;">
+            <p style="color:#f78166;font-weight:bold;margin-bottom:8px;">CROTON SEEDS (TOUCH)</p>
+            <img src="6275876753918070469.jpg" class="img-btn" style="height:140px;object-fit:cover;" onclick="alert('CROTON:\\nSlightly smaller. Dull, brownish-yellow, not distinctly mottled or glossy. Dorsal surface more convex.'); logActivity('Viewed: Croton Seed Info');">
+          </div>
+          <div style="flex:1;text-align:center;">
+            <p style="color:#7ee787;font-weight:bold;margin-bottom:8px;">CASTOR SEEDS (TOUCH)</p>
+            <img src="6275876753918070466.jpg" class="img-btn" style="height:140px;object-fit:cover;" onclick="alert('CASTOR:\\nLarger, flattened-oval. Highly smooth, glossy, and distinctly mottled.'); logActivity('Viewed: Castor Seed Info');">
+          </div>
+        </div>` 
+      },
+      // 16. Croton Signs & Stats
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🩺 Croton Symptoms</div>
+        <div class="stat-row">
+          <div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">4-5 Seeds</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill" style="border-color:#ffa657"><div class="sv" style="color:#ffa657">4-24 Hrs</div><div class="sl">Fatal Period</div></div>
+        </div>
+        <div class="text-block"><b>Skin Contact:</b> Oil is a powerful vesicant (blisters, redness, intense irritation).</div>
+        <div class="text-block"><b>Ingestion:</b> Severe burning mouth to stomach, violent vomiting, severe purging (watery diarrhea), rapid dehydration, cramps, collapse.</div>
+        <div class="text-block"><b>Treatment:</b> Stomach wash, demulcents, aggressive IV fluid therapy for dehydration.</div>` 
+      },
+      // 17. Croton PM
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🔬 Croton Autopsy</div>
+        <div class="text-block" style="padding:20px; font-size:16px;"><b>Internal Findings:</b><br><br>Typical signs of severe gastrointestinal irritation. The mucosa of the stomach and bowels is deeply congested, softened, inflamed, and may show submucous hemorrhages.</div>
+        <div class="diag-card" style="border-color:#f78166;text-align:center;padding:20px;margin-top:20px;" onclick="alert('Check the mouth and face carefully. If croton oil was ingested or applied, you may find distinct vesication (blistering) on the skin of the face, lips, and oral mucosa.'); logActivity('Viewed: Croton Vesication Check');">⭐ HIGH YIELD AUTOPSY FACT (TOUCH)</div>` 
+      },
+      // 18. Abrus Intro
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🌿 Abrus precatorius</div>
+        <div class="slide-subtitle">Jequirity / Ratti</div>
+        <div style="text-align:center;margin-bottom:15px;">
+          <img src="IMG_0383.jpg" class="img-btn" style="max-height:200px;width:auto;" onclick="alert('The seeds are egg-shaped, bright scarlet color with a large black spot at one end. They are 8 mm long and weigh 105 mg on average.'); logActivity('Viewed: Abrus Seed Info');">
+        </div>
+        <div class="text-block" style="text-align:center;"><b>Synonyms:</b> Indian liquorice, rosary bead, gunchi, ratti, Gulganji.</div>
+        <div class="alert-box alert-yellow" style="text-align:center;">Touch seed image for physical characteristics.</div>` 
+      },
+      // 19. Abrus Active Principles
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🧪 Abrin Toxicity</div>
+        <div class="alert-box alert-yellow"><b>ALL PARTS</b> of the plant are poisonous. The seeds contain <b>Abrin</b>, a highly toxic toxalbumin.</div>
+        <div class="text-block"><b>Mechanism:</b> Inhibits protein synthesis and causes cell death.</div>
+        <div class="diag-card" style="border-color:#f78166;text-align:center;padding:20px;" onclick="alert('Abrin is similar in action to VIPERINE SNAKE VENOM. It is both a human and animal poison.\\n\\nNote: Subcutaneously, abrin is 100 times as toxic as by the oral route.'); logActivity('Viewed: Abrin High Yield');">⭐ High-Yield Tox Facts (TOUCH TO EXPAND)</div>` 
+      },
+      // 20. Abrus Signs
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🩺 Abrus Symptoms</div>
+        <div class="stat-row">
+          <div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">1-2 Seeds</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill" style="border-color:#ffa657"><div class="sv" style="color:#ffa657">3-5 Days</div><div class="sl">Fatal Period</div></div>
+        </div>
+        <div class="text-block"><b>Ingestion:</b> Delayed 2-3 days. Severe upper GI irritation, bloody diarrhea. Delayed cytotoxic effects in CNS, liver, kidneys (2-5 days).</div>
+        <div class="text-block"><b>Injection:</b> Site necrosis and painful swelling. Systemic faintness, vertigo, dyspnea, convulsions, cardiac failure.</div>` 
+      },
+      // 21. Abrus Rx & PM
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🆘 Abrus Rx & Autopsy</div>
+        <div class="text-block"><b>Standard Rx:</b> Gastric lavage, charcoal. <i>Injection Rx:</i> Needle must be dissected out surgically.</div>
+        <div class="alert-box alert-red" style="text-align:center;"><b>WARNING: Antiabrin is completely ineffective.</b></div>
+        <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('Give Sodium bicarbonate 10 g orally per day.\\n\\nThis maintains alkalinity of urine, prevents agglutination of red cells, and stops blocking of renal tubules with hemoglobin G.'); logActivity('Viewed: Sod Bicarb Rx');">🛡️ Systemic Protection (TOUCH)</div>
+        <div class="text-block"><b>Autopsy:</b> Injection site edema. Petechial hemorrhages under skin, pleura, pericardium. Internal organs congested. Fragments of needle may be found.</div>` 
+      },
+      // 22. Abrus MLI (Sui)
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">⚖️ MLI & Sui Poisoning</div>
+        <div class="diag-card" style="border-color:#f78166;padding:15px;" onclick="alert('Sui/Sutari:\\nSmall spikes prepared using decorticated seeds mixed with datura, opium, and onion paste. They are 15 mm long and weigh 90–120 mg.'); logActivity('Viewed: Sui Details');">📌 The "Sui" / "Sutari" (TOUCH TO EXPAND)</div>
+        <div class="text-block"><b>Cattle Poisoning:</b> Used by leather workers to kill cattle for hides. Two needles are fixed to a wooden handle and struck. Symptoms mimic snake bite.</div>
+        <div class="text-block"><b>Homicide:</b> Needle kept between fingers, victim is slapped.</div>
+        <div class="text-block"><b>Other:</b> Malingerers use powder to produce conjunctivitis. Abortifacient.</div>` 
+      },
+      // 23. Semecarpus Intro
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🌿 Semecarpus anacardium</div>
+        <div class="slide-subtitle">Marking Nut / Bhilawa</div>
+        <div style="text-align:center; margin-bottom:10px;">
+          <img src="IMG_0384.jpeg" class="img-btn" style="max-height:180px;width:auto;">
+        </div>
+        <div class="alert-box alert-yellow" style="text-align:center;">Known as "Marking Nut" as juice is used by dhobis to mark clothes.</div>
+        <div class="text-block"><b>Identification:</b> Nut is black and heart-shaped. Pericarp contains highly acrid, black, oily juice.</div>
+        <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('The dangerous chemicals are:\\n1. Semecarpol (a monophenol)\\n2. Bhilawanol (an ortho-diphenol)'); logActivity('Viewed: Marking Nut Chem');">🧪 Active Principles (TOUCH)</div>` 
+      },
+      // 24. Semecarpus Signs
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🩺 Semecarpus Symptoms</div>
+        <div class="stat-row">
+          <div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">5-10 g</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill" style="border-color:#ffa657"><div class="sv" style="color:#ffa657">12-24 Hrs</div><div class="sl">Fatal Period</div></div>
+        </div>
+        <div class="text-block"><b>Skin Contact:</b> Powerful vesicant. Intense itching, redness, painful blisters containing acrid serum.</div>
+        <div class="text-block"><b>Ingestion:</b> Blisters in mouth/throat, severe GI irritation, dysphagia, violent vomiting, bloody diarrhea. Dyspnea, cyanosis, delirium, coma.</div>` 
+      },
+      // 25. Semecarpus PM & Rx
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🆘 Semecarpus PM & Rx</div>
+        <div class="text-block"><b>Treatment:</b><br>- Local: Wash skin with warm water/soap or swab with alcohol to remove oil. Apply soothing ointment.<br>- Systemic: Stomach wash with warm water, demulcents.</div>
+        <div class="text-block"><b>Autopsy Findings:</b> Blisters may be visible on skin, lips, oral mucosa. GI mucosa congested, inflamed, may show distinct blisters. Visceral congestion.</div>` 
+      },
+      // 26. Semecarpus MLI
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">⚖️ Medicolegal Importance</div>
+        <div class="text-block"><b>Criminal Abortion:</b> Juice applied locally to os uteri via abortion stick.</div>
+        <div class="diag-card" style="border-color:#f78166;padding:15px;margin-top:15px;" onclick="alert('Differentiating from a real bruise:\\n1. Color: No chronological Hb degradation color changes.\\n2. Blistering: Shows typical vesication with acrid serum.\\n3. Margins: Highly regular/well-defined where painted.\\n4. Sensation: Causes severe itching (real bruise is tender).\\n5. Chemistry: Analysis detects Semecarpol/Bhilawanol.'); logActivity('Viewed: Artificial Bruise Points');">🕵️ THE ARTIFICIAL BRUISE (TOUCH TO EXPAND)</div>` 
+      },
+      // 27. Calotropis Intro
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🌿 Calotropis</div>
+        <div class="slide-subtitle">Erukku / Madar / Giant Milkweed</div>
+        <div style="text-align:center;margin-bottom:10px;">
+          <img src="Akanda Crown Flower (Calotropis Gigantea ) Plant - Nestreeo.com.jpeg.jpg" class="img-btn" style="max-height:180px;width:auto;">
+        </div>
+        <div class="text-block"><b>Common Names:</b> Erukku (Tamil), Madar, Aak, Arka. <i>C. gigantea</i> has purple/white flowers.</div>
+        <div class="alert-box alert-yellow">Active: Cardiac glycosides (<b>Calotropin</b>, Uscharin, Calotoxin).</div>
+        <div class="diag-card" style="border-color:#58a6ff;text-align:center;" onclick="alert('The entire plant contains a thick, tenacious, MILKY SAP (latex) which is highly irritating.'); logActivity('Viewed: Calotropis Latex');">🥛 Distinct Feature (TOUCH)</div>` 
+      },
+      // 28. Calotropis Signs
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🩺 Calotropis Symptoms</div>
+        <div class="stat-row">
+          <div class="stat-pill" style="border-color:#f78166"><div class="sv" style="color:#f78166">Uncertain</div><div class="sl">Fatal Dose</div></div>
+          <div class="stat-pill" style="border-color:#ffa657"><div class="sv" style="color:#ffa657">1-12 Hrs</div><div class="sl">Fatal Period</div></div>
+        </div>
+        <div class="text-block"><b>Skin/Eyes:</b> Blisters. Application to eyes leads to severe conjunctivitis, keratitis, and temporary/permanent blindness.</div>
+        <div class="text-block"><b>Ingestion:</b> Burning in mouth, vomiting, diarrhea, weak pulse, dilated pupils, convulsions. <b>Death from cardiac failure.</b></div>` 
+      },
+      // 29. Calotropis PM & Rx
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">🆘 Calotropis PM & Rx</div>
+        <div class="text-block"><b>Treatment:</b><br>Wash skin/eyes thoroughly. Instill local anesthetics and atropine in the eye. Stomach wash, demulcents, manage cardiac failure.</div>
+        <div class="text-block"><b>Autopsy Findings:</b><br>General irritant poison signs. GI mucosa congested/blistered. Visceral congestion. Signs of cardiac failure (dilated heart, pulmonary edema).</div>` 
+      },
+      // 30. Calotropis MLI
+      { render: () => `
+        <div class="slide-title" style="color:#a78bfa;">⚖️ Calotropis MLI</div>
+        <div class="diag-card" style="border-color:#f78166;padding:15px;" onclick="alert('Locally used for criminal abortion. Applied to the os uteri using an abortion stick to cause uterine irritation and fetal expulsion.'); logActivity('Viewed: Calotropis Abortion');">⚠️ Abortifacient (TOUCH)</div>
+        <div class="text-block"><b>Infanticide:</b> Given orally or inserted into rectum.</div>
+        <div class="text-block"><b>Malingering:</b> Juice applied to produce artificial skin conditions (ulcers) or blinding to escape military/duties.</div>
+        <div class="text-block"><b>Other:</b> Cattle poison (rectal). Highly poisonous to snakes.</div>` 
+      }
     ]
   };
 
@@ -178,7 +452,7 @@
         const index = Number(data.index) || 0;
         const slideData = allTopics[topic] ? allTopics[topic][index] : null;
 
-        if (!slideData) slideEl.innerHTML = "<div style='text-align:center;padding:40px;color:#8b949e;'>End of Lecture</div>";
+        if (!slideData) slideEl.innerHTML = "<div style='text-align:center;padding:40px;color:#8b949e;font-size:24px;'>End of Lecture</div>";
         else slideEl.innerHTML = slideData.render(); 
       });
   }
