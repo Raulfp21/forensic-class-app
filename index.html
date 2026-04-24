@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DSMCH Forensic - Classroom & Assessment</title>
+  <title>DSMCH Forensic - Assessment Portal</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <style>
+    /* Core Assessment & Anti-Copy Styles */
     body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#0f172a; color:white; overflow-x: hidden; -webkit-user-select: none; user-select: none; }
     .container { max-width:850px; width:95%; margin: 20px auto; background:#1e293b; padding:25px; border-radius:15px; border: 1px solid #334155; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
     h2 { color: #58a6ff; text-align: center; margin-top:0; }
@@ -15,52 +16,25 @@
     .timer-bar { background:#e74c3c; padding:12px; border-radius:8px; text-align:center; font-weight:bold; margin-bottom:15px; font-size:1.1em;}
     .option-label { display:block; padding:16px; margin:10px 0; background:#334155; border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;}
     .option-label:hover { border-color:#58a6ff; background:#24334d;}
+    input[type="radio"] { margin-right: 10px; transform: scale(1.2); cursor: pointer; }
     .q-box { padding:12px 0; text-align:center; border-radius:6px; cursor:pointer; font-weight:bold; background:#475569; font-size:14px;}
     .q-box.answered { background:#27ae60;}
     .q-box.flagged { background:#e67e22; border:2px solid white;}
     .review-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap:8px; margin-top:20px;}
-    #lightbox { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.95); z-index:9999; flex-direction:column; align-items:center; justify-content:center; }
-    #lecture-ui, #exam-ui, #review-ui, #result-ui, #auth-ui { display:none; }
-    .slide-title { font-size: 24px; font-weight: bold; color: #58a6ff; margin-bottom: 10px; line-height: 1.2; }
-    .slide-subtitle { font-size: 14px; color: #7d8590; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
-    .alert-box { padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #333; font-size: 15px; line-height: 1.5; }
-    .alert-yellow { background: #2b2008; color: #ffa657; border-color: #6e4c0a; }
-    .alert-red { background: #2d1215; color: #f78166; border-color: #6e2128; }
-    .alert-green { background: #0d2a1a; color: #7ee787; border-color: #1a4426; }
-    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-    .stat-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; justify-content:center;}
-    .stat-pill { background: #21262d; border: 1px solid #30363d; border-radius: 8px; padding: 10px 15px; text-align: center; }
-    .stat-pill .sv { font-size: 20px; font-weight: 700; }
-    .stat-pill .sl { font-size: 11px; color: #7d8590; margin-top: 2px; text-transform: uppercase;}
-    .burn-zone { width:120px; height:120px; background:#1e293b; border-radius:50%; margin:10px auto; display:flex; align-items:center; justify-content:center; transition:0.4s; cursor:pointer; border: 4px solid #334155; font-weight: bold; font-size: 16px; }
-    .diag-card { background:#21262d; border:1px solid #30363d; padding:12px; border-radius:10px; margin:8px 0; cursor:pointer; text-align: left; transition: 0.2s; font-size: 15px; color: white; line-height: 1.4;}
-    .img-btn { width: 100%; border-radius: 8px; border: 2px solid #1a3a5c; cursor: pointer; transition: 0.3s; margin-top: 10px; object-fit: cover; background: #000;}
-    .text-block { background:#1e293b; padding:12px; border-radius:8px; margin-bottom:10px; font-size: 14px; line-height: 1.5; color: #c9d1d9;}
-    .sort-item { background: #30363d; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; cursor: pointer; margin-bottom: 5px; border: 1px solid #555; transition: 0.2s;}
-    .sort-zone { min-height: 80px; border: 2px dashed #555; border-radius: 8px; padding: 10px; margin-top: 10px; text-align: center; }
-    @keyframes neonPulse { 0% { box-shadow: 0 0 5px #7ee787; border-color: #7ee787; color: #e6edf3; } 100% { box-shadow: 0 0 20px #00ff88; border-color: #00ff88; color: #00ff88; } }
-    .diagnostic-glow { animation: neonPulse 1.5s infinite alternate; padding:10px; border-radius:8px; border: 1px solid; margin: 10px 0; font-weight: bold; background: #0d2a1a;}
+    #exam-ui, #review-ui, #result-ui, #auth-ui { display:none; }
   </style>
 </head>
 <body>
 
-<div id="lightbox">
-    <button onclick="document.getElementById('lightbox').style.display='none'" style="position:absolute; top:20px; right:20px; background:#f78166; color:white; border:none; padding:10px 20px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; z-index:10001;">❌ CLOSE</button>
-    <div style="position:relative; display:inline-block; max-width:100%; max-height:75vh;">
-        <img id="lb-img" style="max-width:100%; max-height:75vh; border-radius:8px; border:3px solid #58a6ff; object-fit:contain; cursor:crosshair;">
-    </div>
-    <div id="lb-text" style="color:white; font-size:16px; text-align:center; margin-top:20px; max-width:800px; line-height:1.5; background:#1e293b; padding:15px; border-radius:8px; border-left:4px solid #58a6ff;"></div>
-</div>
-
 <div id="app" class="container">
     <div id="auth-ui">
-        <h2>DSMCH Forensic Portal</h2>
+        <h2>DSMCH Formative Assessment</h2>
         <div id="status-tag" style="text-align:center; padding:5px; border-radius:4px; font-size:12px; margin-bottom:15px; background:#334155;">Connecting...</div>
         
         <div id="student-form" style="display:none;">
             <input type="number" id="roll-in" placeholder="Roll Number (1-250)">
             <input type="text" id="name-in" placeholder="Full Name (Exactly as records)">
-            <button class="btn" onclick="tryStudentLogin()">Enter Class/Exam</button>
+            <button class="btn" onclick="tryStudentLogin()">Enter Examination</button>
         </div>
 
         <div id="faculty-form" style="display:none;">
@@ -68,10 +42,11 @@
             <input type="password" id="fac-pass" placeholder="Faculty Test Password">
             <button class="btn" style="background:#8e44ad;" onclick="tryFacultyLogin()">Start Faculty Test</button>
         </div>
-    </div>
 
-    <div id="lecture-ui">
-        <div id="slide-display"></div>
+        <div id="waiting-msg" style="display:none; text-align:center; margin-top:20px; color:#a3b1c6;">
+            <p>The exam has not been started by the faculty yet.</p>
+            <p>Please wait for the signal.</p>
+        </div>
     </div>
 
     <div id="exam-ui">
@@ -80,7 +55,9 @@
         <div id="q-content" style="font-size:1.2em; margin-bottom:20px; line-height:1.4;"></div>
         <div id="opt-container"></div>
         <div style="display:flex; justify-content:space-between; margin-top:25px;">
-            <label style="color:#e67e22; cursor:pointer;"><input type="checkbox" id="f-check"> Mark for Review</label>
+            <label style="color:#e67e22; cursor:pointer; font-weight:bold; display:flex; align-items:center;">
+                <input type="checkbox" id="f-check" style="transform: scale(1.5); margin-right: 10px;"> Mark for Review
+            </label>
             <button onclick="saveAndNext()" style="background:#58a6ff; color:white; border:none; padding:10px 25px; border-radius:6px; font-weight:bold; cursor:pointer;">Next Question</button>
         </div>
     </div>
@@ -88,6 +65,11 @@
     <div id="review-ui">
         <h2>Review Period</h2>
         <div class="timer-bar" id="r-clock" style="background:#8e44ad;">Grace Period: 05:00</div>
+        <div style="display:flex; justify-content:center; gap:15px; margin-bottom: 15px; font-size: 0.9em; flex-wrap:wrap;">
+            <div><span style="background:#27ae60; padding:2px 10px; color:white; border-radius:3px;">Green</span> Answered</div>
+            <div><span style="background:#475569; padding:2px 10px; color:white; border-radius:3px;">Gray</span> Unanswered</div>
+            <div><span style="border: 2px solid white; background:#e67e22; padding:2px 10px; color:white; border-radius:3px;">Orange</span> Flagged</div>
+        </div>
         <div id="grid-wrap" class="review-grid"></div>
         <button class="btn" style="background:#27ae60; margin-top:30px;" onclick="finalSubmission()">Submit My Answers</button>
     </div>
@@ -100,6 +82,14 @@
 </div>
 
 <script>
+  // Security measures
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('copy', event => {
+      event.clipboardData.setData('text/plain', 'Copying is disabled for academic integrity.');
+      event.preventDefault();
+  });
+
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
     authDomain: "forensic-class-app.firebaseapp.com",
@@ -111,363 +101,331 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
+  // Student Database
   const students2023 = {
-    "1": "DHARSHANTH T S",
-    "2": "MADHINI MADHURAANTHAGI S",
-    "3": "NITHYA M",
-    "4": "SANJAYAN R",
-    "5": "SHEREYA V",
-    "6": "THILESH HARRINI S",
-    "7": "YAZHINI S",
-    "8": "AADHARSHINI C",
-    "9": "AASHI S",
-    "10": "ABILESH N T",
-    "11": "ABIRAMI S M",
-    "12": "ABIRAMI S",
-    "13": "ABISHEK ARJUNAN",
-    "14": "ABISHEKA BHARATHI K J",
-    "15": "ADHARSH S",
-    "16": "AFDEEN SULTHAN M",
-    "17": "AGALYAA MARIKANNAN",
-    "18": "AGNES ABISHEKHA ANANDAN",
-    "19": "AISHWARYA JAYASANKAR",
-    "20": "AJEETH K A",
-    "21": "AKASH A",
-    "22": "AKASH G",
-    "23": "AKILARASAN N",
-    "24": "AKSAI A M",
-    "25": "AKSHAYA B",
-    "26": "ALISHA SABEER",
-    "27": "AMNA BAI",
-    "28": "AMRITHAA B S",
-    "29": "ANANDA SUDHAN K L",
-    "30": "ARSHAD DARWESH A",
-    "31": "ARUN PRASATH C",
-    "32": "ARUNA D",
-    "33": "ASLINAV D SAHAAY",
-    "34": "ASWIN KUMAR K",
-    "35": "ATCHAYA AHI S A",
-    "36": "AVANEESH H",
-    "37": "AVANTHIKA P",
-    "38": "AVINASSVISWA M",
-    "39": "BALANANDAN B",
-    "40": "BHARATHI R R",
-    "41": "BHAVATARINI AK",
-    "42": "BHUVANESH S M",
-    "43": "BRINDHA DEVI S",
-    "44": "CHANDRU P",
-    "45": "CHARAN M",
-    "46": "CYRIL ABRAHAM",
-    "47": "DEEPAK S",
-    "48": "DEEPIKA C S",
-    "49": "DEVI SREE V",
-    "50": "DEVRAJ V",
-    "51": "DHANASHSRI S",
-    "52": "DHANVEER A S",
-    "53": "DHARANI R",
-    "54": "DHARSAN K J",
-    "55": "DHARSHINIPRIYA R",
-    "56": "DHARUNIKA A",
-    "57": "DHILLESH A",
-    "58": "DHIVYA SHRI B A",
-    "59": "DHIVYABHASHINI S",
-    "60": "DITCHITHAMATHI R",
-    "61": "DIYA E",
-    "62": "GOKUL R",
-    "63": "GOKULESHWAR K",
-    "64": "GOWTHAM S A",
-    "65": "GUNAVATHI M",
-    "66": "GURU ELAKKIYA SACHIDANANDAM",
-    "67": "GURUCHANDRU M",
-    "68": "HANIN F",
-    "69": "HARI ADHARSAN N",
-    "70": "HARI KRISHANTH R",
-    "71": "HARI PRAKASH C S",
-    "72": "HARINI DINESH BABU",
-    "73": "HARINIPPRIYA N",
-    "74": "HARISH S M",
-    "75": "HARISH KUMAR K L",
-    "76": "HARSHA SHYAM",
-    "77": "HASEEN SHAJINA A",
-    "78": "HEMA MUTHU PRABHA P N",
-    "79": "HOMA SRI R N",
-    "80": "ILLAKIYA PRIYA K P",
-    "81": "INBABHUSHAN G R",
-    "82": "INDHUJA P",
-    "83": "INIYA G",
-    "84": "ISWARYAVALLI P",
-    "85": "JAGADEESHWARAN K",
-    "86": "JAISHRINIDHI K T",
-    "87": "JAYA THARANI M",
-    "88": "JAYAKRISHNA A",
-    "89": "JESSICA JOSEPHINE A",
-    "90": "KAARTHIKA SHRI S",
-    "91": "KAILESHWARAN K K",
-    "92": "KAMALIKA P",
-    "93": "KAMESH P",
-    "94": "KANIKA V",
-    "95": "KANTHIMATHI S",
-    "96": "KAVIN NARAYANAN T",
-    "97": "KAVIYA R",
-    "98": "KAVIYA R T J",
-    "99": "KAVYA M",
-    "100": "KEERTHANA M",
-    "101": "KEERTHIKA GANESAN",
-    "102": "KHIRTHAN B",
-    "103": "KIRAN SAJ",
-    "104": "KIRUTHIKA K",
-    "105": "KOWSHIKA S",
-    "106": "KRISHIK M",
-    "107": "KRITHICKRAMAN T",
-    "108": "LAKSHMI PRABHA S",
-    "109": "LAKSHMIKANTH S S",
-    "110": "LALITH GURUPRAKASH J",
-    "111": "LEXMIDHARAN S S",
-    "112": "LOGAKAVIN E",
-    "113": "LOKAJITH V",
-    "114": "MADHANRAJ R",
-    "115": "MADHAV V NAIR",
-    "116": "MADHUMITHA B",
-    "117": "MADHUMITHA M",
-    "118": "MADHUMITHA V",
-    "119": "MADHUMITHA JEYASRI S",
-    "120": "MAHESHWARI M",
-    "121": "MANISHA R",
-    "122": "MANISSHA M",
-    "123": "MARY SANIA R",
-    "124": "MOHAMED AKSHAN M",
-    "125": "MOHAMED VASEM M",
-    "126": "MOHANA HARI M",
-    "127": "MONIKA R",
-    "128": "MOUNISHAA P",
-    "129": "MRIETHULA R",
-    "130": "MUHAMMED ZAID ABDUL WAHAB",
-    "131": "MUTHUPRIYA M",
-    "132": "NAMBI VARTHARAJAN J",
-    "133": "NAVANITH R",
-    "134": "NIHITHA S K",
-    "135": "NISHANTH D",
-    "136": "NITHEESH R V",
-    "137": "NITHISH PRANAV T",
-    "138": "NITHYA V V",
-    "139": "PARTHASARATHI S",
-    "140": "PATHMAVATHI B",
-    "141": "PAVAN R",
-    "142": "PIRANAV KASINATHAN B",
-    "143": "POOJA M",
-    "144": "PRADIBA N",
-    "145": "PRAGATHEESWARI SARAVANAN",
-    "146": "PRAGATHESH V S",
-    "147": "PRAKATI M",
-    "148": "PRAMOTH AARYA M",
-    "149": "PRANAV R V",
-    "150": "PRANAV MUKESH G",
-    "151": "PRATHISTHA R",
-    "152": "PRAVEEN A",
-    "153": "PRAVEEN S",
-    "154": "PREETHIVI R",
-    "155": "PREMNATHAN J",
-    "156": "PRIYADHARSHINI E",
-    "157": "PRIYAVARSHINI K",
-    "158": "PUSHPA ABINAYA T",
-    "159": "RABIN BABU S",
-    "160": "RAGAVI D",
-    "161": "RAGHINYA S R",
-    "162": "RAJ SHREE J",
-    "163": "RAJALAKSHMI V",
-    "164": "RAKSHIKA MOHANARANGAN",
-    "165": "RAMANA KAAVYA T",
-    "166": "REVANTH P",
-    "167": "REYGANTHAN K",
-    "168": "RIDUMIKA G",
-    "169": "RISHI S",
-    "170": "RITHISH P",
-    "171": "ROHINI D",
-    "172": "ROHITH S",
-    "173": "ROHINI SILVIA FERNANDO",
-    "174": "RUBESHVAR J",
-    "175": "RUPIKA G",
-    "176": "SAHANA SARASWATHI S",
-    "177": "SAHITYA R",
-    "178": "SAKTHI PRADEEPA S",
-    "179": "SAKTHIVISHAL M",
-    "180": "SAMARJIT M R",
-    "181": "SAMEER BABU M",
-    "182": "SANCHANA R",
-    "183": "SANDRA MARY BLOSSOM S",
-    "184": "SANJAI PRASANNAA S",
-    "185": "SANJAY VISWANATHAN",
-    "186": "SANJIT G",
-    "187": "SANTHOSH RAJ T",
-    "188": "SANTHOSHI U J",
-    "189": "SARA BARVEEN A",
-    "190": "SASTHA J V",
-    "191": "SATVI SRI S",
-    "192": "SELLA PREETHI SRI S",
-    "193": "SELVAM EVELIN",
-    "194": "SHAARAV N",
-    "195": "SHAMBHAVI R",
-    "196": "SHANKAR K",
-    "197": "SHANMUGA SRI VARSHINI M",
-    "198": "SHARMILA S",
-    "199": "SHARVINI R R",
-    "200": "SHIFA ZARIN M",
-    "201": "SHIFANA M",
-    "202": "SHIVANI S",
-    "203": "SHOBIKATHARUNI G",
-    "204": "SHREE RAM R",
-    "205": "SHREYA D K",
-    "206": "SHRIKARTHICK A",
-    "207": "SHUBHIKSHA RAAJ S",
-    "208": "SINDHUJA H",
-    "209": "SREE NITHI VL",
-    "210": "SREE VAIHUNDH K",
-    "211": "SRI AKSHYA R V",
-    "212": "SRIGA T",
-    "213": "SRIHARINI K",
-    "214": "SRINITHI P",
-    "215": "SRINIVASAN R",
-    "216": "SRIVATS S",
-    "217": "SUBASHREE E P",
-    "218": "SUBHA SHREE D",
-    "219": "SUBHASHINI R B",
-    "220": "SUJITHA SHREE M",
-    "221": "SUNDARESWARAN B",
-    "222": "SUSHMA K",
-    "223": "SWARNA S",
-    "224": "SWEDHASSHREE T",
-    "225": "SWETHA M",
-    "226": "SWETHA RAM P",
-    "227": "SWETHA SUDHARSAN",
-    "228": "THAMIZHINIAN T",
-    "229": "THARUN N",
-    "230": "THARUNIKA S",
-    "231": "THEEKSHITHA MARY E",
-    "232": "THOONGA DEVAN K",
-    "233": "THRISHA P",
-    "234": "TRINETHRA N",
-    "235": "VAISHNAVE D M",
-    "236": "VARSHA C",
-    "237": "VARSHA S G",
-    "238": "VARSHIKA S",
-    "239": "VARSHITHA T",
-    "240": "VEDAVARSHINI K",
-    "241": "VIGNESH BALA M R",
-    "242": "VIGNESH KUMAR K",
-    "243": "VIJI A",
-    "244": "VISHWA JEEVA J",
-    "245": "VISVA K",
-    "246": "VISVA HARSINI K G",
-    "247": "VITHUN VELAN B",
-    "248": "YASEEN AHAMED J M",
-    "249": "YAZHINI A",
-    "250": "YOUVASHREE E",
+    "1": "DHARSHANTH T S", "2": "MADHINI MADHURAANTHAGI S", "3": "NITHYA M", "4": "SANJAYAN R", "5": "SHEREYA V", "6": "THILESH HARRINI S", "7": "YAZHINI S", "8": "AADHARSHINI C", "9": "AASHI S", "10": "ABILESH N T",
+    "11": "ABIRAMI S M", "12": "ABIRAMI S", "13": "ABISHEK ARJUNAN", "14": "ABISHEKA BHARATHI K J", "15": "ADHARSH S", "16": "AFDEEN SULTHAN M", "17": "AGALYAA MARIKANNAN", "18": "AGNES ABISHEKHA ANANDAN", "19": "AISHWARYA JAYASANKAR", "20": "AJEETH K A",
+    "21": "AKASH A", "22": "AKASH G", "23": "AKILARASAN N", "24": "AKSAI A M", "25": "AKSHAYA B", "26": "ALISHA SABEER", "27": "AMNA BAI", "28": "AMRITHAA B S", "29": "ANANDA SUDHAN K L", "30": "ARSHAD DARWESH A",
+    "31": "ARUN PRASATH C", "32": "ARUNA D", "33": "ASLINAV D SAHAAY", "34": "ASWIN KUMAR K", "35": "ATCHAYA AHI S A", "36": "AVANEESH H", "37": "AVANTHIKA P", "38": "AVINASSVISWA M", "39": "BALANANDAN B", "40": "BHARATHI R R",
+    "41": "BHAVATARINI AK", "42": "BHUVANESH S M", "43": "BRINDHA DEVI S", "44": "CHANDRU P", "45": "CHARAN M", "46": "CYRIL ABRAHAM", "47": "DEEPAK S", "48": "DEEPIKA C S", "49": "DEVI SREE V", "50": "DEVRAJ V",
+    "51": "DHANASHSRI S", "52": "DHANVEER A S", "53": "DHARANI R", "54": "DHARSAN K J", "55": "DHARSHINIPRIYA R", "56": "DHARUNIKA A", "57": "DHILLESH A", "58": "DHIVYA SHRI B A", "59": "DHIVYABHASHINI S", "60": "DITCHITHAMATHI R",
+    "61": "DIYA E", "62": "GOKUL R", "63": "GOKULESHWAR K", "64": "GOWTHAM S A", "65": "GUNAVATHI M", "66": "GURU ELAKKIYA SACHIDANANDAM", "67": "GURUCHANDRU M", "68": "HANIN F", "69": "HARI ADHARSAN N", "70": "HARI KRISHANTH R",
+    "71": "HARI PRAKASH C S", "72": "HARINI DINESH BABU", "73": "HARINIPPRIYA N", "74": "HARISH S M", "75": "HARISH KUMAR K L", "76": "HARSHA SHYAM", "77": "HASEEN SHAJINA A", "78": "HEMA MUTHU PRABHA P N", "79": "HOMA SRI R N", "80": "ILLAKIYA PRIYA K P",
+    "81": "INBABHUSHAN G R", "82": "INDHUJA P", "83": "INIYA G", "84": "ISWARYAVALLI P", "85": "JAGADEESHWARAN K", "86": "JAISHRINIDHI K T", "87": "JAYA THARANI M", "88": "JAYAKRISHNA A", "89": "JESSICA JOSEPHINE A", "90": "KAARTHIKA SHRI S",
+    "91": "KAILESHWARAN K K", "92": "KAMALIKA P", "93": "KAMESH P", "94": "KANIKA V", "95": "KANTHIMATHI S", "96": "KAVIN NARAYANAN T", "97": "KAVIYA R", "98": "KAVIYA R T J", "99": "KAVYA M", "100": "KEERTHANA M",
+    "101": "KEERTHIKA GANESAN", "102": "KHIRTHAN B", "103": "KIRAN SAJ", "104": "KIRUTHIKA K", "105": "KOWSHIKA S", "106": "KRISHIK M", "107": "KRITHICKRAMAN T", "108": "LAKSHMI PRABHA S", "109": "LAKSHMIKANTH S S", "110": "LALITH GURUPRAKASH J",
+    "111": "LEXMIDHARAN S S", "112": "LOGAKAVIN E", "113": "LOKAJITH V", "114": "MADHANRAJ R", "115": "MADHAV V NAIR", "116": "MADHUMITHA B", "117": "MADHUMITHA M", "118": "MADHUMITHA V", "119": "MADHUMITHA JEYASRI S", "120": "MAHESHWARI M",
+    "121": "MANISHA R", "122": "MANISSHA M", "123": "MARY SANIA R", "124": "MOHAMED AKSHAN M", "125": "MOHAMED VASEM M", "126": "MOHANA HARI M", "127": "MONIKA R", "128": "MOUNISHAA P", "129": "MRIETHULA R", "130": "MUHAMMED ZAID ABDUL WAHAB",
+    "131": "MUTHUPRIYA M", "132": "NAMBI VARTHARAJAN J", "133": "NAVANITH R", "134": "NIHITHA S K", "135": "NISHANTH D", "136": "NITHEESH R V", "137": "NITHISH PRANAV T", "138": "NITHYA V V", "139": "PARTHASARATHI S", "140": "PATHMAVATHI B",
+    "141": "PAVAN R", "142": "PIRANAV KASINATHAN B", "143": "POOJA M", "144": "PRADIBA N", "145": "PRAGATHEESWARI SARAVANAN", "146": "PRAGATHESH V S", "147": "PRAKATI M", "148": "PRAMOTH AARYA M", "149": "PRANAV R V", "150": "PRANAV MUKESH G",
+    "151": "PRATHISTHA R", "152": "PRAVEEN A", "153": "PRAVEEN S", "154": "PREETHIVI R", "155": "PREMNATHAN J", "156": "PRIYADHARSHINI E", "157": "PRIYAVARSHINI K", "158": "PUSHPA ABINAYA T", "159": "RABIN BABU S", "160": "RAGAVI D",
+    "161": "RAGHINYA S R", "162": "RAJ SHREE J", "163": "RAJALAKSHMI V", "164": "RAKSHIKA MOHANARANGAN", "165": "RAMANA KAAVYA T", "166": "REVANTH P", "167": "REYGANTHAN K", "168": "RIDUMIKA G", "169": "RISHI S", "170": "RITHISH P",
+    "171": "ROHINI D", "172": "ROHITH S", "173": "ROHINI SILVIA FERNANDO", "174": "RUBESHVAR J", "175": "RUPIKA G", "176": "SAHANA SARASWATHI S", "177": "SAHITYA R", "178": "SAKTHI PRADEEPA S", "179": "SAKTHIVISHAL M", "180": "SAMARJIT M R",
+    "181": "SAMEER BABU M", "182": "SANCHANA R", "183": "SANDRA MARY BLOSSOM S", "184": "SANJAI PRASANNAA S", "185": "SANJAY VISWANATHAN", "186": "SANJIT G", "187": "SANTHOSH RAJ T", "188": "SANTHOSHI U J", "189": "SARA BARVEEN A", "190": "SASTHA J V",
+    "191": "SATVI SRI S", "192": "SELLA PREETHI SRI S", "193": "SELVAM EVELIN", "194": "SHAARAV N", "195": "SHAMBHAVI R", "196": "SHANKAR K", "197": "SHANMUGA SRI VARSHINI M", "198": "SHARMILA S", "199": "SHARVINI R R", "200": "SHIFA ZARIN M",
+    "201": "SHIFANA M", "202": "SHIVANI S", "203": "SHOBIKATHARUNI G", "204": "SHREE RAM R", "205": "SHREYA D K", "206": "SHRIKARTHICK A", "207": "SHUBHIKSHA RAAJ S", "208": "SINDHUJA H", "209": "SREE NITHI VL", "210": "SREE VAIHUNDH K",
+    "211": "SRI AKSHYA R V", "212": "SRIGA T", "213": "SRIHARINI K", "214": "SRINITHI P", "215": "SRINIVASAN R", "216": "SRIVATS S", "217": "SUBASHREE E P", "218": "SUBHA SHREE D", "219": "SUBHASHINI R B", "220": "SUJITHA SHREE M",
+    "221": "SUNDARESWARAN B", "222": "SUSHMA K", "223": "SWARNA S", "224": "SWEDHASSHREE T", "225": "SWETHA M", "226": "SWETHA RAM P", "227": "SWETHA SUDHARSAN", "228": "THAMIZHINIAN T", "229": "THARUN N", "230": "THARUNIKA S",
+    "231": "THEEKSHITHA MARY E", "232": "THOONGA DEVAN K", "233": "THRISHA P", "234": "TRINETHRA N", "235": "VAISHNAVE D M", "236": "VARSHA C", "237": "VARSHA S G", "238": "VARSHIKA S", "239": "VARSHITHA T", "240": "VEDAVARSHINI K",
+    "241": "VIGNESH BALA M R", "242": "VIGNESH KUMAR K", "243": "VIJI A", "244": "VISHWA JEEVA J", "245": "VISVA K", "246": "VISVA HARSINI K G", "247": "VITHUN VELAN B", "248": "YASEEN AHAMED J M", "249": "YAZHINI A", "250": "YOUVASHREE E",
     "251": "YUVASHREE S",
   };
 
+  // Corrected Master Database
   const quizMaster = [
-    { q: "1. Paltauf's haemorrhages are seen in", o: ["Hanging", "Strangulation", "Drowning", "All of the above"], c: 0 },
-    { q: "2. Pugilistic attitude in burns indicates", o: ["Antemortem burns", "Post-mortem burns", "Cannot differentiate antemortem or post-mortem", "Defence by victim"], c: 0 },
-    { q: "3. Section 12 of the POCSO Act 2012 deals with", o: ["Punishment for sexual assault", "Sexual harassment", "Penetrative sexual assault", "Abetment of an offence"], c: 0 },
-    { q: "4. In suspected air embolism, the body cavity to be opened first", o: ["Brain / Cranium", "Thorax", "Abdomen", "Pelvis"], c: 0 },
-    { q: "5. Battle's sign is", o: ["Haemorrhage around eye", "Mastoid ecchymosis", "Umbilical ecchymosis", "Vaginal ecchymosis"], c: 0 },
+    { q: "1. Paltauf's haemorrhages are seen in", o: ["Hanging", "Strangulation", "Drowning", "All of the above"], c: 2 },
+    { q: "2. Pugilistic attitude in burns indicates", o: ["Antemortem burns", "Post-mortem burns", "Cannot differentiate antemortem or post-mortem", "Defence by victim"], c: 1 },
+    { q: "3. Section 12 of the POCSO Act 2012 deals with", o: ["Punishment for sexual assault", "Sexual harassment", "Penetrative sexual assault", "Abetment of an offence"], c: 1 },
+    { q: "4. In suspected air embolism, the body cavity to be opened first", o: ["Brain / Cranium", "Thorax", "Abdomen", "Pelvis"], c: 1 },
+    { q: "5. Battle's sign is", o: ["Haemorrhage around eye", "Mastoid ecchymosis", "Umbilical ecchymosis", "Vaginal ecchymosis"], c: 1 },
     { q: "6. All of the following are chemical tests for seminal stains EXCEPT", o: ["Takayama", "Barberio", "Florence", "Acid Phosphatase"], c: 0 },
-    { q: "7. Xenophobia is fear of", o: ["Animals", "Insects", "Frogs", "Strangers"], c: 0 },
-    { q: "8. Joule burn is seen in", o: ["Blast injuries", "Electrocution", "Firearm wounds", "Lightning stroke"], c: 0 },
-    { q: "9. Miners cramps result from", o: ["Drowning", "Heat exposure", "Low altitude", "Frost bite"], c: 0 },
-    { q: "10. Spalding sign is seen in", o: ["Still born", "Dead born", "Live born", "Intrauterine growth retardation"], c: 0 },
-    { q: "11. When did the POCSO Act 2012 come into force", o: ["14th April 2012", "1st March 2012", "1st May 2012", "14th November 2012"], c: 0 },
-    { q: "12. Non-Traumatic ICH is most common at", o: ["Pons", "Basal ganglia", "Cerebellum", "White matter of brain"], c: 0 },
-    { q: "13. Haemoglobinuria occurs when burnt skin surface exceeds", o: ["20%", "35%", "50%", "70%"], c: 0 },
+    { q: "7. Xenophobia is fear of", o: ["Animals", "Insects", "Frogs", "Strangers"], c: 3 },
+    { q: "8. Joule burn is seen in", o: ["Blast injuries", "Electrocution", "Firearm wounds", "Lightning stroke"], c: 1 },
+    { q: "9. Miners cramps result from", o: ["Drowning", "Heat exposure", "Low altitude", "Frost bite"], c: 1 },
+    { q: "10. Spalding sign is seen in", o: ["Still born", "Dead born", "Live born", "Intrauterine growth retardation"], c: 1 },
+    { q: "11. When did the POCSO Act 2012 come into force", o: ["14th April 2012", "1st March 2012", "1st May 2012", "14th November 2012"], c: 3 },
+    { q: "12. Non-Traumatic ICH is most common at", o: ["Pons", "Basal ganglia", "Cerebellum", "White matter of brain"], c: 1 },
+    { q: "13. Haemoglobinuria occurs when burnt skin surface exceeds", o: ["20%", "35%", "50%", "70%"], c: 1 },
     { q: "14. Softening of uterine isthmus and lower uterine segment in early pregnancy is known as", o: ["Hegar's sign", "Braxton Hick's sign", "Goodell's sign", "Oslander's sign"], c: 0 },
     { q: "15. Test used to identify human blood in stains", o: ["Precipitin test", "Benzidine test", "Haemin crystal test", "Any of the above"], c: 0 },
-    { q: "16. Molecular death is", o: ["Complete irreversible cessation of brain, heart and lung function", "Death of individual tissues and cells after somatic death", "Total loss of EEG activity but heart is functioning", "Vital functions at low pitch that cannot be detected clinically"], c: 0 },
-    { q: "17. The rule of Res Ipsa Loquitur is applied in the presence of", o: ["Doctor is exclusively responsible for injury", "Patient was not guilty of contributory negligence", "In the absence of doctor's negligence, the injury would not have occurred", "All the above"], c: 0 },
-    { q: "18. In death due to starvation, all the following are true EXCEPT", o: ["Fat is absent in mesentery and omentum", "Gall bladder is distended and full", "Liver atrophied", "Urinary bladder is full"], c: 0 },
+    { q: "16. Molecular death is", o: ["Complete irreversible cessation of brain, heart and lung function", "Death of individual tissues and cells after somatic death", "Total loss of EEG activity but heart is functioning", "Vital functions at low pitch that cannot be detected clinically"], c: 1 },
+    { q: "17. The rule of Res Ipsa Loquitur is applied in the presence of", o: ["Doctor is exclusively responsible for injury", "Patient was not guilty of contributory negligence", "In the absence of doctor's negligence, the injury would not have occurred", "All the above"], c: 2 },
+    { q: "18. In death due to starvation, all the following are true EXCEPT", o: ["Fat is absent in mesentery and omentum", "Gall bladder is distended and full", "Liver atrophied", "Urinary bladder is full"], c: 3 },
     { q: "19. Preauricular sulcus is used for", o: ["Determination of sex", "Determination of age", "Determination of race", "None of the above"], c: 0 },
-    { q: "20. Paradoxical undressing is seen in", o: ["Hyperthermia", "Hypothermia", "Transvestism", "Immersion syndrome"], c: 0 },
+    { q: "20. Paradoxical undressing is seen in", o: ["Hyperthermia", "Hypothermia", "Transvestism", "Immersion syndrome"], c: 1 },
     { q: "21. In Therapeutic Misadventure, the doctor's act is all EXCEPT", o: ["Intentional", "Unintentional", "Accidental", "Coincidental"], c: 0 },
     { q: "22. Most common cause of first trimester abortion is", o: ["Chromosomal defect", "Endocrine disturbance", "Anatomical abnormality of uterus", "Infections"], c: 0 },
-    { q: "23. Cases of criminal professional negligence cannot be tried by", o: ["Chief Judicial Magistrate", "First Class Judicial Magistrate", "District Collector", "Sessions Judge"], c: 0 },
-    { q: "24. Hesitation cuts are seen in cases of", o: ["Homicide", "Suicide", "Accident", "Fall from height"], c: 0 },
-    { q: "25. Foetal sex can be determined from external genitalia at the end of", o: ["Second month", "Fourth month", "Fifth month", "Sixth month"], c: 0 },
-    { q: "26. Dowry death is included in which section of Indian Penal Code", o: ["304 A", "304 B", "320", "498 A"], c: 0 },
-    { q: "27. The following is a court of trial", o: ["Supreme Court", "High Court", "Sessions Court", "Coroner's Court"], c: 0 },
-    { q: "28. Emasculation is", o: ["Simple injury", "Grievous injury", "Fatal injury", "An accidental injury"], c: 0 },
-    { q: "29. Bansdola is a form of asphyxia using", o: ["Ligature", "Metal collar", "Wooden stick", "Bend of elbow"], c: 0 },
+    { q: "23. Cases of criminal professional negligence cannot be tried by", o: ["Chief Judicial Magistrate", "First Class Judicial Magistrate", "District Collector", "Sessions Judge"], c: 2 },
+    { q: "24. Hesitation cuts are seen in cases of", o: ["Homicide", "Suicide", "Accident", "Fall from height"], c: 1 },
+    { q: "25. Foetal sex can be determined from external genitalia at the end of", o: ["Second month", "Fourth month", "Fifth month", "Sixth month"], c: 1 },
+    { q: "26. Dowry death is included in which section of Indian Penal Code", o: ["304 A", "304 B", "320", "498 A"], c: 1 },
+    { q: "27. The following is a court of trial", o: ["Supreme Court", "High Court", "Sessions Court", "Coroner's Court"], c: 2 },
+    { q: "28. Emasculation is", o: ["Simple injury", "Grievous injury", "Fatal injury", "An accidental injury"], c: 1 },
+    { q: "29. Bansdola is a form of asphyxia using", o: ["Ligature", "Metal collar", "Wooden stick", "Bend of elbow"], c: 2 },
     { q: "30. Caput succedaneum is a sign of", o: ["Live birth", "Still birth", "Dead birth", "Intrauterine death"], c: 0 },
-    { q: "31. Hegar's sign is", o: ["Presumptive sign of pregnancy", "Positive sign of pregnancy", "Probable sign of pregnancy", "None of the above"], c: 0 },
-    { q: "32. Time limit for exhumation of a body in India", o: ["1 year", "10 years", "20 years", "No limit"], c: 0 },
-    { q: "33. Magnan's symptom is", o: ["Visual hallucination seen in schizophrenia", "Tactile hallucination seen in chronic cocaine poisoning", "Olfactory hallucination seen in epilepsy", "None of the above"], c: 0 },
-    { q: "34. Death in cafe coronary syndrome is due to", o: ["Smothering", "Choking", "Gagging", "Mugging"], c: 0 },
-    { q: "35. Duty of Doctor while magistrate is recording a dying declaration", o: ["To assist the Magistrate", "To certify compos mentis", "To sign as witness", "To give evidence in court"], c: 0 },
-    { q: "36. In dry drowning, death is due to", o: ["Water logging of lungs", "Spasm of larynx", "Respiratory arrest", "Ventricular fibrillation"], c: 0 },
-    { q: "37. True hermaphroditism is when", o: ["Testes or ovaries are absent", "Both testes and ovaries are present in one individual", "External genitalia of one sex and internally of opposite sex", "External sexual characters, testes and ovaries are abnormal"], c: 0 },
-    { q: "38. A male is sterile", o: ["After 70 years", "After 80 years", "Before puberty", "After 35 years"], c: 0 },
+    { q: "31. Hegar's sign is", o: ["Presumptive sign of pregnancy", "Positive sign of pregnancy", "Probable sign of pregnancy", "None of the above"], c: 2 },
+    { q: "32. Time limit for exhumation of a body in India", o: ["1 year", "10 years", "20 years", "No limit"], c: 3 },
+    { q: "33. Magnan's symptom is", o: ["Visual hallucination seen in schizophrenia", "Tactile hallucination seen in chronic cocaine poisoning", "Olfactory hallucination seen in epilepsy", "None of the above"], c: 1 },
+    { q: "34. Death in cafe coronary syndrome is due to", o: ["Smothering", "Choking", "Gagging", "Mugging"], c: 1 },
+    { q: "35. Duty of Doctor while magistrate is recording a dying declaration", o: ["To assist the Magistrate", "To certify compos mentis", "To sign as witness", "To give evidence in court"], c: 1 },
+    { q: "36. In dry drowning, death is due to", o: ["Water logging of lungs", "Spasm of larynx", "Respiratory arrest", "Ventricular fibrillation"], c: 1 },
+    { q: "37. True hermaphroditism is when", o: ["Testes or ovaries are absent", "Both testes and ovaries are present in one individual", "External genitalia of one sex and internally of opposite sex", "External sexual characters, testes and ovaries are abnormal"], c: 1 },
+    { q: "38. A male is sterile", o: ["After 70 years", "After 80 years", "Before puberty", "After 35 years"], c: 2 },
     { q: "39. Death due to sudden splash of cold water over epigastrium is", o: ["Vasovagal shock", "Septic shock", "Hypovolaemic shock", "Endotoxic shock"], c: 0 },
-    { q: "40. Maximum number of milk teeth a child can have", o: ["16", "20", "24", "28"], c: 0 },
-    { q: "41. Professional death sentence is passed by", o: ["Central Government", "National Medical Commission", "Indian Medical Association", "State Medical Council"], c: 0 },
+    { q: "40. Maximum number of milk teeth a child can have", o: ["16", "20", "24", "28"], c: 1 },
+    { q: "41. Professional death sentence is passed by", o: ["Central Government", "National Medical Commission", "Indian Medical Association", "State Medical Council"], c: 3 },
     { q: "42. Cephalic Index is used for determination of", o: ["Race", "Age", "Sex", "Pelvic abnormality"], c: 0 },
-    { q: "43. Magistrate's inquest is conducted in India in", o: ["Death in prison", "Death in police custody", "Exhumation", "All of the above"], c: 0 },
+    { q: "43. Magistrate's inquest is conducted in India in", o: ["Death in prison", "Death in police custody", "Exhumation", "All of the above"], c: 3 },
     { q: "44. Which of the following is somatic death", o: ["Cadaveric spasm", "Rigor mortis", "Algor mortis", "Livor mortis"], c: 0 },
     { q: "45. The system most commonly involved in sudden death", o: ["Cardiovascular system", "Central Nervous system", "Hepatobiliary system", "Genitourinary system"], c: 0 },
-    { q: "46. Dermal nitrate test detects", o: ["Blood stains", "Gun powder residue", "Nitric salt poisoning", "Nerve gas poisoning"], c: 0 },
-    { q: "47. Counter coup lesions are sustained when the head is", o: ["Fixed", "Mobile", "Both fixed and mobile", "None of the above"], c: 0 },
+    { q: "46. Dermal nitrate test detects", o: ["Blood stains", "Gun powder residue", "Nitric salt poisoning", "Nerve gas poisoning"], c: 1 },
+    { q: "47. Counter coup lesions are sustained when the head is", o: ["Fixed", "Mobile", "Both fixed and mobile", "None of the above"], c: 1 },
     { q: "48. Feminine form of impotence is", o: ["Frigidity", "Sterility", "Flaccidity", "Passivity"], c: 0 },
-    { q: "49. Fertilization of a second ovum in a woman who is already pregnant", o: ["Fecundation", "Superfecundation", "Superfoetation", "None of the above"], c: 0 },
-    { q: "50. All are successional teeth EXCEPT", o: ["First upper premolar", "Second lower premolar", "First lower molar", "First upper canine"], c: 0 },
+    { q: "49. Fertilization of a second ovum in a woman who is already pregnant", o: ["Fecundation", "Superfecundation", "Superfoetation", "None of the above"], c: 2 },
+    { q: "50. All are successional teeth EXCEPT", o: ["First upper premolar", "Second lower premolar", "First lower molar", "First upper canine"], c: 2 },
     { q: "51. Drunken driver is punished under", o: ["Sec 185 of MVA", "Sec 135 of IPC", "Sec 195 of MVA", "Sec 84 of IPC"], c: 0 },
-    { q: "52. If a person is not heard for ___ years by relatives, he is presumed dead", o: ["3 years", "5 years", "7 years", "11 years"], c: 0 },
-    { q: "53. Sex chromatin is found in", o: ["Lymphocytes", "Leucocytes", "Monocytes", "All of the above"], c: 0 },
+    { q: "52. If a person is not heard for ___ years by relatives, he is presumed dead", o: ["3 years", "5 years", "7 years", "11 years"], c: 2 },
+    { q: "53. Sex chromatin is found in", o: ["Lymphocytes", "Leucocytes", "Monocytes", "All of the above"], c: 1 },
     { q: "54. Pond fractures are common in", o: ["Children", "Adolescents", "Adults", "Old age"], c: 0 },
-    { q: "55. Tripod of life means", o: ["Respiration, circulation and renal function", "Circulation, brain and hepatobiliary function", "Respiration, circulation and brain function", "Any of the above"], c: 0 },
+    { q: "55. Tripod of life means", o: ["Respiration, circulation and renal function", "Circulation, brain and hepatobiliary function", "Respiration, circulation and brain function", "Any of the above"], c: 2 },
     { q: "56. In starvation, last subcutaneous adipose tissue to disappear", o: ["Buccal fat", "Abdominal fat", "Fat around eyes", "Mesenteric fat"], c: 0 },
-    { q: "57. Medical termination of pregnancy can be done by one doctor if gestation is less than", o: ["8 weeks", "12 weeks", "20 weeks", "24 weeks"], c: 0 },
-    { q: "58. Hinge fracture is", o: ["Fracture of tibia and fibula", "Fracture of zygomatic arch", "Fracture of terminal phalanx", "Fracture of base of skull along petrous ridges and sella turcica"], c: 0 },
-    { q: "59. Shape of nulliparous cervix is", o: ["Conical", "Circular", "Longitudinal", "Cylindrical"], c: 0 },
-    { q: "60. Grievous injury includes all EXCEPT", o: ["Emasculation", "Loss of 15 day's work", "Permanent disfigurement", "Fracture of bone"], c: 0 },
-    { q: "61. Casper's Dictum for rate of decomposition in air : water : earth is", o: ["8:4:1", "1:2:4", "4:2:1", "1:2:8"], c: 0 },
-    { q: "62. Death sentence can be awarded by", o: ["1st Class Magistrate", "2nd Class Magistrate", "Chief Judicial Magistrate", "District Sessions Judge"], c: 0 },
-    { q: "63. Gunshot injury in skull – features include all EXCEPT", o: ["Entry wound is bevelled in the inner table", "Entrance wound is bevelled in the outer table", "Exit wound bevelled in the outer table", "Exit wound is clean cut in the inner table"], c: 0 },
-    { q: "64. Lynching is a form of", o: ["Suicidal hanging", "Homicidal hanging", "Judicial hanging", "Accidental hanging"], c: 0 },
-    { q: "65. Agonal period is the duration between", o: ["Traumatic event and information given to relatives", "Traumatic event and starting of the operation", "Lethal trauma up to death", "Death and post-mortem examination"], c: 0 },
-    { q: "66. Duret haemorrhages are seen in", o: ["Heart", "Brain", "Kidney", "Liver"], c: 0 },
-    { q: "67. Important sign of antemortem drowning is", o: ["Cutis anserine", "Frothy fluid in mouth and nostril", "Grass and weeds in hands", "Washerwoman's hands"], c: 0 },
-    { q: "68. Hostile witness is one who", o: ["Threatens the Judge", "Threatens the Lawyer", "Does not speak the truth or wilfully utters false", "Refuses to answer questions"], c: 0 },
-    { q: "69. Atavism is resemblance of features to", o: ["Mother", "Father", "Neighbour", "Grandfather"], c: 0 },
+    { q: "57. Medical termination of pregnancy can be done by one doctor if gestation is less than", o: ["8 weeks", "12 weeks", "20 weeks", "24 weeks"], c: 1 },
+    { q: "58. Hinge fracture is", o: ["Fracture of tibia and fibula", "Fracture of zygomatic arch", "Fracture of terminal phalanx", "Fracture of base of skull along petrous ridges and sella turcica"], c: 3 },
+    { q: "59. Shape of nulliparous cervix is", o: ["Conical", "Circular", "Longitudinal", "Cylindrical"], c: 1 },
+    { q: "60. Grievous injury includes all EXCEPT", o: ["Emasculation", "Loss of 15 day's work", "Permanent disfigurement", "Fracture of bone"], c: 1 },
+    { q: "61. Casper's Dictum for rate of decomposition in air : water : earth is", o: ["8:4:1", "1:2:4", "4:2:1", "1:2:8"], c: 3 },
+    { q: "62. Death sentence can be awarded by", o: ["1st Class Magistrate", "2nd Class Magistrate", "Chief Judicial Magistrate", "District Sessions Judge"], c: 3 },
+    { q: "63. Gunshot injury in skull – features include all EXCEPT", o: ["Entry wound is bevelled in the inner table", "Entrance wound is bevelled in the outer table", "Exit wound bevelled in the outer table", "Exit wound is clean cut in the inner table"], c: 1 },
+    { q: "64. Lynching is a form of", o: ["Suicidal hanging", "Homicidal hanging", "Judicial hanging", "Accidental hanging"], c: 1 },
+    { q: "65. Agonal period is the duration between", o: ["Traumatic event and information given to relatives", "Traumatic event and starting of the operation", "Lethal trauma up to death", "Death and post-mortem examination"], c: 2 },
+    { q: "66. Duret haemorrhages are seen in", o: ["Heart", "Brain", "Kidney", "Liver"], c: 1 },
+    { q: "67. Important sign of antemortem drowning is", o: ["Cutis anserine", "Frothy fluid in mouth and nostril", "Grass and weeds in hands", "Washerwoman's hands"], c: 1 },
+    { q: "68. Hostile witness is one who", o: ["Threatens the Judge", "Threatens the Lawyer", "Does not speak the truth or wilfully utters false", "Refuses to answer questions"], c: 2 },
+    { q: "69. Atavism is resemblance of features to", o: ["Mother", "Father", "Neighbour", "Grandfather"], c: 3 },
     { q: "70. Injury caused by hyperextension followed by hyperflexion", o: ["Whiplash injury", "Hangman's fracture", "Jefferson fracture", "Ring fracture"], c: 0 },
-    { q: "71. Underwater autopsy of heart is done in", o: ["Myocardial infarction", "Pulmonary embolism", "Air embolism", "Pneumothorax"], c: 0 },
+    { q: "71. Underwater autopsy of heart is done in", o: ["Myocardial infarction", "Pulmonary embolism", "Air embolism", "Pneumothorax"], c: 2 },
     { q: "72. In typical hanging, the knot is placed at", o: ["Occiput", "Chin", "Left side of mandible", "Right side of mandible"], c: 0 },
-    { q: "73. Fracture ala signature is", o: ["Gutter fracture", "Depressed fracture", "Ring fracture", "Sutural separation"], c: 0 },
-    { q: "74. Doctrine of common knowledge is a variant of", o: ["Respondent superior", "Mens rea", "Res Ipsa Loquitur", "Res Judicata"], c: 0 },
-    { q: "75. Which section of POCSO Act 2012 deals with punishment for penetrative sexual assault", o: ["Section 12", "Section 9", "Section 4", "Section 2"], c: 0 },
+    { q: "73. Fracture ala signature is", o: ["Gutter fracture", "Depressed fracture", "Ring fracture", "Sutural separation"], c: 1 },
+    { q: "74. Doctrine of common knowledge is a variant of", o: ["Respondent superior", "Mens rea", "Res Ipsa Loquitur", "Res Judicata"], c: 2 },
+    { q: "75. Which section of POCSO Act 2012 deals with punishment for penetrative sexual assault", o: ["Section 12", "Section 9", "Section 4", "Section 2"], c: 2 },
     { q: "76. Test used for detection of vaginal cells on glans during rape examination", o: ["Lugol's iodine", "Acro-reaction test", "Precipitin test", "Barberio's test"], c: 0 },
     { q: "77. Section 37 of the POCSO Act 2012 provides", o: ["Trials to be conducted in camera", "Guidelines for child to take assistance of expert", "Power to remove difficulties", "Child not to see accused at time of testifying"], c: 0 },
-    { q: "78. A body is exhumed only when there is written order from", o: ["Judicial Magistrate Gr. I", "Judicial Magistrate Gr. II", "Executive Judicial Magistrate", "Investigating Officer"], c: 0 },
-    { q: "79. As per Krogman's degree of accuracy in sexing adult skeleton, maximum accuracy from a single bone is", o: ["Skull", "Pelvis", "Long bone", "Sternum"], c: 0 },
-    { q: "80. Assisting an unqualified person to perform a surgical operation is referred to as", o: ["Adultery", "Association", "Dichotomy", "Assistance"], c: 0 },
-    { q: "81. Neologism is characteristically seen in", o: ["Depression", "Mania", "Schizophrenia", "Delirium"], c: 0 },
-    { q: "82. In nulliparous women, cervical opening is", o: ["Longitudinal", "Circular", "Transverse", "Fimbriate"], c: 0 },
+    { q: "78. A body is exhumed only when there is written order from", o: ["Judicial Magistrate Gr. I", "Judicial Magistrate Gr. II", "Executive Judicial Magistrate", "Investigating Officer"], c: 2 },
+    { q: "79. As per Krogman's degree of accuracy in sexing adult skeleton, maximum accuracy from a single bone is", o: ["Skull", "Pelvis", "Long bone", "Sternum"], c: 1 },
+    { q: "80. Assisting an unqualified person to perform a surgical operation is referred to as", o: ["Adultery", "Association", "Dichotomy", "Assistance"], c: 1 },
+    { q: "81. Neologism is characteristically seen in", o: ["Depression", "Mania", "Schizophrenia", "Delirium"], c: 2 },
+    { q: "82. In nulliparous women, cervical opening is", o: ["Longitudinal", "Circular", "Transverse", "Fimbriate"], c: 1 },
     { q: "83. Lucid interval is seen in", o: ["Extradural Haemorrhage (EDH)", "Insanity", "Subdural haemorrhage", "Alcohol intake"], c: 0 },
     { q: "84. Delusion is a disorder of", o: ["Thought", "Perception", "Insight", "Cognition"], c: 0 },
     { q: "85. First autopsy in India was done by", o: ["Buckeley in Chennai", "Mackenzie in Kolkata", "Woodford in Mumbai", "Hamilton in Delhi"], c: 0 },
-    { q: "86. Presence of soot particles in larynx during post-mortem is proof of", o: ["Burns", "Post-mortem burns", "Antemortem burns", "Scalds"], c: 0 },
-    { q: "87. Acid phosphatase test is used to identify", o: ["Salivary stains", "Blood stains", "Seminal stains", "Faecal stains"], c: 0 },
+    { q: "86. Presence of soot particles in larynx during post-mortem is proof of", o: ["Burns", "Post-mortem burns", "Antemortem burns", "Scalds"], c: 2 },
+    { q: "87. Acid phosphatase test is used to identify", o: ["Salivary stains", "Blood stains", "Seminal stains", "Faecal stains"], c: 2 },
     { q: "88. Apoplexy is the term used for", o: ["Cerebral congestion", "Cervical ischaemia", "Cerebral anoxia", "Cerebral concussion"], c: 0 },
     { q: "89. Dichotomy means", o: ["Fee splitting", "Summons", "Civil wrong", "Employing touts to get patients"], c: 0 },
-    { q: "90. Gutter fracture is due to", o: ["Sharp weapon", "Firearm injury", "Blunt weapon", "Sharp weapon and Firearm injury"], c: 0 },
-    { q: "91. Conventional law of courtesy is", o: ["Medical ethics", "Medical etiquette", "Medical law", "Medical jurisprudence"], c: 0 },
-    { q: "92. Level of pregnant uterus at six months is at", o: ["Xiphisternum", "Umbilicus", "Pubic symphysis", "Midway between nipple and xiphisternum"], c: 0 },
-    { q: "93. In India, infanticide is considered the same as", o: ["Culpable homicide amounting to murder", "Manslaughter", "Murder", "None of the above"], c: 0 },
-    { q: "94. Common site of injury to spinal cord in judicial hanging is between", o: ["C1 and C2", "C2 and C3", "C3 and C4", "C4 and C5"], c: 0 },
-    { q: "95. True about cephalhematoma", o: ["Present at birth", "Crosses the suture lines", "Becomes prominent by 24 hours", "Impulse on crying"], c: 0 },
+    { q: "90. Gutter fracture is due to", o: ["Sharp weapon", "Firearm injury", "Blunt weapon", "Sharp weapon and Firearm injury"], c: 1 },
+    { q: "91. Conventional law of courtesy is", o: ["Medical ethics", "Medical etiquette", "Medical law", "Medical jurisprudence"], c: 1 },
+    { q: "92. Level of pregnant uterus at six months is at", o: ["Xiphisternum", "Umbilicus", "Pubic symphysis", "Midway between nipple and xiphisternum"], c: 1 },
+    { q: "93. In India, infanticide is considered the same as", o: ["Culpable homicide amounting to murder", "Manslaughter", "Murder", "None of the above"], c: 2 },
+    { q: "94. Common site of injury to spinal cord in judicial hanging is between", o: ["C1 and C2", "C2 and C3", "C3 and C4", "C4 and C5"], c: 1 },
+    { q: "95. True about cephalhematoma", o: ["Present at birth", "Crosses the suture lines", "Becomes prominent by 24 hours", "Impulse on crying"], c: 2 },
     { q: "96. Signs of intrauterine death include", o: ["Spalding sign", "Jacquimer sign", "Chadwick sign", "Kevorkian sign"], c: 0 },
-    { q: "97. \"FORENSIC\" means", o: ["Knowledge of Medical Science and Crime", "Application of Medical knowledge to Law", "Applications of Basic Science to Judiciary", "Court of Law"], c: 0 },
-    { q: "98. Punch drunk syndrome is common among", o: ["Alcoholics", "Boxers", "Painters", "Sailors"], c: 0 },
+    { q: "97. \"FORENSIC\" means", o: ["Knowledge of Medical Science and Crime", "Application of Medical knowledge to Law", "Applications of Basic Science to Judiciary", "Court of Law"], c: 3 },
+    { q: "98. Punch drunk syndrome is common among", o: ["Alcoholics", "Boxers", "Painters", "Sailors"], c: 1 },
     { q: "99. Leading questions are allowed in", o: ["Cross examination", "Examination on chief in case of hostile witness", "Examination of an expert witness who conceals facts", "Any of the above"], c: 0 },
-    { q: "100. Smokeless gun powder contains", o: ["Sulphur", "Nitrocellulose", "Potassium Nitrate", "None of the above"], c: 0 },
+    { q: "100. Smokeless gun powder contains", o: ["Sulphur", "Nitrocellulose", "Potassium Nitrate", "None of the above"], c: 1 }
   ];
-  
+
+  let studentId = "", qIdx = 0, uAnswers = [], flags = [], personalExam = [], tInterval, graceInterval, timeLeft = 60, graceTime = 300, currentMode = "";
+
+  // Real-time Class Monitor
+  db.collection("slides").doc("current").onSnapshot(doc => {
+      const state = doc.data();
+      currentMode = state.status;
+      
+      const tag = document.getElementById('status-tag');
+      const sForm = document.getElementById('student-form');
+      const fForm = document.getElementById('faculty-form');
+      const waitMsg = document.getElementById('waiting-msg');
+
+      if (!studentId) {
+          document.getElementById('auth-ui').style.display='block';
+          if(currentMode === "exam") {
+              tag.innerText = "EXAMINATION ACTIVE"; tag.style.background = "#e74c3c";
+              sForm.style.display = 'block'; fForm.style.display = 'none'; waitMsg.style.display = 'none';
+          } else if(currentMode === "testing") {
+              tag.innerText = "FACULTY TESTING"; tag.style.background = "#8e44ad";
+              sForm.style.display = 'none'; fForm.style.display = 'block'; waitMsg.style.display = 'none';
+          } else {
+              // If teacher has app locked or in lecture mode (since slides are removed from this code)
+              tag.innerText = "PLEASE WAIT"; tag.style.background = "#334155";
+              sForm.style.display = 'none'; fForm.style.display = 'none'; waitMsg.style.display = 'block';
+          }
+      } else {
+          // If already logged in and teacher triggers exam
+          if ((currentMode === "exam" || currentMode === "testing") && 
+              document.getElementById('exam-ui').style.display === 'none' && 
+              document.getElementById('review-ui').style.display === 'none' && 
+              document.getElementById('result-ui').style.display === 'none') {
+                 startExam();
+          }
+      }
+  });
+
+  function tryStudentLogin() {
+      // Hard deadline check removed for testing flexibility, re-add if needed
+      const r = document.getElementById('roll-in').value, n = document.getElementById('name-in').value.toUpperCase().trim();
+      if(students2023[r] && students2023[r] === n) { 
+          studentId = `${r} - ${n}`; 
+          document.getElementById('auth-ui').style.display='none';
+          db.collection("activity_logs").add({ student: studentId, event: "Joined Exam Session", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+          if(currentMode === "exam") startExam();
+      } else alert("Login Error: Roll No or Name mismatch.");
+  }
+
+  function tryFacultyLogin() {
+      if(document.getElementById('fac-pass').value === "ForensicFaculty2026") { 
+          studentId = "FACULTY_TEST"; 
+          document.getElementById('auth-ui').style.display='none';
+          startExam();
+      } else alert("Wrong password.");
+  }
+
+  function startExam() {
+      document.getElementById('auth-ui').style.display='none';
+      document.getElementById('exam-ui').style.display='block';
+      
+      // Local storage check for crash recovery
+      const p = localStorage.getItem("dsmch_p");
+      if(p) {
+          const d = JSON.parse(p);
+          personalExam = d.ex; uAnswers = d.ans; flags = d.flg; qIdx = d.idx;
+      } else {
+          // Randomize order for this specific student
+          personalExam = quizMaster.sort(() => Math.random() - 0.5).map(i => {
+              const correctStr = i.o[i.c];
+              const sOptions = [...i.o].sort(() => Math.random() - 0.5);
+              return { q: i.q, o: sOptions, c: sOptions.indexOf(correctStr) };
+          });
+          uAnswers = new Array(quizMaster.length).fill(null);
+          flags = new Array(quizMaster.length).fill(false);
+      }
+      displayQ();
+  }
+
+  function displayQ() {
+      clearInterval(tInterval);
+      const q = personalExam[qIdx];
+      document.getElementById('q-header').innerText = `Question ${qIdx + 1} / ${personalExam.length}`;
+      document.getElementById('q-content').innerText = q.q;
+      document.getElementById('f-check').checked = flags[qIdx];
+      
+      let html = '';
+      q.o.forEach((opt, i) => {
+          let checked = uAnswers[qIdx] === i ? 'checked' : '';
+          html += `<label class="option-label"><input type="radio" name="o" value="${i}" ${checked}> ${opt}</label>`;
+      });
+      document.getElementById('opt-container').innerHTML = html;
+
+      // Reset and start 60s timer
+      timeLeft = 60;
+      document.getElementById('t-clock').innerText = `Time Remaining: ${timeLeft}s`;
+      document.getElementById('t-clock').style.background = '#e74c3c';
+      
+      tInterval = setInterval(() => {
+          timeLeft--; 
+          document.getElementById('t-clock').innerText = `Time Remaining: ${timeLeft}s`;
+          if(timeLeft <= 0) saveAndNext();
+      }, 1000);
+  }
+
+  function saveAndNext() {
+      const sel = document.querySelector('input[name="o"]:checked');
+      if(sel) uAnswers[qIdx] = parseInt(sel.value);
+      flags[qIdx] = document.getElementById('f-check').checked;
+      
+      // Save state to local storage to prevent data loss on refresh
+      localStorage.setItem("dsmch_p", JSON.stringify({ex: personalExam, ans: uAnswers, flg: flags, idx: qIdx}));
+
+      if(document.getElementById('review-ui').style.display === 'block') {
+         renderReview(); // If they jumped from review grid, go back to it
+         return; 
+      }
+
+      if(qIdx < personalExam.length - 1) { 
+          qIdx++; displayQ(); 
+      } else {
+          renderReview();
+      }
+  }
+
+  function renderReview() {
+      clearInterval(tInterval);
+      document.getElementById('exam-ui').style.display='none';
+      document.getElementById('review-ui').style.display='block';
+      
+      let h = '';
+      for(let i=0; i<personalExam.length; i++) {
+          let cls = flags[i] ? 'flagged' : (uAnswers[i] !== null ? 'answered' : '');
+          h += `<div class="q-box ${cls}" onclick="jump(${i})">${i+1}</div>`;
+      }
+      document.getElementById('grid-wrap').innerHTML = h;
+
+      // Start global 5 minute grace timer if not already running
+      if(!graceInterval && graceTime > 0) {
+          graceInterval = setInterval(() => {
+              graceTime--;
+              let mins = Math.floor(graceTime / 60).toString().padStart(2, '0');
+              let secs = (graceTime % 60).toString().padStart(2, '0');
+              document.getElementById('r-clock').innerText = `Grace Period: ${mins}:${secs}`;
+              if(graceTime <= 0) finalSubmission();
+          }, 1000);
+      }
+  }
+
+  function jump(i) { 
+      qIdx = i; 
+      document.getElementById('review-ui').style.display='none'; 
+      document.getElementById('exam-ui').style.display='block';
+      displayQ(); 
+      
+      // Override timer UI since they are in grace period
+      clearInterval(tInterval);
+      document.getElementById('t-clock').innerText = `Review Mode`;
+      document.getElementById('t-clock').style.background = '#8e44ad';
+  }
+
+  async function finalSubmission() {
+      if(graceTime > 0 && !confirm("Are you sure you want to submit your final score?")) return;
+      clearInterval(graceInterval);
+      
+      let score = 0;
+      uAnswers.forEach((ans, i) => { if(ans === personalExam[i].c) score++; });
+      
+      // Push to Firebase for Teacher Dashboard
+      await db.collection("exam_results").add({ student: studentId, score: score, ts: firebase.firestore.FieldValue.serverTimestamp() });
+      localStorage.removeItem("dsmch_p"); // Clear crash recovery
+      
+      // Update UI
+      document.getElementById('review-ui').style.display='none';
+      document.getElementById('exam-ui').style.display='none';
+      document.getElementById('result-ui').style.display='block';
+      document.getElementById('s-total').innerText = `${score} / ${personalExam.length}`;
+      
+      // Show corrections
+      let key = "<h3>Correction Review:</h3>";
+      personalExam.forEach((item, i) => {
+          const isCorrect = uAnswers[i] === item.c;
+          key += `<p style="color:${isCorrect?'#7ee787':'#f78166'}">Q${i+1}: Correct Answer: ${item.o[item.c]}</p>`;
+      });
+      document.getElementById('correction-feed').innerHTML = key;
+  }
+
+  // Anti-Cheat: Log if student leaves the tab
+  document.addEventListener("visibilitychange", () => {
+      if (document.hidden && studentId && currentMode === "exam") {
+          db.collection("activity_logs").add({ student: studentId, event: "⚠️ Left App/Tab Switch", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+      }
+  });
 </script>
 </body>
 </html>
