@@ -40,7 +40,11 @@
 <body>
 
 <h1>⚗ DSMCH Invigilator Dashboard</h1>
-<div class="panel">
+<div class="panel"> 
+  <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #333;">
+    <input type="number" id="unlock-roll" placeholder="Roll No to Unlock" style="padding:10px; border-radius:6px; border:1px solid #444; background:#000; color:white; width:150px;">
+    <button class="btn" style="background:#f39c12; color:black;" onclick="unlockStudent()">🔓 UNLOCK STUDENT</button>
+</div>
     <div style="display: flex; flex-wrap: wrap;">
         <button class="btn" style="background:#2980b9; color:white;" onclick="setMode('live')">📺 START LECTURE</button>
         <button class="btn" style="background:#8e44ad; color:white;" onclick="setMode('testing')">🛠 START FACULTY TESTING</button>
