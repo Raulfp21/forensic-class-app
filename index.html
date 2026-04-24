@@ -385,7 +385,8 @@
       // Save state to local storage to prevent data loss on refresh
       localStorage.setItem("dsmch_p", JSON.stringify({ex: personalExam, ans: uAnswers, flg: flags, idx: qIdx}));
 
-      if(document.getElementById('review-ui').style.display === 'block') {
+      // NEW: If the grace period timer is running, they are in Review Mode. Send them back to the grid.
+      if(graceInterval) {
          renderReview(); 
          return; 
       }
