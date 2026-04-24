@@ -269,18 +269,47 @@
       }
   });
 
-  function tryStudentLogin() {
-      const r = document.getElementById('roll-in').value, n = document.getElementById('name-in').value.toUpperCase().trim();
+  async function tryStudentLogin() {
+      const r = document.getElementById('roll-in').value;
+      const n = document.getElementById('name-in').value.toUpperCase().trim();
+      
       if(students2023[r] && students2023[r] === n) { 
+          
+          // NEW: Server-Side Lock Check
+          try {
+              const userDoc = await db.collection("presence").doc(r).get();
+              if (userDoc.exists) {
+                  const data = userDoc.data();
+                  if (data.status === "Taking Exam" || data.status === "Submitted") {
+                      alert("ACCESS DENIED: This Roll Number is already active or has submitted the exam. If you refreshed by accident, please wait or contact the invigilator.");
+                      
+                      // Send a cheat alert to the Teacher Dashboard
+                      db.collection("cheat_alerts").add({ 
+                          roll: r, 
+                          name: n, 
+                          event: "🚨 MULTIPLE LOGIN ATTEMPT BLOCKED", 
+                          ts: firebase.firestore.FieldValue.serverTimestamp() 
+                      });
+                      return; // Stop the login process
+                  }
+              }
+          } catch (error) {
+              console.error("Error checking presence:", error);
+          }
+
+          // If no duplicate is found, proceed with login
           studentId = `${r} - ${n}`; 
+          sessionStorage.setItem("active_student", studentId);
           document.getElementById('auth-ui').style.display='none';
           
-          // Report Presence
+          // Report Presence to Teacher Grid
           db.collection("presence").doc(r).set({ roll: r, name: n, status: "Taking Exam", ts: firebase.firestore.FieldValue.serverTimestamp() });
           db.collection("activity_logs").add({ student: studentId, event: "Joined Exam Session", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
           
           if(currentMode === "exam") startExam();
-      } else alert("Login Error: Roll No or Name mismatch.");
+      } else {
+          alert("Login Error: Roll No or Name mismatch.");
+      }
   }
 
   function tryFacultyLogin() {
