@@ -290,9 +290,22 @@
       } else alert("Wrong password.");
   }
 
-  function startExam() {
-      document.getElementById('auth-ui').style.display='none';
-      document.getElementById('exam-ui').style.display='block';
+  function startExam() } else {
+          // Randomize order for this specific student
+          personalExam = quizMaster.sort(() => Math.random() - 0.5).map(i => {
+              const correctStr = i.o[i.c];
+              const sOptions = [...i.o].sort(() => Math.random() - 0.5);
+              
+              // THIS NEW LINE dynamically strips the "12. " off the front of every question
+              const cleanQuestion = i.q.replace(/^\d+\.\s*/, ''); 
+              
+              // Use cleanQuestion instead of i.q here
+              return { q: cleanQuestion, o: sOptions, c: sOptions.indexOf(correctStr) }; 
+          });
+          uAnswers = new Array(quizMaster.length).fill(null);
+          flags = new Array(quizMaster.length).fill(false);
+      }
+      
       
       // Local storage check for crash recovery
       const p = localStorage.getItem("dsmch_p");
