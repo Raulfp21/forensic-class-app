@@ -51,7 +51,20 @@
 
 <h1>⚗ Toxicology Class Control (2023 BATCH)</h1>
 
-<div class="stream-bar">
+<div class="stream-bar"><button class="btn-stream" style="background:#27ae60; color:white;" onclick="startExamMode()">📝 START 100 MCQ EXAM</button>
+
+<script>
+  // Add this function to your script section
+  function startExamMode() {
+      if(confirm("This will switch all 250 students to Exam Mode. Continue?")) {
+          ref.update({ 
+              status: "exam", 
+              topic: "assessment_mcq", 
+              index: 0 
+          });
+      }
+  }
+</script>
   <button class="btn-stream" onclick="setTopic('phosphorus')">📺 STREAM: FM 2.16 (Toxicology 31 Slides)</button>
 </div>
 
