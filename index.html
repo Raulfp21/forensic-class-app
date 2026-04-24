@@ -82,13 +82,6 @@
 </div>
 
 <script>
-  // Security measures
-  document.addEventListener('contextmenu', event => event.preventDefault());
-  document.addEventListener('copy', event => {
-      event.clipboardData.setData('text/plain', 'Copying is disabled for academic integrity.');
-      event.preventDefault();
-  });
-
   // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
@@ -256,7 +249,6 @@
               tag.innerText = "FACULTY TESTING"; tag.style.background = "#8e44ad";
               sForm.style.display = 'none'; fForm.style.display = 'block'; waitMsg.style.display = 'none';
           } else {
-              // If teacher has app locked or in lecture mode (since slides are removed from this code)
               tag.innerText = "PLEASE WAIT"; tag.style.background = "#334155";
               sForm.style.display = 'none'; fForm.style.display = 'none'; waitMsg.style.display = 'block';
           }
@@ -272,12 +264,15 @@
   });
 
   function tryStudentLogin() {
-      // Hard deadline check removed for testing flexibility, re-add if needed
       const r = document.getElementById('roll-in').value, n = document.getElementById('name-in').value.toUpperCase().trim();
       if(students2023[r] && students2023[r] === n) { 
           studentId = `${r} - ${n}`; 
           document.getElementById('auth-ui').style.display='none';
+          
+          // Report Presence
+          db.collection("presence").doc(r).set({ roll: r, name: n, status: "Taking Exam", ts: firebase.firestore.FieldValue.serverTimestamp() });
           db.collection("activity_logs").add({ student: studentId, event: "Joined Exam Session", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+          
           if(currentMode === "exam") startExam();
       } else alert("Login Error: Roll No or Name mismatch.");
   }
@@ -290,22 +285,9 @@
       } else alert("Wrong password.");
   }
 
-  function startExam() } else {
-          // Randomize order for this specific student
-          personalExam = quizMaster.sort(() => Math.random() - 0.5).map(i => {
-              const correctStr = i.o[i.c];
-              const sOptions = [...i.o].sort(() => Math.random() - 0.5);
-              
-              // THIS NEW LINE dynamically strips the "12. " off the front of every question
-              const cleanQuestion = i.q.replace(/^\d+\.\s*/, ''); 
-              
-              // Use cleanQuestion instead of i.q here
-              return { q: cleanQuestion, o: sOptions, c: sOptions.indexOf(correctStr) }; 
-          });
-          uAnswers = new Array(quizMaster.length).fill(null);
-          flags = new Array(quizMaster.length).fill(false);
-      }
-      
+  function startExam() {
+      document.getElementById('auth-ui').style.display='none';
+      document.getElementById('exam-ui').style.display='block';
       
       // Local storage check for crash recovery
       const p = localStorage.getItem("dsmch_p");
@@ -317,7 +299,11 @@
           personalExam = quizMaster.sort(() => Math.random() - 0.5).map(i => {
               const correctStr = i.o[i.c];
               const sOptions = [...i.o].sort(() => Math.random() - 0.5);
-              return { q: i.q, o: sOptions, c: sOptions.indexOf(correctStr) };
+              
+              // Dynamically strips the number off the front of every question
+              const cleanQuestion = i.q.replace(/^\d+\.\s*/, ''); 
+              
+              return { q: cleanQuestion, o: sOptions, c: sOptions.indexOf(correctStr) }; 
           });
           uAnswers = new Array(quizMaster.length).fill(null);
           flags = new Array(quizMaster.length).fill(false);
@@ -360,7 +346,7 @@
       localStorage.setItem("dsmch_p", JSON.stringify({ex: personalExam, ans: uAnswers, flg: flags, idx: qIdx}));
 
       if(document.getElementById('review-ui').style.display === 'block') {
-         renderReview(); // If they jumped from review grid, go back to it
+         renderReview(); 
          return; 
       }
 
@@ -416,6 +402,13 @@
       
       // Push to Firebase for Teacher Dashboard
       await db.collection("exam_results").add({ student: studentId, score: score, ts: firebase.firestore.FieldValue.serverTimestamp() });
+      
+      // Update Roll Call Grid to show Submitted
+      if(studentId !== "FACULTY_TEST") {
+          const rollNum = studentId.split(" - ")[0];
+          await db.collection("presence").doc(rollNum).set({ roll: rollNum, status: "Submitted", ts: firebase.firestore.FieldValue.serverTimestamp() });
+      }
+      
       localStorage.removeItem("dsmch_p"); // Clear crash recovery
       
       // Update UI
@@ -433,10 +426,40 @@
       document.getElementById('correction-feed').innerHTML = key;
   }
 
-  // Anti-Cheat: Log if student leaves the tab
+  // --- AGGRESSIVE ANTI-CHEAT & TRACKING ---
+  
+  function logCheatAttempt(eventName) {
+      if(studentId && currentMode === "exam" && studentId !== "FACULTY_TEST") {
+          const rollNum = studentId.split(" - ")[0];
+          db.collection("cheat_alerts").add({ 
+              roll: rollNum, 
+              name: studentId.split(" - ")[1], 
+              event: eventName, 
+              ts: firebase.firestore.FieldValue.serverTimestamp() 
+          });
+      }
+  }
+
+  // Detect Tab Switching
   document.addEventListener("visibilitychange", () => {
       if (document.hidden && studentId && currentMode === "exam") {
-          db.collection("activity_logs").add({ student: studentId, event: "⚠️ Left App/Tab Switch", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+          logCheatAttempt("⚠️ TAB SWITCHED OR MINIMIZED");
+          alert("WARNING: Tab switching is strictly prohibited. The invigilator has been notified.");
+      }
+  });
+
+  // Detect Split Screen or clicking outside the window
+  window.addEventListener("blur", () => {
+      if (studentId && currentMode === "exam") {
+          logCheatAttempt("⚠️ WINDOW LOST FOCUS (Possible Split Screen)");
+      }
+  });
+
+  // Disable DevTools, Inspect Element, and Copy Shortcuts
+  document.addEventListener('keydown', function(e) {
+      if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'c') || (e.ctrlKey && e.key === 'v') || (e.ctrlKey && e.key === 'p')) {
+          e.preventDefault();
+          logCheatAttempt("🛑 KEYBOARD SHORTCUT ATTEMPT (F12/Copy/Print)");
       }
   });
 </script>
