@@ -26,12 +26,13 @@
 
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
-    /* Badge Styles for Separate Lists */
-    .sub-badge { background: #3498db; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block; margin: 4px; border: 1px solid #2980b9; }
-    .out-badge { background: #e74c3c; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block; margin: 4px; border: 1px solid #c0392b; }
+    /* Distinct Sidebar Lists */
+    .list-container { max-height: 250px; overflow-y: auto; padding: 10px; border-radius: 8px; background: #000; margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px;}
+    .sub-badge { background: #3498db; color: white; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; border: 1px solid #2980b9; }
+    .out-badge { background: #e74c3c; color: white; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; border: 1px solid #c0392b; }
 
-    .cheat-feed { background: #1a0f0f; border: 1px solid #6e2128; flex-grow: 1; overflow-y: auto; border-radius: 8px; padding: 10px; margin-top:15px; min-height: 200px; max-height: 300px;}
-    .cheat-item { padding: 10px; border-bottom: 1px solid #3d1515; font-size: 13px; color: #fca5a5; }
+    .cheat-feed { background: #1a0f0f; border: 1px solid #6e2128; flex-grow: 1; overflow-y: auto; border-radius: 8px; padding: 10px; margin-top:15px; min-height: 150px; max-height: 250px;}
+    .cheat-item { padding: 8px; border-bottom: 1px solid #3d1515; font-size: 12px; color: #fca5a5; }
     
     table { width:100%; border-collapse:collapse; margin-top:15px; background:#111; font-size: 14px;}
     th, td { padding:12px; text-align:left; border-bottom:1px solid #222; }
@@ -39,28 +40,29 @@
 </head>
 <body>
 
-<h1>⚗ DSMCH Invigilator Dashboard</h1>
+<h1>👨‍🏫 DSMCH Forensic Invigilation Dashboard</h1>
 
 <div class="panel">
-    <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dotted #444;">
-        <h3 style="margin-top:0; color:#f39c12;">🔓 Student Access Rescue</h3>
-        <input type="number" id="unlock-roll" placeholder="Roll No" style="padding:10px; border-radius:6px; border:1px solid #444; background:#000; color:white; width:100px;">
-        <button class="btn" style="background:#f39c12; color:black;" onclick="unlockStudent()">UNLOCK STUDENT</button>
-    </div>
-
-    <div style="display: flex; flex-wrap: wrap;">
-        <button class="btn" style="background:#2980b9; color:white;" onclick="setMode('live')">📺 START LECTURE</button>
-        <button class="btn" style="background:#8e44ad; color:white;" onclick="setMode('testing')">🛠 START FACULTY TESTING</button>
-        <button class="btn" style="background:#27ae60; color:white; border: 2px solid white;" onclick="setMode('exam')">📝 START STUDENT EXAM</button>
-        <button class="btn" style="background:#c0392b; color:white;" onclick="setMode('locked')">🔒 LOCK APP</button>
+    <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 15px;">
+        <div style="flex-grow: 1; background: #222; padding: 15px; border-radius: 8px; border: 1px solid #333;">
+            <h3 style="margin-top:0; color:#f39c12; font-size: 14px;">🔓 Emergency Student Unlock</h3>
+            <input type="number" id="unlock-roll" placeholder="Roll No" style="padding:10px; border-radius:6px; border:none; background:#000; color:white; width:80px;">
+            <button class="btn" style="background:#f39c12; color:black;" onclick="unlockStudent()">UNLOCK</button>
+        </div>
+        <div style="display: flex; gap: 5px;">
+            <button class="btn" style="background:#2980b9; color:white;" onclick="setMode('live')">LECTURE</button>
+            <button class="btn" style="background:#8e44ad; color:white;" onclick="setMode('testing')">FACULTY TEST</button>
+            <button class="btn" style="background:#27ae60; color:white;" onclick="setMode('exam')">START EXAM</button>
+            <button class="btn" style="background:#c0392b; color:white;" onclick="setMode('locked')">LOCK ALL</button>
+        </div>
     </div>
 </div>
 
 <div class="dashboard-grid">
     <div class="panel" style="flex: 2;">
-        <h3 style="color:#58a6ff; margin:0;">📊 Master Exam Grid (<span id="online-count">0</span> Active)</h3>
-        <div style="font-size:12px; color:#888; margin:10px 0;">
-            Gray: Offline | Green: In Exam | <span style="color:#f1c40f;">Yellow: Signaling</span> | <span style="color:#e74c3c;">Red: Tab Switched</span> | <span style="color:#3498db;">Blue: Submitted</span>
+        <h3 style="color:#58a6ff; margin:0;">📍 Live Seat Map (<span id="online-count">0</span> Active)</h3>
+        <div style="font-size:11px; color:#888; margin:8px 0;">
+            Gray: Offline | Green: In Test | <span style="color:#f1c40f;">Yellow: Signal</span> | <span style="color:#e74c3c;">Red: Tab Switch</span> | <span style="color:#3498db;">Blue: Done</span>
         </div>
         <div id="master-roll-grid" class="roll-grid"></div>
     </div>
@@ -68,33 +70,24 @@
     <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
         
         <div class="panel" style="border-color:#3498db; background: #0b162c;">
-            <h3 style="color:#3498db; margin:0;">✅ Submitted Students (<span id="submit-count">0</span>)</h3>
-            <div id="submit-list" style="margin-top:15px; display: flex; flex-wrap: wrap;">
-                <span style="color:#566573; font-size:13px; font-style:italic;">No submissions yet.</span>
+            <h3 style="color:#3498db; margin:0;">✅ COMPLETED (<span id="submit-count">0</span>)</h3>
+            <div id="submit-list" class="list-container">
+                <span style="color:#566573; font-size:12px; font-style:italic;">Awaiting first submission...</span>
             </div>
         </div>
 
         <div class="panel" style="border-color:#e74c3c; background: #2c0b0e;">
-            <h3 style="color:#ff5e5e; margin:0;">⚠️ Currently Out of App (<span id="out-count">0</span>)</h3>
-            <div id="out-list" style="margin-top:15px; display: flex; flex-wrap: wrap;">
-                <span style="color:#888; font-size:13px; font-style:italic;">All students are focused.</span>
+            <h3 style="color:#ff5e5e; margin:0;">⚠️ LEFT EXAM TAB (<span id="out-count">0</span>)</h3>
+            <div id="out-list" class="list-container">
+                <span style="color:#888; font-size:12px; font-style:italic;">No active violations.</span>
             </div>
         </div>
 
         <div class="panel" style="border-color:#6e2128;">
-            <h3 style="color:#f78166; margin:0;">🚨 Historical Cheat Log</h3>
+            <h3 style="color:#f78166; margin:0; font-size: 14px;">🚨 Historical Cheat Log</h3>
             <div id="cheat-feed-container" class="cheat-feed"></div>
         </div>
     </div>
-</div>
-
-<div class="panel">
-    <h2 style="color:#27ae60; margin-top:0;">📋 Detailed Scores</h2>
-    <button class="btn" style="background:#f39c12; color:black;" onclick="exportResults()">Download CSV Report</button>
-    <table>
-        <thead><tr><th>Student Identity</th><th>Score</th><th>Finish Time</th></tr></thead>
-        <tbody id="resBody"></tbody>
-    </table>
 </div>
 
 <script>
@@ -109,33 +102,29 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // 1. Build Grid
   let gridHtml = '';
   for(let i = 1; i <= 250; i++) { gridHtml += `<div id="roll-${i}" class="roll-box">${i}</div>`; }
   document.getElementById('master-roll-grid').innerHTML = gridHtml;
 
-  // 2. Control Functions
   async function unlockStudent() {
       const roll = document.getElementById('unlock-roll').value.trim();
-      if(!roll || confirm(`Clear server lock for Roll Number ${roll}?`)) {
+      if(!roll) return;
+      if(confirm(`Unlock Roll ${roll}?`)) {
           await db.collection("presence").doc(roll).delete();
-          alert("Unlocked Roll " + roll);
           document.getElementById('unlock-roll').value = "";
       }
   }
 
   function setMode(m) {
-      if(confirm("Switch Class to " + m.toUpperCase() + "?")) {
+      if(confirm("Switch to " + m.toUpperCase() + "?")) {
           db.collection("slides").doc("current").update({ status: m });
       }
   }
 
-  // 3. Presence Listener (Main Logic)
   db.collection("presence").onSnapshot(snap => {
       let activeCount = 0; let outCount = 0; let submitCount = 0;
       let outHtml = ''; let submitHtml = '';
 
-      // Reset Grid Visuals
       for(let i = 1; i <= 250; i++) { 
           let box = document.getElementById(`roll-${i}`); 
           if(box) { box.className = "roll-box"; box.innerText = i; }
@@ -154,57 +143,42 @@
               } else if (d.status === "Submitted") {
                   box.className = "roll-box submitted";
                   submitCount++;
-                  submitHtml += `<div class="sub-badge">Roll ${d.roll}</div>`;
+                  submitHtml += `<div class="sub-badge">${d.roll}</div>`;
               } else if (d.status === "Out of App") {
                   box.className = "roll-box warning";
                   outCount++;
-                  outHtml += `<div class="out-badge">Roll ${d.roll}</div>`;
+                  outHtml += `<div class="out-badge">${d.roll}</div>`;
               }
           }
       });
 
-      // Update Counters
       document.getElementById('online-count').innerText = activeCount;
       document.getElementById('out-count').innerText = outCount;
       document.getElementById('submit-count').innerText = submitCount;
 
-      // Update Separate Lists
-      document.getElementById('submit-list').innerHTML = submitHtml || `<span style="color:#566573; font-size:13px; font-style:italic;">No submissions yet.</span>`;
-      document.getElementById('out-list').innerHTML = outHtml || `<span style="color:#888; font-size:13px; font-style:italic;">All students are focused.</span>`;
+      document.getElementById('submit-list').innerHTML = submitHtml || `<span style="color:#566573; font-size:12px; font-style:italic;">Awaiting first submission...</span>`;
+      document.getElementById('out-list').innerHTML = outHtml || `<span style="color:#888; font-size:12px; font-style:italic;">No active violations.</span>`;
   });
 
-  // 4. Cheat Alerts Log
   db.collection("cheat_alerts").orderBy("ts", "desc").limit(50).onSnapshot(snap => {
       let h = '';
       snap.forEach(doc => {
           const d = doc.data();
-          const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "New";
-          h += `<div class="cheat-item"><b>[${t}] Roll ${d.roll}</b>: ${d.event}</div>`;
+          const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "";
+          h += `<div class="cheat-item"><b>Roll ${d.roll}</b>: ${d.event} <small style="color:#666; float:right;">${t}</small></div>`;
       });
       document.getElementById('cheat-feed-container').innerHTML = h;
   });
 
-  // 5. Results Table
-  let resultData = [];
   db.collection("exam_results").orderBy("ts", "desc").onSnapshot(snap => {
-      let h = ''; resultData = [];
+      let h = '';
       snap.forEach(doc => {
           const d = doc.data();
           const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "-";
           h += `<tr><td>${d.student}</td><td style="color:#27ae60; font-weight:bold;">${d.score}/100</td><td>${t}</td></tr>`;
-          resultData.push({ id: d.student, score: d.score, time: t });
       });
-      document.getElementById('resBody').innerHTML = h;
+      document.getElementById("resBody").innerHTML = h;
   });
-
-  function exportResults() {
-      let csv = "Student Identity,Score,Submitted Time\n";
-      resultData.forEach(r => { csv += `"${r.id}","${r.score}","${r.time}"\n`; });
-      const link = document.createElement("a");
-      link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-      link.download = `Forensic_Exam_Report.csv`;
-      link.click();
-  }
 </script>
 </body>
 </html>
