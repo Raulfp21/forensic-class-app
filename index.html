@@ -80,8 +80,14 @@
         <div id="correction-feed" style="text-align:left; background:#0f172a; padding:15px; border-radius:10px; margin-top:20px; max-height:400px; overflow-y:auto; border:1px solid #334155;"></div>
     </div>
 </div>
-
 <script>
+  // Security measures
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('copy', event => {
+      event.clipboardData.setData('text/plain', 'Copying is disabled for academic integrity.');
+      event.preventDefault();
+  });
+
   // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
@@ -427,13 +433,14 @@
   }
 
   // --- AGGRESSIVE ANTI-CHEAT & TRACKING ---
-  
+  // ALLOWED LOGGING IN FACULTY AND EXAM MODE FOR TESTING PURPOSES
   function logCheatAttempt(eventName) {
-      if(studentId && currentMode === "exam" && studentId !== "FACULTY_TEST") {
-          const rollNum = studentId.split(" - ")[0];
+      if(studentId && (currentMode === "exam" || currentMode === "testing")) {
+          const rollNum = studentId.split(" - ")[0] || "FACULTY";
+          const sName = studentId.split(" - ")[1] || "TESTING";
           db.collection("cheat_alerts").add({ 
               roll: rollNum, 
-              name: studentId.split(" - ")[1], 
+              name: sName, 
               event: eventName, 
               ts: firebase.firestore.FieldValue.serverTimestamp() 
           });
@@ -442,7 +449,7 @@
 
   // Detect Tab Switching
   document.addEventListener("visibilitychange", () => {
-      if (document.hidden && studentId && currentMode === "exam") {
+      if (document.hidden && studentId && (currentMode === "exam" || currentMode === "testing")) {
           logCheatAttempt("⚠️ TAB SWITCHED OR MINIMIZED");
           alert("WARNING: Tab switching is strictly prohibited. The invigilator has been notified.");
       }
@@ -450,7 +457,7 @@
 
   // Detect Split Screen or clicking outside the window
   window.addEventListener("blur", () => {
-      if (studentId && currentMode === "exam") {
+      if (studentId && (currentMode === "exam" || currentMode === "testing")) {
           logCheatAttempt("⚠️ WINDOW LOST FOCUS (Possible Split Screen)");
       }
   });
@@ -463,5 +470,5 @@
       }
   });
 </script>
-</body>
-</html>
+    
+            
