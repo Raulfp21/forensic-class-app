@@ -3,24 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teacher - Exam Control Center</title>
+  <title>Teacher - DSMCH Forensic Control</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <style>
     body { background:#0a0a0a; color:#e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding:20px; margin:0;}
     .btn { padding:12px 20px; border-radius:6px; cursor:pointer; font-weight:bold; border:none; margin:5px; font-size:14px; transition: 0.2s;}
     .btn:hover { opacity:0.8; }
+    
     .panel { background:#111; padding:20px; border-radius:10px; border:1px solid #222; display: flex; flex-direction: column; margin-bottom: 20px;}
     .dashboard-grid { display: flex; gap: 20px; align-items: stretch; }
+    
+    /* Roll Call Grid */
     .roll-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 6px; margin-top: 15px; }
     .roll-box { background: #333; color: #888; text-align: center; padding: 8px 0; border-radius: 4px; font-size: 13px; font-weight: bold; border: 1px solid #444; }
+    
+    /* Status Colors */
     .roll-box.active { background: #27ae60; color: white; border-color: #2ecc71; box-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
     .roll-box.submitted { background: #3498db; color: white; border-color: #2980b9; }
     .roll-box.warning { background: #e74c3c; color: white; border-color: #c0392b; animation: pulse 1.5s infinite; }
     .roll-box.warning-signal { background: #f1c40f; color: black; border-color: white; animation: pulse 0.5s infinite; font-weight: 900; }
+
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-    .cheat-feed { background: #1a0f0f; border: 1px solid #6e2128; flex-grow: 1; overflow-y: auto; border-radius: 8px; padding: 10px; margin-top:15px; min-height: 200px;}
+
+    /* Badge Styles for Separate Lists */
+    .sub-badge { background: #3498db; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block; margin: 4px; border: 1px solid #2980b9; }
+    .out-badge { background: #e74c3c; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block; margin: 4px; border: 1px solid #c0392b; }
+
+    .cheat-feed { background: #1a0f0f; border: 1px solid #6e2128; flex-grow: 1; overflow-y: auto; border-radius: 8px; padding: 10px; margin-top:15px; min-height: 200px; max-height: 300px;}
     .cheat-item { padding: 10px; border-bottom: 1px solid #3d1515; font-size: 13px; color: #fca5a5; }
+    
     table { width:100%; border-collapse:collapse; margin-top:15px; background:#111; font-size: 14px;}
     th, td { padding:12px; text-align:left; border-bottom:1px solid #222; }
   </style>
@@ -34,7 +46,6 @@
         <h3 style="margin-top:0; color:#f39c12;">🔓 Student Access Rescue</h3>
         <input type="number" id="unlock-roll" placeholder="Roll No" style="padding:10px; border-radius:6px; border:1px solid #444; background:#000; color:white; width:100px;">
         <button class="btn" style="background:#f39c12; color:black;" onclick="unlockStudent()">UNLOCK STUDENT</button>
-        <p style="font-size:12px; color:#888; margin:5px 0 0 0;">Use this if a student gets "Access Denied" or "Multiple Login" errors.</p>
     </div>
 
     <div style="display: flex; flex-wrap: wrap;">
@@ -47,16 +58,30 @@
 
 <div class="dashboard-grid">
     <div class="panel" style="flex: 2;">
-        <h3 style="color:#58a6ff; margin:0;">🟢 Live Roll Call (<span id="online-count">0</span> Active)</h3>
+        <h3 style="color:#58a6ff; margin:0;">📊 Master Exam Grid (<span id="online-count">0</span> Active)</h3>
+        <div style="font-size:12px; color:#888; margin:10px 0;">
+            Gray: Offline | Green: In Exam | <span style="color:#f1c40f;">Yellow: Signaling</span> | <span style="color:#e74c3c;">Red: Tab Switched</span> | <span style="color:#3498db;">Blue: Submitted</span>
+        </div>
         <div id="master-roll-grid" class="roll-grid"></div>
     </div>
 
     <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
-        <div class="panel" style="border-color:#e74c3c; background: #2c0b0e;">
-            <h3 style="color:#ff5e5e; margin:0;">⚠️ Left Exam Tab (<span id="out-count">0</span>)</h3>
-            <div id="out-list" style="margin-top:10px;"></div>
+        
+        <div class="panel" style="border-color:#3498db; background: #0b162c;">
+            <h3 style="color:#3498db; margin:0;">✅ Submitted Students (<span id="submit-count">0</span>)</h3>
+            <div id="submit-list" style="margin-top:15px; display: flex; flex-wrap: wrap;">
+                <span style="color:#566573; font-size:13px; font-style:italic;">No submissions yet.</span>
+            </div>
         </div>
-        <div class="panel" style="border-color:#6e2128; flex-grow: 1;">
+
+        <div class="panel" style="border-color:#e74c3c; background: #2c0b0e;">
+            <h3 style="color:#ff5e5e; margin:0;">⚠️ Currently Out of App (<span id="out-count">0</span>)</h3>
+            <div id="out-list" style="margin-top:15px; display: flex; flex-wrap: wrap;">
+                <span style="color:#888; font-size:13px; font-style:italic;">All students are focused.</span>
+            </div>
+        </div>
+
+        <div class="panel" style="border-color:#6e2128;">
             <h3 style="color:#f78166; margin:0;">🚨 Historical Cheat Log</h3>
             <div id="cheat-feed-container" class="cheat-feed"></div>
         </div>
@@ -64,10 +89,10 @@
 </div>
 
 <div class="panel">
-    <h2 style="color:#27ae60; margin-top:0;">📊 Final Results</h2>
-    <button class="btn" style="background:#f39c12; color:black;" onclick="exportResults()">Download CSV</button>
+    <h2 style="color:#27ae60; margin-top:0;">📋 Detailed Scores</h2>
+    <button class="btn" style="background:#f39c12; color:black;" onclick="exportResults()">Download CSV Report</button>
     <table>
-        <thead><tr><th>Student ID</th><th>Score</th><th>Submitted Time</th></tr></thead>
+        <thead><tr><th>Student Identity</th><th>Score</th><th>Finish Time</th></tr></thead>
         <tbody id="resBody"></tbody>
     </table>
 </div>
@@ -84,74 +109,88 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Initialize Grid
+  // 1. Build Grid
   let gridHtml = '';
   for(let i = 1; i <= 250; i++) { gridHtml += `<div id="roll-${i}" class="roll-box">${i}</div>`; }
   document.getElementById('master-roll-grid').innerHTML = gridHtml;
 
-  // Manual Unlock Function (CRITICAL: This must be inside the script)
+  // 2. Control Functions
   async function unlockStudent() {
-      const rollInput = document.getElementById('unlock-roll');
-      const roll = rollInput.value.trim();
-      if(!roll) { alert("Please enter a Roll Number first."); return; }
-      
-      if(confirm(`Unlock Roll Number ${roll}?`)) {
-          try {
-              // Delete their presence lock from database
-              await db.collection("presence").doc(roll).delete();
-              alert(`SUCCESS: Roll ${roll} unlocked. Tell the student to REFRESH their page now.`);
-              rollInput.value = "";
-          } catch (e) { 
-              console.error("Unlock Error:", e);
-              alert("Error connecting to database. Please check your internet.");
-          }
+      const roll = document.getElementById('unlock-roll').value.trim();
+      if(!roll || confirm(`Clear server lock for Roll Number ${roll}?`)) {
+          await db.collection("presence").doc(roll).delete();
+          alert("Unlocked Roll " + roll);
+          document.getElementById('unlock-roll').value = "";
       }
   }
 
   function setMode(m) {
-      if(confirm("Change mode to: " + m.toUpperCase() + "?")) {
+      if(confirm("Switch Class to " + m.toUpperCase() + "?")) {
           db.collection("slides").doc("current").update({ status: m });
       }
   }
 
-  // Real-time Listeners
+  // 3. Presence Listener (Main Logic)
   db.collection("presence").onSnapshot(snap => {
-      let activeCount = 0; let outCount = 0; let outHtml = '';
+      let activeCount = 0; let outCount = 0; let submitCount = 0;
+      let outHtml = ''; let submitHtml = '';
+
+      // Reset Grid Visuals
       for(let i = 1; i <= 250; i++) { 
           let box = document.getElementById(`roll-${i}`); 
           if(box) { box.className = "roll-box"; box.innerText = i; }
       }
+
       snap.forEach(doc => {
           const d = doc.data();
           const box = document.getElementById(`roll-${d.roll}`);
           if(box) {
-              if (d.status === "Signaling") { box.className = "roll-box warning-signal"; box.innerText = d.roll + " (1)"; }
-              else if(d.status === "Taking Exam") { box.className = "roll-box active"; activeCount++; }
-              else if(d.status === "Submitted") { box.className = "roll-box submitted"; }
-              else if(d.status === "Out of App") { box.className = "roll-box warning"; outCount++; outHtml += `<span style='color:#ff5e5e; font-weight:bold;'>${d.roll}</span> `; }
+              if (d.status === "Signaling") {
+                  box.className = "roll-box warning-signal";
+                  box.innerText = d.roll + " (1)";
+              } else if(d.status === "Taking Exam") {
+                  box.className = "roll-box active";
+                  activeCount++;
+              } else if (d.status === "Submitted") {
+                  box.className = "roll-box submitted";
+                  submitCount++;
+                  submitHtml += `<div class="sub-badge">Roll ${d.roll}</div>`;
+              } else if (d.status === "Out of App") {
+                  box.className = "roll-box warning";
+                  outCount++;
+                  outHtml += `<div class="out-badge">Roll ${d.roll}</div>`;
+              }
           }
       });
+
+      // Update Counters
       document.getElementById('online-count').innerText = activeCount;
       document.getElementById('out-count').innerText = outCount;
-      document.getElementById('out-list').innerHTML = outHtml || "None";
+      document.getElementById('submit-count').innerText = submitCount;
+
+      // Update Separate Lists
+      document.getElementById('submit-list').innerHTML = submitHtml || `<span style="color:#566573; font-size:13px; font-style:italic;">No submissions yet.</span>`;
+      document.getElementById('out-list').innerHTML = outHtml || `<span style="color:#888; font-size:13px; font-style:italic;">All students are focused.</span>`;
   });
 
+  // 4. Cheat Alerts Log
   db.collection("cheat_alerts").orderBy("ts", "desc").limit(50).onSnapshot(snap => {
       let h = '';
       snap.forEach(doc => {
           const d = doc.data();
-          const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "";
-          h += `<div class="cheat-item">[${t}] <b>Roll ${d.roll}</b>: ${d.event}</div>`;
+          const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "New";
+          h += `<div class="cheat-item"><b>[${t}] Roll ${d.roll}</b>: ${d.event}</div>`;
       });
       document.getElementById('cheat-feed-container').innerHTML = h;
   });
 
+  // 5. Results Table
   let resultData = [];
   db.collection("exam_results").orderBy("ts", "desc").onSnapshot(snap => {
       let h = ''; resultData = [];
       snap.forEach(doc => {
           const d = doc.data();
-          const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "";
+          const t = d.ts ? d.ts.toDate().toLocaleTimeString() : "-";
           h += `<tr><td>${d.student}</td><td style="color:#27ae60; font-weight:bold;">${d.score}/100</td><td>${t}</td></tr>`;
           resultData.push({ id: d.student, score: d.score, time: t });
       });
@@ -159,11 +198,11 @@
   });
 
   function exportResults() {
-      let csv = "Student,Score,Time\n";
+      let csv = "Student Identity,Score,Submitted Time\n";
       resultData.forEach(r => { csv += `"${r.id}","${r.score}","${r.time}"\n`; });
       const link = document.createElement("a");
       link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-      link.download = `Exam_Results.csv`;
+      link.download = `Forensic_Exam_Report.csv`;
       link.click();
   }
 </script>
