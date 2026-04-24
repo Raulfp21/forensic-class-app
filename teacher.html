@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher - Exam Control Center</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -9,17 +11,23 @@
     .btn { padding:12px 20px; border-radius:6px; cursor:pointer; font-weight:bold; border:none; margin:5px; font-size:14px; transition: 0.2s;}
     .btn:hover { opacity:0.8; }
     
-    .dashboard-grid { display: flex; gap: 20px; margin-top: 20px; }
-    .panel { background:#111; padding:20px; border-radius:10px; border:1px solid #222; }
+    .dashboard-grid { display: flex; gap: 20px; margin-top: 20px; align-items: stretch; }
+    .panel { background:#111; padding:20px; border-radius:10px; border:1px solid #222; display: flex; flex-direction: column; }
     
     /* Roll Call Grid */
-    .roll-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 6px; margin-top: 15px; }
-    .roll-box { background: #333; color: #888; text-align: center; padding: 8px 0; border-radius: 4px; font-size: 13px; font-weight: bold; border: 1px solid #444; }
+    .roll-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)); gap: 6px; margin-top: 15px; }
+    .roll-box { background: #333; color: #888; text-align: center; padding: 8px 0; border-radius: 4px; font-size: 13px; font-weight: bold; border: 1px solid #444; transition: 0.3s; }
     .roll-box.active { background: #27ae60; color: white; border-color: #2ecc71; box-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
     .roll-box.submitted { background: #3498db; color: white; border-color: #2980b9; }
+    .roll-box.warning { background: #e74c3c; color: white; border-color: #c0392b; animation: pulse 1s infinite; } /* Flashing red for cheaters */
     
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+    /* Out of App Badge */
+    .out-badge { background: #e74c3c; color: white; padding: 10px 15px; border-radius: 6px; font-weight: bold; font-size: 16px; border: 1px solid #c0392b; box-shadow: 0 0 10px rgba(231,76,60,0.6); display: inline-block;}
+
     /* Cheat Feed */
-    .cheat-feed { background: #1a0f0f; border: 1px solid #6e2128; height: 350px; overflow-y: auto; border-radius: 8px; padding: 10px; margin-top:15px;}
+    .cheat-feed { background: #1a0f0f; border: 1px solid #6e2128; flex-grow: 1; overflow-y: auto; border-radius: 8px; padding: 10px; margin-top:15px; min-height: 200px;}
     .cheat-item { padding: 10px; border-bottom: 1px solid #3d1515; font-size: 13px; color: #fca5a5; }
     .cheat-item span.time { color: #888; font-family: monospace; margin-right: 10px; }
     .cheat-item span.roll { color: #ff5e5e; font-weight: bold; margin-right: 10px; }
@@ -33,10 +41,12 @@
 
 <h1>⚗ DSMCH Invigilator Dashboard</h1>
 <div class="panel">
-    <button class="btn" style="background:#2980b9; color:white;" onclick="setMode('live')">📺 START LECTURE (Slides)</button>
-    <button class="btn" style="background:#8e44ad; color:white;" onclick="setMode('testing')">🛠 START FACULTY TESTING</button>
-    <button class="btn" style="background:#27ae60; color:white; border: 2px solid white;" onclick="setMode('exam')">📝 START STUDENT EXAM (100 MCQ)</button>
-    <button class="btn" style="background:#c0392b; color:white;" onclick="setMode('locked')">🔒 LOCK APP / END EXAM</button>
+    <div style="display: flex; flex-wrap: wrap;">
+        <button class="btn" style="background:#2980b9; color:white;" onclick="setMode('live')">📺 START LECTURE</button>
+        <button class="btn" style="background:#8e44ad; color:white;" onclick="setMode('testing')">🛠 START FACULTY TESTING</button>
+        <button class="btn" style="background:#27ae60; color:white; border: 2px solid white;" onclick="setMode('exam')">📝 START STUDENT EXAM</button>
+        <button class="btn" style="background:#c0392b; color:white;" onclick="setMode('locked')">🔒 LOCK APP</button>
+    </div>
 </div>
 
 <div class="dashboard-grid">
@@ -45,29 +55,42 @@
         <div style="font-size:12px; color:#888; margin-top:5px;">
             <span style="color:#888;">Gray = Offline</span> | 
             <span style="color:#27ae60;">Green = Taking Exam</span> | 
+            <span style="color:#e74c3c;">Red = Left App</span> | 
             <span style="color:#3498db;">Blue = Submitted</span>
         </div>
         <div id="master-roll-grid" class="roll-grid"></div>
     </div>
 
-    <div class="panel" style="flex: 1; border-color:#6e2128;">
-        <h3 style="color:#f78166; margin:0;">🚨 Live Anti-Cheat Alerts</h3>
-        <div style="font-size:12px; color:#888; margin-top:5px;">Monitoring tab switches & window focus</div>
-        <div id="cheat-feed-container" class="cheat-feed"></div>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+        
+        <div class="panel" style="border-color:#e74c3c; background: #2c0b0e;">
+            <h3 style="color:#ff5e5e; margin:0;">⚠️ Currently Out of App (<span id="out-count">0</span>)</h3>
+            <div style="font-size:12px; color:#fca5a5; margin-top:5px;">Students who have minimized or left the exam right now.</div>
+            <div id="out-list" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; min-height: 40px;">
+                <span style="color:#888; font-size:13px; font-style:italic;">All active students are in the app.</span>
+            </div>
+        </div>
+
+        <div class="panel" style="border-color:#6e2128; flex-grow: 1;">
+            <h3 style="color:#f78166; margin:0;">🚨 Historical Cheat Log</h3>
+            <div style="font-size:12px; color:#888; margin-top:5px;">Permanent log of all offenses</div>
+            <div id="cheat-feed-container" class="cheat-feed"></div>
+        </div>
+
     </div>
 </div>
 
 <div class="panel" style="margin-top: 20px;">
     <h2 style="color:#27ae60; margin-top:0;">📊 Final Exam Results</h2>
-    <button class="btn" style="background:#f39c12; color:black; margin-bottom:10px;" onclick="exportResults()">Download CSV</button>
+    <button class="btn" style="background:#f39c12; color:black; margin-bottom:10px; align-self: flex-start;" onclick="exportResults()">Download CSV</button>
     <table id="resTable">
-        <thead><tr><th>Student/Faculty ID</th><th>Score</th><th>Submitted Time</th></tr></thead>
+        <thead><tr><th>Student / Faculty ID</th><th>Score</th><th>Submitted Time</th></tr></thead>
         <tbody id="resBody"></tbody>
     </table>
 </div>
 
 <script>
-  // Firebase Config
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyA8IsW3dvtz4oFnGF3NOCHeNVGQsXn6h-c",
     authDomain: "forensic-class-app.firebaseapp.com",
@@ -79,30 +102,38 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // 1. Build the 1-250 Grid
+  // 1. Build the 1-250 Grid UI
   let gridHtml = '';
   for(let i = 1; i <= 250; i++) {
       gridHtml += `<div id="roll-${i}" class="roll-box">${i}</div>`;
   }
   document.getElementById('master-roll-grid').innerHTML = gridHtml;
 
-  // 2. Control App State
+  // 2. Control App State across all Student Devices
   function setMode(m) {
       if(confirm("Change class mode to: " + m.toUpperCase() + "?")) {
           db.collection("slides").doc("current").update({ status: m });
-          // If starting exam, clear old presence data for a fresh start
+          
           if(m === 'exam') {
-              if(confirm("Do you want to clear the Roll Call grid and Cheat Alerts for this new session?")) {
-                  // Note: Deleting collections from client is restricted, but you can visually clear the UI
+              if(confirm("Do you want to clear the Cheat Alerts display for this new session?")) {
                   document.getElementById('cheat-feed-container').innerHTML = "";
               }
           }
       }
   }
 
-  // 3. Listen to Live Presence
+  // 3. Listen to Live Student Presence updates
   db.collection("presence").onSnapshot(snap => {
       let activeCount = 0;
+      let outCount = 0;
+      let outListHtml = '';
+
+      // Reset all boxes first
+      for(let i = 1; i <= 250; i++) {
+          let box = document.getElementById(`roll-${i}`);
+          if(box) box.className = "roll-box";
+      }
+
       snap.forEach(doc => {
           const d = doc.data();
           const box = document.getElementById(`roll-${d.roll}`);
@@ -112,13 +143,25 @@
                   activeCount++;
               } else if (d.status === "Submitted") {
                   box.className = "roll-box submitted";
+              } else if (d.status === "Out of App") {
+                  box.className = "roll-box warning"; // Flashing red
+                  outCount++;
+                  outListHtml += `<div class="out-badge">Roll ${d.roll}</div>`;
               }
           }
       });
+      
       document.getElementById('online-count').innerText = activeCount;
+      document.getElementById('out-count').innerText = outCount;
+      
+      if(outCount > 0) {
+          document.getElementById('out-list').innerHTML = outListHtml;
+      } else {
+          document.getElementById('out-list').innerHTML = `<span style="color:#888; font-size:13px; font-style:italic;">All active students are in the app.</span>`;
+      }
   });
 
-  // 4. Listen to Anti-Cheat Alerts
+  // 4. Listen to Anti-Cheat Alerts (Historical Log)
   db.collection("cheat_alerts").orderBy("ts", "desc").limit(50).onSnapshot(snap => {
       let feedHtml = '';
       snap.forEach(doc => {
@@ -135,7 +178,7 @@
       document.getElementById('cheat-feed-container').innerHTML = feedHtml;
   });
 
-  // 5. Listen to Final Results
+  // 5. Listen to Final Formative Assessment Results
   let resultData = [];
   db.collection("exam_results").orderBy("ts", "desc").onSnapshot(snap => {
       let h = '';
@@ -149,13 +192,14 @@
       document.getElementById('resBody').innerHTML = h;
   });
 
-  // 6. Export Results
+  // 6. Export Results to CSV functionality
   function exportResults() {
+      if(resultData.length === 0) { alert("No results to export yet."); return; }
       let csv = "data:text/csv;charset=utf-8,Student Identity,Score,Time\n";
       resultData.forEach(r => { csv += `"${r.student}","${r.score}","${r.time}"\n`; });
       const link = document.createElement("a");
       link.href = encodeURI(csv);
-      link.download = `Forensic_Exam_Results.csv`;
+      link.download = `Formative_Assessment_Results.csv`;
       link.click();
   }
 </script>
