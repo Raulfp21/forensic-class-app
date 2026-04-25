@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DSMCH Forensic Portal - Secure Session</title>
+  
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <script src="config.js"></script>
+  <script src="topics.js"></script>
+
+  <style>
+    /* SHIELD 1: HARDWARE LEVEL CSS LOCKS */
+    html, body { 
+        margin:0; 
+        padding:0;
+        overscroll-behavior-y: contain; /* Prevents pull-to-refresh */
+        overscroll-behavior-x: none;    /* Prevents swipe-back gestures */
+        overflow-x: hidden;
+        background:#0f172a; 
+        color:white;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        user-select: none;              /* Prevents copying text */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .container { max-width:850px; width:94%; margin: 20px auto; background:#1e293b; padding:25px; border-radius:15px; border: 1px solid #334155; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+    
+    /* UI ELEMENTS */
+    input { width:100%; padding:14px; margin:10px 0; border-radius:8px; border:1px solid #334155; background:#0f172a; color:white; box-sizing:border-box; font-size:16px;}
+    .btn { background:#3498db; color:white; border:none; padding:15px; border-radius:8px; cursor:pointer; font-weight:bold; width:100%; font-size:16px; margin-top:10px; transition: 0.2s;}
+    .btn:active { transform: scale(0.98); opacity: 0.8; }
+    
+    .timer-bar { background:#e74c3c; padding:12px; border-radius:8px; text-align:center; font-weight:bold; margin-bottom:15px; font-size: 1.1em;}
+    .option-label { display:block; padding:16px; margin:10px 0; background:#334155; border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;}
+    .option-label:hover { border-color:#58a6ff; }
+    
+    .q-box { padding:12px 0; text-align:center; border-radius:6px; cursor:pointer; font-weight:bold; background:#475569; font-size:14px;}
+    .q-box.answered { background:#27ae60;}
+    .q-box.flagged { background:#e67e22; border:2px solid white;}
+    
+    .review-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap:10px; margin-top:20px;}
+    .slide-content { background:#0f172a; padding:25px; border-radius:12px; border: 1px solid #334155; min-height:250px; font-size:1.25em; line-height:1.6; }
+
+    #exam-ui, #review-ui, #result-ui, #auth-ui, #lecture-ui { display:none; }
+    
+    .alert-banner { background: #3b0000; color: #ff6b6b; padding: 10px; border-radius: 8px; font-size: 13px; text-align: center; margin-bottom: 15px; border: 1px solid #5a0000;}
+  </style>
+</head>
+<body oncontextmenu="return false;"> <div id="app" class="container">
+    
+    <div id="auth-ui">
+        <h2 style="text-align:center; color:#58a6ff; margin-bottom:5px;">DSMCH Forensic Portal</h2>
+        <p style="text-align:center; color:#8b949e; font-size:13px; margin-top:0;">Formative Assessment & Live Class</p>
+        
+        <div id="status-tag" style="text-align:center; padding:6px; border-radius:4px; font-size:12px; margin-bottom:20px; background:#334155; font-weight:bold;">CONNECTING...</div>
+        
+        <div id="login-form">
+            <input type="number" id="roll-in" placeholder="12-Digit Register Number">
+            <input type="text" id="name-in" placeholder="Full Name (EXACTLY as in Records)">
+            <button class="btn" onclick="tryStudentLogin()">Enter Portal</button>
+            <div style="margin-top:20px; font-size:11px; color:#64748b; line-height:1.4;">
+                • 2024 Batch: Enter your Reg No from the April list.<br>
+                • Security: This session will be bound to this device hardware.
+            </div>
+        </div>
+    </div>
+
+    <div id="lecture-ui">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 id="lec-title" style="color:#58a6ff; margin:0;">Live Presentation</h3>
+            <span id="student-badge" style="font-size:11px; color:#888;"></span>
+        </div>
+        <div id="slide-box" class="slide-content">Initializing lecture stream...</div>
+    </div>
+
+    <div id="exam-ui">
+        <div class="timer-bar" id="t-clock">Time Remaining: 60s</div>
+        <div id="q-header" style="color:#8b949e; font-weight:bold; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;"></div>
+        <div id="q-content" style="font-size:1.2em; margin-bottom:20px; font-weight:500;"></div>
+        <div id="opt-container"></div>
+        <div style="display:flex; justify-content:space-between; margin-top:30px; align-items:center;">
+            <label style="color:#e67e22; cursor:pointer; font-weight:bold; display:flex; align-items:center;">
+                <input type="checkbox" id="f-check" style="transform:scale(1.3); margin-right:10px;"> Flag for Review
+            </label>
+            <button id="next-btn" onclick="saveAndNext()" style="background:#58a6ff; color:white; border:none; padding:12px 35px; border-radius:8px; font-weight:bold; font-size:16px;">Next Question</button>
+        </div>
+    </div>
+
+    <div id="review-ui">
+        <h2 style="margin-top:0;">Final Review</h2>
+        <div class="timer-bar" id="r-clock" style="background:#8e44ad;">Grace Period</div>
+        <div id="grid-wrap" class="review-grid"></div>
+        <button class="btn" style="background:#27ae60; margin-top:35px; font-size:18px;" onclick="finalSubmission()">Submit My Paper</button>
+    </div>
+
+    <div id="result-ui" style="text-align:center;">
+        <h2 style="color:#58a6ff;">Assessment Completed</h2>
+        <div style="background:#0f172a; padding:20px; border-radius:15px; border:1px solid #334155; display:inline-block; margin:20px 0;">
+            <div style="font-size:14px; color:#8b949e; text-transform:uppercase;">Your Score</div>
+            <h1 id="s-total" style="font-size:4.5em; color:#27ae60; margin:0;"></h1>
+        </div>
+        <div id="correction-feed" style="text-align:left; background:#0f172a; padding:15px; border-radius:10px; margin-top:20px; max-height:350px; overflow-y:auto; border:1px solid #334155; font-size:14px;"></div>
+    </div>
+
+</div>
+
+<script>
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 1. SHIELD: DEVICE FINGERPRINTING
+  let deviceId = localStorage.getItem("dsmch_device_id");
+  if (!deviceId) {
+      deviceId = "DEV_" + Math.random().toString(36).substring(2, 15).toUpperCase();
+      localStorage.setItem("dsmch_device_id", deviceId);
+  }
+
+  let studentId = "", studentReg = "", qIdx = 0, uAnswers = [], flags = [], personalExam = [], currentMode = "";
+  let tInterval, graceInterval, timeLeft = 60, graceTime = 300;
+
+  // 2. SHIELD: REFRESH/SWIPE DIALOG
+  window.addEventListener('beforeunload', (e) => {
+    if (studentId && document.getElementById('result-ui').style.display !== 'block') {
+      db.collection("cheat_alerts").add({ 
+          roll: studentReg, 
+          event: "🔄 EXIT/REFRESH DIALOG TRIGGERED", 
+          ts: firebase.firestore.FieldValue.serverTimestamp() 
+      });
+      e.preventDefault(); e.returnValue = ''; // Trigger browser popup
+    }
+  });
+
+  // 3. LISTEN TO TEACHER CONTROLS
+  db.collection("slides").doc("current").onSnapshot(doc => {
+      if(!doc.exists) return;
+      const data = doc.data(); 
+      currentMode = data.status;
+      
+      const tag = document.getElementById('status-tag');
+      if (!studentId) {
+          tag.innerText = (currentMode === "live" ? "LECTURE READY" : (currentMode === "exam" ? "EXAM ACTIVE" : "WAITING FOR INSTRUCTOR..."));
+      } else {
+          handleUINavigation(data);
+      }
+  });
+
+  function handleUINavigation(data) {
+      if (currentMode === "live") {
+          hideAll();
+          document.getElementById('lecture-ui').style.display = 'block';
+          document.getElementById('slide-box').innerHTML = data.content || "Connecting to stream...";
+      } else if (currentMode === "exam" && document.getElementById('result-ui').style.display !== 'block') {
+          hideAll();
+          startExam();
+      } else if (currentMode === "locked") {
+          hideAll();
+          document.getElementById('auth-ui').style.display = 'block';
+          document.getElementById('status-tag').innerText = "SESSION LOCKED";
+      }
+  }
+
+  function hideAll() {
+      ['auth-ui','lecture-ui','exam-ui','review-ui'].forEach(id => document.getElementById(id).style.display = 'none');
+  }
+
+  // 4. AUTHENTICATION & HARDWARE BINDING
+  async function tryStudentLogin() {
+      const reg = document.getElementById('roll-in').value.trim();
+      const n = document.getElementById('name-in').value.toUpperCase().trim();
+      
+      if(studentsAll[reg] === n) {
+          // Device Binding Check
+          const bindRef = db.collection("device_bindings").doc(reg);
+          const bindDoc = await bindRef.get();
+          
+          if (bindDoc.exists && bindDoc.data().deviceId !== deviceId) {
+              alert("❌ ACCESS DENIED: This Register Number is already bound to another phone. Contact faculty for a reset.");
+              return;
+          } else if (!bindDoc.exists) {
+              await bindRef.set({ deviceId: deviceId, name: n, ts: firebase.firestore.FieldValue.serverTimestamp() });
+          }
+
+          // Set Global Session
+          studentReg = reg;
+          studentId = `${reg} - ${n}`;
+          document.getElementById('auth-ui').style.display = 'none';
+          document.getElementById('student-badge').innerText = studentId;
+
+          // Mark Presence
+          db.collection("presence").doc(reg).set({ 
+              roll: reg, 
+              name: n, 
+              status: "Active", 
+              ts: firebase.firestore.FieldValue.serverTimestamp() 
+          });
+      } else {
+          alert("❌ MISMATCH: Register Number or Name does not match our records.");
+      }
+  }
+
+  // 5. DYNAMIC EXAM ENGINE
+  function startExam() {
+      if (!quizMaster || quizMaster.length === 0) { 
+          document.getElementById('slide-box').innerHTML = "Waiting for exam questions to be released..."; 
+          return; 
+      }
+      document.getElementById('exam-ui').style.display = 'block';
+      
+      const p = localStorage.getItem("dsmch_p");
+      if(p) {
+          const d = JSON.parse(p); personalExam = d.ex; uAnswers = d.ans; flags = d.flg; qIdx = d.idx;
+      } else {
+          // Shuffle Questions & Options
+          personalExam = quizMaster.sort(() => Math.random() - 0.5).map(i => {
+              const correctStr = i.o[i.c], sOptions = [...i.o].sort(() => Math.random() - 0.5);
+              return { q: i.q.replace(/^\d+\.\s*/, ''), o: sOptions, c: sOptions.indexOf(correctStr) };
+          });
+          uAnswers = new Array(quizMaster.length).fill(null); 
+          flags = new Array(quizMaster.length).fill(false);
+      }
+      displayQ();
+  }
+
+  function displayQ() {
+      clearInterval(tInterval);
+      const q = personalExam[qIdx];
+      document.getElementById('q-header').innerText = `Question ${qIdx + 1} / ${personalExam.length}`;
+      document.getElementById('q-content').innerText = q.q;
+      document.getElementById('f-check').checked = flags[qIdx];
+      
+      let h = '';
+      q.o.forEach((o, i) => {
+          h += `<label class="option-label"><input type="radio" name="o" value="${i}" ${uAnswers[qIdx]===i?'checked':''}> ${o}</label>`;
+      });
+      document.getElementById('opt-container').innerHTML = h;
+      
+      timeLeft = 60;
+      tInterval = setInterval(() => {
+          timeLeft--;
+          document.getElementById('t-clock').innerText = `Time Remaining: ${timeLeft}s`;
+          if(timeLeft <= 0) saveAndNext();
+      }, 1000);
+  }
+
+  function saveAndNext() {
+      const sel = document.querySelector('input[name="o"]:checked');
+      if(sel) uAnswers[qIdx] = parseInt(sel.value);
+      flags[qIdx] = document.getElementById('f-check').checked;
+      
+      // Auto-save progress
+      localStorage.setItem("dsmch_p", JSON.stringify({ex: personalExam, ans: uAnswers, flg: flags, idx: qIdx}));
+      
+      if(qIdx < personalExam.length - 1) {
+          qIdx++; displayQ();
+      } else {
+          renderReview();
+      }
+  }
+
+  function renderReview() {
+      clearInterval(tInterval);
+      hideAll();
+      document.getElementById('review-ui').style.display = 'block';
+      let h = '';
+      for(let i=0; i<personalExam.length; i++) {
+          h += `<div class="q-box ${flags[i]?'flagged':(uAnswers[i]!==null?'answered':'')}" onclick="jump(${i})">${i+1}</div>`;
+      }
+      document.getElementById('grid-wrap').innerHTML = h;
+      if(!graceInterval) {
+          graceInterval = setInterval(() => {
+              graceTime--;
+              const m = Math.floor(graceTime/60), s = graceTime%60;
+              document.getElementById('r-clock').innerText = `Grace Period: ${m}:${s.toString().padStart(2,'0')}`;
+              if(graceTime <= 0) finalSubmission();
+          }, 1000);
+      }
+  }
+
+  function jump(i) {
+      qIdx = i; document.getElementById('review-ui').style.display = 'none';
+      document.getElementById('exam-ui').style.display = 'block'; displayQ();
+  }
+
+  async function finalSubmission() {
+      if(graceTime > 0 && !confirm("Are you sure you want to finish and submit?")) return;
+      
+      clearInterval(graceInterval);
+      let score = 0;
+      uAnswers.forEach((ans, i) => { if(ans === personalExam[i].c) score++; });
+      
+      // Upload results
+      await db.collection("exam_results").add({ 
+          student: studentId, 
+          score: score, 
+          total: personalExam.length, 
+          ts: firebase.firestore.FieldValue.serverTimestamp() 
+      });
+      
+      await db.collection("presence").doc(studentReg).update({ status: "Submitted" });
+      
+      localStorage.removeItem("dsmch_p");
+      hideAll();
+      document.getElementById('result-ui').style.display = 'block';
+      document.getElementById('s-total').innerText = `${score} / ${personalExam.length}`;
+      
+      // Correction key
+      let keyHtml = "<h3>Key & Review:</h3>";
+      personalExam.forEach((item, i) => {
+          const isCorrect = uAnswers[i] === item.c;
+          keyHtml += `<div style="color:${isCorrect?'#7ee787':'#f78166'}; margin-bottom:12px; border-bottom:1px solid #334155; padding-bottom:5px;">
+                        <strong>Q${i+1}: ${item.q}</strong><br>
+                        Correct: ${item.o[item.c]}
+                      </div>`;
+      });
+      document.getElementById('correction-feed').innerHTML = keyHtml;
+  }
+
+  // 6. SHIELD: TAB SWITCH MONITORING
+  document.addEventListener("visibilitychange", () => {
+      if (document.getElementById('result-ui').style.display === 'block') return;
+      if(studentId) {
+          if (document.hidden) {
+              db.collection("presence").doc(studentReg).update({ status: "Out of App" });
+              db.collection("cheat_alerts").add({ 
+                  roll: studentReg, 
+                  event: "🚨 TAB SWITCH/MINIMIZED", 
+                  ts: firebase.firestore.FieldValue.serverTimestamp() 
+              });
+          } else {
+              db.collection("presence").doc(studentReg).update({ status: "Active" });
+          }
+      }
+  });
+</script>
+</body>
+</html>
