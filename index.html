@@ -67,6 +67,39 @@
 <script>
   firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
   let uid = "", curS, step = 1, curVol = 0, selRow = "", rIdx = 0, myAns = {org:[], chem:"", bld:"", vol:0, docs:[], ctrl:false};
+  // Add this logic inside your index.html Firebase Listener
+db.collection("slides").doc("current").onSnapshot(d => {
+    const m = d.data().status;
+    const reg = uid; // The logged-in ID
+
+    let isAllowed = false;
+
+    if (m === "idle" || m === "locked") {
+        isAllowed = false;
+    } else if (m === "testing") {
+        // Faculty Gate: Only allow IDs 1-10
+        if (parseInt(reg) >= 1 && parseInt(reg) <= 10) isAllowed = true;
+    } else if (m.includes("2024")) {
+        // 2024 Gate: Only allow IDs starting with 520024
+        if (reg.startsWith("520024")) isAllowed = true;
+    } else if (m.includes("2023")) {
+        // 2023 Gate: Allow 520023, 520022 and the odd 5218 ID
+        if (reg.startsWith("520023") || reg.startsWith("520022") || reg === "521823525") isAllowed = true;
+    }
+
+    if (!isAllowed && m !== "idle" && m !== "locked") {
+        alert("ACCESS DENIED: This session is currently active for another batch only.");
+        document.getElementById('relay-ui').classList.remove('active');
+        document.getElementById('sim-ui').classList.remove('active');
+    } else {
+        // Show correct UI based on mode
+        document.getElementById('relay-ui').classList.toggle('active', m.includes('relay'));
+        document.getElementById('sim-ui').classList.toggle('active', m.includes('exam') || m === 'testing');
+        
+        if (m.includes('relay')) initRows(); 
+        else if (m.includes('exam') || m === 'testing') initSim();
+    }
+});
 
   async function login() {
       const r = document.getElementById('reg').value, n = document.getElementById('name').value.toUpperCase().trim();
