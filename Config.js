@@ -8,6 +8,18 @@ const firebaseConfig = {
   messagingSenderId: "905219571923",
   appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
 };
+const studentsAll = {
+  // FACULTY TESTING ACCOUNTS
+  "1": "FACULTY ONE",
+  "2": "FACULTY TWO",
+  "3": "FACULTY THREE",
+  "4": "FACULTY FOUR",
+  "5": "FACULTY FIVE",
+  "6": "FACULTY SIX",
+  "7": "FACULTY SEVEN",
+  "8": "FACULTY EIGHT",
+  "9": "FACULTY NINE",
+  "10": "FACULTY TEN",
 
 // Consolidated Master List (2023 & 2024 Batches)
 const studentsAll = {
