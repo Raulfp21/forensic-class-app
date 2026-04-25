@@ -1,64 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><title>DSMCH Instructor - Skills Matrix</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSMCH Instructor Control - Skills Matrix</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="config.js"></script><script src="topics.js"></script>
+  <script src="config.js"></script>
+  <script src="topics.js"></script>
   <style>
-    body { background:#0a0a0a; color:#e0e0e0; font-family: sans-serif; padding:20px; }
-    .panel { background:#111; padding:20px; border-radius:12px; border:1px solid #333; margin-bottom:20px; }
-    .btn { padding:12px 20px; border-radius:8px; cursor:pointer; font-weight:bold; border:none; margin:5px; }
-    .btn-blue { background:#58a6ff; color:black; }
-    .btn-green { background:#238636; color:white; }
-    .btn-red { background:#da3633; color:white; }
-    .roll-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap:8px; margin-top:15px; }
-    .roll-box { background:#222; text-align:center; padding:10px 0; border-radius:6px; font-size:11px; border:1px solid #333; }
-    .roll-box.active { background:#238636; color:white; }
-    .roll-box.warning { background:#da3633; color:white; animation:pulse 1s infinite; }
-    @keyframes pulse { 50% { opacity:0.5; } }
-    table { width:100%; border-collapse:collapse; margin-top:20px; }
-    th, td { padding:12px; text-align:left; border-bottom:1px solid #333; }
-    .error-tag { background:#3b110e; color:#ff7b72; padding:2px 6px; border-radius:4px; font-size:11px; margin-right:4px; }
+    :root { --bg: #0a0a0a; --panel: #111; --accent: #58a6ff; --success: #238636; --danger: #da3633; --muted: #8b949e; }
+    body { background: var(--bg); color: #e6edf3; font-family: 'Segoe UI', system-ui, sans-serif; padding: 20px; margin: 0; }
+    .panel { background: var(--panel); padding: 20px; border-radius: 12px; border: 1px solid #30363d; margin-bottom: 20px; }
+    
+    /* Control Buttons */
+    .btn { padding: 12px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; transition: 0.2s; margin: 5px; font-size: 13px; }
+    .btn-blue { background: var(--accent); color: #0d1117; }
+    .btn-green { background: var(--success); color: white; }
+    .btn-red { background: var(--danger); color: white; }
+    .btn-gray { background: #30363d; color: white; }
+
+    /* Seat Grid */
+    .roll-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 8px; margin-top: 15px; }
+    .seat { background: #21262d; text-align: center; padding: 10px 0; border-radius: 6px; font-size: 11px; color: var(--muted); border: 1px solid #30363d; transition: 0.3s; }
+    .seat.active { background: #1f6feb; color: white; border-color: #58a6ff; box-shadow: 0 0 10px rgba(88,166,255,0.3); }
+    .seat.warning { background: var(--danger); color: white; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0.4; } }
+
+    /* Tables & Lists */
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #30363d; }
+    th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+    .error-tag { background: #3b110e; color: #ff7b72; padding: 3px 7px; border-radius: 4px; font-size: 11px; margin-right: 5px; font-weight: bold; }
+    .inactive-chip { background: #161b22; padding: 5px 10px; border-radius: 20px; font-size: 12px; border: 1px solid #30363d; color: #6e7681; }
   </style>
 </head>
 <body>
-  <h1>👨‍🏫 DSMCH Instructor Dashboard</h1>
-  <div class="panel" style="border-left: 5px solid #666;">
-    <h3 style="margin-top:0; color:#8b949e;">⚠️ Not Started / Inactive Students</h3>
-    <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:10px; font-size:12px; color:#666;">
-        Waiting for class start...
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <h2 style="margin:0;">👨‍🏫 DSMCH Instructor Dashboard</h2>
+    <div id="connection-status" style="font-size:12px; color:var(--success);">● System Connected</div>
+</div>
+
+<div class="panel">
+    <h3 style="margin-top:0; font-size:14px; color:var(--muted);">SESSION MODERATION</h3>
+    <button class="btn btn-blue" onclick="setMode('live')">📡 START RELAY (LIVE)</button>
+    <button class="btn btn-green" onclick="setMode('exam')">🧪 START VISCERA SIM (PRACTICAL)</button>
+    <button class="btn btn-red" onclick="setMode('locked')">🔒 LOCK SESSIONS</button>
+    <button class="btn btn-gray" onclick="setMode('idle')">⏹️ STOP STREAMING</button>
+</div>
+
+<div class="panel" style="border-left: 5px solid #30363d;">
+    <h3 style="margin-top:0; font-size:14px; color:var(--muted);">⚠️ NOT STARTED / INACTIVE (Waiting for Login)</h3>
+    <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:8px;">
+        Calculating enrollment...
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+    <div class="panel">
+        <h3 style="margin-top:0; font-size:14px; color:var(--muted);">📍 LIVE ATTENDANCE GRID</h3>
+        <div class="roll-grid" id="master-grid"></div>
+    </div>
+
+    <div class="panel">
+        <h3 style="margin-top:0; font-size:14px; color:var(--muted);">📊 PRACTICAL SKILLS MATRIX</h3>
+        <table id="skills-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Score</th>
+                    <th>Identified Errors</th>
+                </tr>
+            </thead>
+            <tbody id="skills-body"></tbody>
+        </table>
+        <button class="btn btn-blue" style="width:100%; margin-top:20px;" onclick="exportData()">📥 DOWNLOAD SKILLS REPORT (.CSV)</button>
     </div>
 </div>
 
 <script>
-  firebase.initializeApp(firebaseConfig); 
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // 1. Initialize Grid
+  // 1. Initialize Seat Grid (1-255)
+  const grid = document.getElementById('master-grid');
   for(let i=1; i<=255; i++) {
-      document.getElementById('master-grid').innerHTML += `<div id="seat-${i}" class="roll-box">${i}</div>`;
+      grid.innerHTML += `<div id="seat-${i}" class="seat">${i}</div>`;
   }
 
-  // 2. Identify Inactive Students
-  function updateInactiveList(activeRolls) {
+  // 2. Moderation Controls
+  function setMode(m) {
+      const confirmMsg = m === 'idle' ? "Stop all streaming?" : `Switch to ${m.toUpperCase()}?`;
+      if(confirm(confirmMsg)) {
+          db.collection("slides").doc("current").set({ 
+              status: m, 
+              ts: firebase.firestore.FieldValue.serverTimestamp() 
+          });
+      }
+  }
+
+  // 3. Logic to identify Inactive Students
+  function refreshInactiveList(activeRolls) {
       const allRegs = Object.keys(studentsAll);
-      // Filter out anyone who has sent a presence signal
-      const inactiveNames = allRegs
+      const inactive = allRegs
           .filter(reg => !activeRolls.includes(reg))
-          .map(reg => `<span style="background:#21262d; padding:4px 8px; border-radius:4px;">${studentsAll[reg]} (${reg.slice(-3)})</span>`);
+          .map(reg => `<div class="inactive-chip">${studentsAll[reg]} (${reg.slice(-3)})</div>`);
       
-      document.getElementById('inactive-list').innerHTML = inactiveNames.length > 0 
-          ? inactiveNames.join('') 
-          : "<span style='color:var(--success)'>✅ All students are active!</span>";
+      document.getElementById('inactive-list').innerHTML = inactive.length > 0 
+          ? inactive.join('') 
+          : "<b style='color:var(--success)'>✅ 100% Participation Reached</b>";
   }
 
-  // 3. Monitor Presence & Status
+  // 4. Presence Monitor (Grid + Inactive List)
   db.collection("presence").onSnapshot(snap => {
       let activeRolls = [];
-      
-      // Reset Grid Visuals
-      document.querySelectorAll('.roll-box').forEach(el => el.className = "roll-box");
+      // Reset grid visuals first
+      document.querySelectorAll('.seat').forEach(s => s.className = "seat");
 
       snap.forEach(doc => {
           const d = doc.data();
@@ -67,29 +126,52 @@
           const el = document.getElementById(`seat-${seatNum}`);
           
           if(el) {
-              if(d.status === "Out of App") el.className = "roll-box warning"; // Red flashing
-              else if(d.status.includes("Relay") || d.status === "Active") el.className = "roll-box active"; // Green
-              else if(d.status === "Submitted") el.className = "roll-box active"; // Keep green or add a 'done' class
+              if(d.status === "Out of App") el.className = "seat warning";
+              else el.className = "seat active";
           }
       });
-
-      // Update the "Not doing anything" list
-      updateInactiveList(activeRolls);
+      refreshInactiveList(activeRolls);
   });
 
-  // 4. Skills Matrix Listener
+  // 5. Skills Matrix Monitor (Simulation Results)
   db.collection("simulation_scores").orderBy("ts", "desc").onSnapshot(snap => {
-      let h = '';
+      let html = '';
       snap.forEach(doc => {
-          const d = doc.data(); 
-          let errors = d.log.filter(l => l.includes('❌')).map(l => `<span class="error-tag">${l.split(':')[0]}</span>`).join(' ');
-          h += `<tr><td>${d.student}<br><small>${d.scenario}</small></td><td><b>${d.score}/6</b></td><td>${errors || 'Professional'}</td></tr>`;
+          const d = doc.data();
+          let errors = d.log.filter(l => l.includes('❌'))
+              .map(l => `<span class="error-tag">${l.split(':')[0]}</span>`).join('');
+          
+          html += `<tr>
+            <td><strong>${studentsAll[d.student] || d.student}</strong><br><small style="color:var(--muted)">Scenario: ${d.scenario.toUpperCase()}</small></td>
+            <td style="font-size:1.2em; font-weight:bold; color:var(--success)">${d.score} / 6</td>
+            <td>${errors || '<span style="color:var(--success)">No Errors</span>'}</td>
+          </tr>`;
       });
-      document.getElementById('skills-body').innerHTML = h;
+      document.getElementById('skills-body').innerHTML = html || '<tr><td colspan="3" style="text-align:center; color:#666;">No submissions yet.</td></tr>';
   });
 
-  function setMode(m) {
-      db.collection("slides").doc("current").set({ status: m, ts: firebase.firestore.FieldValue.serverTimestamp() });
+  // 6. CSV Export for Dean/DME records
+  function exportData() {
+      let csv = "Reg No,Name,Scenario,Score,Errors\n";
+      document.querySelectorAll("#skills-body tr").forEach(tr => {
+          const tds = tr.querySelectorAll("td");
+          if(tds.length > 0) {
+              const nameData = tds[0].innerText.split('\n');
+              csv += `${nameData[0]},${nameData[1]},${tds[1].innerText},"${tds[2].innerText}"\n`;
+          }
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Forensic_Skills_Report_${new Date().toLocaleDateString()}.csv`;
+      a.click();
+  }
+
+  // Hardware Reset (if needed for faculties)
+  function unlockReg(reg) {
+      if(confirm(`Reset device binding for ${reg}?`)) {
+          db.collection("device_bindings").doc(reg).delete();
+      }
   }
 </script>
 </body>
