@@ -3,302 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DSMCH Forensic Master App</title>
+  <title>DSMCH Forensic Master Portal</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="config.js"></script>
   <script src="topics.js"></script>
   <style>
-    :root { --bg: #0a0a0f; --surface: #161b22; --accent: #58a6ff; --danger: #f85149; --success: #3fb950; }
-    body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; margin:0; overflow-x: hidden; user-select: none; }
-    .container { max-width: 800px; width:92%; margin: 20px auto; background: var(--surface); padding: 25px; border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-    
-    /* UI Components */
-    .btn { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
-    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
-    .step-card { background: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 10px; margin-top: 15px; }
-    .status-badge { background: #21262d; padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; color: #8b949e; }
-    
-    /* Viscera Interaction Styles */
-    .tray { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-    .item-chip { padding: 12px; background: #21262d; border-radius: 6px; text-align: center; border: 1px solid transparent; cursor: pointer; }
-    .item-chip.selected { border-color: var(--accent); background: #1f2937; color: var(--accent); }
-    
-    /* Animation Elements */
-    .bottle-fill { height: 200px; width: 100px; border: 2px solid #8b949e; margin: 20px auto; position: relative; overflow: hidden; border-radius: 0 0 10px 10px; }
-    .liquid { position: absolute; bottom: 0; width: 100%; background: rgba(88, 166, 255, 0.4); transition: height 0.1s; }
-    
-    #relay-ui, #sim-ui, #auth-ui, #result-ui { display: none; }
+    :root { --bg: #0d1117; --card: #161b22; --accent: #58a6ff; --success: #3fb950; --err: #f85149; }
+    body { background: var(--bg); color: #c9d1d9; font-family: -apple-system, sans-serif; margin: 0; user-select: none; }
+    .container { max-width: 600px; margin: 20px auto; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid #30363d; }
+    .btn { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .btn-out { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+    .chip { padding: 12px; background: #21262d; border-radius: 6px; text-align: center; border: 1px solid transparent; cursor: pointer; margin-bottom: 8px; }
+    .chip.sel { border-color: var(--accent); background: #1f2937; color: var(--accent); }
+    .bottle { height: 150px; width: 80px; border: 2px solid #8b949e; margin: 10px auto; position: relative; overflow: hidden; }
+    .liquid { position: absolute; bottom: 0; width: 100%; background: rgba(88, 166, 255, 0.4); }
+    #relay-ui, #sim-ui, #auth-ui, #res-ui { display: none; }
     .active { display: block !important; }
   </style>
 </head>
-<body oncontextmenu="return false;">
-
+<body>
 <div id="app" class="container">
     <div id="auth-ui" class="active">
-        <h2 style="text-align:center; color:var(--accent);">DSMCH Forensic Portal</h2>
-        <input type="number" id="reg-in" placeholder="Register Number" style="width:100%; padding:14px; background:#0d1117; color:white; border:1px solid #30363d; border-radius:8px; margin-bottom:10px;">
-        <input type="text" id="name-in" placeholder="Full Name" style="width:100%; padding:14px; background:#0d1117; color:white; border:1px solid #30363d; border-radius:8px; margin-bottom:15px;">
+        <h2>DSMCH Forensic Portal</h2>
+        <input type="number" id="reg" placeholder="Reg No" style="width:94%; padding:12px; margin-bottom:10px; background:#0d1117; color:white; border:1px solid #333;">
+        <input type="text" id="name" placeholder="Name (CAPS)" style="width:94%; padding:12px; margin-bottom:15px; background:#0d1117; color:white; border:1px solid #333;">
         <button class="btn" onclick="login()">Enter Session</button>
     </div>
 
     <div id="relay-ui">
-        <div style="display:flex; justify-content:space-between;">
-            <span class="status-badge" id="row-tag">ASSIGNED ROW</span>
-            <span id="student-name" style="font-size:12px; color:#8b949e;"></span>
-        </div>
-        <div id="relay-controls">
-            <h3 style="margin-top:20px;">Select your assigned protocol:</h3>
-            <div id="row-buttons"></div>
-        </div>
-        <div id="relay-content" style="display:none;">
-            <div class="step-card">
-                <h2 id="relay-title" style="color:var(--accent);"></h2>
-                <p id="relay-text" style="font-size:1.1em; line-height:1.5;"></p>
-            </div>
-            <button class="btn" onclick="nextRelayStep()">Next Step ▶</button>
+        <h3 id="row-title">Select Row Protocol</h3>
+        <div id="row-btns"></div>
+        <div id="relay-step" style="display:none; margin-top:20px; padding:15px; background:#0d1117; border-radius:8px;">
+            <h4 id="st-title" style="color:var(--accent);"></h4>
+            <p id="st-text"></p>
+            <button class="btn" onclick="nextRelay()">Next Step ▶</button>
         </div>
     </div>
 
     <div id="sim-ui">
-        <div id="sim-intro">
-            <span class="status-badge">VIRTUAL PRACTICAL</span>
-            <h3 style="color:var(--accent); margin-bottom:5px;">Case History:</h3>
-            <p id="case-text" style="background:#0d1117; padding:15px; border-radius:8px; border-left:4px solid var(--accent);"></p>
-            <button class="btn" onclick="startSimSteps()">Start Procedure</button>
+        <div id="sim-start">
+            <p id="case-h" style="padding:15px; border-left:4px solid var(--accent); background:#0d1117;"></p>
+            <button class="btn" onclick="goSim()">Start Practical</button>
         </div>
-
-        <div id="sim-engine" style="display:none;">
-            <div class="status-badge" id="step-counter">Step 1 of 8</div>
-            <h3 id="step-instruction" style="margin:15px 0;"></h3>
-            
-            <div id="sim-interaction-zone"></div>
-            
-            <button class="btn" id="sim-next-btn" style="display:none;" onclick="processSimStep()">Confirm Step ▶</button>
+        <div id="sim-core" style="display:none;">
+            <h4 id="instr"></h4>
+            <div id="zone" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
+            <div id="vol-zone" style="display:none; text-align:center;">
+                <div class="bottle"><div id="liq" class="liquid"></div></div>
+                <input type="range" style="width:100%" oninput="document.getElementById('liq').style.height=this.value+'%'; curVol=this.value">
+            </div>
+            <button class="btn" id="nxt" onclick="procSim()">Confirm ▶</button>
         </div>
     </div>
 
-    <div id="result-ui">
-        <h2 style="text-align:center;">Professionalism Review</h2>
-        <div id="score-display" style="text-align:center; font-size:3em; margin:20px 0;"></div>
-        <div id="feedback-log" style="background:#0d1117; padding:15px; border-radius:8px; font-size:14px; line-height:1.6;"></div>
-        <button class="btn" style="margin-top:20px;" onclick="location.reload()">Finish & Close</button>
+    <div id="res-ui" style="text-align:center;">
+        <h1 id="score"></h1>
+        <div id="log" style="text-align:left; font-size:13px; line-height:1.6;"></div>
+        <button class="btn" onclick="location.reload()">Finish</button>
     </div>
 </div>
 
 <script>
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
+  let uid = "", curS, step = 1, curVol = 0, selRow = "", rIdx = 0, myAns = {org:[], chem:"", bld:"", vol:0, docs:[], ctrl:false};
 
-  let studentId = "", deviceId = localStorage.getItem("dsmch_dev") || "DEV"+Math.random().toString(36).slice(2,8).toUpperCase();
-  localStorage.setItem("dsmch_dev", deviceId);
-
-  let currentScenario, simStep = 1, simData = { selections: [], chemical: "", bloodPres: "", control: false, volume: 0, docs: [] };
-  let relayRow = "", relayIdx = 0;
-
-  // --- AUTHENTICATION ---
   async function login() {
-      const reg = document.getElementById('reg-in').value, n = document.getElementById('name-in').value.toUpperCase().trim();
-      if(studentsAll[reg] === n) {
-          studentId = reg;
-          document.getElementById('auth-ui').classList.remove('active');
-          document.getElementById('student-name').innerText = n;
-          db.collection("presence").doc(reg).set({ roll: reg, name: n, status: "Active", ts: firebase.firestore.FieldValue.serverTimestamp() });
-          
-          // Connect to teacher slide controls
-          db.collection("slides").doc("current").onSnapshot(doc => {
-              if(!doc.exists) return;
-              const mode = doc.data().status;
-              if(mode === "live") {
-                  document.getElementById('sim-ui').classList.remove('active');
-                  document.getElementById('relay-ui').classList.add('active');
-                  initRelayButtons();
-              } else if(mode === "exam") {
-                  document.getElementById('relay-ui').classList.remove('active');
-                  document.getElementById('sim-ui').classList.add('active');
-                  initScenario();
-              }
+      const r = document.getElementById('reg').value, n = document.getElementById('name').value.toUpperCase().trim();
+      if(studentsAll[r] === n) {
+          uid = r; document.getElementById('auth-ui').classList.remove('active');
+          db.collection("presence").doc(r).set({ roll:r, name:n, status:"Active", ts:Date.now() });
+          db.collection("slides").doc("current").onSnapshot(d => {
+              const m = d.data().status;
+              document.getElementById('relay-ui').classList.toggle('active', m === "live");
+              document.getElementById('sim-ui').classList.toggle('active', m === "exam");
+              if(m === "live") initRows(); else if(m === "exam") initSim();
           });
-      } else alert("Details Mismatch.");
+      } else alert("Mismatch");
   }
 
-  // --- RELAY ENGINE ---
-  function initRelayButtons() {
-      let h = '';
-      Object.keys(forensicContent.relay).forEach(row => {
-          h += `<button class="btn btn-outline" onclick="startRelayRow('${row}')">${row}</button>`;
-      });
-      document.getElementById('row-buttons').innerHTML = h;
+  function initRows() {
+      let h = ''; Object.keys(forensicContent.relay).forEach(r => h+=`<button class="chip" style="width:100%" onclick="startR('${r}')">${r}</button>`);
+      document.getElementById('row-btns').innerHTML = h;
   }
 
-  function startRelayRow(row) {
-      relayRow = row; relayIdx = 0;
-      document.getElementById('row-tag').innerText = row;
-      document.getElementById('relay-controls').style.display = 'none';
-      document.getElementById('relay-content').style.display = 'block';
-      showRelayStep();
+  function startR(r) {
+      selRow = r; rIdx = 0; document.getElementById('row-btns').style.display = 'none';
+      document.getElementById('relay-step').style.display = 'block'; showR();
   }
 
-  function showRelayStep() {
-      const data = forensicContent.relay[relayRow][relayIdx];
-      document.getElementById('relay-title').innerText = data.title;
-      document.getElementById('relay-text').innerHTML = data.text;
-      db.collection("presence").doc(studentId).update({ status: `Relay: ${relayRow} Step ${relayIdx+1}` });
+  function showR() {
+      const d = forensicContent.relay[selRow][rIdx];
+      document.getElementById('st-title').innerText = d.title;
+      document.getElementById('st-text').innerHTML = d.text;
+      db.collection("presence").doc(uid).update({ status: `Relay: ${selRow} ${rIdx+1}` });
   }
 
-  function nextRelayStep() {
-      if(relayIdx < 3) { relayIdx++; showRelayStep(); } 
-      else { alert("Protocol Summary Complete. Await Instructor instructions."); }
+  function nextRelay() { if(rIdx < 3) { rIdx++; showR(); } else alert("Row Complete!"); }
+
+  function initSim() {
+      curS = forensicContent.scenarios[Math.floor(Math.random()*forensicContent.scenarios.length)];
+      document.getElementById('case-h').innerText = curS.history;
   }
 
-  // --- VISCERA SIMULATION ENGINE ---
-  function initScenario() {
-      currentScenario = forensicContent.scenarios[Math.floor(Math.random()*forensicContent.scenarios.length)];
-      document.getElementById('case-text').innerText = currentScenario.history;
+  function goSim() { document.getElementById('sim-start').style.display = 'none'; document.getElementById('sim-core').style.display = 'block'; rendSim(); }
+
+  function rendSim() {
+      const z = document.getElementById('zone'), inst = document.getElementById('instr'), vz = document.getElementById('vol-zone');
+      z.innerHTML = ''; vz.style.display = 'none'; z.style.display = 'grid';
+      if(step === 1) { inst.innerText = "Select Organs & 30ml Fluids:"; ["Stomach","Intestine","Liver","Kidney","Blood (30ml)","Urine (30ml)","Heart","Brain"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 2) { inst.innerText = "Organ Preservative?"; ["Saturated Salt Solution","Rectified Spirit"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`); }
+      else if(step === 3) { inst.innerText = "Blood Preservative?"; ["NaF 10mg","NaF 2mg"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.bld='${i}'; procSim()">${i}</div>`); }
+      else if(step === 4) { inst.innerText = "Send Control Sample?"; z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes</button><button class="btn" onclick="myAns.ctrl=false; procSim()">No</button>`; }
+      else if(step === 5) { inst.innerText = "Fill to 3/4th:"; z.style.display='none'; vz.style.display='block'; }
+      else if(step === 6) { inst.innerText = "Attach Magistrate Docs:"; ["Inquest Report","PM Findings","Magistrate Auth","Seal Sheet","FIR"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
   }
 
-  function startSimSteps() {
-      document.getElementById('sim-intro').style.display = 'none';
-      document.getElementById('sim-engine').style.display = 'block';
-      renderStep();
+  function procSim() {
+      if(step === 1) document.querySelectorAll('.sel').forEach(e => myAns.org.push(e.innerText));
+      if(step === 6) { document.querySelectorAll('.sel').forEach(e => myAns.docs.push(e.innerText)); finish(); return; }
+      step++; rendSim();
   }
 
-  function renderStep() {
-      document.getElementById('step-counter').innerText = `Step ${simStep} of 8`;
-      const zone = document.getElementById('sim-interaction-zone');
-      const next = document.getElementById('sim-next-btn');
-      zone.innerHTML = ''; next.style.display = 'block';
+  async function finish() {
+      let s = 0, l = [];
+      if(myAns.org.includes("Blood (30ml)") && myAns.org.includes("Urine (30ml)")) { s++; l.push("✅ Fluids Correct"); } else l.push("❌ Missing 30ml Fluids");
+      if(myAns.chem === curS.correctPreservative) { s++; l.push("✅ Organ Chem Correct"); } else l.push("❌ Chemical Error: " + curS.trap);
+      if(myAns.bld === curS.correctBloodPres) s++; else l.push("❌ Blood Chem Error");
+      if(myAns.ctrl) s++; else l.push("❌ Missing Control Sample");
+      if(curVol >= 70 && curVol <= 80) s++; else l.push("❌ Volume Error (Not 3/4th)");
+      if(myAns.docs.includes("Magistrate Auth")) s++; else l.push("❌ Missing Magistrate Auth");
 
-      switch(simStep) {
-          case 1: // ORGAN SELECTION
-              document.getElementById('step-instruction').innerText = "Select ALL required organs and fluids from the tray:";
-              const items = ["Stomach", "Small Intestine", "Liver (500g)", "Kidneys (Half)", "Blood (30ml)", "Urine (30ml)", "Heart", "Lungs", "Brain"];
-              zone.className = "tray";
-              items.forEach(item => {
-                  const chip = document.createElement('div'); chip.className = "item-chip"; chip.innerText = item;
-                  chip.onclick = () => { chip.classList.toggle('selected'); };
-                  zone.appendChild(chip);
-              });
-              break;
-          case 2: // ORGAN PRESERVATIVE
-              document.getElementById('step-instruction').innerText = "Pick the correct preservative bottle for the organs:";
-              zone.innerHTML = `<div class="tray">
-                  <div class="item-chip" onclick="setChem('organ','Saturated Salt Solution')">Saturated Salt Solution</div>
-                  <div class="item-chip" onclick="setChem('organ','Rectified Spirit')">Rectified Spirit</div>
-                  <div class="item-chip" onclick="setChem('organ','10% Formalin')">10% Formalin</div>
-              </div>`;
-              break;
-          case 3: // BLOOD PRESERVATIVE
-              document.getElementById('step-instruction').innerText = "Pick the specific preservative for the Blood Vial:";
-              zone.innerHTML = `<div class="tray">
-                  <div class="item-chip" onclick="setChem('blood','NaF 10mg')">Sodium Fluoride (10mg/ml)</div>
-                  <div class="item-chip" onclick="setChem('blood','NaF 2mg')">Sodium Fluoride (2mg/ml)</div>
-                  <div class="item-chip" onclick="setChem('blood','Potassium Oxalate')">Potassium Oxalate</div>
-              </div>`;
-              break;
-          case 4: // CONTROL SAMPLE
-              document.getElementById('step-instruction').innerText = "Professionalism Check: Do you need to send a preservative control?";
-              zone.innerHTML = `<button class="btn btn-outline" onclick="simData.control=true; processSimStep()">✅ Yes, prepare Control Sample bottle</button>
-                               <button class="btn btn-outline" onclick="simData.control=false; processSimStep()">❌ No, not required</button>`;
-              next.style.display = 'none';
-              break;
-          case 5: // VOLUME (3/4th)
-              document.getElementById('step-instruction').innerText = "Fill the main jar. Stop at the professional safety level:";
-              zone.innerHTML = `<div class="bottle-fill"><div id="liquid" class="liquid" style="height:0%"></div></div>
-                               <input type="range" min="0" max="100" value="0" style="width:100%" oninput="document.getElementById('liquid').style.height=this.value+'%'; simData.volume=this.value;">`;
-              break;
-          case 6: // LABELLING
-              document.getElementById('step-instruction').innerText = "Complete the Medl I-30(a) Tag:";
-              zone.innerHTML = `<input type="date" id="pm-date" placeholder="Date of PM">
-                               <input type="text" id="pm-no" placeholder="PM Number">
-                               <input type="text" id="label-pres" placeholder="Preservative Name">`;
-              break;
-          case 7: // SEALING
-              document.getElementById('step-instruction').innerText = "Animation: Apply the Lakh (Wax Impression Seal):";
-              zone.innerHTML = `<div style="text-align:center; font-size:50px; cursor:pointer;" onclick="this.innerHTML='🕯️...🔏'; simData.sealed=true;">🕯️ Click to Seal</div>`;
-              break;
-          case 8: // DISPATCH DOCS
-              document.getElementById('step-instruction').innerText = "Assemble the Dispatch Package (Magistrate Authorized):";
-              const docs = ["Inquest Report Copy", "PM Findings Report", "Magistrate Authorization", "Seal Impression Sheet", "Police FIR", "Treatment Summary"];
-              zone.className = "tray";
-              docs.forEach(doc => {
-                  const chip = document.createElement('div'); chip.className = "item-chip"; chip.innerText = doc;
-                  chip.onclick = () => { chip.classList.toggle('selected'); };
-                  zone.appendChild(chip);
-              });
-              break;
-      }
+      await db.collection("simulation_scores").add({ student:uid, scenario:curS.id, score:s, log:l, ts:Date.now() });
+      document.getElementById('sim-ui').style.display='none'; document.getElementById('res-ui').classList.add('active');
+      document.getElementById('score').innerText = s + "/6"; document.getElementById('log').innerHTML = l.join("<br>");
   }
 
-  function setChem(type, val) {
-      if(type === 'organ') simData.chemical = val;
-      else simData.bloodPres = val;
-      processSimStep();
-  }
-
-  function processSimStep() {
-      if(simStep === 1) {
-          document.querySelectorAll('.item-chip.selected').forEach(c => simData.selections.push(c.innerText));
-      }
-      if(simStep === 8) {
-          document.querySelectorAll('.item-chip.selected').forEach(c => simData.docs.push(c.innerText));
-          calculateFinalResults();
-          return;
-      }
-      simStep++;
-      renderStep();
-  }
-
-  async function calculateFinalResults() {
-      let score = 0, log = [];
-      const reqOrgans = ["Stomach", "Small Intestine", "Liver (500g)", "Kidneys (Half)", "Blood (30ml)", "Urine (30ml)"];
-      
-      // Step 1 Check
-      const missingOrgans = reqOrgans.filter(x => !simData.selections.includes(x));
-      if(missingOrgans.length === 0) { score++; log.push("✅ Selection: All routine organs and 30ml fluids collected."); }
-      else { log.push(`❌ Selection: Missing ${missingOrgans.join(", ")}.`); }
-
-      // Step 2 & 3 Check (The Logic Gates)
-      if(simData.chemical === currentScenario.correctPreservative) { score++; log.push(`✅ Organ Preservative: Correct choice for this history.`); }
-      else { log.push(`❌ Organ Preservative: Professional Failure. Used ${simData.chemical} for ${currentScenario.id.toUpperCase()}. ${currentScenario.trap}`); }
-      
-      if(simData.bloodPres === currentScenario.correctBloodPres) { score++; log.push(`✅ Blood Preservative: Correct.`); }
-      else { log.push(`❌ Blood Preservative: Incorrect choice for this scenario.`); }
-
-      // Step 4 Check
-      if(simData.control) { score++; log.push("✅ Control: Preservative control sample sent."); }
-      else { log.push("❌ Control: Major Professionalism Breach. Preservative control not sent."); }
-
-      // Step 5 Check (3/4th rule)
-      if(simData.volume >= 70 && simData.volume <= 80) { score++; log.push("✅ Volume: Jar filled to 3/4th capacity (Safety standard)."); }
-      else { log.push(`❌ Volume: ${simData.volume}% is unsafe. Risks leakage or gas explosion.`); }
-
-      // Step 8 Check
-      const reqDocs = ["Inquest Report Copy", "PM Findings Report", "Magistrate Authorization", "Seal Impression Sheet"];
-      const missingDocs = reqDocs.filter(x => !simData.docs.includes(x));
-      if(missingDocs.length === 0) { score++; log.push("✅ Dispatch: All Magistrate authorized documents attached."); }
-      else { log.push(`❌ Dispatch: Missing ${missingDocs.join(", ")}.`); }
-
-      // Save to Firebase
-      await db.collection("simulation_scores").add({
-          student: studentId,
-          scenario: currentScenario.id,
-          score: score,
-          log: log,
-          ts: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      document.getElementById('sim-ui').classList.remove('active');
-      document.getElementById('result-ui').classList.add('active');
-      document.getElementById('score-display').innerText = `${score} / 6`;
-      document.getElementById('feedback-log').innerHTML = log.join("<br>");
-  }
-
-  // ANTI-CHEAT
-  window.onbeforeunload = () => { if(studentId) return "Active session!"; };
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden && studentId) db.collection("cheat_alerts").add({ roll: studentId, event: "🚨 LEFT TAB", ts: firebase.firestore.FieldValue.serverTimestamp() });
-  });
+  document.addEventListener("visibilitychange", () => { if(document.hidden && uid) db.collection("cheat_alerts").add({ roll:uid, ts:Date.now() }); });
 </script>
 </body>
 </html>
