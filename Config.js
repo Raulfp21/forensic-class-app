@@ -8,8 +8,10 @@ const firebaseConfig = {
   messagingSenderId: "905219571923",
   appId: "1:905219571923:web:f6590bb9b3e36c565c9426"
 };
+
+// Consolidated Master List (Faculty, 2024 & 2023 Batches)
 const studentsAll = {
-  // FACULTY TESTING ACCOUNTS
+  // --- FACULTY TESTING ACCOUNTS ---
   "1": "FACULTY ONE",
   "2": "FACULTY TWO",
   "3": "FACULTY THREE",
@@ -21,7 +23,7 @@ const studentsAll = {
   "9": "FACULTY NINE",
   "10": "FACULTY TEN",
 
-  // --- 2024 BATCH (Source: APRIL 2024 CSV) ---
+  // --- 2024 BATCH ---
   "520024506001": "ABDULAHAD RAJMOHAMED",
   "520024506002": "ABI A",
   "520024506003": "ABINAYA R",
@@ -276,7 +278,7 @@ const studentsAll = {
   "520022506179": "SANJAYAN R",
   "521823525": "BHAVYA SRI B",
 
-  // --- 2023 BATCH (Source: QUARTERLY 2023 CSV) ---
+  // --- 2023 BATCH ---
   "520022506042": "DHARSHANTH T S",
   "520022506110": "MADHINI MADHURAANTHAGI S",
   "520022506132": "NITHYA M",
