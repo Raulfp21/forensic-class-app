@@ -7,7 +7,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="config.js"></script>
-  <script src="topics.js"></script>
   <style>
     :root { --bg: #0a0a0a; --panel: #111; --accent: #58a6ff; --success: #238636; --danger: #da3633; --muted: #8b949e; }
     body { background: var(--bg); color: #e6edf3; font-family: 'Segoe UI', system-ui, sans-serif; padding: 20px; margin: 0; }
@@ -18,83 +17,65 @@
     .btn-red { background: var(--danger); color: white; }
     .btn-gray { background: #30363d; color: white; }
     
-    .name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 15px; }
-    .name-card { background: #161b22; padding: 12px; border-radius: 8px; border: 1px solid #30363d; text-align: center; font-size: 12px; transition: 0.3s; }
-    .name-card.active { border-color: var(--accent); background: #1f2937; box-shadow: 0 0 10px rgba(88,166,255,0.15); }
-    .name-card.warning { background: var(--danger); color: white; animation: blink 1s infinite; border-color: white; }
-    @keyframes blink { 50% { opacity: 0.5; } }
+    .name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 15px; }
+    .name-card { background: #161b22; padding: 12px; border-radius: 8px; border: 1px solid #30363d; font-size: 12px; }
+    .name-card.active { border-color: var(--accent); background: #1f2937; }
+    .name-card.poll-win { border-color: var(--success); background: #062113; }
+    .inactive-chip { background: #161b22; padding: 4px 10px; border-radius: 4px; font-size: 11px; border: 1px solid #333; color: #555; }
 
     table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
     th, td { padding: 12px; text-align: left; border-bottom: 1px solid #30363d; }
-    th { color: var(--muted); font-size: 11px; text-transform: uppercase; }
-    .error-tag { background: #3b110e; color: #ff7b72; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-right: 4px; font-weight: bold; }
-    .inactive-chip { background: #161b22; padding: 4px 10px; border-radius: 4px; font-size: 11px; border: 1px solid #333; color: #555; }
+    .error-tag { background: #3b110e; color: #ff7b72; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-right: 4px; }
   </style>
 </head>
 <body>
 
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
     <h2 style="margin:0;">👨‍🏫 DSMCH Instructor Dashboard</h2>
-    <div id="status-light" style="color:var(--success); font-size:12px;">● Server Active</div>
+    <div id="status-light" style="color:var(--success); font-size:12px;">● Server Active (2026)</div>
 </div>
 
 <div class="panel">
-    <h3 style="margin-top:0; font-size:14px; color:var(--muted);">SELECT TARGET BATCH & MODE</h3>
-    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:#0d1117; padding:15px; border-radius:10px; border:1px solid #30363d;">
+    <h3 style="margin-top:0; font-size:14px; color:var(--muted);">BATCH CONTROL & SESSION MODE</h3>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; background:#0d1117; padding:15px; border-radius:10px; border:1px solid #30363d;">
         <div style="border-right:1px solid #333; padding-right:15px;">
             <div style="font-size:10px; color:var(--accent); margin-bottom:5px;">2024 BATCH</div>
+            <button class="btn btn-blue" onclick="setMode('slides-2024')">START SLIDES</button>
             <button class="btn btn-blue" onclick="setMode('relay-2024')">START RELAY</button>
             <button class="btn btn-green" onclick="setMode('exam-2024')">START EXAM</button>
         </div>
-        <div style="border-right:1px solid #333; padding:0 15px;">
-            <div style="font-size:10px; color:var(--accent); margin-bottom:5px;">2023 BATCH</div>
-            <button class="btn btn-blue" onclick="setMode('relay-2023')">START RELAY</button>
-            <button class="btn btn-green" onclick="setMode('exam-2023')">START EXAM</button>
+        <div style="padding:0 15px;">
+            <div style="font-size:10px; color:var(--muted); margin-bottom:5px;">GLOBAL</div>
+            <button class="btn btn-red" onclick="setMode('locked')">🔒 LOCK ALL</button>
+            <button class="btn btn-gray" onclick="setMode('idle')">⏹ STOP</button>
         </div>
-        <div style="padding-left:10px;">
-            <div style="font-size:10px; color:var(--muted); margin-bottom:5px;">TESTING</div>
-            <button class="btn btn-gray" onclick="setMode('testing')">FACULTY ONLY (1-10)</button>
-        </div>
-    </div>
-    <div style="margin-top:15px;">
-        <button class="btn btn-red" onclick="setMode('locked')">🔒 LOCK ALL SCREENS</button>
-        <button class="btn btn-gray" onclick="setMode('idle')">⏹️ STOP STREAMING</button>
     </div>
 </div>
 
 <div class="panel" style="border-left: 5px solid #30363d;">
-    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">⚠️ INACTIVE / NOT STARTED (Waiting for Login)</h3>
-    <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:6px;">
-        Analyzing student registry...
-    </div>
+    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">⚠️ NOT LOGGED IN / INACTIVE</h3>
+    <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:6px;">Analyzing registry...</div>
 </div>
 
 <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:20px;">
     <div class="panel">
-        <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📍 LIVE PARTICIPATION (Names)</h3>
+        <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📍 LIVE PARTICIPATION (Slide Tracking)</h3>
         <div class="name-grid" id="active-names-grid"></div>
     </div>
 
     <div class="panel">
         <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📊 PRACTICAL SKILLS MATRIX</h3>
         <table id="skills-table">
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Score</th>
-                    <th>Forensic/Legal Errors</th>
-                </tr>
-            </thead>
+            <thead><tr><th>Student</th><th>Score</th><th>Errors</th></tr></thead>
             <tbody id="skills-body"></tbody>
         </table>
-        <button class="btn btn-blue" style="width:100%; margin-top:20px;" onclick="exportCSV()">📥 DOWNLOAD SKILLS REPORT</button>
     </div>
 </div>
 
 <div class="panel">
-    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">🔓 ACCESS OVERRIDE</h3>
-    <input type="text" id="unlock-reg" placeholder="Register Number" style="padding:10px; background:#000; border:1px solid #333; color:white; border-radius:6px;">
-    <button class="btn btn-blue" onclick="resetDevice()">RESET HARDWARE LOCK</button>
+    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">🔓 HARDWARE LOCK RESET</h3>
+    <input type="text" id="unlock-reg" placeholder="Reg No" style="padding:10px; background:#000; border:1px solid #333; color:white; border-radius:6px;">
+    <button class="btn btn-blue" onclick="resetDevice()">RESET BINDING</button>
 </div>
 
 <script>
@@ -102,16 +83,14 @@
   const db = firebase.firestore();
 
   function setMode(m) {
-      if(confirm(`Switch to ${m.toUpperCase()}?`)) {
-          db.collection("slides").doc("current").set({ status: m, ts: firebase.firestore.FieldValue.serverTimestamp() });
-      }
+      db.collection("slides").doc("current").set({ status: m, ts: firebase.firestore.FieldValue.serverTimestamp() });
   }
 
   function updateInactives(activeRolls) {
       const all = Object.keys(studentsAll);
       const inactive = all.filter(r => !activeRolls.includes(r))
           .map(r => `<div class="inactive-chip">${studentsAll[r]} (${r.slice(-3)})</div>`);
-      document.getElementById('inactive-list').innerHTML = inactive.length ? inactive.join('') : "<b style='color:var(--success)'>All Participated</b>";
+      document.getElementById('inactive-list').innerHTML = inactive.length ? inactive.join('') : "All Logged In";
   }
 
   db.collection("presence").onSnapshot(snap => {
@@ -119,14 +98,13 @@
       snap.forEach(doc => {
           const d = doc.data();
           activeRolls.push(d.roll);
-          const statusClass = (d.status === "Out of App") ? "name-card warning" : "name-card active";
-          h += `<div class="name-card ${statusClass}">
+          const isPoll = d.status.includes('Poll Passed');
+          h += `<div class="name-card ${isPoll ? 'poll-win' : 'active'}">
                   <strong>${d.name}</strong><br>
-                  <small style="color:var(--muted)">${d.roll}</small><br>
                   <div style="font-size:10px; margin-top:4px; color:var(--accent)">${d.status}</div>
                 </div>`;
       });
-      document.getElementById('active-names-grid').innerHTML = h || 'No active sessions.';
+      document.getElementById('active-names-grid').innerHTML = h || 'No active users.';
       updateInactives(activeRolls);
   });
 
@@ -136,7 +114,7 @@
           const d = doc.data();
           const name = studentsAll[d.student] || d.student;
           let errs = d.log.filter(l => l.includes('❌')).map(l => `<span class="error-tag">${l.split(':')[0]}</span>`).join('');
-          h += `<tr><td><strong>${name}</strong><br><small>${d.scenario}</small></td><td><b>${d.score}/6</b></td><td>${errs || 'Professional'}</td></tr>`;
+          h += `<tr><td><strong>${name}</strong></td><td><b>${d.score}</b></td><td>${errs || 'Perfect'}</td></tr>`;
       });
       document.getElementById('skills-body').innerHTML = h;
   });
@@ -145,20 +123,7 @@
       const r = document.getElementById('unlock-reg').value;
       if(!r) return;
       await db.collection("device_bindings").doc(r).delete();
-      alert(`Lock cleared for ${r}`);
-  }
-
-  function exportCSV() {
-      let csv = "Name,Reg,Scenario,Score,Errors\n";
-      document.querySelectorAll("#skills-body tr").forEach(tr => {
-          const tds = tr.querySelectorAll("td");
-          csv += `"${tds[0].innerText.split('\n')[0]}",${tds[0].innerText.split('\n')[1]},${tds[1].innerText},"${tds[2].innerText}"\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `Forensic_Report_${new Date().toLocaleDateString()}.csv`;
-      a.click();
+      alert(`Access Reset for ${r}`);
   }
 </script>
 </body>
