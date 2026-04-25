@@ -13,11 +13,11 @@
     body { background: var(--bg); color: #c9d1d9; font-family: -apple-system, sans-serif; margin: 0; user-select: none; }
     .container { max-width: 600px; width: 92%; margin: 20px auto; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid #30363d; }
     .btn { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 16px; }
-    .chip { padding: 14px; background: #21262d; border-radius: 8px; text-align: center; border: 1px solid transparent; cursor: pointer; margin-bottom: 10px; font-size: 14px; }
+    .chip { padding: 14px; background: #21262d; border-radius: 8px; text-align: center; border: 1px solid transparent; cursor: pointer; margin-bottom: 10px; font-size: 14px; transition: 0.2s; }
     .chip.sel { border-color: var(--accent); background: #1f2937; color: var(--accent); }
     .bottle { height: 160px; width: 90px; border: 2px solid #8b949e; margin: 15px auto; position: relative; overflow: hidden; border-radius: 0 0 10px 10px; }
     .liquid { position: absolute; bottom: 0; width: 100%; background: rgba(88, 166, 255, 0.4); }
-    #relay-ui, #sim-ui, #auth-ui, #res-ui, #gate-ui { display: none; }
+    #slides-ui, #relay-ui, #sim-ui, #auth-ui, #res-ui, #gate-ui { display: none; }
     .active { display: block !important; }
     input { width: 94%; padding: 14px; margin: 10px 0; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: white; }
   </style>
@@ -33,15 +33,20 @@
     </div>
 
     <div id="gate-ui" style="text-align:center; padding:40px 0;"><h1>🛑</h1><h3>Batch Access Denied</h3></div>
-  
-     <div id="slides-ui">
-        <h3 id="slide-title" style="color:var(--accent)"></h3>
-        <div id="slide-content" style="min-height:200px;"></div>
-        <div id="slide-nav" style="display:flex; gap:10px; margin-top:20px;">
-            <button class="btn" style="background:#333" onclick="moveSlide(-1)">◀ Back</button>
-            <button class="btn" onclick="moveSlide(1)">Next ▶</button>
+
+    <div id="slides-ui">
+        <div id="slide-header" style="display:flex; justify-content:space-between; font-size:12px; color:var(--accent); margin-bottom:10px;">
+            <span id="slide-num"></span>
+            <span>PRO-MODE</span>
+        </div>
+        <h3 id="slide-title" style="margin-top:0;"></h3>
+        <div id="slide-content" style="min-height:220px; line-height:1.6; font-size:15px;"></div>
+        <div style="display:flex; gap:10px;">
+            <button class="btn" style="background:#333; flex:1;" onclick="moveSlide(-1)">◀ Back</button>
+            <button class="btn" style="flex:2;" onclick="moveSlide(1)">Next Step ▶</button>
         </div>
     </div>
+
     <div id="relay-ui">
         <div id="row-selection">
             <h3 style="color:var(--accent)">Select Row Protocol:</h3>
@@ -56,13 +61,13 @@
 
     <div id="sim-ui">
         <div id="sim-start">
-            <h3>Case History:</h3>
+            <h3>Case Assessment:</h3>
             <p id="case-h" style="padding:15px; border-left:4px solid var(--accent); background:#0d1117;"></p>
             <button class="btn" onclick="goSim()">Start 8-Step Practical</button>
         </div>
         <div id="sim-core" style="display:none;">
             <div style="font-size:12px; color:#8b949e;" id="step-count">Step 1 of 8</div>
-            <h4 id="instr" style="margin-top:0;"></h4>
+            <h4 id="instr" style="margin-top:5px;"></h4>
             <div id="zone" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
             <div id="vol-zone" style="display:none; text-align:center;">
                 <div class="bottle"><div id="liq" class="liquid"></div></div>
@@ -75,13 +80,14 @@
     <div id="res-ui" style="text-align:center;">
         <h1 id="score-val" style="font-size:4em; color:var(--success);"></h1>
         <div id="log-feed" style="text-align:left; font-size:13px; background:#0d1117; padding:15px; border-radius:8px;"></div>
-        <button class="btn" onclick="location.reload()">Finish</button>
+        <button class="btn" onclick="location.reload()">Return to Home</button>
     </div>
 </div>
 
 <script>
   firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
-  let uid = "", curS, step = 1, curVol = 0, selRow = "", rIdx = 0, myAns = {org:[], chem:"", bld:"", docs:[], ctrl:false, sealed:false};
+  let uid = "", curS, step = 1, curVol = 0, selRow = "", rIdx = 0, slideIdx = 0;
+  let myAns = {org:[], chem:"", bld:"", docs:[], labels:[], sealed:false, pollAns: null};
 
   async function login() {
       const r = document.getElementById('reg').value, n = document.getElementById('name').value.toUpperCase().trim();
@@ -90,24 +96,52 @@
           db.collection("presence").doc(r).set({ roll:r, name:n, status:"Active", ts:Date.now() });
           db.collection("slides").doc("current").onSnapshot(d => {
               const m = d.data().status;
-              let ok = false;
-              if (m === "testing" && parseInt(r) <= 10) ok = true;
-              else if (m.includes("2024") && r.startsWith("520024")) ok = true;
-              else if (m.includes("2023") && (r.startsWith("520023") || r.startsWith("520022") || r === "521823525")) ok = true;
+              let ok = (m === "testing" && parseInt(r) <= 10) || (m.includes("2024") && r.startsWith("520024")) || (m.includes("2023") && (r.startsWith("520023") || r.startsWith("520022") || r === "521823525"));
               
               if (!ok && !["idle","locked"].includes(m)) {
-                  ['auth-ui','relay-ui','sim-ui'].forEach(id=>document.getElementById(id).classList.remove('active'));
+                  ['auth-ui','relay-ui','sim-ui','slides-ui'].forEach(id=>document.getElementById(id).classList.remove('active'));
                   document.getElementById('gate-ui').classList.add('active');
               } else {
                   document.getElementById('gate-ui').classList.remove('active');
+                  document.getElementById('slides-ui').classList.toggle('active', m.includes('slides'));
                   document.getElementById('relay-ui').classList.toggle('active', m.includes('relay'));
                   document.getElementById('sim-ui').classList.toggle('active', m.includes('exam') || m === "testing");
-                  if(m.includes('relay')) initRows(); else if(m.includes('exam') || m === "testing") initSim();
+                  if(m.includes('slides')) renderSlide(); else if(m.includes('relay')) initRows(); else if(m.includes('exam') || m === "testing") initSim();
               }
           });
-      } else alert("Mismatch");
+      } else alert("Registry Mismatch");
   }
 
+  // --- SLIDES LOGIC ---
+  function moveSlide(dir) {
+      const next = slideIdx + dir;
+      if(next >= 0 && next < forensicContent.slides.length) { slideIdx = next; renderSlide(); }
+  }
+
+  function renderSlide() {
+      const s = forensicContent.slides[slideIdx];
+      const cont = document.getElementById('slide-content');
+      document.getElementById('slide-num').innerText = `SLIDE ${s.id} OF 7`;
+      document.getElementById('slide-title').innerText = s.title;
+      
+      if(s.type === "poll") {
+          let opts = s.options.map((o,i)=>`<div class="chip" onclick="submitPoll(${i})">${o}</div>`).join('');
+          cont.innerHTML = `<p>${s.question}</p>${opts}`;
+      } else {
+          cont.innerHTML = `<p>${s.text}</p>`;
+      }
+      db.collection("presence").doc(uid).update({ status: `Slide ${s.id}: ${s.title.split('.')[1].trim()}` });
+  }
+
+  function submitPoll(idx) {
+      const s = forensicContent.slides[slideIdx];
+      if(idx === s.correct) {
+          document.getElementById('slide-content').innerHTML = `<h3 style="color:var(--success)">Correct Selection ✅</h3><p>${s.reveal}</p>`;
+          db.collection("presence").doc(uid).update({ status: `Slide 1: Poll Answered Correct` });
+      } else alert("Re-read the Administrative Protocol.");
+  }
+
+  // --- RELAY LOGIC ---
   function initRows() {
       let h = ''; Object.keys(forensicContent.relay).forEach(r => h+=`<div class="chip" onclick="startR('${r}')">${r}</div>`);
       document.getElementById('row-btns').innerHTML = h;
@@ -118,48 +152,49 @@
       document.getElementById('st-title').innerText = d.title; document.getElementById('st-text').innerHTML = d.text;
       db.collection("presence").doc(uid).update({ status: `Relay: ${selRow} Step ${rIdx+1}` });
   }
-  function nextRelay() { if(rIdx < 3) { rIdx++; showR(); } else alert("Finished Row."); }
+  function nextRelay() { if(rIdx < 3) { rIdx++; showR(); } else alert("Row Protocol Completed."); }
 
-  function initSim() { curS = forensicContent.scenarios[Math.floor(Math.random()*forensicContent.scenarios.length)]; document.getElementById('case-h').innerText = curS.history; }
+  // --- SIMULATION LOGIC (8-STEP) ---
+  function initSim() { 
+      curS = forensicContent.scenarios[Math.floor(Math.random()*forensicContent.scenarios.length)]; 
+      document.getElementById('case-h').innerText = `INQUEST DATA: ${curS.history}`; 
+  }
   function goSim() { document.getElementById('sim-start').style.display='none'; document.getElementById('sim-core').style.display='block'; rendSim(); }
 
   function rendSim() {
       const z = document.getElementById('zone'), inst = document.getElementById('instr'), vz = document.getElementById('vol-zone');
       z.innerHTML = ''; vz.style.display = 'none'; z.style.display = 'grid'; document.getElementById('step-count').innerText = `Step ${step} of 8`;
-      if(step === 1) { inst.innerText = "Select Organs & 30ml Fluids:"; ["Stomach","Intestine","Liver","Kidney","Blood (30ml)","Urine (30ml)","Heart","Brain"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 2) { inst.innerText = "Correct Organ Preservative?"; ["Saturated Salt Solution","Rectified Spirit"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`); }
-      else if(step === 3) { inst.innerText = "Correct Blood Preservative?"; ["NaF 10mg/ml","NaF 2mg/ml","Potassium Oxalate"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.bld='${i}'; procSim()">${i}</div>`); }
-      else if(step === 4) { inst.innerText = "Send Control Sample?"; z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes</button><button class="btn" style="background:#333" onclick="myAns.ctrl=false; procSim()">No</button>`; }
-      else if(step === 5) { inst.innerText = "Fill Jar to 3/4th:"; z.style.display='none'; vz.style.display='block'; }
-      else if(step === 6) { inst.innerText = "Complete Label Details:"; ["Date/Time Added","Name/Age/Sex","Crime No/PM No","Preservative Name"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 7) { inst.innerText = "Apply Lakh (Wax) Seal:"; z.innerHTML = `<div style="font-size:40px; cursor:pointer;" onclick="myAns.sealed=true; procSim()">🕯️ Tap to Seal Jar</div>`; }
-      else if(step === 8) { inst.innerText = "Attach Dispatch Documents:"; ["Inquest Copy","PM Findings","Magistrate Auth","Seal Sheet","FIR"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      
+      if(step === 1) { inst.innerText = "1. Collect Required Viscera:"; ["Stomach + Contents","Intestine","500g Liver","Half Kidney","Heart","Lungs"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 2) { inst.innerText = "2. Professional Preservative?"; ["Saturated Salt Solution","Rectified Spirit"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`); }
+      else if(step === 3) { inst.innerText = "3. Specialized Trace Evidence?"; ["Femur (DNA) in Salt","Blood on Gauze (Air-dry)","Nitric Acid Swabs (GSR)","None Required"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 4) { inst.innerText = "4. Send Control Sample?"; z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes</button><button class="btn" style="background:#333" onclick="myAns.ctrl=false; procSim()">No</button>`; }
+      else if(step === 5) { inst.innerText = "5. Fill Jar to 3/4th (Safety):"; z.style.display='none'; vz.style.display='block'; }
+      else if(step === 6) { inst.innerText = "6. Label Medl. I-30(a) Details:"; ["Date/Time Added","Name/Age/Sex","PM No/Crime No","Preservative Type"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 7) { inst.innerText = "7. Final Dispatch Seal:"; z.innerHTML = `<div style="font-size:40px; cursor:pointer;" onclick="myAns.sealed=true; procSim()">🕯️ Tap to Wax-Seal</div>`; }
+      else if(step === 8) { inst.innerText = "8. Handover Documents:"; ["Medl. I-30 Form","FIR Copy","Inquest Copy","Magistrate Auth","SOC Sketch"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
   }
 
   function procSim() {
-      if(step === 1 || step === 6 || step === 8) { 
-          const selected = Array.from(document.querySelectorAll('.sel')).map(e => e.innerText);
-          if(step === 1) myAns.org = selected;
-          if(step === 6) myAns.labels = selected;
-          if(step === 8) { myAns.docs = selected; finish(); return; }
+      if([1,3,6,8].includes(step)) { 
+          const sel = Array.from(document.querySelectorAll('.sel')).map(e => e.innerText);
+          if(step === 1) myAns.org = sel; if(step === 3) myAns.trace = sel; if(step === 6) myAns.labels = sel; if(step === 8) { myAns.docs = sel; finish(); return; }
       }
       step++; rendSim();
   }
 
   async function finish() {
       let s = 0, l = [];
-      if(myAns.org.includes("Blood (30ml)") && myAns.org.includes("Urine (30ml)")) { s++; l.push("✅ Fluids: Correct 30ml Collected."); } else l.push("❌ Fluids: Failed to collect 30ml routine.");
-      if(myAns.chem === curS.correctPreservative) { s++; l.push("✅ Chem: Correct choice."); } else l.push("❌ Chem: " + curS.trap);
-      if(myAns.bld === curS.correctBloodPres) s++; else l.push("❌ Blood Chem: Wrong NaF level.");
-      if(myAns.ctrl) s++; else l.push("❌ Control: Missing mandatory sample.");
-      if(curVol >= 70 && curVol <= 80) s++; else l.push("❌ Volume: Safety breach (Not 3/4th).");
-      if(myAns.labels.includes("Date/Time Added")) s++; else l.push("❌ Label: Missing Date/Time.");
-      if(myAns.sealed) s++; else l.push("❌ Sealing: Wax seal not applied.");
-      if(myAns.docs.includes("Magistrate Auth") && myAns.docs.includes("PM Findings")) { s++; l.push("✅ Dispatch: Legal paperwork complete."); } else l.push("❌ Dispatch: Missing Magistrate Auth or Findings.");
+      if(myAns.org.includes("Stomach + Contents") && myAns.org.includes("500g Liver")) { s++; l.push("✅ Organs: Correct collection."); } else l.push("❌ Organs: Incomplete viscera.");
+      if(myAns.chem === curS.correctPreservative) { s++; l.push("✅ Chem: Professional choice."); } else l.push("❌ Chem: " + curS.trap);
+      if(curVol >= 70 && curVol <= 80) s++; else l.push("❌ Volume: Breached 3/4th rule.");
+      if(myAns.labels.length >= 3) s++; else l.push("❌ Labeling: Missing identifiers.");
+      if(myAns.sealed) s++; else l.push("❌ Sealing: Chain of custody fail.");
+      if(myAns.docs.includes("Medl. I-30 Form") && myAns.docs.includes("FIR Copy")) s++; else l.push("❌ Docs: Incomplete dispatch.");
 
       await db.collection("simulation_scores").add({ student:uid, scenario:curS.id, score:s, log:l, ts:Date.now() });
       document.getElementById('sim-ui').style.display='none'; document.getElementById('res-ui').classList.add('active');
-      document.getElementById('score-val').innerText = s + "/8"; document.getElementById('log-feed').innerHTML = l.join("<br>");
+      document.getElementById('score-val').innerText = s + "/6"; document.getElementById('log-feed').innerHTML = l.join("<br>");
   }
 </script>
 </body>
