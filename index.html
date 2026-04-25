@@ -32,17 +32,17 @@
         <button class="btn" onclick="login()">Enter Session</button>
     </div>
 
-    <div id="gate-ui" style="text-align:center; padding:40px 0;"><h1>🛑</h1><h3>Batch Access Denied</h3></div>
+    <div id="gate-ui" style="text-align:center; padding:40px 0;"><h1>🛑</h1><h3>Batch Access Denied</h3><p>Session is currently restricted to another batch.</p></div>
 
     <div id="slides-ui">
-        <div id="slide-header" style="display:flex; justify-content:space-between; font-size:12px; color:var(--accent); margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--accent); margin-bottom:10px;">
             <span id="slide-num"></span>
-            <span>PRO-MODE</span>
+            <span>DSMCH LESSON MODE</span>
         </div>
         <h3 id="slide-title" style="margin-top:0;"></h3>
-        <div id="slide-content" style="min-height:220px; line-height:1.6; font-size:15px;"></div>
+        <div id="slide-content" style="min-height:220px; line-height:1.6;"></div>
         <div style="display:flex; gap:10px;">
-            <button class="btn" style="background:#333; flex:1;" onclick="moveSlide(-1)">◀ Back</button>
+            <button class="btn" style="background:#333; flex:1;" onclick="moveSlide(-1)">◀ Previous</button>
             <button class="btn" style="flex:2;" onclick="moveSlide(1)">Next Step ▶</button>
         </div>
     </div>
@@ -55,7 +55,7 @@
         <div id="relay-step" style="display:none; padding:20px; background:#0d1117; border-radius:10px;">
             <h3 id="st-title" style="color:var(--accent); margin-top:0;"></h3>
             <p id="st-text" style="line-height:1.6;"></p>
-            <button class="btn" onclick="nextRelay()">Next Step ▶</button>
+            <button class="btn" onclick="nextRelay()">Continue Protocol ▶</button>
         </div>
     </div>
 
@@ -80,14 +80,14 @@
     <div id="res-ui" style="text-align:center;">
         <h1 id="score-val" style="font-size:4em; color:var(--success);"></h1>
         <div id="log-feed" style="text-align:left; font-size:13px; background:#0d1117; padding:15px; border-radius:8px;"></div>
-        <button class="btn" onclick="location.reload()">Return to Home</button>
+        <button class="btn" onclick="location.reload()">Finish Session</button>
     </div>
 </div>
 
 <script>
   firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
   let uid = "", curS, step = 1, curVol = 0, selRow = "", rIdx = 0, slideIdx = 0;
-  let myAns = {org:[], chem:"", bld:"", docs:[], labels:[], sealed:false, pollAns: null};
+  let myAns = {org:[], chem:"", trace:[], docs:[], labels:[], sealed:false};
 
   async function login() {
       const r = document.getElementById('reg').value, n = document.getElementById('name').value.toUpperCase().trim();
@@ -109,39 +109,35 @@
                   if(m.includes('slides')) renderSlide(); else if(m.includes('relay')) initRows(); else if(m.includes('exam') || m === "testing") initSim();
               }
           });
-      } else alert("Registry Mismatch");
+      } else alert("Registration Mismatch");
   }
 
-  // --- SLIDES LOGIC ---
+  // SLIDE CONTROLS
   function moveSlide(dir) {
       const next = slideIdx + dir;
       if(next >= 0 && next < forensicContent.slides.length) { slideIdx = next; renderSlide(); }
   }
-
   function renderSlide() {
       const s = forensicContent.slides[slideIdx];
       const cont = document.getElementById('slide-content');
-      document.getElementById('slide-num').innerText = `SLIDE ${s.id} OF 7`;
+      document.getElementById('slide-num').innerText = `STEP ${s.id} OF 7`;
       document.getElementById('slide-title').innerText = s.title;
-      
       if(s.type === "poll") {
-          let opts = s.options.map((o,i)=>`<div class="chip" onclick="submitPoll(${i})">${o}</div>`).join('');
-          cont.innerHTML = `<p>${s.question}</p>${opts}`;
+          cont.innerHTML = `<p>${s.question}</p>` + s.options.map((o,i)=>`<div class="chip" onclick="submitPoll(${i})">${o}</div>`).join('');
       } else {
           cont.innerHTML = `<p>${s.text}</p>`;
       }
-      db.collection("presence").doc(uid).update({ status: `Slide ${s.id}: ${s.title.split('.')[1].trim()}` });
+      db.collection("presence").doc(uid).update({ status: `Slide ${s.id}: ${s.title.split('.')[1]}` });
   }
-
   function submitPoll(idx) {
       const s = forensicContent.slides[slideIdx];
       if(idx === s.correct) {
-          document.getElementById('slide-content').innerHTML = `<h3 style="color:var(--success)">Correct Selection ✅</h3><p>${s.reveal}</p>`;
-          db.collection("presence").doc(uid).update({ status: `Slide 1: Poll Answered Correct` });
-      } else alert("Re-read the Administrative Protocol.");
+          document.getElementById('slide-content').innerHTML = `<h3 style="color:var(--success)">Correct ✅</h3><p>${s.reveal}</p>`;
+          db.collection("presence").doc(uid).update({ status: `Slide 1: Poll Passed` });
+      } else alert("Review the Protocol Rules.");
   }
 
-  // --- RELAY LOGIC ---
+  // RELAY CONTROLS
   function initRows() {
       let h = ''; Object.keys(forensicContent.relay).forEach(r => h+=`<div class="chip" onclick="startR('${r}')">${r}</div>`);
       document.getElementById('row-btns').innerHTML = h;
@@ -150,31 +146,28 @@
   function showR() { 
       const d = forensicContent.relay[selRow][rIdx]; 
       document.getElementById('st-title').innerText = d.title; document.getElementById('st-text').innerHTML = d.text;
-      db.collection("presence").doc(uid).update({ status: `Relay: ${selRow} Step ${rIdx+1}` });
+      db.collection("presence").doc(uid).update({ status: `Relay: ${selRow} ${rIdx+1}` });
   }
-  function nextRelay() { if(rIdx < 3) { rIdx++; showR(); } else alert("Row Protocol Completed."); }
+  function nextRelay() { if(rIdx < 3) { rIdx++; showR(); } else alert("Protocol Finalized."); }
 
-  // --- SIMULATION LOGIC (8-STEP) ---
+  // SIMULATION CONTROLS
   function initSim() { 
       curS = forensicContent.scenarios[Math.floor(Math.random()*forensicContent.scenarios.length)]; 
-      document.getElementById('case-h').innerText = `INQUEST DATA: ${curS.history}`; 
+      document.getElementById('case-h').innerText = `HISTORY: ${curS.history}`; 
   }
   function goSim() { document.getElementById('sim-start').style.display='none'; document.getElementById('sim-core').style.display='block'; rendSim(); }
-
   function rendSim() {
       const z = document.getElementById('zone'), inst = document.getElementById('instr'), vz = document.getElementById('vol-zone');
-      z.innerHTML = ''; vz.style.display = 'none'; z.style.display = 'grid'; document.getElementById('step-count').innerText = `Step ${step} of 8`;
-      
+      z.innerHTML = ''; vz.style.display = 'none'; z.style.display = 'grid'; document.getElementById('step-count').innerText = `Practical Step ${step}/8`;
       if(step === 1) { inst.innerText = "1. Collect Required Viscera:"; ["Stomach + Contents","Intestine","500g Liver","Half Kidney","Heart","Lungs"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 2) { inst.innerText = "2. Professional Preservative?"; ["Saturated Salt Solution","Rectified Spirit"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`); }
-      else if(step === 3) { inst.innerText = "3. Specialized Trace Evidence?"; ["Femur (DNA) in Salt","Blood on Gauze (Air-dry)","Nitric Acid Swabs (GSR)","None Required"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 4) { inst.innerText = "4. Send Control Sample?"; z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes</button><button class="btn" style="background:#333" onclick="myAns.ctrl=false; procSim()">No</button>`; }
-      else if(step === 5) { inst.innerText = "5. Fill Jar to 3/4th (Safety):"; z.style.display='none'; vz.style.display='block'; }
-      else if(step === 6) { inst.innerText = "6. Label Medl. I-30(a) Details:"; ["Date/Time Added","Name/Age/Sex","PM No/Crime No","Preservative Type"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 7) { inst.innerText = "7. Final Dispatch Seal:"; z.innerHTML = `<div style="font-size:40px; cursor:pointer;" onclick="myAns.sealed=true; procSim()">🕯️ Tap to Wax-Seal</div>`; }
-      else if(step === 8) { inst.innerText = "8. Handover Documents:"; ["Medl. I-30 Form","FIR Copy","Inquest Copy","Magistrate Auth","SOC Sketch"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 2) { inst.innerText = "2. Select Professional Preservative:"; ["Saturated Salt Solution","Rectified Spirit"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`); }
+      else if(step === 3) { inst.innerText = "3. Collect Trace Evidence:"; ["Femur (DNA) in Salt","Blood Gauze (Air-dry)","Nitric Acid Swabs (GSR)","None"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 4) { inst.innerText = "4. Control Sample Needed?"; z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes</button><button class="btn" style="background:#333" onclick="myAns.ctrl=false; procSim()">No</button>`; }
+      else if(step === 5) { inst.innerText = "5. Fill Container (3/4th Rule):"; z.style.display='none'; vz.style.display='block'; }
+      else if(step === 6) { inst.innerText = "6. Label Medl. I-30(a) Data:"; ["Date/Time","Name/Age/Sex","PM No/Crime No","Preservative"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+      else if(step === 7) { inst.innerText = "7. Final Dispatch Wax Seal:"; z.innerHTML = `<div style="font-size:40px; cursor:pointer;" onclick="myAns.sealed=true; procSim()">🕯️ Tap to Seal Jar</div>`; }
+      else if(step === 8) { inst.innerText = "8. Attach Mandatory Documents:"; ["Medl. I-30 Form","FIR Copy","Inquest Copy","Magistrate Auth","SOC Sketch"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
   }
-
   function procSim() {
       if([1,3,6,8].includes(step)) { 
           const sel = Array.from(document.querySelectorAll('.sel')).map(e => e.innerText);
@@ -182,19 +175,16 @@
       }
       step++; rendSim();
   }
-
   async function finish() {
       let s = 0, l = [];
-      if(myAns.org.includes("Stomach + Contents") && myAns.org.includes("500g Liver")) { s++; l.push("✅ Organs: Correct collection."); } else l.push("❌ Organs: Incomplete viscera.");
-      if(myAns.chem === curS.correctPreservative) { s++; l.push("✅ Chem: Professional choice."); } else l.push("❌ Chem: " + curS.trap);
-      if(curVol >= 70 && curVol <= 80) s++; else l.push("❌ Volume: Breached 3/4th rule.");
-      if(myAns.labels.length >= 3) s++; else l.push("❌ Labeling: Missing identifiers.");
-      if(myAns.sealed) s++; else l.push("❌ Sealing: Chain of custody fail.");
-      if(myAns.docs.includes("Medl. I-30 Form") && myAns.docs.includes("FIR Copy")) s++; else l.push("❌ Docs: Incomplete dispatch.");
-
+      if(myAns.org.includes("Stomach + Contents") && myAns.org.includes("500g Liver")) { s++; l.push("✅ Viscera: Correct selection."); } else l.push("❌ Viscera: Incomplete collection.");
+      if(myAns.chem === curS.correctPreservative) { s++; l.push("✅ Chem: Correct choice."); } else l.push("❌ Chem: Choice error.");
+      if(curVol >= 70 && curVol <= 80) s++; else l.push("❌ Volume: 3/4th rule violated.");
+      if(myAns.sealed) s++; else l.push("❌ Seal: Wax seal missing.");
+      if(myAns.docs.includes("Medl. I-30 Form") && myAns.docs.includes("FIR Copy")) s++; else l.push("❌ Dispatch: Paperwork incomplete.");
       await db.collection("simulation_scores").add({ student:uid, scenario:curS.id, score:s, log:l, ts:Date.now() });
       document.getElementById('sim-ui').style.display='none'; document.getElementById('res-ui').classList.add('active');
-      document.getElementById('score-val').innerText = s + "/6"; document.getElementById('log-feed').innerHTML = l.join("<br>");
+      document.getElementById('score-val').innerText = s + "/5"; document.getElementById('log-feed').innerHTML = l.join("<br>");
   }
 </script>
 </body>
