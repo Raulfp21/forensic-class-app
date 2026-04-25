@@ -21,8 +21,6 @@ const studentsAll = {
   "9": "FACULTY NINE",
   "10": "FACULTY TEN",
 
-// Consolidated Master List (2023 & 2024 Batches)
-const studentsAll = {
   // --- 2024 BATCH (Source: APRIL 2024 CSV) ---
   "520024506001": "ABDULAHAD RAJMOHAMED",
   "520024506002": "ABI A",
