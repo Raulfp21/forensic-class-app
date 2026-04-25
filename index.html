@@ -33,7 +33,15 @@
     </div>
 
     <div id="gate-ui" style="text-align:center; padding:40px 0;"><h1>🛑</h1><h3>Batch Access Denied</h3></div>
-
+  
+     <div id="slides-ui">
+        <h3 id="slide-title" style="color:var(--accent)"></h3>
+        <div id="slide-content" style="min-height:200px;"></div>
+        <div id="slide-nav" style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn" style="background:#333" onclick="moveSlide(-1)">◀ Back</button>
+            <button class="btn" onclick="moveSlide(1)">Next ▶</button>
+        </div>
+    </div>
     <div id="relay-ui">
         <div id="row-selection">
             <h3 style="color:var(--accent)">Select Row Protocol:</h3>
