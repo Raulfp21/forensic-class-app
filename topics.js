@@ -1,5 +1,46 @@
 // topics.js
 const forensicContent = {
+  slides: [
+    {
+      id: 1,
+      title: "1. Professionalism Poll",
+      type: "poll",
+      question: "At what stage does a doctor's professional responsibility for a medico-legal autopsy officially begin?",
+      options: ["When the first incision is made", "When the police bring the body", "When the requisition is received and accepted"],
+      correct: 2,
+      reveal: "Professionalism covers everything from **receiving a case** to the **final dispatch** of the report. It is a continuous chain of custody."
+    },
+    {
+      id: 2,
+      title: "2. Pre-Autopsy Prerequisites",
+      text: "<b>The Hierarchy:</b> In Govt Medical Colleges, the Prof. of Forensic Medicine receives requests. In their absence, the Associate or Assistant Prof. follows [cite: 5-6].<br><br><b>No Refusal:</b> No Medical Officer can refuse an autopsy citing personal interest. In other hospitals, the CMO/RMO obliges the request[cite: 15, 18]."
+    },
+    {
+      id: 3,
+      title: "3. Required Documents",
+      text: "<b>Authorization:</b> Routine cases require a Sub-Inspector or Senior Head Constable request [cite: 38].<br><br><b>Magistrate Inquest:</b> Mandatory for Custodial deaths, Dowry allegations, and Exhumation [cite: 39-40].<br><br><b>The PM Booklet:</b> Verify FIR, SOC Sketch, Form 86, and ID Proof. All pages must be numbered and attached to Medl. I-28 [cite: 44-46]."
+    },
+    {
+      id: 4,
+      title: "4. Conduct & Documentation",
+      text: "<b>Privacy:</b> Only the MO, technicians, and body-in-charge constable are allowed. Professionalism forbids unauthorized bystanders[cite: 60, 65].<br><br><b>Documentation:</b> Findings must be handwritten in the Medl. I-28 booklet during the autopsy—never rely on memory later [cite: 74-76]."
+    },
+    {
+      id: 5,
+      title: "5. Special Situations",
+      text: "<b>Custodial Deaths:</b> Requires a team of 2 doctors (MD Forensic) and 6-phase videography [cite: 274, 320].<br><br><b>HIV Cases:</b> Body wrapped in plastic for 3 days to allow viral viability to reduce before dissection [cite: 408].<br><br><b>Exhumation:</b> Conducted in natural light and screened from public view[cite: 140]."
+    },
+    {
+      id: 6,
+      title: "6. Preservation & Dispatch",
+      text: "<b>Viscera:</b> Use Saturated Salt Solution; fill containers only to 3/4th capacity [cite: 167].<br><br><b>DNA:</b> 10cm femur shaft or permanent molars preserved in common salt [cite: 208].<br><br><b>Dispatch:</b> All samples must be wax-sealed; the FSL receipt must be attached to the PM booklet[cite: 177, 179]."
+    },
+    {
+      id: 7,
+      title: "7. Opinion Framing",
+      text: "<b>Provisional Opinion:</b> Issued same-day if reports are pending[cite: 87, 120].<br><br><b>Professional Accuracy:</b> The word 'PROBABLY' must be avoided. If undetermined, state as such.<br><br><b>Handover:</b> Original Medl. I-29 certificate is posted directly to the Magistrate[cite: 91]."
+    }
+  ],
   // MODULE 1: PROFESSIONALISM RELAY
   relay: {
     "Row 1: General": [
