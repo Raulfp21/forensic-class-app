@@ -16,114 +16,117 @@
     .btn-green { background: var(--success); color: white; }
     .btn-red { background: var(--danger); color: white; }
     .btn-gray { background: #30363d; color: white; }
-    
     .name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 15px; }
     .name-card { background: #161b22; padding: 12px; border-radius: 8px; border: 1px solid #30363d; font-size: 12px; }
     .name-card.active { border-color: var(--accent); background: #1f2937; }
     .name-card.poll-win { border-color: var(--success); background: #062113; }
-    .inactive-chip { background: #161b22; padding: 4px 10px; border-radius: 4px; font-size: 11px; border: 1px solid #333; color: #555; }
-
+    .inactive-chip { background: #161b22; padding: 4px 10px; border-radius: 4px; font-size: 11px; color: #666; margin: 2px; }
     table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
     th, td { padding: 12px; text-align: left; border-bottom: 1px solid #30363d; }
-    .error-tag { background: #3b110e; color: #ff7b72; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-right: 4px; }
+    .error-tag { background: #3b110e; color: #ff7b72; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
   </style>
 </head>
 <body>
 
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-    <h2 style="margin:0;">👨‍🏫 DSMCH Instructor Dashboard</h2>
-    <div id="status-light" style="color:var(--success); font-size:12px;">● Server Active (2026)</div>
+    <h2 style="margin:0;">👨‍🏫 DSMCH Instructor Master Dashboard</h2>
+    <div id="status-light" style="color:var(--success); font-size:12px;">● Live Connection (2026)</div>
 </div>
 
 <div class="panel">
-    <h3 style="margin-top:0; font-size:14px; color:var(--muted);">BATCH CONTROL & SESSION MODE</h3>
-    <div style="display:flex; flex-wrap:wrap; gap:10px; background:#0d1117; padding:15px; border-radius:10px; border:1px solid #30363d;">
+    <h3 style="margin-top:0; font-size:14px; color:var(--muted);">BATCH CONTROL & TESTING</h3>
+    <div style="display:flex; flex-wrap:wrap; gap:15px; background:#0d1117; padding:20px; border-radius:10px; border:1px solid #30363d;">
         <div style="border-right:1px solid #333; padding-right:15px;">
             <div style="font-size:10px; color:var(--accent); margin-bottom:5px;">2024 BATCH</div>
             <button class="btn btn-blue" onclick="setMode('slides-2024')">START SLIDES</button>
             <button class="btn btn-blue" onclick="setMode('relay-2024')">START RELAY</button>
             <button class="btn btn-green" onclick="setMode('exam-2024')">START EXAM</button>
         </div>
-        <div style="padding:0 15px;">
-            <div style="font-size:10px; color:var(--muted); margin-bottom:5px;">GLOBAL</div>
+        <div style="border-right:1px solid #333; padding:0 15px;">
+            <div style="font-size:10px; color:var(--muted); margin-bottom:5px;">PRE-SESSION TESTING</div>
+            <button class="btn btn-gray" onclick="setMode('testing')">FACULTY ONLY (1-10)</button>
+        </div>
+        <div>
             <button class="btn btn-red" onclick="setMode('locked')">🔒 LOCK ALL</button>
             <button class="btn btn-gray" onclick="setMode('idle')">⏹ STOP</button>
         </div>
     </div>
 </div>
 
-<div class="panel" style="border-left: 5px solid #30363d;">
-    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">⚠️ NOT LOGGED IN / INACTIVE</h3>
-    <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:6px;">Analyzing registry...</div>
+<div class="panel" style="border-left: 5px solid var(--danger);">
+    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">⚠️ INACTIVE (Compare Registry)</h3>
+    <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:4px;">Comparing...</div>
 </div>
 
 <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:20px;">
     <div class="panel">
-        <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📍 LIVE PARTICIPATION (Slide Tracking)</h3>
+        <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📍 LIVE PARTICIPATION</h3>
         <div class="name-grid" id="active-names-grid"></div>
     </div>
-
     <div class="panel">
-        <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📊 PRACTICAL SKILLS MATRIX</h3>
+        <h3 style="margin-top:0; font-size:13px; color:var(--muted);">📊 SKILLS MATRIX</h3>
         <table id="skills-table">
             <thead><tr><th>Student</th><th>Score</th><th>Errors</th></tr></thead>
             <tbody id="skills-body"></tbody>
         </table>
+        <button class="btn btn-blue" style="width:100%; margin-top:20px;" onclick="exportCSV()">📥 DOWNLOAD REPORT</button>
     </div>
 </div>
 
 <div class="panel">
-    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">🔓 HARDWARE LOCK RESET</h3>
-    <input type="text" id="unlock-reg" placeholder="Reg No" style="padding:10px; background:#000; border:1px solid #333; color:white; border-radius:6px;">
-    <button class="btn btn-blue" onclick="resetDevice()">RESET BINDING</button>
+    <h3 style="margin-top:0; font-size:13px; color:var(--muted);">🔓 SECURITY OVERRIDE</h3>
+    <input type="text" id="unlock-reg" placeholder="Reg No" style="padding:10px; background:#000; border:1px solid #333; color:white; border-radius:6px; width:200px;">
+    <button class="btn btn-blue" onclick="resetDevice()">RESET HARDWARE BINDING</button>
 </div>
 
 <script>
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
 
-  function setMode(m) {
-      db.collection("slides").doc("current").set({ status: m, ts: firebase.firestore.FieldValue.serverTimestamp() });
-  }
+  function setMode(m) { db.collection("slides").doc("current").set({ status: m, ts: firebase.firestore.FieldValue.serverTimestamp() }); }
 
   function updateInactives(activeRolls) {
       const all = Object.keys(studentsAll);
       const inactive = all.filter(r => !activeRolls.includes(r))
           .map(r => `<div class="inactive-chip">${studentsAll[r]} (${r.slice(-3)})</div>`);
-      document.getElementById('inactive-list').innerHTML = inactive.length ? inactive.join('') : "All Logged In";
+      document.getElementById('inactive-list').innerHTML = inactive.length ? inactive.join('') : "Attendance Full";
   }
 
   db.collection("presence").onSnapshot(snap => {
       let activeRolls = [], h = '';
       snap.forEach(doc => {
-          const d = doc.data();
-          activeRolls.push(d.roll);
-          const isPoll = d.status.includes('Poll Passed');
-          h += `<div class="name-card ${isPoll ? 'poll-win' : 'active'}">
-                  <strong>${d.name}</strong><br>
-                  <div style="font-size:10px; margin-top:4px; color:var(--accent)">${d.status}</div>
-                </div>`;
+          const d = doc.data(); activeRolls.push(d.roll);
+          let statusClass = d.status.includes('Passed') ? 'name-card poll-win' : 'name-card active';
+          h += `<div class="${statusClass}"><strong>${d.name}</strong><br><small>${d.roll}</small><div style="font-size:10px; margin-top:4px; color:var(--accent)">${d.status}</div></div>`;
       });
-      document.getElementById('active-names-grid').innerHTML = h || 'No active users.';
+      document.getElementById('active-names-grid').innerHTML = h || 'No sessions.';
       updateInactives(activeRolls);
   });
 
   db.collection("simulation_scores").orderBy("ts", "desc").onSnapshot(snap => {
       let h = '';
       snap.forEach(doc => {
-          const d = doc.data();
-          const name = studentsAll[d.student] || d.student;
+          const d = doc.data(); const name = studentsAll[d.student] || d.student;
           let errs = d.log.filter(l => l.includes('❌')).map(l => `<span class="error-tag">${l.split(':')[0]}</span>`).join('');
-          h += `<tr><td><strong>${name}</strong></td><td><b>${d.score}</b></td><td>${errs || 'Perfect'}</td></tr>`;
+          h += `<tr><td><strong>${name}</strong></td><td><b>${d.score}</b></td><td>${errs || 'Professional'}</td></tr>`;
       });
       document.getElementById('skills-body').innerHTML = h;
   });
+
+  function exportCSV() {
+      let csv = "Name,Score,Errors\n";
+      document.querySelectorAll("#skills-body tr").forEach(tr => {
+          const tds = tr.querySelectorAll("td");
+          csv += `"${tds[0].innerText}","${tds[1].innerText}","${tds[2].innerText}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Forensic_Report.csv`; a.click();
+  }
 
   async function resetDevice() {
       const r = document.getElementById('unlock-reg').value;
       if(!r) return;
       await db.collection("device_bindings").doc(r).delete();
-      alert(`Access Reset for ${r}`);
+      alert(`Lock cleared for ${r}`);
   }
 </script>
 </body>
