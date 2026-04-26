@@ -1,45 +1,247 @@
-// topics.js
-const forensicSlides = [
-  { id: 1, title: "Authorization & Protocol", text: "Professionalism begins with legal standing. Always verify the Police Requisition and Body Challan against the Inquest report. In forensic medicine, the first 'cut' is a mental one: verifying jurisdiction." },
-  { id: 2, title: "Environmental Dignity", text: "The mortuary is a professional space. Ensure all doors are closed and only authorized personnel (MO, Technician, Constable) are present. Privacy is a right that continues after death." },
-  { id: 3, title: "The External Map", text: "Document every finding in real-time. Describe injuries by size, shape, and site. In Custodial or Dowry cases, even a 1cm bruise is a major legal finding." },
-  { id: 4, title: "Techniques of Evisceration", text: "Discussing Virchow’s vs. Rokitansky’s methods. At DSMCH, we emphasize the preservation of anatomical continuity to ensure the 'Chain of Custody' of findings." },
-  { id: 5, title: "Viscera Selection Criteria", text: "Standard routine: Stomach, Intestine (30cm), Liver (500g), and Kidney (half each). Specialized cases require Blood (30ml) and Urine (30ml)." },
-  { id: 6, title: "Chemical Logic (Preservatives)", text: "Salt for organics; Spirit for mineral acids. The 'Carbolic Trap': Phenol is alcohol-soluble, so use Saturated Salt even though it is an acid." },
-  { id: 7, title: "Legal Dispatch", text: "The procedure ends with the seal. Wax (Lakh) must be applied to knots. The Magistrate's Authorization is the final gatekeeper for FSL analysis." }
-];
+// ============================================================
+//  topics.js  —  CONTENT ONLY FILE
+//  Edit ONLY this file when adding new topics or scenarios.
+//  Do NOT add any Firebase, UI, or logic code here.
+//  This file is NEVER replaced by infrastructure updates.
+// ============================================================
 
 const forensicContent = {
+
+  // ── RELAY ROWS ─────────────────────────────────────────────
+  // HOW TO ADD A NEW ROW:
+  // 1. Add a new key inside relay: { }
+  // 2. Each key is an array of exactly 4 step objects
+  // 3. Each step: { step: number, title: "...", text: "..." }
+  // 4. Text can contain basic HTML like <b>, <br>, <ul>, <li>
+  // That's it. Teacher panel picks it up automatically.
+  // ──────────────────────────────────────────────────────────
+
   relay: {
-    "Row 1: General": [
-      { step: 1, title: "Authorization", text: "Verify Police Requisition and Body Challan. Professionally cross-check ID marks before the first cut." },
-      { step: 2, title: "Dignity", text: "Close mortuary doors. Only authorized personnel permitted. Privacy is a professional duty." },
-      { step: 3, title: "Real-time Records", text: "Dictate findings directly into Medl I-28 booklet during the autopsy. Accuracy requires immediacy." },
-      { step: 4, title: "Handover", text: "Reconstruct body and pack in khada cloth. Hand jewelry to Constable with a signed receipt." }
+
+    "Step 1: Pre-Autopsy Prerequisites": [
+      {
+        step: 1,
+        title: "Who Receives the Requisition?",
+        text: "In Govt Medical Colleges, the <b>Professor of Forensic Medicine / Police Surgeon</b> receives PM requests. In their absence: Associate Professor → Assistant Professor. In other hospitals, the <b>CMO / RMO</b> obliges. No Medical Officer can refuse an autopsy citing personal interest."
+      },
+      {
+        step: 2,
+        title: "Timing Rules",
+        text: "Requisitions accepted <b>only up to 4:00 PM</b>. Cases received before 4 PM may proceed <b>till 6 PM</b>. Exception: <b>Court order</b> must be obeyed immediately. <b>District Collector's explicit order</b> in law & order situations allows beyond-hours work."
+      },
+      {
+        step: 3,
+        title: "Who Can Give the Requisition Letter?",
+        text: "<b>Routine cases:</b> Police officer ≥ Sub-Inspector (Police Station) or ≥ Senior Head Constable (Out Post).<br><b>Magistrate inquest required for:</b> Custodial deaths, rape in custody, disappearance in custody, dowry-allegation deaths, and exhumation cases."
+      },
+      {
+        step: 4,
+        title: "Documents to Collect",
+        text: "Collect and attach (numbered) to PM Booklet (Medl. I-28):<br>• Requisition for PM examination<br>• Case history<br>• Form 86 / details of dead body<br>• SOC sketch & FIR copy<br>• A.R. copies & Death Intimation copy<br>• Treatment particulars (if treated elsewhere)"
+      }
     ],
-    "Row 2: Custodial": [
-      { step: 1, title: "The Board", text: "Conduct autopsy with a Board of at least two doctors. Transparency prevents allegations of bias." },
-      { step: 2, title: "Judicial Command", text: "Inquest must be by a Judicial Magistrate (Sec 176 1A CrPC). Verify written Magistrate instructions." },
-      { step: 3, title: "Videography", text: "Ensure continuous, unedited video recording. Capture all external findings before dissection." },
-      { step: 4, title: "Injury Mapping", text: "Document every minute bruise. Distinguish therapeutic marks (CPR) from torture signs." }
+
+    "Step 2: Conduct of Autopsy": [
+      {
+        step: 1,
+        title: "Who Is Authorised Inside?",
+        text: "Only these persons are authorised during autopsy:<br>• Conducting Medical Officer(s)<br>• Required departmental technicians<br>• Mortuary attendants<br>• Body in-charge constable<br><br><b>NOT allowed</b> without explicit Govt/Court order + IO's NOC: other MOs, lawyers, common public."
+      },
+      {
+        step: 2,
+        title: "Documentation During Autopsy",
+        text: "All findings — positive AND negative — entered <b>during</b> the autopsy in <b>Medl. I-28 booklet (16 pages)</b>. One booklet per case only. MO decides dissection technique at the start. Department sealed with <b>wax impression</b> daily."
+      },
+      {
+        step: 3,
+        title: "Videography Rules",
+        text: "Permitted <b>only on written request from a relative/friend of deceased</b> with IO's knowledge. Recorded video <b>sealed and sent to the Magistrate</b>. IO may attend at MO's discretion but must not obstruct."
+      },
+      {
+        step: 4,
+        title: "After Autopsy — Handover",
+        text: "Body packed neatly in khada cloth and plastic sheet. Jewellery & belongings handed to in-charge constable with <b>signed receipt on the same day</b>. PM certificate (Medl. I-29): <b>Original → Magistrate (sealed); Duplicate → IO; Triplicate → Department.</b>"
+      }
     ],
-    "Row 3: Dowry": [
-      { step: 1, title: "Executive Authority", text: "Suspicious death within 7 years of marriage (Sec 304B IPC). Autopsy requires RDO/Executive Magistrate request." },
-      { step: 2, title: "Screening", text: "Perform professional screening for sexual assault. Collect and air-dry vaginal and anal swabs." },
-      { step: 3, title: "Ligature Analysis", text: "Meticulously document neck marks to differentiate suicidal hanging from homicidal strangulation." },
-      { step: 4, title: "Reserved Opinion", text: "Use Medl I-29. Reserve opinion until chemical and histopath reports are finalized." }
+
+    "Step 3: Special Situations": [
+      {
+        step: 1,
+        title: "Custodial / Police Action Deaths",
+        text: "Team of <b>≥ 2 doctors with MD Forensic Medicine</b> mandatory. Family must view body (front + back) before autopsy. <b>Whole-body X-ray / CT scan before dissection.</b> Body preserved <b>48 hours</b> if family declares intent to approach High Court."
+      },
+      {
+        step: 2,
+        title: "Photography & Videography — Custodial",
+        text: "<b>20–25 coloured photographs</b>: face (3 views), torso front/back, upper/lower extremities, each numbered injury. Entire autopsy videographed in <b>6 phases</b>: bearings → external → injuries → cavity → head → trunk. MO narrates aloud; date/time superimposed."
+      },
+      {
+        step: 3,
+        title: "HIV / Biologically Hazardous Cases",
+        text: "Minimum staff. HIV body wrapped in plastic, kept <b>3 days</b> before dissection. All orifices plugged. Equipment soaked in <b>2% glutaraldehyde or 10% hypochlorite</b>. Staff: Chest X-ray every 6 months, TT every 6 months, Hepatitis B immunisation."
+      },
+      {
+        step: 4,
+        title: "Exhumation",
+        text: "<b>Executive Magistrate's written order mandatory</b> (Sec 196(4) BNSS). Natural daylight only. Site screened from public. Identity verified before Magistrate holds inquest and hands over requisition to medical team."
+      }
     ],
-    "Row 4: Exhumation": [
-      { step: 1, title: "Written Warrant", text: "Never proceed without an Executive Magistrate's order. Body must be identified at the gravesite." },
-      { step: 2, title: "Soil Controls", text: "Collect soil samples from above, below, and sides to rule out environmental poison leaching." },
-      { step: 3, title: "Natural Light", text: "Exhumation must be conducted in broad daylight (Sunrise to Sunset) for procedural visibility." },
-      { step: 4, title: "Decomposition", text: "Document adipocere or mummification. These states drastically alter the interpretation of injuries." }
+
+    "Case: General Autopsy": [
+      {
+        step: 1,
+        title: "Authorization Check",
+        text: "Verify Police Requisition and Body Challan. Cross-check identity marks (moles, tattoos, scars) against the Inquest Report before the first incision. No autopsy without proper requisition."
+      },
+      {
+        step: 2,
+        title: "Dignity & Confidentiality",
+        text: "Close mortuary doors. Only authorized personnel permitted. Professionalism forbids unauthorized bystanders. Maintain dignity and secrecy of dead body and findings at all times."
+      },
+      {
+        step: 3,
+        title: "Real-Time Recording",
+        text: "Dictate and enter findings into <b>Medl. I-28 booklet during the autopsy</b>. Never rely on memory. Note all positive AND negative findings. Dissection technique decided at the start — no unscientific method."
+      },
+      {
+        step: 4,
+        title: "Handover Protocol",
+        text: "Reconstruct and pack body neatly. Hand all jewellery to constable with signed receipt. PM File (booklet + notes + certificates) handed to Professor of FM on the same day."
+      }
+    ],
+
+    "Case: Custodial Death": [
+      {
+        step: 1,
+        title: "The Board",
+        text: "Conduct autopsy with a team of <b>at least two doctors with MD Forensic Medicine</b> attached to a Medical College. Transparency is the shield against allegations of bias."
+      },
+      {
+        step: 2,
+        title: "Judicial Command",
+        text: "Inquest by <b>Judicial Magistrate (Sec 176(1A) CrPC)</b>. Family must view body front and back, allowed to take photos/video. No autopsy commences without next of kin having seen the body."
+      },
+      {
+        step: 3,
+        title: "Continuous Videography",
+        text: "Unedited video across all 6 phases. Capture all external injuries before dissection. MO narrates observations aloud. Sealed video chip dispatched to Magistrate → NHRC same day."
+      },
+      {
+        step: 4,
+        title: "Injury Mapping",
+        text: "Document every bruise with precise location (distance from heel and midline). Distinguish CPR/therapeutic marks from signs of torture. Deep contusions: long incisions to expose muscular tissue. Whole-body X-ray/CT before autopsy."
+      }
+    ],
+
+    "Case: Dowry Death": [
+      {
+        step: 1,
+        title: "Executive Authority",
+        text: "Suspicious death <b>within 7 years of marriage</b> (Sec 304B IPC). Requires autopsy on request from an <b>Executive Magistrate (RDO)</b>. Verify the specific written Magistrate letter before proceeding."
+      },
+      {
+        step: 2,
+        title: "Sexual Assault Screening",
+        text: "Routine professional screening for sexual assault. Collect and <b>air-dry vaginal, anal, and oral swabs</b>. Document perineal and genital findings systematically."
+      },
+      {
+        step: 3,
+        title: "Ligature Mark Analysis",
+        text: "Document level, direction, width, depth, and <b>continuity of neck marks</b>. Dissect neck muscles in layers. Examine hyoid bone and thyroid cartilage in situ. Critical to differentiate suicide from homicide."
+      },
+      {
+        step: 4,
+        title: "Reserved Opinion",
+        text: "Use <b>Medl. I-29</b> format. Issue provisional opinion with 'pending chemical analysis / histopathology' noted. <b>Reserve final opinion</b> until all FSL reports received. Avoid 'probably' in final cause of death."
+      }
+    ],
+
+    "Case: Exhumation": [
+      {
+        step: 1,
+        title: "Written Warrant",
+        text: "Never proceed without a <b>written order from an Executive or Judicial Magistrate</b> (Sec 196(4) BNSS). Body identified by relatives/accused/graveyard worker/constable at the gravesite."
+      },
+      {
+        step: 2,
+        title: "Soil Controls",
+        text: "Collect <b>control soil samples (~500g each)</b> from above, below, and sides of the body. Fluid/debris in coffin also collected. Rules out environmental leaching of poisons into viscera."
+      },
+      {
+        step: 3,
+        title: "Natural Light & Transparency",
+        text: "Exhumation in <b>natural daylight only</b>. Screen area from public view. Record depth (skull to surface, feet to surface) and distance from permanent landmarks."
+      },
+      {
+        step: 4,
+        title: "Decomposition & Documentation",
+        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> — do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
+      }
     ]
+
+    // ── TO ADD A NEW TOPIC ────────────────────────────────
+    // Copy the block below, paste after the last entry above,
+    // add a comma after the previous closing ],
+    // and fill in your content.
+    //
+    // "Your New Topic Name": [
+    //   { step:1, title:"Title 1", text:"Content 1" },
+    //   { step:2, title:"Title 2", text:"Content 2" },
+    //   { step:3, title:"Title 3", text:"Content 3" },
+    //   { step:4, title:"Title 4", text:"Content 4" }
+    // ],
+    // ─────────────────────────────────────────────────────
+
   },
+
+  // ── VISCERA SIMULATION SCENARIOS ──────────────────────────
+  // HOW TO ADD A NEW SCENARIO:
+  // Add a new object to the array below.
+  // correctPreservative must exactly match one of:
+  //   "Saturated Salt Solution" or "Rectified Spirit"
+  // correctBloodPres must exactly match one of:
+  //   "NaF 10mg" or "NaF 2mg"
+  // ──────────────────────────────────────────────────────────
+
   scenarios: [
-    { id: "op", history: "Farmer found frothing in field. Clinical history: Suspected OP Poisoning.", correctPreservative: "Saturated Salt Solution", correctBloodPres: "NaF 2mg/ml", trap: "Note: Salt is the standard for organic poisons." },
-    { id: "alcohol", history: "Body found behind a liquor shop. History indicates: Suspected Acute Alcohol Poisoning.", correctPreservative: "Saturated Salt Solution", correctBloodPres: "NaF 10mg/ml", trap: "Error: Spirit ruins alcohol samples. Use Salt." },
-    { id: "acid", history: "Found near toilet cleaner. Autopsy shows leathery stomach. Suspected Mineral Acid.", correctPreservative: "Rectified Spirit", correctBloodPres: "NaF 2mg/ml", trap: "Note: Salt reacts with mineral acids. Spirit is the required exception." },
-    { id: "phenol", history: "Characteristic phenolic smell. Corrosive stains. Suspected Carbolic Acid Poisoning.", correctPreservative: "Saturated Salt Solution", correctBloodPres: "NaF 2mg/ml", trap: "Warning: Phenol is alcohol-soluble. Use Salt, NOT Spirit." }
+    {
+      id: "op",
+      history: "A farmer is found collapsed in his field with frothing at the mouth, pin-point pupils, and excessive secretions. Suspected Organophosphorus (OP) Poisoning.",
+      correctPreservative: "Saturated Salt Solution",
+      correctBloodPres: "NaF 2mg",
+      trap: "Do NOT use Rectified Spirit for OP poisoning. Saturated Salt Solution is the standard for organic poisons."
+    },
+    {
+      id: "alcohol",
+      history: "Body found behind a liquor shop. Strong smell of alcohol. Suspected Acute Alcohol Poisoning.",
+      correctPreservative: "Saturated Salt Solution",
+      correctBloodPres: "NaF 10mg",
+      trap: "NEVER use Rectified Spirit for alcohol cases — it contaminates the sample directly. Higher NaF dose (10mg) prevents post-mortem alcohol formation by bacteria."
+    },
+    {
+      id: "acid",
+      history: "Body found near toilet cleaner bottles. Leathery, corroded stomach lining at autopsy. Suspected Mineral Acid Poisoning.",
+      correctPreservative: "Rectified Spirit",
+      correctBloodPres: "NaF 2mg",
+      trap: "Salt solution reacts with mineral acids. Rectified Spirit is the required exception for corrosive acid cases."
+    },
+    {
+      id: "phenol",
+      history: "Characteristic phenolic smell in mouth and stomach. Corrosive brownish staining on lips and tongue. Suspected Carbolic Acid (Phenol) Poisoning.",
+      correctPreservative: "Saturated Salt Solution",
+      correctBloodPres: "NaF 2mg",
+      trap: "Phenol is HIGHLY SOLUBLE in Rectified Spirit — using spirit destroys the sample. Use Salt, NOT Spirit. Classic examiner trap."
+    }
+
+    // ── TO ADD A NEW SCENARIO ─────────────────────────────
+    // Add a comma after the last } above, then paste:
+    // {
+    //   id: "unique_id",
+    //   history: "Case history shown to student...",
+    //   correctPreservative: "Saturated Salt Solution",  // or "Rectified Spirit"
+    //   correctBloodPres: "NaF 2mg",                     // or "NaF 10mg"
+    //   trap: "Explanation shown in feedback..."
+    // }
+    // ─────────────────────────────────────────────────────
   ]
 };
