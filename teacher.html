@@ -1,99 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><title>DSMCH Instructor Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSMCH Instructor Control</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="config.js"></script><script src="topics.js"></script>
+  <!-- ── CONTENT FILE — edit topics.js only, never this file ── -->
+  <script src="config.js"></script>
+  <script src="topics.js"></script>
   <style>
-    :root { --bg: #0a0a0a; --panel: #111; --accent: #58a6ff; --success: #238636; --danger: #da3633; --muted: #8b949e; }
-    body { background: var(--bg); color: #e6edf3; font-family: sans-serif; padding: 20px; }
-    .panel { background: var(--panel); padding: 20px; border-radius: 12px; border: 1px solid #333; margin-bottom: 20px; }
-    .btn { padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; margin: 3px; font-size: 11px; transition: 0.2s; }
-    .btn-blue { background: var(--accent); color: #0d1117; }
-    .btn-green { background: var(--success); color: white; }
-    .btn-red { background: var(--danger); color: white; }
-    .btn-gray { background: #333; color: white; }
-    .name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 15px; }
-    .name-card { background: #161b22; padding: 12px; border-radius: 8px; border: 1px solid #333; text-align: center; font-size: 11px; }
-    .name-card.warning { background: var(--danger); animation: blink 1s infinite; }
-    @keyframes blink { 50% { opacity: 0.5; } }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #333; }
-    .error-tag { background: #3b110e; color: #ff7b72; padding: 2px 5px; border-radius: 4px; font-size: 10px; margin-right: 3px; }
+    :root { --bg:#0a0a0a; --panel:#111; --accent:#58a6ff; --success:#238636; --danger:#da3633; --warn:#e3a008; --muted:#8b949e; }
+    * { box-sizing: border-box; }
+    body { background:var(--bg); color:#e6edf3; font-family:'Segoe UI',system-ui,sans-serif; padding:20px; margin:0; }
+
+    .panel { background:var(--panel); padding:20px; border-radius:12px; border:1px solid #30363d; margin-bottom:20px; }
+    .panel-title { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:0 0 14px 0; }
+
+    .btn { padding:10px 16px; border-radius:6px; cursor:pointer; font-weight:bold; border:none; transition:0.2s; margin:4px; font-size:13px; }
+    .btn-blue  { background:var(--accent); color:#0d1117; }
+    .btn-green { background:var(--success); color:white; }
+    .btn-red   { background:var(--danger); color:white; }
+    .btn-gray  { background:#30363d; color:white; }
+    .btn-warn  { background:var(--warn); color:#0d1117; }
+    .btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+    /* Stream selector */
+    .stream-btns { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+    .stream-btn { flex:1; min-width:100px; padding:12px; border-radius:8px; border:2px solid #30363d; background:#21262d; color:#8b949e; cursor:pointer; font-weight:bold; font-size:14px; text-align:center; transition:0.2s; }
+    .stream-btn.active-2024  { border-color:#58a6ff; background:#1f6feb22; color:#58a6ff; }
+    .stream-btn.active-2023  { border-color:#3fb950; background:#23863622; color:#3fb950; }
+    .stream-btn.active-testing { border-color:#e3a008; background:#e3a00822; color:#e3a008; }
+    #stream-status { font-size:13px; padding:8px 12px; border-radius:6px; background:#0d1117; margin-bottom:14px; }
+
+    /* Topic selector */
+    .topic-select { width:100%; background:#0d1117; color:white; border:1px solid #30363d; border-radius:6px; padding:10px; font-size:14px; margin-bottom:10px; }
+
+    /* Seat Grid */
+    .roll-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(42px,1fr)); gap:6px; margin-top:12px; }
+    .seat { background:#21262d; text-align:center; padding:8px 0; border-radius:6px; font-size:11px; color:var(--muted); border:1px solid #30363d; transition:0.3s; cursor:pointer; position:relative; }
+    .seat.active  { background:#1f6feb; color:white; border-color:#58a6ff; box-shadow:0 0 8px rgba(88,166,255,0.3); }
+    .seat.warning { background:var(--danger); color:white; animation:blink 1s infinite; }
+    .seat.cheat   { background:var(--warn); color:#0d1117; animation:blink 0.6s infinite; }
+    @keyframes blink { 50%{opacity:0.4;} }
+
+    /* Tables */
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:10px 12px; text-align:left; border-bottom:1px solid #30363d; }
+    th { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1px; }
+    .error-tag { background:#3b110e; color:#ff7b72; padding:3px 7px; border-radius:4px; font-size:11px; margin:2px; display:inline-block; font-weight:bold; }
+    .inactive-chip { background:#161b22; padding:5px 10px; border-radius:20px; font-size:12px; border:1px solid #30363d; color:#6e7681; margin:3px; display:inline-block; }
+
+    /* Anti-cheat log */
+    .alert-row { padding:8px 12px; border-radius:6px; margin-bottom:6px; font-size:13px; display:flex; align-items:center; gap:12px; }
+    .alert-tab    { background:#2d2008; border-left:3px solid var(--warn); }
+    .alert-back   { background:#2d1a08; border-left:3px solid #ff7b72; }
+    .alert-refresh{ background:#3b110e; border-left:3px solid var(--danger); }
+    .alert-swipe  { background:#0d2d1a; border-left:3px solid #3fb950; }
+    .alert-time   { color:var(--muted); font-size:11px; white-space:nowrap; }
+    .alert-badge  { font-size:11px; font-weight:bold; padding:2px 8px; border-radius:20px; white-space:nowrap; }
+    .badge-tab     { background:var(--warn); color:#0d1117; }
+    .badge-back    { background:#ff7b72; color:#0d1117; }
+    .badge-refresh { background:var(--danger); color:white; }
+    .badge-swipe   { background:#3fb950; color:#0d1117; }
+
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    @media(max-width:800px) { .two-col { grid-template-columns:1fr; } }
+
+    .tab-bar { display:flex; gap:4px; margin-bottom:16px; }
+    .tab { padding:8px 16px; border-radius:6px 6px 0 0; cursor:pointer; font-size:13px; font-weight:bold; background:#21262d; color:var(--muted); border:1px solid #30363d; border-bottom:none; }
+    .tab.active { background:var(--panel); color:white; border-color:#58a6ff; }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+
+    #cheat-count { background:var(--danger); color:white; font-size:10px; font-weight:bold; padding:1px 6px; border-radius:10px; margin-left:6px; display:none; }
   </style>
 </head>
 <body>
-  <h2>👨‍🏫 Instructor Control Center</h2>
-  
-  <div class="panel">
-    <h3 style="margin-top:0; color:var(--muted); font-size:14px;">1. BROADCAST TEACHING SLIDES</h3>
-    <div id="slide-btns"></div>
-    <script>
-      const sContainer = document.getElementById('slide-btns');
-      forensicSlides.forEach(s => {
-        sContainer.innerHTML += `<button class="btn btn-blue" onclick="setMode('slide-${s.id}')">Slide ${s.id}</button>`;
-      });
-    </script>
-  </div>
 
-  <div class="panel">
-    <h3 style="margin-top:0; color:var(--muted); font-size:14px;">2. GAME CONTROLS (Batch Gated)</h3>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <div style="background:#0d1117; padding:10px; border-radius:8px;">
-            <small>2024 BATCH</small><br>
-            <button class="btn btn-blue" onclick="setMode('relay-2024')">Start Relay</button>
-            <button class="btn btn-green" onclick="setMode('exam-2024')">Start Practical</button>
-        </div>
-        <div style="background:#0d1117; padding:10px; border-radius:8px;">
-            <small>2023 BATCH</small><br>
-            <button class="btn btn-blue" onclick="setMode('relay-2023')">Start Relay</button>
-            <button class="btn btn-green" onclick="setMode('exam-2023')">Start Practical</button>
-        </div>
-        <div style="padding:10px;">
-            <small>TESTING</small><br>
-            <button class="btn btn-gray" onclick="setMode('testing')">Faculty Only (1-10)</button>
-        </div>
-    </div>
-    <div style="margin-top:10px;">
-        <button class="btn btn-red" onclick="setMode('locked')">🔒 LOCK ALL</button>
-        <button class="btn btn-gray" onclick="setMode('idle')">⏹️ STOP ALL</button>
+<!-- Header -->
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+  <div>
+    <h2 style="margin:0;">👨‍🏫 DSMCH Instructor Dashboard</h2>
+    <div style="font-size:12px; color:var(--muted); margin-top:4px;">
+      Topics loaded from <code>topics.js</code> — edit that file to add/change content
     </div>
   </div>
+  <div id="connection-status" style="font-size:12px; color:var(--success);">● Firebase Connected</div>
+</div>
 
-  <div class="panel">
-    <h3>📍 Active Participation (Names)</h3>
-    <div class="name-grid" id="active-grid"></div>
+<!-- ── STREAM SELECTOR ───────────────────────────────────────── -->
+<div class="panel" style="border-left:4px solid var(--accent);">
+  <p class="panel-title">1. Select Target Batch</p>
+  <div class="stream-btns">
+    <div class="stream-btn" id="s-2024"    onclick="selectStream('2024')">🎓 2024 Batch</div>
+    <div class="stream-btn" id="s-2023"    onclick="selectStream('2023')">🎓 2023 Batch</div>
+    <div class="stream-btn" id="s-testing" onclick="selectStream('testing')">🧪 Testing</div>
+  </div>
+  <div id="stream-status" style="color:var(--muted);">No batch selected. Select a batch before broadcasting.</div>
+
+  <!-- ── TOPIC SELECTOR (reads from topics.js automatically) ── -->
+  <p class="panel-title" style="margin-top:16px;">2. Select Topic to Broadcast (Relay)</p>
+  <select class="topic-select" id="topic-select">
+    <option value="">— Choose a topic to broadcast —</option>
+  </select>
+  <div id="topic-preview" style="display:none; background:#0d1117; padding:12px; border-radius:6px; font-size:13px; color:var(--muted); margin-bottom:12px;"></div>
+
+  <!-- ── MODE BUTTONS ── -->
+  <p class="panel-title" style="margin-top:16px;">3. Broadcast Mode</p>
+  <button class="btn btn-blue"  onclick="setMode('live')">📡 START RELAY (selected topic)</button>
+  <button class="btn btn-green" onclick="setMode('exam')">🧪 START VISCERA SIM</button>
+  <button class="btn btn-red"   onclick="setMode('locked')">🔒 LOCK ALL SESSIONS</button>
+  <button class="btn btn-gray"  onclick="setMode('idle')">⏹ STOP / IDLE</button>
+</div>
+
+<!-- ── INACTIVE STUDENTS ─────────────────────────────────────── -->
+<div class="panel" style="border-left:4px solid #30363d;">
+  <p class="panel-title">⚠️ Not Started / Inactive</p>
+  <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:6px;">
+    <span style="color:var(--muted);">Waiting for data…</span>
+  </div>
+</div>
+
+<!-- ── TABS: GRID / SKILLS / ANTI-CHEAT ─────────────────────── -->
+<div class="panel">
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('tab-grid')">📍 Attendance Grid</div>
+    <div class="tab" onclick="switchTab('tab-skills')">📊 Skills Matrix</div>
+    <div class="tab" onclick="switchTab('tab-cheat')">🚨 Exit Log <span id="cheat-count">0</span></div>
   </div>
 
-  <div class="panel">
-    <h3>📊 Practical Skills Matrix</h3>
-    <table id="matrix-table">
-        <thead><tr style="color:var(--muted);"><th>Student</th><th>Score</th><th>Errors</th></tr></thead>
-        <tbody id="matrix-body"></tbody>
+  <!-- Attendance Grid -->
+  <div id="tab-grid" class="tab-content active">
+    <div style="font-size:12px; color:var(--muted); margin-bottom:8px;" id="grid-label">Showing: All</div>
+    <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">
+      <span style="display:inline-block; width:12px; height:12px; background:#1f6feb; border-radius:2px; margin-right:4px;"></span>Active
+      <span style="display:inline-block; width:12px; height:12px; background:var(--danger); border-radius:2px; margin:0 4px 0 12px;"></span>Out of App
+      <span style="display:inline-block; width:12px; height:12px; background:var(--warn); border-radius:2px; margin:0 4px 0 12px;"></span>Cheat Alert
+    </div>
+    <div class="roll-grid" id="master-grid"></div>
+  </div>
+
+  <!-- Skills Matrix -->
+  <div id="tab-skills" class="tab-content">
+    <table>
+      <thead><tr><th>Student</th><th>Scenario</th><th>Score</th><th>Errors</th></tr></thead>
+      <tbody id="skills-body"></tbody>
     </table>
+    <button class="btn btn-blue" style="width:100%; margin-top:16px;" onclick="exportData()">📥 Download Skills Report (.CSV)</button>
   </div>
+
+  <!-- Anti-Cheat Exit Log -->
+  <div id="tab-cheat" class="tab-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <div style="font-size:13px; color:var(--muted);">Real-time exit event log. Updates automatically.</div>
+      <button class="btn btn-red" style="font-size:12px; padding:6px 12px;" onclick="clearCheatLog()">Clear Log</button>
+    </div>
+    <div style="font-size:12px; margin-bottom:12px; display:flex; gap:16px; flex-wrap:wrap;">
+      <span><span class="alert-badge badge-tab" style="margin-right:4px;">TAB</span>Tab/App switch</span>
+      <span><span class="alert-badge badge-refresh" style="margin-right:4px;">REFRESH</span>Page refresh attempt</span>
+      <span><span class="alert-badge badge-back" style="margin-right:4px;">BACK</span>Back button pressed</span>
+      <span><span class="alert-badge badge-swipe" style="margin-right:4px;">SWIPE</span>Edge swipe</span>
+    </div>
+    <div id="cheat-log">
+      <div style="color:var(--muted); font-size:13px;">No exit events logged yet.</div>
+    </div>
+  </div>
+</div>
 
 <script>
-  firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
-  function setMode(m) { db.collection("slides").doc("current").set({ status: m, ts: firebase.firestore.FieldValue.serverTimestamp() }); }
-  
-  db.collection("presence").onSnapshot(snap => {
-      let h = ''; snap.forEach(doc => {
-          const d = doc.data(); const sClass = (d.status === "Out of App") ? "name-card warning" : "name-card active";
-          h += `<div class="${sClass}"><strong>${d.name}</strong><br><small style="color:var(--muted)">${d.roll}</small><br><div style="color:var(--accent); font-size:10px; margin-top:5px;">${d.status}</div></div>`;
-      });
-      document.getElementById('active-grid').innerHTML = h || 'No students active.';
-  });
+// =============================================================
+//  teacher.html — INFRASTRUCTURE ONLY
+//  Topic list is read dynamically from topics.js.
+//  Do NOT add topic content here.
+// =============================================================
 
-  db.collection("simulation_scores").orderBy("ts", "desc").onSnapshot(snap => {
-      let h = ''; snap.forEach(doc => {
-          const d = doc.data(); const name = studentsAll[d.student] || d.student;
-          let errs = d.log.filter(l => l.includes('❌')).map(l => `<span class="error-tag">${l.split(':')[0]}</span>`).join('');
-          h += `<tr style="border-bottom:1px solid #333;"><td style="padding:10px;"><b>${name}</b><br><small>${d.scenario.toUpperCase()}</small></td><td><b>${d.score}/8</b></td><td>${errs || 'None'}</td></tr>`;
-      });
-      document.getElementById('matrix-body').innerHTML = h;
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let activeStream = null;
+let cheatEventCount = 0;
+
+// ── Tab switching ─────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'tab-cheat') { cheatEventCount = 0; updateCheatBadge(); }
+}
+
+function updateCheatBadge() {
+  const badge = document.getElementById('cheat-count');
+  badge.textContent = cheatEventCount;
+  badge.style.display = cheatEventCount > 0 ? 'inline' : 'none';
+}
+
+// ── Populate topic dropdown from topics.js ────────────────────
+function populateTopics() {
+  const sel = document.getElementById('topic-select');
+  Object.keys(forensicContent.relay).forEach(key => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = key;
+    sel.appendChild(opt);
   });
+}
+populateTopics();
+
+// Show topic preview when selected
+document.getElementById('topic-select').addEventListener('change', function() {
+  const preview = document.getElementById('topic-preview');
+  if (!this.value) { preview.style.display = 'none'; return; }
+  const steps = forensicContent.relay[this.value];
+  preview.style.display = 'block';
+  preview.innerHTML = `<b style="color:white;">${this.value}</b> — ${steps.length} steps:<br>` +
+    steps.map((s,i) => `<span style="color:#58a6ff">${i+1}.</span> ${s.title}`).join(' &nbsp;·&nbsp; ');
+});
+
+// ── Stream selector ───────────────────────────────────────────
+function selectStream(s) {
+  activeStream = s;
+  ['2024','2023','testing'].forEach(x => {
+    document.getElementById('s-' + x).className = 'stream-btn';
+  });
+  document.getElementById('s-' + s).className = 'stream-btn active-' + s;
+
+  const labels = { '2024':'2024 Batch (520024xxxxx)', '2023':'2023 Batch (520023xxxxx)', 'testing':'Testing — Faculty Accounts (1–10)' };
+  document.getElementById('stream-status').innerHTML =
+    `<span style="color:var(--accent)">● Broadcasting to: <b>${labels[s]}</b></span>`;
+  document.getElementById('grid-label').textContent = `Showing: ${labels[s]}`;
+}
+
+// ── Seat Grid ─────────────────────────────────────────────────
+const grid = document.getElementById('master-grid');
+for (let i = 1; i <= 255; i++) {
+  const el = document.createElement('div');
+  el.id = 'seat-' + i;
+  el.className = 'seat';
+  el.textContent = i;
+  el.title = '';
+  grid.appendChild(el);
+}
+
+// ── Broadcast ─────────────────────────────────────────────────
+function setMode(m) {
+  if (!activeStream) { alert('⚠️ Please select a batch (2024 / 2023 / Testing) first.'); return; }
+
+  const selectedTopic = document.getElementById('topic-select').value;
+  if (m === 'live' && !selectedTopic) { alert('⚠️ Please select a topic to broadcast for the relay.'); return; }
+
+  const labels = { '2024':'2024 Batch', '2023':'2023 Batch', 'testing':'Testing' };
+  const modeLabels = { 'live':`RELAY — "${selectedTopic}"`, 'exam':'VISCERA SIM', 'locked':'LOCKED', 'idle':'IDLE' };
+  if (!confirm(`Broadcast "${modeLabels[m]}" to ${labels[activeStream]}?`)) return;
+
+  db.collection("slides").doc(activeStream).set({
+    status: m,
+    stream: activeStream,
+    activeTopic: selectedTopic || null,
+    ts: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+// ── Inactive list ─────────────────────────────────────────────
+function refreshInactiveList(activeRolls) {
+  let streamRegs = [];
+  if (activeStream === '2024')    streamRegs = Object.keys(studentsAll).filter(r => r.startsWith('520024'));
+  else if (activeStream === '2023') streamRegs = Object.keys(studentsAll).filter(r => r.startsWith('520023'));
+  else if (activeStream === 'testing') streamRegs = Object.keys(studentsAll).filter(r => parseInt(r) <= 10 && parseInt(r) >= 1);
+  else streamRegs = Object.keys(studentsAll);
+
+  const inactive = streamRegs
+    .filter(reg => !activeRolls.includes(reg))
+    .map(reg => `<div class="inactive-chip">${studentsAll[reg]} <span style="color:#444">(${reg.slice(-3)})</span></div>`);
+
+  document.getElementById('inactive-list').innerHTML = inactive.length > 0
+    ? inactive.join('')
+    : "<b style='color:var(--success)'>✅ 100% Participation</b>";
+}
+
+// ── Presence monitor ─────────────────────────────────────────
+db.collection("presence").onSnapshot(snap => {
+  let activeRolls = [];
+  document.querySelectorAll('.seat').forEach(s => { s.className = 'seat'; s.title = ''; });
+
+  snap.forEach(doc => {
+    const d = doc.data();
+    activeRolls.push(d.roll);
+    const seatNum = parseInt(d.roll.toString().slice(-3));
+    const el = document.getElementById('seat-' + seatNum);
+    if (el) {
+      el.title = `${d.name || d.roll} — ${d.status}`;
+      if (d.status && d.status.startsWith('⚠️')) el.className = 'seat cheat';
+      else if (d.status === 'Out of App' || d.status === 'tab_switch') el.className = 'seat warning';
+      else el.className = 'seat active';
+    }
+  });
+  refreshInactiveList(activeRolls);
+});
+
+// ── Skills matrix ─────────────────────────────────────────────
+db.collection("simulation_scores").orderBy("ts","desc").onSnapshot(snap => {
+  let html = '';
+  snap.forEach(doc => {
+    const d = doc.data();
+    if (activeStream && d.stream && d.stream !== activeStream) return;
+    const errors = (d.log || []).filter(l => l.includes('❌'))
+      .map(l => `<span class="error-tag">${l.replace('❌ ','').split(':')[0]}</span>`).join('');
+    html += `<tr>
+      <td><b>${studentsAll[d.student] || d.student}</b><br><small style="color:var(--muted)">${d.name || ''}</small></td>
+      <td><span style="text-transform:uppercase; font-size:12px; color:var(--muted);">${d.scenario || ''}</span></td>
+      <td style="font-weight:bold; font-size:1.1em; color:${d.score >= 5 ? 'var(--success)' : d.score >= 4 ? 'var(--warn)' : 'var(--danger)'}">${d.score}/6</td>
+      <td>${errors || '<span style="color:var(--success)">None</span>'}</td>
+    </tr>`;
+  });
+  document.getElementById('skills-body').innerHTML = html ||
+    '<tr><td colspan="4" style="text-align:center;color:#666;">No submissions yet.</td></tr>';
+});
+
+// ── Anti-cheat exit log ───────────────────────────────────────
+const alertClasses = {
+  tab_switch:       { cls:'alert-tab',     badge:'badge-tab',     label:'TAB SWITCH',  icon:'👁' },
+  refresh_attempt:  { cls:'alert-refresh', badge:'badge-refresh', label:'REFRESH',     icon:'🔄' },
+  back_navigation:  { cls:'alert-back',    badge:'badge-back',    label:'BACK NAV',    icon:'◀' },
+  swipe_navigation: { cls:'alert-swipe',   badge:'badge-swipe',   label:'SWIPE',       icon:'👆' },
+};
+
+db.collection("cheat_alerts").orderBy("ts","desc").limit(100).onSnapshot(snap => {
+  if (snap.empty) return;
+  let html = '';
+  let count = 0;
+  snap.forEach(doc => {
+    const d = doc.data();
+    if (activeStream && d.stream && d.stream !== activeStream) return;
+    const cfg = alertClasses[d.type] || { cls:'alert-tab', badge:'badge-tab', label: d.type, icon:'⚠️' };
+    const time = d.ts ? new Date(d.ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' }) : '--';
+    const name = studentsAll[d.roll] || d.roll;
+    html += `<div class="alert-row ${cfg.cls}">
+      <span class="alert-badge ${cfg.badge}">${cfg.icon} ${cfg.label}</span>
+      <span style="flex:1;"><b>${name}</b> <span style="color:var(--muted); font-size:12px;">(${d.roll})</span>
+      ${d.detail ? `<br><span style="color:var(--muted); font-size:12px;">${d.detail}</span>` : ''}
+      </span>
+      <span class="alert-time">${time}</span>
+    </div>`;
+    count++;
+  });
+  document.getElementById('cheat-log').innerHTML = html ||
+    '<div style="color:var(--muted);font-size:13px;">No exit events logged yet.</div>';
+
+  // Update badge if not on cheat tab
+  if (!document.getElementById('tab-cheat').classList.contains('active')) {
+    cheatEventCount = count;
+    updateCheatBadge();
+  }
+});
+
+function clearCheatLog() {
+  if (!confirm('Clear all cheat alert logs from Firebase?')) return;
+  db.collection("cheat_alerts").get().then(snap => {
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    return batch.commit();
+  });
+}
+
+// ── CSV Export ────────────────────────────────────────────────
+function exportData() {
+  let csv = "Reg No,Name,Scenario,Score,Errors\n";
+  document.querySelectorAll("#skills-body tr").forEach(tr => {
+    const tds = tr.querySelectorAll("td");
+    if (tds.length > 0) {
+      const reg = tds[0].querySelector('b')?.innerText || '';
+      const name = tds[0].querySelector('small')?.innerText || '';
+      const scenario = tds[1].innerText.trim();
+      const score = tds[2].innerText.trim();
+      const errors = tds[3].innerText.trim().replace(/\n/g,' ');
+      csv += `"${reg}","${name}","${scenario}","${score}","${errors}"\n`;
+    }
+  });
+  const blob = new Blob([csv], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Skills_${activeStream || 'all'}_${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.csv`;
+  a.click();
+}
+
+function unlockReg(reg) {
+  if (confirm(`Reset device binding for ${reg}?`)) {
+    db.collection("device_bindings").doc(reg).delete();
+  }
+}
 </script>
 </body>
 </html>
