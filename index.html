@@ -1,128 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DSMCH Forensic Student Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DSMCH Forensic Portal</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="config.js"></script><script src="topics.js"></script>
+  <!-- ── CONTENT FILE — edit topics.js only, never this file ── -->
+  <script src="config.js"></script>
+  <script src="topics.js"></script>
   <style>
-    :root { --bg: #0d1117; --card: #161b22; --accent: #58a6ff; --success: #3fb950; }
-    body { background: var(--bg); color: #c9d1d9; font-family: sans-serif; margin: 0; user-select: none; }
-    .container { max-width: 500px; width: 92%; margin: 20px auto; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid #333; }
-    .btn { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 16px; }
-    .chip { padding: 14px; background: #21262d; border-radius: 8px; text-align: center; border: 1px solid transparent; cursor: pointer; margin-bottom: 10px; font-size: 14px; }
+    :root { --bg: #0d1117; --card: #161b22; --accent: #58a6ff; --success: #3fb950; --err: #f85149; }
+    body { background: var(--bg); color: #c9d1d9; font-family: -apple-system, sans-serif; margin: 0; user-select: none; }
+    .container { max-width: 600px; margin: 20px auto; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid #30363d; }
+    .btn { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 15px; }
+    .btn-out { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+    .chip { padding: 12px; background: #21262d; border-radius: 6px; text-align: center; border: 1px solid transparent; cursor: pointer; margin-bottom: 8px; font-size: 14px; }
     .chip.sel { border-color: var(--accent); background: #1f2937; color: var(--accent); }
-    .bottle { height: 160px; width: 90px; border: 2px solid #8b949e; margin: 15px auto; position: relative; overflow: hidden; border-radius: 0 0 10px 10px; }
-    .liquid { position: absolute; bottom: 0; width: 100%; background: rgba(88, 166, 255, 0.4); }
-    #relay-ui, #sim-ui, #auth-ui, #res-ui, #gate-ui, #slide-ui { display: none; }
+    .bottle { height: 150px; width: 80px; border: 2px solid #8b949e; margin: 10px auto; position: relative; overflow: hidden; }
+    .liquid { position: absolute; bottom: 0; width: 100%; background: rgba(88,166,255,0.4); transition: height 0.2s; }
+    input[type=number], input[type=text] {
+      width: 94%; padding: 12px; margin-bottom: 10px;
+      background: #0d1117; color: white; border: 1px solid #333; border-radius: 6px; font-size: 16px;
+    }
+    #relay-ui, #sim-ui, #auth-ui, #res-ui, #locked-ui { display: none; }
     .active { display: block !important; }
-    input { width: 94%; padding: 14px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #0d1117; color: white; }
+    .step-indicator { font-size: 12px; color: #58a6ff; margin-bottom: 6px; letter-spacing: 0.05em; }
+    .back-btn { background: #30363d; color: #c9d1d9; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-bottom: 12px; }
   </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 <div id="app" class="container">
-    
-    <div id="auth-ui" class="active">
-        <h2 style="text-align:center; color:var(--accent);">DSMCH Portal</h2>
-        <input type="number" id="reg" placeholder="Register Number"><input type="text" id="name" placeholder="FULL NAME (CAPS)">
-        <button class="btn" onclick="login()">Enter Session</button>
+
+  <!-- AUTH -->
+  <div id="auth-ui" class="active">
+    <h2>DSMCH Forensic Portal</h2>
+    <input type="number" id="reg" placeholder="Registration Number">
+    <input type="text" id="name" placeholder="Full Name (CAPS)">
+    <button class="btn" onclick="login()">Enter Session</button>
+  </div>
+
+  <!-- LOCKED -->
+  <div id="locked-ui">
+    <div style="text-align:center; padding:40px 0;">
+      <div style="font-size:48px;">🔒</div>
+      <h3>Session Locked</h3>
+      <p style="color:#8b949e;">Your instructor has paused the session.<br>Please wait.</p>
     </div>
+  </div>
 
-    <div id="gate-ui" style="text-align:center; padding:40px 0;"><h1>🛑</h1><h3>Batch Access Denied</h3></div>
-
-    <div id="slide-ui" style="text-align:center;">
-        <h2 id="sl-title" style="color:var(--accent)"></h2>
-        <p id="sl-text" style="font-size:1.1em; line-height:1.6; text-align:left; background:#0d1117; padding:20px; border-radius:10px;"></p>
+  <!-- RELAY UI -->
+  <div id="relay-ui">
+    <h3 id="row-title" style="margin-bottom:12px;">Select Topic</h3>
+    <div id="row-btns"></div>
+    <div id="relay-step" style="display:none; margin-top:20px; padding:15px; background:#0d1117; border-radius:8px;">
+      <button class="back-btn" onclick="backToRows()">← Back to Topics</button>
+      <div class="step-indicator" id="step-indicator"></div>
+      <h4 id="st-title" style="color:var(--accent); margin-bottom:8px;"></h4>
+      <p id="st-text" style="line-height:1.7;"></p>
+      <div style="display:flex; gap:8px; margin-top:16px;">
+        <button class="btn btn-out" id="prev-btn" onclick="prevRelay()" style="display:none;">◀ Prev</button>
+        <button class="btn" id="next-btn" onclick="nextRelay()">Next Step ▶</button>
+      </div>
     </div>
+  </div>
 
-    <div id="relay-ui">
-        <div id="row-sel"><h3 style="color:var(--accent)">Select Row Protocol:</h3><div id="row-btns"></div></div>
-        <div id="relay-step" style="display:none; padding:20px; background:#0d1117; border-radius:10px;">
-            <h3 id="st-title" style="color:var(--accent); margin-top:0;"></h3><p id="st-text" style="line-height:1.6;"></p>
-            <button class="btn" onclick="nextRelay()">Next Step ▶</button>
-        </div>
+  <!-- SIMULATION UI -->
+  <div id="sim-ui">
+    <div id="sim-start">
+      <h3>Viscera Simulation</h3>
+      <p id="case-h" style="padding:15px; border-left:4px solid var(--accent); background:#0d1117; border-radius:4px; line-height:1.6;"></p>
+      <button class="btn" onclick="goSim()">Start Practical ▶</button>
     </div>
-
-    <div id="sim-ui">
-        <div id="sim-start"><h3>Case History:</h3><p id="case-h" style="padding:15px; border-left:4px solid var(--accent); background:#0d1117;"></p><button class="btn" onclick="goSim()">Start 8-Step Practical</button></div>
-        <div id="sim-core" style="display:none;">
-            <div style="font-size:12px; color:#8b949e;" id="step-count">Step 1 of 8</div><h4 id="instr" style="margin-top:0;"></h4>
-            <div id="zone" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
-            <div id="vol-zone" style="display:none; text-align:center;"><div class="bottle"><div id="liq" class="liquid"></div></div><input type="range" style="width:100%" min="0" max="100" value="0" oninput="document.getElementById('liq').style.height=this.value+'%'; curVol=this.value"></div>
-            <button class="btn" id="nxt" onclick="procSim()">Confirm ▶</button>
-        </div>
+    <div id="sim-core" style="display:none;">
+      <div class="step-indicator" id="sim-step-ind"></div>
+      <h4 id="instr" style="margin-bottom:12px;"></h4>
+      <div id="zone" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
+      <div id="vol-zone" style="display:none; text-align:center;">
+        <p style="color:#8b949e; font-size:13px; margin-bottom:8px;">Drag slider to set fill level</p>
+        <div class="bottle"><div id="liq" class="liquid" style="height:0%"></div></div>
+        <p id="vol-label" style="font-size:13px; color:var(--accent);">0% filled</p>
+        <input type="range" min="0" max="100" value="0" style="width:80%; margin-top:8px;"
+          oninput="curVol=parseInt(this.value); document.getElementById('liq').style.height=curVol+'%'; document.getElementById('vol-label').textContent=curVol+'% filled';">
+        <br><button class="btn" id="vol-confirm" onclick="procSim()" style="margin-top:12px;">Confirm Fill Level ▶</button>
+      </div>
+      <button class="btn" id="nxt" onclick="procSim()" style="margin-top:16px;">Confirm ▶</button>
     </div>
+  </div>
 
-    <div id="res-ui" style="text-align:center;"><h1 id="score-val" style="font-size:4em; color:var(--success);"></h1><div id="log-feed" style="text-align:left; font-size:12px; background:#0d1117; padding:15px; border-radius:8px;"></div><button class="btn" onclick="location.reload()">Finish</button></div>
+  <!-- RESULT UI -->
+  <div id="res-ui" style="text-align:center;">
+    <h1 id="score" style="font-size:48px; margin-bottom:8px;"></h1>
+    <p id="score-label" style="color:#8b949e; margin-bottom:20px;"></p>
+    <div id="log" style="text-align:left; font-size:14px; line-height:2; background:#0d1117; padding:16px; border-radius:8px;"></div>
+    <button class="btn" onclick="location.reload()" style="margin-top:20px;">Finish & Return</button>
+  </div>
+
 </div>
 
 <script>
-  firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
-  let uid = "", curS, step = 1, curVol = 0, selRow = "", rIdx = 0, myAns = {org:[], chem:"", bld:"", docs:[], ctrl:false, labels:[], sealed:false};
+// =============================================================
+//  index.html — INFRASTRUCTURE ONLY
+//  Do NOT add topic content here. Edit topics.js only.
+//  This file handles: auth, anti-cheat, stream routing,
+//  relay navigation, simulation logic, Firebase sync.
+// =============================================================
 
-  async function login() {
-      const r = document.getElementById('reg').value, n = document.getElementById('name').value.toUpperCase().trim();
-      if(studentsAll[r] === n) {
-          uid = r; document.getElementById('auth-ui').classList.remove('active');
-          db.collection("presence").doc(r).set({ roll:r, name:n, status:"Active", ts:Date.now() });
-          db.collection("slides").doc("current").onSnapshot(d => {
-              const m = d.data().status; let ok = false;
-              if (parseInt(r) <= 10) ok = true;
-              else if (m.includes("2024") && r.startsWith("520024")) ok = true;
-              else if (m.includes("2023") && (r.startsWith("520023") || r.startsWith("520022") || r === "521823525")) ok = true;
-              else if (m.startsWith("slide")) ok = true;
-              
-              if (!ok && !["idle","locked"].includes(m)) {
-                  ['auth-ui','relay-ui','sim-ui','slide-ui'].forEach(id=>document.getElementById(id).classList.remove('active'));
-                  document.getElementById('gate-ui').classList.add('active');
-              } else {
-                  document.getElementById('gate-ui').classList.remove('active');
-                  document.getElementById('slide-ui').classList.toggle('active', m.startsWith('slide'));
-                  document.getElementById('relay-ui').classList.toggle('active', m.includes('relay'));
-                  document.getElementById('sim-ui').classList.toggle('active', m.includes('exam') || m === "testing");
-                  if(m.startsWith('slide')) showSlide(m.split('-')[1]);
-                  else if(m.includes('relay')) initRows(); else if(m.includes('exam') || m === "testing") initSim();
-              }
-          });
-      } else alert("Details Mismatch");
-  }
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-  function showSlide(id) { const s = forensicSlides.find(x => x.id == id); document.getElementById('sl-title').innerText = s.title; document.getElementById('sl-text').innerHTML = s.text; db.collection("presence").doc(uid).update({ status: `Watching Slide ${id}` }); }
-  function initRows() { let h = ''; Object.keys(forensicContent.relay).forEach(r => h+=`<div class="chip" onclick="startR('${r}')">${r}</div>`); document.getElementById('row-btns').innerHTML = h; }
-  function startR(r) { selRow = r; rIdx = 0; document.getElementById('row-sel').style.display='none'; document.getElementById('relay-step').style.display='block'; showR(); }
-  function showR() { const d = forensicContent.relay[selRow][rIdx]; document.getElementById('st-title').innerText = d.title; document.getElementById('st-text').innerHTML = d.text; db.collection("presence").doc(uid).update({ status: `Relay: ${selRow} Step ${rIdx+1}` }); }
-  function nextRelay() { if(rIdx < 3) { rIdx++; showR(); } else alert("Row Completed."); }
-  function initSim() { curS = forensicContent.scenarios[Math.floor(Math.random()*forensicContent.scenarios.length)]; document.getElementById('case-h').innerText = curS.history; }
-  function goSim() { document.getElementById('sim-start').style.display='none'; document.getElementById('sim-core').style.display='block'; rendSim(); }
-  function rendSim() {
-      const z = document.getElementById('zone'), inst = document.getElementById('instr'), vz = document.getElementById('vol-zone');
-      z.innerHTML = ''; vz.style.display = 'none'; z.style.display = 'grid'; document.getElementById('step-count').innerText = `Step ${step} of 8`;
-      if(step === 1) { inst.innerText = "Select Organs & 30ml Fluids:"; ["Stomach","Intestine","Liver","Kidney","Blood (30ml)","Urine (30ml)","Heart","Brain"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 2) { inst.innerText = "Correct Organ Preservative?"; ["Saturated Salt Solution","Rectified Spirit"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`); }
-      else if(step === 3) { inst.innerText = "Correct Blood Preservative?"; ["NaF 10mg/ml","NaF 2mg/ml","Potassium Oxalate"].forEach(i => z.innerHTML+=`<div class="chip" onclick="myAns.bld='${i}'; procSim()">${i}</div>`); }
-      else if(step === 4) { inst.innerText = "Send Control Sample?"; z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes</button><button class="btn" style="background:#333" onclick="myAns.ctrl=false; procSim()">No</button>`; }
-      else if(step === 5) { inst.innerText = "Fill Jar to 3/4th:"; z.style.display='none'; vz.style.display='block'; }
-      else if(step === 6) { inst.innerText = "Complete Label Details:"; ["Date/Time Added","Name/Age/Sex","Crime No/PM No","Preservative Name"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
-      else if(step === 7) { inst.innerText = "Apply Lakh (Wax) Seal:"; z.innerHTML = `<div style="font-size:40px; cursor:pointer;" onclick="myAns.sealed=true; procSim()">🕯️ Tap to Seal Jar</div>`; }
-      else if(step === 8) { inst.innerText = "Attach Dispatch Documents:"; ["Inquest Copy","PM Findings","Magistrate Auth","Seal Sheet","FIR"].forEach(i => z.innerHTML+=`<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`); }
+// ── State ─────────────────────────────────────────────────────
+let uid = "", myStream = "", myName = "";
+let curS, step = 1, curVol = 0, selRow = "", rIdx = 0;
+let myAns = { org:[], chem:"", bld:"", vol:0, docs:[], ctrl:false };
+let anticheatEnabled = false; // only activate after login
+
+// ── Screens ───────────────────────────────────────────────────
+function showScreen(id) {
+  ['auth-ui','relay-ui','sim-ui','res-ui','locked-ui'].forEach(s => {
+    document.getElementById(s).classList.remove('active');
+    document.getElementById(s).style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+  document.getElementById(id).classList.add('active');
+}
+
+// ── Login ─────────────────────────────────────────────────────
+async function login() {
+  const r = document.getElementById('reg').value.trim();
+  const n = document.getElementById('name').value.toUpperCase().trim();
+  if (!r || !n) { alert('Please enter both Registration Number and Name.'); return; }
+  if (studentsAll[r] === n) {
+    uid = r; myName = n;
+    if (r.startsWith('520024')) myStream = '2024';
+    else if (r.startsWith('520023')) myStream = '2023';
+    else if (parseInt(r) >= 1 && parseInt(r) <= 10) myStream = 'testing';
+    else myStream = 'testing';
+
+    // Register presence
+    db.collection("presence").doc(r).set({
+      roll: r, name: n, stream: myStream, status: "Active", ts: Date.now()
+    });
+
+    // Push history state so back button is interceptable
+    history.pushState({ page: 'app' }, '', '');
+
+    // Enable anti-cheat after login
+    anticheatEnabled = true;
+
+    showScreen('locked-ui'); // wait for teacher broadcast
+
+    // Listen to stream-specific broadcast
+    db.collection("slides").doc(myStream).onSnapshot(d => {
+      if (!d.exists) return;
+      const m = d.data().status;
+      if (m === 'live') { showScreen('relay-ui'); initRows(); }
+      else if (m === 'exam') { showScreen('sim-ui'); initSim(); }
+      else if (m === 'locked' || m === 'idle') { showScreen('locked-ui'); }
+    });
+
+  } else {
+    alert('❌ Name or Registration Number mismatch. Check and try again.');
   }
-  function procSim() { if(step === 1 || step === 6 || step === 8) { const sel = Array.from(document.querySelectorAll('.sel')).map(e => e.innerText); if(step === 1) myAns.org = sel; if(step === 6) myAns.labels = sel; if(step === 8) { myAns.docs = sel; finish(); return; } } step++; rendSim(); }
-  async function finish() {
-      let s = 0, l = [];
-      if(myAns.org.includes("Blood (30ml)") && myAns.org.includes("Urine (30ml)")) { s++; l.push("✅ Fluids: Correct 30ml Collected."); } else l.push("❌ Fluids: Missing 30ml routine.");
-      if(myAns.chem === curS.correctPreservative) { s++; l.push("✅ Chem: Correct choice."); } else l.push("❌ Chem: " + curS.trap);
-      if(myAns.bld === curS.correctBloodPres) s++; else l.push("❌ Blood Pres Error");
-      if(myAns.ctrl) s++; else l.push("❌ Missing Control");
-      if(curVol >= 70 && curVol <= 80) s++; else l.push("❌ Volume Error");
-      if(myAns.labels.includes("Date/Time Added")) s++; else l.push("❌ Label Error");
-      if(myAns.sealed) s++; else l.push("❌ Sealing Error");
-      if(myAns.docs.includes("Magistrate Auth")) s++; else l.push("❌ Dispatch Error");
-      await db.collection("simulation_scores").add({ student:uid, scenario:curS.id, score:s, log:l, ts:Date.now() });
-      document.getElementById('sim-ui').style.display='none'; document.getElementById('res-ui').classList.add('active');
-      document.getElementById('score-val').innerText = s + "/8"; document.getElementById('log-feed').innerHTML = l.join("<br>");
+}
+
+// ── Relay ─────────────────────────────────────────────────────
+function initRows() {
+  const rows = Object.keys(forensicContent.relay);
+  document.getElementById('row-btns').innerHTML = rows.map(r =>
+    `<button class="chip" style="width:100%;" onclick="startR('${r}')">${r}</button>`
+  ).join('');
+  document.getElementById('relay-step').style.display = 'none';
+  document.getElementById('row-btns').style.display = 'block';
+}
+
+function startR(r) {
+  selRow = r; rIdx = 0;
+  document.getElementById('row-btns').style.display = 'none';
+  document.getElementById('relay-step').style.display = 'block';
+  showR();
+}
+
+function showR() {
+  const steps = forensicContent.relay[selRow];
+  const d = steps[rIdx];
+  const total = steps.length;
+  document.getElementById('step-indicator').textContent = `${selRow}  ·  Step ${rIdx + 1} of ${total}`;
+  document.getElementById('st-title').innerText = d.title;
+  document.getElementById('st-text').innerHTML = d.text;
+  document.getElementById('prev-btn').style.display = rIdx > 0 ? 'block' : 'none';
+  document.getElementById('next-btn').textContent = rIdx < total - 1 ? 'Next Step ▶' : '✓ Complete';
+  db.collection("presence").doc(uid).update({ status: `Relay: ${selRow} Step ${rIdx + 1}` });
+}
+
+function nextRelay() {
+  const steps = forensicContent.relay[selRow];
+  if (rIdx < steps.length - 1) { rIdx++; showR(); }
+  else { alert('✅ Row complete! Go back and choose another topic.'); backToRows(); }
+}
+
+function prevRelay() {
+  if (rIdx > 0) { rIdx--; showR(); }
+}
+
+function backToRows() {
+  document.getElementById('relay-step').style.display = 'none';
+  document.getElementById('row-btns').style.display = 'block';
+  db.collection("presence").doc(uid).update({ status: 'Active' });
+}
+
+// ── Simulation ────────────────────────────────────────────────
+function initSim() {
+  step = 1; curVol = 0;
+  myAns = { org:[], chem:"", bld:"", vol:0, docs:[], ctrl:false };
+  curS = forensicContent.scenarios[Math.floor(Math.random() * forensicContent.scenarios.length)];
+  document.getElementById('case-h').innerText = curS.history;
+  document.getElementById('sim-start').style.display = 'block';
+  document.getElementById('sim-core').style.display = 'none';
+}
+
+function goSim() {
+  document.getElementById('sim-start').style.display = 'none';
+  document.getElementById('sim-core').style.display = 'block';
+  rendSim();
+}
+
+function rendSim() {
+  const z = document.getElementById('zone');
+  const inst = document.getElementById('instr');
+  const vz = document.getElementById('vol-zone');
+  const nxt = document.getElementById('nxt');
+  z.innerHTML = ''; vz.style.display = 'none'; z.style.display = 'grid'; nxt.style.display = 'block';
+
+  const steps = ['','Select organs & fluids to preserve','Select organ preservative','Select blood preservative dose','Send a control sample?','Fill container to correct level','Attach required documents for FSL dispatch'];
+  document.getElementById('sim-step-ind').textContent = `Step ${step} of 6 — ${steps[step]}`;
+
+  if (step === 1) {
+    inst.innerText = "Select all organs and fluids to preserve:";
+    ["Stomach","Intestine","Liver","Kidney","Blood (30ml)","Urine (30ml)","Heart","Brain"]
+      .forEach(i => z.innerHTML += `<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`);
+  } else if (step === 2) {
+    inst.innerText = "Select the organ preservative:";
+    nxt.style.display = 'none';
+    ["Saturated Salt Solution","Rectified Spirit"]
+      .forEach(i => z.innerHTML += `<div class="chip" onclick="myAns.chem='${i}'; procSim()">${i}</div>`);
+  } else if (step === 3) {
+    inst.innerText = "Select the blood preservative dose:";
+    nxt.style.display = 'none';
+    ["NaF 10mg/mL + K Oxalate 3mg","NaF 2mg/mL + K Oxalate 3mg"]
+      .forEach(i => z.innerHTML += `<div class="chip" onclick="myAns.bld='${i}'; procSim()">${i}</div>`);
+  } else if (step === 4) {
+    inst.innerText = "Must a control sample of preservative be sent to FSL?";
+    nxt.style.display = 'none';
+    z.style.display = 'flex';
+    z.innerHTML = `<button class="btn" onclick="myAns.ctrl=true; procSim()">Yes — Send Control</button>
+                   <button class="btn btn-out" onclick="myAns.ctrl=false; procSim()">No — Not needed</button>`;
+  } else if (step === 5) {
+    inst.innerText = "Fill container to correct level:";
+    z.style.display = 'none'; vz.style.display = 'block'; nxt.style.display = 'none';
+    document.getElementById('liq').style.height = '0%';
+    document.getElementById('vol-label').textContent = '0% filled';
+  } else if (step === 6) {
+    inst.innerText = "Select required documents for FSL dispatch:";
+    ["Inquest Report","PM Findings","Magistrate Auth Letter","Viscera Label Medl I-30(a)","FIR Copy","Civil Medical Form Medl I-30"]
+      .forEach(i => z.innerHTML += `<div class="chip" onclick="this.classList.toggle('sel')">${i}</div>`);
+    nxt.textContent = 'Submit ✓';
   }
-  document.addEventListener("visibilitychange", () => { if(document.hidden && uid) db.collection("presence").doc(uid).update({ status: "Out of App" }); });
+}
+
+function procSim() {
+  if (step === 1) { myAns.org = []; document.querySelectorAll('#zone .sel').forEach(e => myAns.org.push(e.innerText)); }
+  if (step === 5) { myAns.vol = curVol; }
+  if (step === 6) { myAns.docs = []; document.querySelectorAll('#zone .sel').forEach(e => myAns.docs.push(e.innerText)); finish(); return; }
+  step++; rendSim();
+}
+
+async function finish() {
+  let s = 0, l = [];
+  const core = ["Stomach","Intestine","Liver","Kidney","Blood (30ml)","Urine (30ml)"];
+  const hasCore = core.every(c => myAns.org.includes(c));
+  if (hasCore) { s++; l.push("✅ Core organs & fluids correct"); }
+  else { l.push("❌ Organs: Missing — must include Stomach, Intestine, Liver, Kidney, Blood (30ml), Urine (30ml)"); }
+
+  if (myAns.chem === curS.correctPreservative) { s++; l.push("✅ Organ preservative correct"); }
+  else { l.push("❌ Preservative Error: " + curS.trap); }
+
+  const correctBld = curS.correctBloodPres === "NaF 10mg" ? "NaF 10mg/mL + K Oxalate 3mg" : "NaF 2mg/mL + K Oxalate 3mg";
+  if (myAns.bld === correctBld) { s++; l.push("✅ Blood preservative correct"); }
+  else { l.push("❌ Blood Preservative Error — check NaF dose for this case"); }
+
+  if (myAns.ctrl) { s++; l.push("✅ Control sample included"); }
+  else { l.push("❌ Missing: Control sample of preservative (25ml) must be sent"); }
+
+  if (myAns.vol >= 70 && myAns.vol <= 80) { s++; l.push("✅ Fill level correct (3/4th)"); }
+  else { l.push("❌ Volume Error — container must be filled to exactly 3/4th capacity"); }
+
+  if (myAns.docs.includes("Magistrate Auth Letter")) { s++; l.push("✅ Magistrate Auth Letter included"); }
+  else { l.push("❌ Missing: Magistrate Auth Letter — IO must obtain this before FSL can analyse"); }
+
+  await db.collection("simulation_scores").add({
+    student: uid, name: myName, stream: myStream,
+    scenario: curS.id, score: s, log: l, ts: Date.now()
+  });
+
+  showScreen('res-ui');
+  document.getElementById('score').innerText = s + " / 6";
+  document.getElementById('score-label').textContent = s >= 5 ? '🎉 Excellent!' : s >= 4 ? '👍 Good effort' : '📖 Review needed';
+  document.getElementById('log').innerHTML = l.join('<br>');
+}
+
+// =============================================================
+//  ANTI-CHEAT — DO NOT MODIFY THIS SECTION
+//  Detects and logs: tab switch, refresh attempt, back navigation
+// =============================================================
+
+function logCheatEvent(type, detail) {
+  if (!uid || !anticheatEnabled) return;
+  db.collection("cheat_alerts").add({
+    roll: uid, name: myName, stream: myStream,
+    type: type, detail: detail || '', ts: Date.now()
+  });
+  db.collection("presence").doc(uid).update({ status: "⚠️ " + type });
+}
+
+// 1. Tab switch / app minimise
+document.addEventListener("visibilitychange", () => {
+  if (!anticheatEnabled) return;
+  if (document.hidden) {
+    logCheatEvent("tab_switch", "Student switched tab or minimised app");
+  } else {
+    if (uid) db.collection("presence").doc(uid).update({ status: "Active (returned)" });
+  }
+});
+
+// 2. Refresh / close — show confirmation dialog
+window.addEventListener("beforeunload", (e) => {
+  if (!anticheatEnabled) return;
+  logCheatEvent("refresh_attempt", "Student attempted page refresh or close");
+  e.preventDefault();
+  e.returnValue = "⚠️ Leaving will be logged. Are you sure you want to leave the session?";
+  return e.returnValue;
+});
+
+// 3. Back button / swipe navigation
+window.addEventListener("popstate", (e) => {
+  if (!anticheatEnabled) return;
+  logCheatEvent("back_navigation", "Student pressed back button or swiped to navigate away");
+  // Re-push state to trap them on the page
+  history.pushState({ page: 'app' }, '', '');
+  // Show a non-blocking alert
+  setTimeout(() => {
+    alert("⚠️ Back navigation is not allowed during a session. This action has been logged.");
+  }, 100);
+});
+
+// 4. Swipe detection (mobile back swipe — edge swipe)
+let touchStartX = 0;
+document.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+document.addEventListener("touchend", (e) => {
+  if (!anticheatEnabled) return;
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  // Edge swipe from left (back) or right (forward) > 60px
+  if (Math.abs(dx) > 60 && (touchStartX < 40 || touchStartX > window.innerWidth - 40)) {
+    logCheatEvent("swipe_navigation", `Edge swipe detected (dx: ${dx}px, startX: ${touchStartX}px)`);
+  }
+}, { passive: true });
+
+// =============================================================
 </script>
 </body>
 </html>
