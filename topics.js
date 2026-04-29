@@ -8,14 +8,6 @@
 const forensicContent = {
 
   // ── RELAY ROWS ─────────────────────────────────────────────
-  // HOW TO ADD A NEW ROW:
-  // 1. Add a new key inside relay: { }
-  // 2. Each key is an array of exactly 4 step objects
-  // 3. Each step: { step: number, title: "...", text: "..." }
-  // 4. Text can contain basic HTML like <b>, <br>, <ul>, <li>
-  // That's it. Teacher panel picks it up automatically.
-  // ──────────────────────────────────────────────────────────
-
   relay: {
 
     "Step 1: Pre-Autopsy Prerequisites": [
@@ -177,32 +169,34 @@ const forensicContent = {
         title: "Decomposition & Documentation",
         text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> — do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
       }
+    ],
+
+    // NEW METHANOL TOPIC
+    "Methanol Toxicity & Treatment": [
+      {
+        step: 1,
+        title: "The Toxic Cascade",
+        text: "As detailed in <b>methanol_complete_mechanism_treatment.html</b>, methanol is absorbed in 30–60 min[cite: 1]. It is metabolized by ADH into Formaldehyde and then into <b>Formic Acid</b>, the key toxin that blocks mitochondrial Complex IV."
+      },
+      {
+        step: 2,
+        title: "Specific Antidotes",
+        text: "Treatment requires blocking ADH with <b>Fomepizole or Ethanol</b> immediately[cite: 1]. <b>Folinic acid</b> (1–2 mg/kg IV) is given to convert formate into CO2 and H2O, while Sodium Bicarbonate treats metabolic acidosis (pH < 7.0)[cite: 1]."
+      },
+      {
+        step: 3,
+        title: "Why Putamen Necrosis?",
+        text: "According to <b>basal_ganglia_methanol_mechanism.html</b>, the putamen is targeted due to extreme metabolic demand and poor collateral blood supply[cite: 2]. Formic acid causes ATP failure, leading to <b>cytotoxic oedema</b> and eventual haemorrhagic necrosis[cite: 2]."
+      },
+      {
+        step: 4,
+        title: "Clinical & Imaging Hallmarks",
+        text: "Key findings include high anion gap acidosis, blindness/retinal oedema, and <b>bilateral putaminal hypodensity</b> on CT. Autopsy findings often show upper body cyanosis and pulmonary oedema[cite: 1]."
+      }
     ]
-
-    // ── TO ADD A NEW TOPIC ────────────────────────────────
-    // Copy the block below, paste after the last entry above,
-    // add a comma after the previous closing ],
-    // and fill in your content.
-    //
-    // "Your New Topic Name": [
-    //   { step:1, title:"Title 1", text:"Content 1" },
-    //   { step:2, title:"Title 2", text:"Content 2" },
-    //   { step:3, title:"Title 3", text:"Content 3" },
-    //   { step:4, title:"Title 4", text:"Content 4" }
-    // ],
-    // ─────────────────────────────────────────────────────
-
   },
 
   // ── VISCERA SIMULATION SCENARIOS ──────────────────────────
-  // HOW TO ADD A NEW SCENARIO:
-  // Add a new object to the array below.
-  // correctPreservative must exactly match one of:
-  //   "Saturated Salt Solution" or "Rectified Spirit"
-  // correctBloodPres must exactly match one of:
-  //   "NaF 10mg" or "NaF 2mg"
-  // ──────────────────────────────────────────────────────────
-
   scenarios: [
     {
       id: "op",
@@ -231,17 +225,15 @@ const forensicContent = {
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 2mg",
       trap: "Phenol is HIGHLY SOLUBLE in Rectified Spirit — using spirit destroys the sample. Use Salt, NOT Spirit. Classic examiner trap."
-    }
+    },
 
-    // ── TO ADD A NEW SCENARIO ─────────────────────────────
-    // Add a comma after the last } above, then paste:
-    // {
-    //   id: "unique_id",
-    //   history: "Case history shown to student...",
-    //   correctPreservative: "Saturated Salt Solution",  // or "Rectified Spirit"
-    //   correctBloodPres: "NaF 2mg",                     // or "NaF 10mg"
-    //   trap: "Explanation shown in feedback..."
-    // }
-    // ─────────────────────────────────────────────────────
+    // NEW METHANOL SCENARIO
+    {
+      id: "methanol",
+      history: "A group of laborers present with 'snowfield vision' and severe abdominal pain after consuming illicit spirits. Autopsy reveals bilateral putaminal necrosis. Suspected Methanol Poisoning.",
+      correctPreservative: "Saturated Salt Solution",
+      correctBloodPres: "NaF 10mg",
+      trap: "Methanol is an alcohol. Just like ethanol cases, <b>never use Rectified Spirit</b> (which contains ethanol) as it will contaminate the sample and invalidate the chemical analysis results."
+    }
   ]
 };
