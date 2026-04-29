@@ -5,7 +5,6 @@
 
 const forensicContent = {
 
-  // ── RELAY ROWS ─────────────────────────────────────────────
   relay: {
 
     "Step 1: Pre-Autopsy Prerequisites": [
@@ -172,23 +171,97 @@ const forensicContent = {
     "Case: Methanol Poisoning": [
       {
         step: 1,
-        title: "Toxic Mechanism Map",
-        text: "<b>Mechanism of Toxicity:</b> Methanol is metabolized by Alcohol Dehydrogenase into Formaldehyde and then <b>Formic Acid</b>[cite: 1]. Formic acid is the primary toxin that inhibits <b>Cytochrome C Oxidase (Complex IV)</b> in the mitochondria, leading to cellular ATP failure[cite: 1, 2]."
+        title: "Methanol Cascade Map",
+        text: `
+          <style>
+            .leg{display:flex;gap:10px;margin-bottom:10px;font-size:11px}
+            .dot{width:10px;height:10px;border-radius:2px}
+          </style>
+          <div class='leg'>
+            <div class='dot' style='background:#EF9F27'></div> Cascade
+            <div class='dot' style='background:#E24B4A'></div> Toxic Injury
+            <div class='dot' style='background:#1D9E75'></div> Antidotes
+          </div>
+          <!-- Full SVG logic from methanol_complete_mechanism_treatment.html -->
+          <svg width='100%' viewBox='0 0 680 500' style='background:#fdfdfd; border:1px solid #eee; border-radius:8px;'>
+            <defs>
+              <marker id='arr' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto-start-reverse'><path d='M2 1L8 5L2 9' fill='none' stroke='#BA7517' stroke-width='1.5'/></marker>
+            </defs>
+            <g transform='translate(20,20)'>
+              <rect x='100' y='0' width='160' height='40' rx='5' fill='#FAEEDA' stroke='#EF9F27'/>
+              <text x='180' y='25' text-anchor='middle' font-size='12' font-weight='bold'>Methanol Ingested</text>
+              <line x1='180' y1='40' x2='180' y2='80' stroke='#BA7517' stroke-width='1.5' marker-end='url(#arr)'/>
+              <text x='180' y='70' text-anchor='middle' font-size='10' fill='#854F0B'>ADH Enzyme</text>
+              
+              <rect x='100' y='90' width='160' height='40' rx='5' fill='#FAEEDA' stroke='#EF9F27'/>
+              <text x='180' y='115' text-anchor='middle' font-size='12'>Formaldehyde</text>
+              
+              <rect x='300' y='90' width='160' height='40' rx='5' fill='#E1F5EE' stroke='#1D9E75'/>
+              <text x='380' y='115' text-anchor='middle' font-size='11' fill='#0F6E56'>Antidote: Ethanol</text>
+              <path d='M260 110 L300 110' stroke='#1D9E75' stroke-dasharray='4' fill='none' marker-end='url(#arr)'/>
+              
+              <line x1='180' y1='130' x2='180' y2='170' stroke='#BA7517' stroke-width='1.5' marker-end='url(#arr)'/>
+              
+              <rect x='100' y='180' width='160' height='50' rx='5' fill='#FCEBEB' stroke='#E24B4A'/>
+              <text x='180' y='205' text-anchor='middle' font-size='12' font-weight='bold'>Formic Acid</text>
+              <text x='180' y='220' text-anchor='middle' font-size='10' fill='#A32D2D'>Inhibits Complex IV</text>
+            </g>
+          </svg>
+          <p style='font-size:13px; margin-top:8px;'><b>Mechanism:</b> Methanol &rarr; Formaldehyde &rarr; Formic Acid[cite: 1]. Formic acid blocks mitochondrial energy production, targeting high-demand tissues like the putamen[cite: 2].</p>`
       },
       {
         step: 2,
-        title: "Why Putamen Necrosis?",
-        text: "The <b>Putamen</b> has the brain's highest metabolic demand and dopaminergic activity, making it the most vulnerable to energy failure[cite: 2]. Because it is an <b>end-arterial territory</b> with no backup blood supply, it undergoes cytotoxic oedema and necrosis when ATP production is blocked by formic acid[cite: 2]."
+        title: "The Putamen Injury Cascade",
+        text: `
+          <!-- Based on basal_ganglia_methanol_mechanism.html Step 2 -->
+          <div style='background:#f9f9f9; padding:10px; border-radius:8px; border:0.5px solid #ddd;'>
+            <div style='font-size:12px; font-weight:bold; margin-bottom:5px; color:#854F0B;'>Four-Stage Injury (Source 2):</div>
+            <ul style='font-size:12px; margin-left:15px; line-height:1.5;'>
+              <li><b>Stage 1:</b> Formate accumulation (12-24 hrs)[cite: 2].</li>
+              <li><b>Stage 2:</b> Complex IV blocked &rarr; ATP failure[cite: 2].</li>
+              <li><b>Stage 3:</b> Na-K pump failure &rarr; <b>Cytotoxic Oedema</b>[cite: 2].</li>
+              <li><b>Stage 4:</b> Capillary rupture &rarr; Haemorrhagic Necrosis[cite: 2].</li>
+            </ul>
+          </div>
+          <p style='font-size:12px; color:#666; margin-top:5px;'>The putamen fails first because it has high metabolic demand but poor backup perfusion[cite: 2].</p>`
       },
       {
         step: 3,
-        title: "Clinical & Imaging Sign",
-        text: "<b>Imaging:</b> CT/MRI shows <b>bilateral symmetric putaminal hypodensity</b>[cite: 2].<br><b>Clinical:</b> Patients present with severe <b>High Anion Gap Metabolic Acidosis</b> and visual disturbances ('snowfield vision')[cite: 1, 2]. The degree of acidosis directly correlates with the severity of brain injury[cite: 2]."
+        title: "Clinical & Imaging Findings",
+        text: `
+          <!-- Based on basal_ganglia_methanol_mechanism.html Step 3 & 4 -->
+          <table style='width:100%; font-size:11px; border-collapse:collapse;'>
+            <tr style='background:#E6F1FB; color:#185FA5;'>
+              <th style='padding:5px; border:0.5px solid #ddd;'>Finding</th>
+              <th style='padding:5px; border:0.5px solid #ddd;'>Mechanism / Detail</th>
+            </tr>
+            <tr>
+              <td style='padding:5px; border:0.5px solid #ddd;'><b>Parkinsonism</b></td>
+              <td style='padding:5px; border:0.5px solid #ddd;'>Dopaminergic neuron destruction in necrotic putamen[cite: 2].</td>
+            </tr>
+            <tr>
+              <td style='padding:5px; border:0.5px solid #ddd;'><b>CT/MRI</b></td>
+              <td style='padding:5px; border:0.5px solid #ddd;'>Bilateral hypodensity (CT) or restricted diffusion (MRI DWI)[cite: 2].</td>
+            </tr>
+            <tr>
+              <td style='padding:5px; border:0.5px solid #ddd;'><b>Acidosis</b></td>
+              <td style='padding:5px; border:0.5px solid #ddd;'>High Anion Gap (HAGMA) due to formic acid accumulation[cite: 1, 2].</td>
+            </tr>
+          </table>
+          <div style='margin-top:8px; padding:8px; background:#EEEDFE; border-left:3px solid #534AB7; font-size:11px;'>
+            <b>Differential:</b> CO poisoning also targets Complex IV but usually affects the <b>Globus Pallidus</b>[cite: 2].
+          </div>`
       },
       {
         step: 4,
-        title: "Management & Preservation",
-        text: "<b>Antidotes:</b> Fomepizole or Ethanol to block metabolism; Folinic acid (1-2mg/kg) to enhance formate clearance[cite: 1].<br><b>Autopsy Preservation:</b> Preserve viscera in <b>Saturated Salt Solution</b>. NEVER use Rectified Spirit, as it contains ethanol and will contaminate the toxicological sample[cite: 1, 3]."
+        title: "Forensic Protocol & Autopsy",
+        text: `
+          <ul style='font-size:13px; line-height:1.6;'>
+            <li><b>Treatment:</b> Sodium Bicarbonate (500-800mL) for acidosis; Haemodialysis if level >25-50 mg%[cite: 1].</li>
+            <li><b>Autopsy:</b> Look for upper body cyanosis, pulmonary oedema, and retinal oedema[cite: 1].</li>
+            <li><b>Viscera:</b> <b>Saturated Salt Solution</b> is mandatory[cite: 1, 3].</li>
+            <li><b>Critical Warning:</b> <u>NEVER</u> use Rectified Spirit as it contains ethanol and contaminates the toxicological analysis[cite: 1, 3].</li>
+          </ul>`
       }
     ]
 
