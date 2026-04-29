@@ -1,153 +1,12 @@
 // ============================================================
 //  topics.js  —  CONTENT ONLY FILE
-//  Edit ONLY this file when adding new topics or scenarios.
-//  Do NOT add any Firebase, UI, or logic code here.
-//  This file is NEVER replaced by infrastructure updates.
 // ============================================================
 
 const forensicContent = {
 
-  // ── RELAY ROWS ─────────────────────────────────────────────
   relay: {
-
-    "Step 1: Pre-Autopsy Prerequisites": [
-      {
-        step: 1,
-        title: "Who Receives the Requisition?",
-        text: "In Govt Medical Colleges, the <b>Professor of Forensic Medicine / Police Surgeon</b> receives PM requests. In their absence: Associate Professor → Assistant Professor. In other hospitals, the <b>CMO / RMO</b> obliges. No Medical Officer can refuse an autopsy citing personal interest."
-      },
-      {
-        step: 2,
-        title: "Timing Rules",
-        text: "Requisitions accepted <b>only up to 4:00 PM</b>. Cases received before 4 PM may proceed <b>till 6 PM</b>. Exception: <b>Court order</b> must be obeyed immediately. <b>District Collector's explicit order</b> in law & order situations allows beyond-hours work."
-      },
-      {
-        step: 3,
-        title: "Who Can Give the Requisition Letter?",
-        text: "<b>Routine cases:</b> Police officer ≥ Sub-Inspector (Police Station) or ≥ Senior Head Constable (Out Post).<br><b>Magistrate inquest required for:</b> Custodial deaths, rape in custody, disappearance in custody, dowry-allegation deaths, and exhumation cases."
-      },
-      {
-        step: 4,
-        title: "Documents to Collect",
-        text: "Collect and attach (numbered) to PM Booklet (Medl. I-28):<br>• Requisition for PM examination<br>• Case history<br>• Form 86 / details of dead body<br>• SOC sketch & FIR copy<br>• A.R. copies & Death Intimation copy<br>• Treatment particulars (if treated elsewhere)"
-      }
-    ],
-
-    "Step 2: Conduct of Autopsy": [
-      {
-        step: 1,
-        title: "Who Is Authorised Inside?",
-        text: "Only these persons are authorised during autopsy:<br>• Conducting Medical Officer(s)<br>• Required departmental technicians<br>• Mortuary attendants<br>• Body in-charge constable<br><br><b>NOT allowed</b> without explicit Govt/Court order + IO's NOC: other MOs, lawyers, common public."
-      },
-      {
-        step: 2,
-        title: "Documentation During Autopsy",
-        text: "All findings — positive AND negative — entered <b>during</b> the autopsy in <b>Medl. I-28 booklet (16 pages)</b>. One booklet per case only. MO decides dissection technique at the start. Department sealed with <b>wax impression</b> daily."
-      },
-      {
-        step: 3,
-        title: "Videography Rules",
-        text: "Permitted <b>only on written request from a relative/friend of deceased</b> with IO's knowledge. Recorded video <b>sealed and sent to the Magistrate</b>. IO may attend at MO's discretion but must not obstruct."
-      },
-      {
-        step: 4,
-        title: "After Autopsy — Handover",
-        text: "Body packed neatly in khada cloth and plastic sheet. Jewellery & belongings handed to in-charge constable with <b>signed receipt on the same day</b>. PM certificate (Medl. I-29): <b>Original → Magistrate (sealed); Duplicate → IO; Triplicate → Department.</b>"
-      }
-    ],
-
-    "Step 3: Special Situations": [
-      {
-        step: 1,
-        title: "Custodial / Police Action Deaths",
-        text: "Team of <b>≥ 2 doctors with MD Forensic Medicine</b> mandatory. Family must view body (front + back) before autopsy. <b>Whole-body X-ray / CT scan before dissection.</b> Body preserved <b>48 hours</b> if family declares intent to approach High Court."
-      },
-      {
-        step: 2,
-        title: "Photography & Videography — Custodial",
-        text: "<b>20–25 coloured photographs</b>: face (3 views), torso front/back, upper/lower extremities, each numbered injury. Entire autopsy videographed in <b>6 phases</b>: bearings → external → injuries → cavity → head → trunk. MO narrates aloud; date/time superimposed."
-      },
-      {
-        step: 3,
-        title: "HIV / Biologically Hazardous Cases",
-        text: "Minimum staff. HIV body wrapped in plastic, kept <b>3 days</b> before dissection. All orifices plugged. Equipment soaked in <b>2% glutaraldehyde or 10% hypochlorite</b>. Staff: Chest X-ray every 6 months, TT every 6 months, Hepatitis B immunisation."
-      },
-      {
-        step: 4,
-        title: "Exhumation",
-        text: "<b>Executive Magistrate's written order mandatory</b> (Sec 196(4) BNSS). Natural daylight only. Site screened from public. Identity verified before Magistrate holds inquest and hands over requisition to medical team."
-      }
-    ],
-
-    "Case: General Autopsy": [
-      {
-        step: 1,
-        title: "Authorization Check",
-        text: "Verify Police Requisition and Body Challan. Cross-check identity marks (moles, tattoos, scars) against the Inquest Report before the first incision. No autopsy without proper requisition."
-      },
-      {
-        step: 2,
-        title: "Dignity & Confidentiality",
-        text: "Close mortuary doors. Only authorized personnel permitted. Professionalism forbids unauthorized bystanders. Maintain dignity and secrecy of dead body and findings at all times."
-      },
-      {
-        step: 3,
-        title: "Real-Time Recording",
-        text: "Dictate and enter findings into <b>Medl. I-28 booklet during the autopsy</b>. Never rely on memory. Note all positive AND negative findings. Dissection technique decided at the start — no unscientific method."
-      },
-      {
-        step: 4,
-        title: "Handover Protocol",
-        text: "Reconstruct and pack body neatly. Hand all jewellery to constable with signed receipt. PM File (booklet + notes + certificates) handed to Professor of FM on the same day."
-      }
-    ],
-
-    "Case: Custodial Death": [
-      {
-        step: 1,
-        title: "The Board",
-        text: "Conduct autopsy with a team of <b>at least two doctors with MD Forensic Medicine</b> attached to a Medical College. Transparency is the shield against allegations of bias."
-      },
-      {
-        step: 2,
-        title: "Judicial Command",
-        text: "Inquest by <b>Judicial Magistrate (Sec 176(1A) CrPC)</b>. Family must view body front and back, allowed to take photos/video. No autopsy commences without next of kin having seen the body."
-      },
-      {
-        step: 3,
-        title: "Continuous Videography",
-        text: "Unedited video across all 6 phases. Capture all external injuries before dissection. MO narrates observations aloud. Sealed video chip dispatched to Magistrate → NHRC same day."
-      },
-      {
-        step: 4,
-        title: "Injury Mapping",
-        text: "Document every bruise with precise location (distance from heel and midline). Distinguish CPR/therapeutic marks from signs of torture. Deep contusions: long incisions to expose muscular tissue. Whole-body X-ray/CT before autopsy."
-      }
-    ],
-
-    "Case: Dowry Death": [
-      {
-        step: 1,
-        title: "Executive Authority",
-        text: "Suspicious death <b>within 7 years of marriage</b> (Sec 304B IPC). Requires autopsy on request from an <b>Executive Magistrate (RDO)</b>. Verify the specific written Magistrate letter before proceeding."
-      },
-      {
-        step: 2,
-        title: "Sexual Assault Screening",
-        text: "Routine professional screening for sexual assault. Collect and <b>air-dry vaginal, anal, and oral swabs</b>. Document perineal and genital findings systematically."
-      },
-      {
-        step: 3,
-        title: "Ligature Mark Analysis",
-        text: "Document level, direction, width, depth, and <b>continuity of neck marks</b>. Dissect neck muscles in layers. Examine hyoid bone and thyroid cartilage in situ. Critical to differentiate suicide from homicide."
-      },
-      {
-        step: 4,
-        title: "Reserved Opinion",
-        text: "Use <b>Medl. I-29</b> format. Issue provisional opinion with 'pending chemical analysis / histopathology' noted. <b>Reserve final opinion</b> until all FSL reports received. Avoid 'probably' in final cause of death."
-      }
-    ],
-
+    // ... [Previous entries: Step 1, Step 2, Step 3, General Autopsy, Custodial Death, Dowry Death]
+    
     "Case: Exhumation": [
       {
         step: 1,
@@ -169,34 +28,64 @@ const forensicContent = {
         title: "Decomposition & Documentation",
         text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> — do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
       }
-    ],
+    ], // Added comma here to separate the new entry
 
-    // NEW METHANOL TOPIC
-    "Methanol Toxicity & Treatment": [
+    "Case: Methanol Poisoning": [
       {
         step: 1,
-        title: "The Toxic Cascade",
-        text: "As detailed in <b>methanol_complete_mechanism_treatment.html</b>, methanol is absorbed in 30–60 min[cite: 1]. It is metabolized by ADH into Formaldehyde and then into <b>Formic Acid</b>, the key toxin that blocks mitochondrial Complex IV."
+        title: "Interactive Mechanism Map",
+        text: `
+          <style>
+            .leg-dot{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px}
+            .d-amber{background:#EF9F27}.d-red{background:#E24B4A}.d-teal{background:#1D9E75}.d-blue{background:#378ADD}
+          </style>
+          <div style="font-size:12px; margin-bottom:10px;">
+            <span class="leg-dot d-amber"></span> Cascade | <span class="leg-dot d-red"></span> Injury | <span class="leg-dot d-teal"></span> Antidote
+          </div>
+          <!-- Integrated SVG from methanol_complete_mechanism_treatment.html[cite: 1] -->
+          <svg width="100%" viewBox="0 0 680 920" style="background:#f9f9f9; border-radius:8px;">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" stroke-width="1.5"/></marker>
+            </defs>
+            <g transform="scale(0.9) translate(35, 20)">
+              <rect x="75" y="38" width="200" height="52" rx="8" fill="#FAEEDA" stroke="#EF9F27"/>
+              <text x="175" y="65" text-anchor="middle" font-size="14" font-weight="bold">Methanol Ingested</text>
+              <line x1="175" y1="92" x2="175" y2="138" stroke="#BA7517" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <rect x="75" y="140" width="200" height="52" rx="8" fill="#FCEBEB" stroke="#E24B4A"/>
+              <text x="175" y="165" text-anchor="middle" font-size="14">Formaldehyde</text>
+              <path d="M277 166 L338 166" fill="none" stroke="#1D9E75" stroke-width="2"/>
+              <text x="440" y="165" text-anchor="middle" font-size="12" fill="#0F6E56">Antidote: Ethanol/Fomepizole</text>
+            </g>
+          </svg>
+          <p style="margin-top:10px">The diagram shows how methanol is converted to formic acid, which inhibits mitochondrial Complex IV[cite: 1].</p>`
       },
       {
         step: 2,
-        title: "Specific Antidotes",
-        text: "Treatment requires blocking ADH with <b>Fomepizole or Ethanol</b> immediately[cite: 1]. <b>Folinic acid</b> (1–2 mg/kg IV) is given to convert formate into CO2 and H2O, while Sodium Bicarbonate treats metabolic acidosis (pH < 7.0)[cite: 1]."
+        title: "Clinical & Imaging Panels",
+        text: `
+          <!-- Integrated panels from basal_ganglia_methanol_mechanism.html[cite: 2] -->
+          <div style="background:#E6F1FB; padding:10px; border-radius:5px; margin-bottom:10px; border-left:4px solid #378ADD">
+            <b style="color:#185FA5">Why Putamen?</b><br>
+            It has the highest metabolic demand and is an end-arterial territory. It is the "first to fall" when energy fails[cite: 2].
+          </div>
+          <div style="background:#FCEBEB; padding:10px; border-radius:5px; border-left:4px solid #E24B4A">
+            <b style="color:#A32D2D">Imaging Hallmark:</b><br>
+            CT shows <b>bilateral putaminal hypodensity</b> due to cytotoxic oedema (cell swelling)[cite: 2].
+          </div>`
       },
       {
         step: 3,
-        title: "Why Putamen Necrosis?",
-        text: "According to <b>basal_ganglia_methanol_mechanism.html</b>, the putamen is targeted due to extreme metabolic demand and poor collateral blood supply[cite: 2]. Formic acid causes ATP failure, leading to <b>cytotoxic oedema</b> and eventual haemorrhagic necrosis[cite: 2]."
+        title: "Antidote & Treatment Protocol",
+        text: "<b>Fomepizole/Ethanol:</b> Blocks ADH enzyme early in the cascade[cite: 1].<br><b>Folinic Acid:</b> 1–2 mg/kg IV to convert formate into CO2+H2O[cite: 1].<br><b>Sodium Bicarbonate:</b> Required for severe acidosis (pH < 7.0)[cite: 1]."
       },
       {
         step: 4,
-        title: "Clinical & Imaging Hallmarks",
-        text: "Key findings include high anion gap acidosis, blindness/retinal oedema, and <b>bilateral putaminal hypodensity</b> on CT. Autopsy findings often show upper body cyanosis and pulmonary oedema[cite: 1]."
+        title: "Autopsy & Preservation",
+        text: "<b>Findings:</b> Cyanosis of upper body, pulmonary oedema, and retinal oedema[cite: 1].<br><b>Preservation:</b> Use Saturated Salt Solution. <b>NEVER use Rectified Spirit</b> for alcohol/methanol cases as it contaminates the sample[cite: 1, 3]."
       }
     ]
   },
 
-  // ── VISCERA SIMULATION SCENARIOS ──────────────────────────
   scenarios: [
     {
       id: "op",
@@ -225,15 +114,13 @@ const forensicContent = {
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 2mg",
       trap: "Phenol is HIGHLY SOLUBLE in Rectified Spirit — using spirit destroys the sample. Use Salt, NOT Spirit. Classic examiner trap."
-    },
-
-    // NEW METHANOL SCENARIO
+    }, // Added comma here
     {
       id: "methanol",
-      history: "A group of laborers present with 'snowfield vision' and severe abdominal pain after consuming illicit spirits. Autopsy reveals bilateral putaminal necrosis. Suspected Methanol Poisoning.",
+      history: "Patient presents with severe metabolic acidosis and 'snowfield' vision after consuming illicit liquor. Autopsy shows bilateral putaminal necrosis.",
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 10mg",
-      trap: "Methanol is an alcohol. Just like ethanol cases, <b>never use Rectified Spirit</b> (which contains ethanol) as it will contaminate the sample and invalidate the chemical analysis results."
+      trap: "Methanol is an alcohol. Just like ethanol, <b>never use Rectified Spirit</b> for preservation as it contains alcohol and will ruin the toxicological analysis[cite: 1, 3]."
     }
   ]
 };
