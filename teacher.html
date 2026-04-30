@@ -6,389 +6,451 @@
   <title>DSMCH Instructor Control</title>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <!-- ── CONTENT FILE — edit topics.js only, never this file ── -->
   <script src="config.js"></script>
   <script src="topics.js"></script>
   <style>
-    :root { --bg:#0a0a0a; --panel:#111; --accent:#58a6ff; --success:#238636; --danger:#da3633; --warn:#e3a008; --muted:#8b949e; }
-    * { box-sizing: border-box; }
-    body { background:var(--bg); color:#e6edf3; font-family:'Segoe UI',system-ui,sans-serif; padding:20px; margin:0; }
+    :root{--bg:#0a0a0a;--panel:#111;--accent:#58a6ff;--success:#238636;--danger:#da3633;--warn:#e3a008;--muted:#8b949e;}
+    *{box-sizing:border-box;}
+    body{background:var(--bg);color:#e6edf3;font-family:'Segoe UI',system-ui,sans-serif;padding:20px;margin:0;}
 
-    .panel { background:var(--panel); padding:20px; border-radius:12px; border:1px solid #30363d; margin-bottom:20px; }
-    .panel-title { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:0 0 14px 0; }
+    /* ── PASSWORD SCREEN ── */
+    #pw-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg);}
+    .pw-box{background:var(--panel);border:1px solid #30363d;border-radius:16px;padding:40px 32px;width:100%;max-width:380px;text-align:center;}
+    .pw-logo{font-size:48px;margin-bottom:12px;}
+    .pw-title{font-size:20px;font-weight:700;margin-bottom:4px;}
+    .pw-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+    .pw-input{width:100%;background:#0d1117;color:white;border:1px solid #30363d;border-radius:8px;padding:14px;font-size:18px;letter-spacing:0.2em;text-align:center;margin-bottom:12px;}
+    .pw-input:focus{outline:none;border-color:var(--accent);}
+    .pw-btn{width:100%;background:var(--accent);color:#0d1117;border:none;border-radius:8px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;}
+    .pw-btn:active{opacity:0.85;}
+    .pw-error{color:var(--danger);font-size:13px;margin-top:8px;display:none;}
+    .pw-attempts{font-size:12px;color:var(--muted);margin-top:8px;}
 
-    .btn { padding:10px 16px; border-radius:6px; cursor:pointer; font-weight:bold; border:none; transition:0.2s; margin:4px; font-size:13px; }
-    .btn-blue  { background:var(--accent); color:#0d1117; }
-    .btn-green { background:var(--success); color:white; }
-    .btn-red   { background:var(--danger); color:white; }
-    .btn-gray  { background:#30363d; color:white; }
-    .btn-warn  { background:var(--warn); color:#0d1117; }
-    .btn:disabled { opacity:0.4; cursor:not-allowed; }
+    /* ── MAIN DASHBOARD ── */
+    #dashboard{display:none;}
+    .panel{background:var(--panel);padding:20px;border-radius:12px;border:1px solid #30363d;margin-bottom:20px;}
+    .panel-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:0 0 14px 0;}
+    .btn{padding:10px 16px;border-radius:6px;cursor:pointer;font-weight:bold;border:none;transition:0.2s;margin:4px;font-size:13px;}
+    .btn-blue{background:var(--accent);color:#0d1117;}
+    .btn-green{background:var(--success);color:white;}
+    .btn-red{background:var(--danger);color:white;}
+    .btn-gray{background:#30363d;color:white;}
+    .btn:disabled{opacity:0.4;cursor:not-allowed;}
+    .stream-btns{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+    .stream-btn{flex:1;min-width:100px;padding:12px;border-radius:8px;border:2px solid #30363d;background:#21262d;color:#8b949e;cursor:pointer;font-weight:bold;font-size:14px;text-align:center;transition:0.2s;}
+    .stream-btn.active-2024{border-color:#58a6ff;background:#1f6feb22;color:#58a6ff;}
+    .stream-btn.active-2023{border-color:#3fb950;background:#23863622;color:#3fb950;}
+    .stream-btn.active-testing{border-color:#e3a008;background:#e3a00822;color:#e3a008;}
+    #stream-status{font-size:13px;padding:8px 12px;border-radius:6px;background:#0d1117;margin-bottom:14px;}
+    .topic-select{width:100%;background:#0d1117;color:white;border:1px solid #30363d;border-radius:6px;padding:10px;font-size:14px;margin-bottom:10px;}
+    .roll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px;margin-top:12px;}
+    .seat{background:#21262d;text-align:center;padding:8px 0;border-radius:6px;font-size:11px;color:var(--muted);border:1px solid #30363d;transition:0.3s;cursor:pointer;}
+    .seat.active{background:#1f6feb;color:white;border-color:#58a6ff;box-shadow:0 0 8px rgba(88,166,255,0.3);}
+    .seat.warning{background:var(--danger);color:white;animation:blink 1s infinite;}
+    .seat.cheat{background:var(--warn);color:#0d1117;animation:blink 0.6s infinite;}
+    @keyframes blink{50%{opacity:0.4;}}
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #30363d;}
+    th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px;}
+    .error-tag{background:#3b110e;color:#ff7b72;padding:3px 7px;border-radius:4px;font-size:11px;margin:2px;display:inline-block;font-weight:bold;}
+    .inactive-chip{background:#161b22;padding:5px 10px;border-radius:20px;font-size:12px;border:1px solid #30363d;color:#6e7681;margin:3px;display:inline-block;}
+    .alert-row{padding:8px 12px;border-radius:6px;margin-bottom:6px;font-size:13px;display:flex;align-items:center;gap:12px;}
+    .alert-tab{background:#2d2008;border-left:3px solid var(--warn);}
+    .alert-back{background:#2d1a08;border-left:3px solid #ff7b72;}
+    .alert-refresh{background:#3b110e;border-left:3px solid var(--danger);}
+    .alert-swipe{background:#0d2d1a;border-left:3px solid #3fb950;}
+    .alert-badge{font-size:11px;font-weight:bold;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+    .badge-tab{background:var(--warn);color:#0d1117;}
+    .badge-back{background:#ff7b72;color:#0d1117;}
+    .badge-refresh{background:var(--danger);color:white;}
+    .badge-swipe{background:#3fb950;color:#0d1117;}
+    .tab-bar{display:flex;gap:4px;margin-bottom:16px;}
+    .tab{padding:8px 16px;border-radius:6px 6px 0 0;cursor:pointer;font-size:13px;font-weight:bold;background:#21262d;color:var(--muted);border:1px solid #30363d;border-bottom:none;}
+    .tab.active{background:var(--panel);color:white;border-color:#58a6ff;}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;}
+    #cheat-count{background:var(--danger);color:white;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:10px;margin-left:6px;display:none;}
 
-    /* Stream selector */
-    .stream-btns { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
-    .stream-btn { flex:1; min-width:100px; padding:12px; border-radius:8px; border:2px solid #30363d; background:#21262d; color:#8b949e; cursor:pointer; font-weight:bold; font-size:14px; text-align:center; transition:0.2s; }
-    .stream-btn.active-2024  { border-color:#58a6ff; background:#1f6feb22; color:#58a6ff; }
-    .stream-btn.active-2023  { border-color:#3fb950; background:#23863622; color:#3fb950; }
-    .stream-btn.active-testing { border-color:#e3a008; background:#e3a00822; color:#e3a008; }
-    #stream-status { font-size:13px; padding:8px 12px; border-radius:6px; background:#0d1117; margin-bottom:14px; }
-
-    /* Topic selector */
-    .topic-select { width:100%; background:#0d1117; color:white; border:1px solid #30363d; border-radius:6px; padding:10px; font-size:14px; margin-bottom:10px; }
-
-    /* Seat Grid */
-    .roll-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(42px,1fr)); gap:6px; margin-top:12px; }
-    .seat { background:#21262d; text-align:center; padding:8px 0; border-radius:6px; font-size:11px; color:var(--muted); border:1px solid #30363d; transition:0.3s; cursor:pointer; position:relative; }
-    .seat.active  { background:#1f6feb; color:white; border-color:#58a6ff; box-shadow:0 0 8px rgba(88,166,255,0.3); }
-    .seat.warning { background:var(--danger); color:white; animation:blink 1s infinite; }
-    .seat.cheat   { background:var(--warn); color:#0d1117; animation:blink 0.6s infinite; }
-    @keyframes blink { 50%{opacity:0.4;} }
-
-    /* Tables */
-    table { width:100%; border-collapse:collapse; font-size:13px; }
-    th,td { padding:10px 12px; text-align:left; border-bottom:1px solid #30363d; }
-    th { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1px; }
-    .error-tag { background:#3b110e; color:#ff7b72; padding:3px 7px; border-radius:4px; font-size:11px; margin:2px; display:inline-block; font-weight:bold; }
-    .inactive-chip { background:#161b22; padding:5px 10px; border-radius:20px; font-size:12px; border:1px solid #30363d; color:#6e7681; margin:3px; display:inline-block; }
-
-    /* Anti-cheat log */
-    .alert-row { padding:8px 12px; border-radius:6px; margin-bottom:6px; font-size:13px; display:flex; align-items:center; gap:12px; }
-    .alert-tab    { background:#2d2008; border-left:3px solid var(--warn); }
-    .alert-back   { background:#2d1a08; border-left:3px solid #ff7b72; }
-    .alert-refresh{ background:#3b110e; border-left:3px solid var(--danger); }
-    .alert-swipe  { background:#0d2d1a; border-left:3px solid #3fb950; }
-    .alert-time   { color:var(--muted); font-size:11px; white-space:nowrap; }
-    .alert-badge  { font-size:11px; font-weight:bold; padding:2px 8px; border-radius:20px; white-space:nowrap; }
-    .badge-tab     { background:var(--warn); color:#0d1117; }
-    .badge-back    { background:#ff7b72; color:#0d1117; }
-    .badge-refresh { background:var(--danger); color:white; }
-    .badge-swipe   { background:#3fb950; color:#0d1117; }
-
-    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-    @media(max-width:800px) { .two-col { grid-template-columns:1fr; } }
-
-    .tab-bar { display:flex; gap:4px; margin-bottom:16px; }
-    .tab { padding:8px 16px; border-radius:6px 6px 0 0; cursor:pointer; font-size:13px; font-weight:bold; background:#21262d; color:var(--muted); border:1px solid #30363d; border-bottom:none; }
-    .tab.active { background:var(--panel); color:white; border-color:#58a6ff; }
-    .tab-content { display:none; }
-    .tab-content.active { display:block; }
-
-    #cheat-count { background:var(--danger); color:white; font-size:10px; font-weight:bold; padding:1px 6px; border-radius:10px; margin-left:6px; display:none; }
+    /* Live broadcast status bar */
+    #live-bar{display:none;background:#0f2e0f;border:1px solid #238636;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#3fb950;display:flex;align-items:center;gap:10px;}
+    #live-bar .live-dot{width:8px;height:8px;border-radius:50%;background:#3fb950;animation:blink 0.8s infinite;}
   </style>
 </head>
 <body>
 
-<!-- Header -->
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-  <div>
-    <h2 style="margin:0;">👨‍🏫 DSMCH Instructor Dashboard</h2>
-    <div style="font-size:12px; color:var(--muted); margin-top:4px;">
-      Topics loaded from <code>topics.js</code> — edit that file to add/change content
-    </div>
+<!-- ══════════════ PASSWORD SCREEN ══════════════ -->
+<div id="pw-screen">
+  <div class="pw-box">
+    <div class="pw-logo">&#128274;</div>
+    <div class="pw-title">Instructor Access</div>
+    <div class="pw-sub">DSMCH Forensic Dashboard</div>
+    <input class="pw-input" type="password" id="pw-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="pw-btn" onclick="checkPw()">Unlock Dashboard</button>
+    <div class="pw-error" id="pw-error">&#10060; Incorrect password</div>
+    <div class="pw-attempts" id="pw-attempts"></div>
   </div>
-  <div id="connection-status" style="font-size:12px; color:var(--success);">● Firebase Connected</div>
 </div>
 
-<!-- ── STREAM SELECTOR ───────────────────────────────────────── -->
+<!-- ══════════════ MAIN DASHBOARD ══════════════ -->
+<div id="dashboard">
+
+<!-- Header -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+  <div>
+    <h2 style="margin:0;">&#128105;&#8205;&#127979; DSMCH Instructor Dashboard</h2>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px;">Topics auto-loaded from <code>topics.js</code></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="connection-status" style="font-size:12px;color:var(--success);">&#9679; Firebase Connected</div>
+    <button class="btn btn-gray" style="font-size:12px;padding:6px 12px;" onclick="lockDashboard()">&#128274; Lock</button>
+  </div>
+</div>
+
+<!-- Live status bar -->
+<div id="live-bar">
+  <span class="live-dot"></span>
+  <span id="live-bar-text">Broadcasting…</span>
+</div>
+
+<!-- Stream + Topic + Mode -->
 <div class="panel" style="border-left:4px solid var(--accent);">
   <p class="panel-title">1. Select Target Batch</p>
   <div class="stream-btns">
-    <div class="stream-btn" id="s-2024"    onclick="selectStream('2024')">🎓 2024 Batch</div>
-    <div class="stream-btn" id="s-2023"    onclick="selectStream('2023')">🎓 2023 Batch</div>
-    <div class="stream-btn" id="s-testing" onclick="selectStream('testing')">🧪 Testing</div>
+    <div class="stream-btn" id="s-2024" onclick="selectStream('2024')">&#127891; 2024 Batch</div>
+    <div class="stream-btn" id="s-2023" onclick="selectStream('2023')">&#127891; 2023 Batch</div>
+    <div class="stream-btn" id="s-testing" onclick="selectStream('testing')">&#129514; Testing</div>
   </div>
-  <div id="stream-status" style="color:var(--muted);">No batch selected. Select a batch before broadcasting.</div>
+  <div id="stream-status" style="color:var(--muted);">No batch selected.</div>
 
-  <!-- ── TOPIC SELECTOR (reads from topics.js automatically) ── -->
-  <p class="panel-title" style="margin-top:16px;">2. Select Topic to Broadcast (Relay)</p>
+  <p class="panel-title" style="margin-top:16px;">2. Select Topic (Relay)</p>
   <select class="topic-select" id="topic-select">
-    <option value="">— Choose a topic to broadcast —</option>
+    <option value="">&#8212; Choose a topic &#8212;</option>
   </select>
-  <div id="topic-preview" style="display:none; background:#0d1117; padding:12px; border-radius:6px; font-size:13px; color:var(--muted); margin-bottom:12px;"></div>
+  <div id="topic-preview" style="display:none;background:#0d1117;padding:12px;border-radius:6px;font-size:13px;color:var(--muted);margin-bottom:12px;"></div>
 
-  <!-- ── MODE BUTTONS ── -->
-  <p class="panel-title" style="margin-top:16px;">3. Broadcast Mode</p>
-  <button class="btn btn-blue"  onclick="setMode('live')">📡 START RELAY (selected topic)</button>
-  <button class="btn btn-green" onclick="setMode('exam')">🧪 START VISCERA SIM</button>
-  <button class="btn btn-red"   onclick="setMode('locked')">🔒 LOCK ALL SESSIONS</button>
-  <button class="btn btn-gray"  onclick="setMode('idle')">⏹ STOP / IDLE</button>
+  <p class="panel-title" style="margin-top:16px;">3. Broadcast</p>
+  <button class="btn btn-blue" onclick="setMode('live')">&#128225; START RELAY</button>
+  <button class="btn btn-green" onclick="setMode('exam')">&#129514; START VISCERA SIM</button>
+  <button class="btn btn-red" onclick="setMode('locked')">&#128274; LOCK SESSIONS</button>
+  <button class="btn btn-gray" onclick="setMode('idle')">&#9209; STOP</button>
 </div>
 
-<!-- ── INACTIVE STUDENTS ─────────────────────────────────────── -->
+<!-- Inactive -->
 <div class="panel" style="border-left:4px solid #30363d;">
-  <p class="panel-title">⚠️ Not Started / Inactive</p>
-  <div id="inactive-list" style="display:flex; flex-wrap:wrap; gap:6px;">
-    <span style="color:var(--muted);">Waiting for data…</span>
-  </div>
+  <p class="panel-title">&#9888;&#65039; Not Started / Inactive</p>
+  <div id="inactive-list" style="display:flex;flex-wrap:wrap;gap:6px;"><span style="color:var(--muted);">Waiting…</span></div>
 </div>
 
-<!-- ── TABS: GRID / SKILLS / ANTI-CHEAT ─────────────────────── -->
+<!-- Tabs -->
 <div class="panel">
   <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('tab-grid')">📍 Attendance Grid</div>
-    <div class="tab" onclick="switchTab('tab-skills')">📊 Skills Matrix</div>
-    <div class="tab" onclick="switchTab('tab-cheat')">🚨 Exit Log <span id="cheat-count">0</span></div>
+    <div class="tab active" onclick="switchTab('tab-grid',this)">&#128205; Grid</div>
+    <div class="tab" onclick="switchTab('tab-skills',this)">&#128202; Skills</div>
+    <div class="tab" onclick="switchTab('tab-cheat',this)">&#128680; Exit Log <span id="cheat-count">0</span></div>
   </div>
 
-  <!-- Attendance Grid -->
   <div id="tab-grid" class="tab-content active">
-    <div style="font-size:12px; color:var(--muted); margin-bottom:8px;" id="grid-label">Showing: All</div>
-    <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">
-      <span style="display:inline-block; width:12px; height:12px; background:#1f6feb; border-radius:2px; margin-right:4px;"></span>Active
-      <span style="display:inline-block; width:12px; height:12px; background:var(--danger); border-radius:2px; margin:0 4px 0 12px;"></span>Out of App
-      <span style="display:inline-block; width:12px; height:12px; background:var(--warn); border-radius:2px; margin:0 4px 0 12px;"></span>Cheat Alert
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;" id="grid-label">Showing: All</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+      <span style="display:inline-block;width:12px;height:12px;background:#1f6feb;border-radius:2px;margin-right:4px;"></span>Active&nbsp;
+      <span style="display:inline-block;width:12px;height:12px;background:var(--danger);border-radius:2px;margin:0 4px 0 8px;"></span>Out of App&nbsp;
+      <span style="display:inline-block;width:12px;height:12px;background:var(--warn);border-radius:2px;margin:0 4px 0 8px;"></span>Alert
     </div>
     <div class="roll-grid" id="master-grid"></div>
   </div>
 
-  <!-- Skills Matrix -->
   <div id="tab-skills" class="tab-content">
     <table>
       <thead><tr><th>Student</th><th>Scenario</th><th>Score</th><th>Errors</th></tr></thead>
       <tbody id="skills-body"></tbody>
     </table>
-    <button class="btn btn-blue" style="width:100%; margin-top:16px;" onclick="exportData()">📥 Download Skills Report (.CSV)</button>
+    <button class="btn btn-blue" style="width:100%;margin-top:16px;" onclick="exportData()">&#128229; Download CSV</button>
   </div>
 
-  <!-- Anti-Cheat Exit Log -->
   <div id="tab-cheat" class="tab-content">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <div style="font-size:13px; color:var(--muted);">Real-time exit event log. Updates automatically.</div>
-      <button class="btn btn-red" style="font-size:12px; padding:6px 12px;" onclick="clearCheatLog()">Clear Log</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div style="font-size:13px;color:var(--muted);">Real-time exit events.</div>
+      <button class="btn btn-red" style="font-size:12px;padding:6px 12px;" onclick="clearCheatLog()">Clear</button>
     </div>
-    <div style="font-size:12px; margin-bottom:12px; display:flex; gap:16px; flex-wrap:wrap;">
-      <span><span class="alert-badge badge-tab" style="margin-right:4px;">TAB</span>Tab/App switch</span>
-      <span><span class="alert-badge badge-refresh" style="margin-right:4px;">REFRESH</span>Page refresh attempt</span>
-      <span><span class="alert-badge badge-back" style="margin-right:4px;">BACK</span>Back button pressed</span>
-      <span><span class="alert-badge badge-swipe" style="margin-right:4px;">SWIPE</span>Edge swipe</span>
+    <div style="font-size:12px;margin-bottom:12px;display:flex;gap:12px;flex-wrap:wrap;">
+      <span><span class="alert-badge badge-tab">TAB</span> Switch</span>
+      <span><span class="alert-badge badge-refresh">REFRESH</span> Reload</span>
+      <span><span class="alert-badge badge-back">BACK</span> Navigate</span>
+      <span><span class="alert-badge badge-swipe">SWIPE</span> Edge</span>
     </div>
-    <div id="cheat-log">
-      <div style="color:var(--muted); font-size:13px;">No exit events logged yet.</div>
-    </div>
+    <div id="cheat-log"><div style="color:var(--muted);font-size:13px;">No events yet.</div></div>
   </div>
 </div>
+
+</div><!-- end dashboard -->
 
 <script>
 // =============================================================
 //  teacher.html — INFRASTRUCTURE ONLY
-//  Topic list is read dynamically from topics.js.
-//  Do NOT add topic content here.
 // =============================================================
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// ── PASSWORD PROTECTION ──────────────────────────────────────
+// Change the password here — stored locally, never sent to server
+const TEACHER_PASSWORD = "dsmch2024";
+const MAX_ATTEMPTS = 5;
+let pwAttempts = 0;
+let locked = false;
 
+function checkPw() {
+  if (locked) return;
+  const val = document.getElementById('pw-input').value;
+  if (val === TEACHER_PASSWORD) {
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    initDashboard();
+    // Remember in session (tab only — not localStorage for security)
+    sessionStorage.setItem('dsmch_auth', '1');
+  } else {
+    pwAttempts++;
+    const errEl = document.getElementById('pw-error');
+    const attEl = document.getElementById('pw-attempts');
+    errEl.style.display = 'block';
+    attEl.textContent = (MAX_ATTEMPTS - pwAttempts) + ' attempts remaining';
+    document.getElementById('pw-input').value = '';
+    if (pwAttempts >= MAX_ATTEMPTS) {
+      locked = true;
+      errEl.textContent = '\u274C Too many attempts. Refresh to try again.';
+      document.querySelector('.pw-btn').disabled = true;
+      document.getElementById('pw-input').disabled = true;
+    }
+  }
+}
+
+function lockDashboard() {
+  if (!confirm('Lock the dashboard? You will need to re-enter the password.')) return;
+  sessionStorage.removeItem('dsmch_auth');
+  location.reload();
+}
+
+// Auto-unlock if already authenticated this session
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('dsmch_auth') === '1') {
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    initDashboard();
+  }
+  // Allow Enter key on password field
+  document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPw();
+  });
+});
+
+// ── DASHBOARD INIT ───────────────────────────────────────────
 let activeStream = null;
 let cheatEventCount = 0;
+let firebaseReady = false;
+
+function initDashboard() {
+  if (firebaseReady) return;
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  firebaseReady = true;
+  window._db = db;
+
+  populateTopics();
+  buildGrid();
+  watchPresence(db);
+  watchSkills(db);
+  watchCheatLog(db);
+}
 
 // ── Tab switching ─────────────────────────────────────────────
-function switchTab(id) {
+function switchTab(id, el) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
   if (id === 'tab-cheat') { cheatEventCount = 0; updateCheatBadge(); }
 }
-
 function updateCheatBadge() {
-  const badge = document.getElementById('cheat-count');
-  badge.textContent = cheatEventCount;
-  badge.style.display = cheatEventCount > 0 ? 'inline' : 'none';
+  const b = document.getElementById('cheat-count');
+  b.textContent = cheatEventCount;
+  b.style.display = cheatEventCount > 0 ? 'inline' : 'none';
 }
 
-// ── Populate topic dropdown from topics.js ────────────────────
+// ── Topic dropdown — auto-built from topics.js ────────────────
 function populateTopics() {
   const sel = document.getElementById('topic-select');
   Object.keys(forensicContent.relay).forEach(key => {
     const opt = document.createElement('option');
-    opt.value = key;
-    opt.textContent = key;
+    opt.value = key; opt.textContent = key;
     sel.appendChild(opt);
   });
+  sel.addEventListener('change', function() {
+    const preview = document.getElementById('topic-preview');
+    if (!this.value) { preview.style.display = 'none'; return; }
+    const steps = forensicContent.relay[this.value];
+    preview.style.display = 'block';
+    preview.innerHTML = `<b style="color:white;">${this.value}</b> &mdash; ${steps.length} steps:<br>` +
+      steps.map((s,i) => `<span style="color:#58a6ff">${i+1}.</span> ${s.title}`).join(' &nbsp;&middot;&nbsp; ');
+  });
 }
-populateTopics();
-
-// Show topic preview when selected
-document.getElementById('topic-select').addEventListener('change', function() {
-  const preview = document.getElementById('topic-preview');
-  if (!this.value) { preview.style.display = 'none'; return; }
-  const steps = forensicContent.relay[this.value];
-  preview.style.display = 'block';
-  preview.innerHTML = `<b style="color:white;">${this.value}</b> — ${steps.length} steps:<br>` +
-    steps.map((s,i) => `<span style="color:#58a6ff">${i+1}.</span> ${s.title}`).join(' &nbsp;·&nbsp; ');
-});
 
 // ── Stream selector ───────────────────────────────────────────
 function selectStream(s) {
   activeStream = s;
   ['2024','2023','testing'].forEach(x => {
-    document.getElementById('s-' + x).className = 'stream-btn';
+    document.getElementById('s-'+x).className = 'stream-btn';
   });
-  document.getElementById('s-' + s).className = 'stream-btn active-' + s;
-
-  const labels = { '2024':'2024 Batch (520024xxxxx)', '2023':'2023 Batch (520023xxxxx)', 'testing':'Testing — Faculty Accounts (1–10)' };
+  document.getElementById('s-'+s).className = 'stream-btn active-'+s;
+  const lbl = {'2024':'2024 Batch','2023':'2023 Batch','testing':'Testing (1\u201310)'};
   document.getElementById('stream-status').innerHTML =
-    `<span style="color:var(--accent)">● Broadcasting to: <b>${labels[s]}</b></span>`;
-  document.getElementById('grid-label').textContent = `Showing: ${labels[s]}`;
+    `<span style="color:var(--accent)">&#9679; Targeting: <b>${lbl[s]}</b></span>`;
+  document.getElementById('grid-label').textContent = 'Showing: ' + lbl[s];
 }
 
 // ── Seat Grid ─────────────────────────────────────────────────
-const grid = document.getElementById('master-grid');
-for (let i = 1; i <= 255; i++) {
-  const el = document.createElement('div');
-  el.id = 'seat-' + i;
-  el.className = 'seat';
-  el.textContent = i;
-  el.title = '';
-  grid.appendChild(el);
+function buildGrid() {
+  const grid = document.getElementById('master-grid');
+  for (let i = 1; i <= 255; i++) {
+    const el = document.createElement('div');
+    el.id = 'seat-'+i; el.className = 'seat'; el.textContent = i; el.title = '';
+    grid.appendChild(el);
+  }
 }
 
 // ── Broadcast ─────────────────────────────────────────────────
 function setMode(m) {
-  if (!activeStream) { alert('⚠️ Please select a batch (2024 / 2023 / Testing) first.'); return; }
-
-  const selectedTopic = document.getElementById('topic-select').value;
-  if (m === 'live' && !selectedTopic) { alert('⚠️ Please select a topic to broadcast for the relay.'); return; }
-
-  const labels = { '2024':'2024 Batch', '2023':'2023 Batch', 'testing':'Testing' };
-  const modeLabels = { 'live':`RELAY — "${selectedTopic}"`, 'exam':'VISCERA SIM', 'locked':'LOCKED', 'idle':'IDLE' };
-  if (!confirm(`Broadcast "${modeLabels[m]}" to ${labels[activeStream]}?`)) return;
+  const db = window._db;
+  if (!activeStream) { alert('\u26A0\uFE0F Select a batch first.'); return; }
+  const topic = document.getElementById('topic-select').value;
+  if (m === 'live' && !topic) { alert('\u26A0\uFE0F Select a topic first.'); return; }
+  const lbl = {'2024':'2024 Batch','2023':'2023 Batch','testing':'Testing'};
+  const ml = {'live':'RELAY \u2014 "'+topic+'"','exam':'VISCERA SIM','locked':'LOCKED','idle':'STOP'};
+  if (!confirm('Broadcast "'+ml[m]+'" to '+lbl[activeStream]+'?')) return;
 
   db.collection("slides").doc(activeStream).set({
-    status: m,
-    stream: activeStream,
-    activeTopic: selectedTopic || null,
+    status: m, stream: activeStream,
+    activeTopic: topic || null,
     ts: firebase.firestore.FieldValue.serverTimestamp()
   });
+
+  // Update live bar
+  const bar = document.getElementById('live-bar');
+  const txt = document.getElementById('live-bar-text');
+  if (m === 'live' || m === 'exam') {
+    bar.style.display = 'flex';
+    txt.textContent = (m==='live' ? '\uD83D\uDCE1 LIVE: '+topic : '\uD83E\uDDEA VISCERA SIM') + ' \u2014 '+lbl[activeStream];
+  } else {
+    bar.style.display = 'none';
+  }
 }
 
 // ── Inactive list ─────────────────────────────────────────────
 function refreshInactiveList(activeRolls) {
-  let streamRegs = [];
-  if (activeStream === '2024')    streamRegs = Object.keys(studentsAll).filter(r => r.startsWith('520024'));
-  else if (activeStream === '2023') streamRegs = Object.keys(studentsAll).filter(r => r.startsWith('520023'));
-  else if (activeStream === 'testing') streamRegs = Object.keys(studentsAll).filter(r => parseInt(r) <= 10 && parseInt(r) >= 1);
-  else streamRegs = Object.keys(studentsAll);
-
-  const inactive = streamRegs
-    .filter(reg => !activeRolls.includes(reg))
-    .map(reg => `<div class="inactive-chip">${studentsAll[reg]} <span style="color:#444">(${reg.slice(-3)})</span></div>`);
-
-  document.getElementById('inactive-list').innerHTML = inactive.length > 0
-    ? inactive.join('')
-    : "<b style='color:var(--success)'>✅ 100% Participation</b>";
+  let regs = [];
+  if (activeStream === '2024') regs = Object.keys(studentsAll).filter(r => r.startsWith('520024'));
+  else if (activeStream === '2023') regs = Object.keys(studentsAll).filter(r => r.startsWith('520023'));
+  else if (activeStream === 'testing') regs = Object.keys(studentsAll).filter(r => parseInt(r)>=1&&parseInt(r)<=10);
+  else regs = Object.keys(studentsAll);
+  const inactive = regs.filter(r => !activeRolls.includes(r))
+    .map(r => `<div class="inactive-chip">${studentsAll[r]} <span style="color:#444">(${r.slice(-3)})</span></div>`);
+  document.getElementById('inactive-list').innerHTML =
+    inactive.length > 0 ? inactive.join('') : "<b style='color:var(--success)'>&#10003; 100% Participation</b>";
 }
 
 // ── Presence monitor ─────────────────────────────────────────
-db.collection("presence").onSnapshot(snap => {
-  let activeRolls = [];
-  document.querySelectorAll('.seat').forEach(s => { s.className = 'seat'; s.title = ''; });
-
-  snap.forEach(doc => {
-    const d = doc.data();
-    activeRolls.push(d.roll);
-    const seatNum = parseInt(d.roll.toString().slice(-3));
-    const el = document.getElementById('seat-' + seatNum);
-    if (el) {
-      el.title = `${d.name || d.roll} — ${d.status}`;
-      if (d.status && d.status.startsWith('⚠️')) el.className = 'seat cheat';
-      else if (d.status === 'Out of App' || d.status === 'tab_switch') el.className = 'seat warning';
-      else el.className = 'seat active';
-    }
+function watchPresence(db) {
+  db.collection("presence").onSnapshot(snap => {
+    let active = [];
+    document.querySelectorAll('.seat').forEach(s => { s.className='seat'; s.title=''; });
+    snap.forEach(doc => {
+      const d = doc.data(); active.push(d.roll);
+      const n = parseInt(d.roll.toString().slice(-3));
+      const el = document.getElementById('seat-'+n);
+      if (el) {
+        el.title = (d.name||d.roll)+' \u2014 '+(d.status||'');
+        if (d.status&&d.status.startsWith('\u26A0')) el.className='seat cheat';
+        else if (d.status==='Out of App') el.className='seat warning';
+        else el.className='seat active';
+      }
+    });
+    refreshInactiveList(active);
   });
-  refreshInactiveList(activeRolls);
-});
+}
 
 // ── Skills matrix ─────────────────────────────────────────────
-db.collection("simulation_scores").orderBy("ts","desc").onSnapshot(snap => {
-  let html = '';
-  snap.forEach(doc => {
-    const d = doc.data();
-    if (activeStream && d.stream && d.stream !== activeStream) return;
-    const errors = (d.log || []).filter(l => l.includes('❌'))
-      .map(l => `<span class="error-tag">${l.replace('❌ ','').split(':')[0]}</span>`).join('');
-    html += `<tr>
-      <td><b>${studentsAll[d.student] || d.student}</b><br><small style="color:var(--muted)">${d.name || ''}</small></td>
-      <td><span style="text-transform:uppercase; font-size:12px; color:var(--muted);">${d.scenario || ''}</span></td>
-      <td style="font-weight:bold; font-size:1.1em; color:${d.score >= 5 ? 'var(--success)' : d.score >= 4 ? 'var(--warn)' : 'var(--danger)'}">${d.score}/6</td>
-      <td>${errors || '<span style="color:var(--success)">None</span>'}</td>
-    </tr>`;
+function watchSkills(db) {
+  db.collection("simulation_scores").orderBy("ts","desc").onSnapshot(snap => {
+    let html = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (activeStream && d.stream && d.stream !== activeStream) return;
+      const err = (d.log||[]).filter(l=>l.includes('\u274C'))
+        .map(l=>`<span class="error-tag">${l.replace('\u274C ','').split(':')[0]}</span>`).join('');
+      const sc = d.score||0;
+      html += `<tr>
+        <td><b>${studentsAll[d.student]||d.student}</b><br><small style="color:var(--muted)">${d.name||''}</small></td>
+        <td><span style="text-transform:uppercase;font-size:12px;color:var(--muted);">${d.scenario||''}</span></td>
+        <td style="font-weight:bold;font-size:1.1em;color:${sc>=5?'var(--success)':sc>=4?'var(--warn)':'var(--danger)'}">${sc}/6</td>
+        <td>${err||'<span style="color:var(--success)">None</span>'}</td></tr>`;
+    });
+    document.getElementById('skills-body').innerHTML = html ||
+      '<tr><td colspan="4" style="text-align:center;color:#666;">No submissions yet.</td></tr>';
   });
-  document.getElementById('skills-body').innerHTML = html ||
-    '<tr><td colspan="4" style="text-align:center;color:#666;">No submissions yet.</td></tr>';
-});
+}
 
-// ── Anti-cheat exit log ───────────────────────────────────────
-const alertClasses = {
-  tab_switch:       { cls:'alert-tab',     badge:'badge-tab',     label:'TAB SWITCH',  icon:'👁' },
-  refresh_attempt:  { cls:'alert-refresh', badge:'badge-refresh', label:'REFRESH',     icon:'🔄' },
-  back_navigation:  { cls:'alert-back',    badge:'badge-back',    label:'BACK NAV',    icon:'◀' },
-  swipe_navigation: { cls:'alert-swipe',   badge:'badge-swipe',   label:'SWIPE',       icon:'👆' },
-};
-
-db.collection("cheat_alerts").orderBy("ts","desc").limit(100).onSnapshot(snap => {
-  if (snap.empty) return;
-  let html = '';
-  let count = 0;
-  snap.forEach(doc => {
-    const d = doc.data();
-    if (activeStream && d.stream && d.stream !== activeStream) return;
-    const cfg = alertClasses[d.type] || { cls:'alert-tab', badge:'badge-tab', label: d.type, icon:'⚠️' };
-    const time = d.ts ? new Date(d.ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' }) : '--';
-    const name = studentsAll[d.roll] || d.roll;
-    html += `<div class="alert-row ${cfg.cls}">
-      <span class="alert-badge ${cfg.badge}">${cfg.icon} ${cfg.label}</span>
-      <span style="flex:1;"><b>${name}</b> <span style="color:var(--muted); font-size:12px;">(${d.roll})</span>
-      ${d.detail ? `<br><span style="color:var(--muted); font-size:12px;">${d.detail}</span>` : ''}
-      </span>
-      <span class="alert-time">${time}</span>
-    </div>`;
-    count++;
+// ── Anti-cheat log ────────────────────────────────────────────
+function watchCheatLog(db) {
+  const cfg = {
+    tab_switch:      {cls:'alert-tab',    badge:'badge-tab',     label:'TAB',     icon:'\uD83D\uDC41'},
+    refresh_attempt: {cls:'alert-refresh',badge:'badge-refresh', label:'REFRESH', icon:'\uD83D\uDD04'},
+    back_navigation: {cls:'alert-back',   badge:'badge-back',    label:'BACK',    icon:'\u25C4'},
+    swipe_navigation:{cls:'alert-swipe',  badge:'badge-swipe',   label:'SWIPE',   icon:'\uD83D\uDC46'},
+  };
+  db.collection("cheat_alerts").orderBy("ts","desc").limit(100).onSnapshot(snap => {
+    if (snap.empty) return;
+    let html='',count=0;
+    snap.forEach(doc => {
+      const d=doc.data();
+      if (activeStream&&d.stream&&d.stream!==activeStream) return;
+      const c=cfg[d.type]||{cls:'alert-tab',badge:'badge-tab',label:d.type,icon:'\u26A0'};
+      const t=d.ts?new Date(d.ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'--';
+      html+=`<div class="alert-row ${c.cls}">
+        <span class="alert-badge ${c.badge}">${c.icon} ${c.label}</span>
+        <span style="flex:1"><b>${studentsAll[d.roll]||d.roll}</b> <span style="color:var(--muted);font-size:12px">(${d.roll})</span>
+        ${d.detail?`<br><span style="color:var(--muted);font-size:12px">${d.detail}</span>`:''}
+        </span>
+        <span style="color:var(--muted);font-size:11px;white-space:nowrap">${t}</span>
+      </div>`;
+      count++;
+    });
+    document.getElementById('cheat-log').innerHTML = html ||
+      '<div style="color:var(--muted);font-size:13px;">No exit events logged yet.</div>';
+    if (!document.getElementById('tab-cheat').classList.contains('active')) {
+      cheatEventCount=count; updateCheatBadge();
+    }
   });
-  document.getElementById('cheat-log').innerHTML = html ||
-    '<div style="color:var(--muted);font-size:13px;">No exit events logged yet.</div>';
-
-  // Update badge if not on cheat tab
-  if (!document.getElementById('tab-cheat').classList.contains('active')) {
-    cheatEventCount = count;
-    updateCheatBadge();
-  }
-});
+}
 
 function clearCheatLog() {
-  if (!confirm('Clear all cheat alert logs from Firebase?')) return;
-  db.collection("cheat_alerts").get().then(snap => {
-    const batch = db.batch();
-    snap.forEach(doc => batch.delete(doc.ref));
-    return batch.commit();
+  if (!confirm('Clear all cheat logs from Firebase?')) return;
+  window._db.collection("cheat_alerts").get().then(snap => {
+    const b=window._db.batch();
+    snap.forEach(d=>b.delete(d.ref));
+    return b.commit();
   });
 }
 
 // ── CSV Export ────────────────────────────────────────────────
 function exportData() {
-  let csv = "Reg No,Name,Scenario,Score,Errors\n";
-  document.querySelectorAll("#skills-body tr").forEach(tr => {
-    const tds = tr.querySelectorAll("td");
-    if (tds.length > 0) {
-      const reg = tds[0].querySelector('b')?.innerText || '';
-      const name = tds[0].querySelector('small')?.innerText || '';
-      const scenario = tds[1].innerText.trim();
-      const score = tds[2].innerText.trim();
-      const errors = tds[3].innerText.trim().replace(/\n/g,' ');
-      csv += `"${reg}","${name}","${scenario}","${score}","${errors}"\n`;
+  let csv="Reg No,Name,Scenario,Score,Errors\n";
+  document.querySelectorAll("#skills-body tr").forEach(tr=>{
+    const tds=tr.querySelectorAll("td");
+    if(tds.length>0){
+      csv+=`"${tds[0].querySelector('b')?.innerText||''}","${tds[0].querySelector('small')?.innerText||''}","${tds[1].innerText.trim()}","${tds[2].innerText.trim()}","${tds[3].innerText.trim().replace(/\n/g,' ')}"\n`;
     }
   });
-  const blob = new Blob([csv], { type:'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `Skills_${activeStream || 'all'}_${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.csv`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='Skills_'+(activeStream||'all')+'_'+new Date().toLocaleDateString('en-IN').replace(/\//g,'-')+'.csv';
   a.click();
-}
-
-function unlockReg(reg) {
-  if (confirm(`Reset device binding for ${reg}?`)) {
-    db.collection("device_bindings").doc(reg).delete();
-  }
 }
 </script>
 </body>
