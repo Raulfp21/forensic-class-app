@@ -1,5 +1,5 @@
 // ============================================================
-//  topics.js  â€”  CONTENT ONLY FILE
+//  topics.js  &mdash;  CONTENT ONLY FILE
 //  Edit ONLY this file when adding new topics or scenarios.
 //  Do NOT add any Firebase, UI, or logic code here.
 //  This file is NEVER replaced by infrastructure updates.
@@ -7,14 +7,14 @@
 
 const forensicContent = {
 
-  // â”€â”€ RELAY ROWS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // -- RELAY ROWS ---------------------------------------------
   // HOW TO ADD A NEW ROW:
   // 1. Add a new key inside relay: { }
   // 2. Each key is an array of step objects (any number of steps)
   // 3. Each step: { step: number, title: "...", text: "..." }
   // 4. Text can contain basic HTML like <b>, <br>, <ul>, <li>
   // That's it. Teacher panel picks it up automatically.
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ----------------------------------------------------------
 
   relay: {
 
@@ -22,7 +22,7 @@ const forensicContent = {
       {
         step: 1,
         title: "Who Receives the Requisition?",
-        text: "In Govt Medical Colleges, the <b>Professor of Forensic Medicine / Police Surgeon</b> receives PM requests. In their absence: Associate Professor â†’ Assistant Professor. In other hospitals, the <b>CMO / RMO</b> obliges. No Medical Officer can refuse an autopsy citing personal interest."
+        text: "In Govt Medical Colleges, the <b>Professor of Forensic Medicine / Police Surgeon</b> receives PM requests. In their absence: Associate Professor &rarr; Assistant Professor. In other hospitals, the <b>CMO / RMO</b> obliges. No Medical Officer can refuse an autopsy citing personal interest."
       },
       {
         step: 2,
@@ -32,12 +32,12 @@ const forensicContent = {
       {
         step: 3,
         title: "Who Can Give the Requisition Letter?",
-        text: "<b>Routine cases:</b> Police officer â‰¥ Sub-Inspector (Police Station) or â‰¥ Senior Head Constable (Out Post).<br><b>Magistrate inquest required for:</b> Custodial deaths, rape in custody, disappearance in custody, dowry-allegation deaths, and exhumation cases."
+        text: "<b>Routine cases:</b> Police officer &ge; Sub-Inspector (Police Station) or &ge; Senior Head Constable (Out Post).<br><b>Magistrate inquest required for:</b> Custodial deaths, rape in custody, disappearance in custody, dowry-allegation deaths, and exhumation cases."
       },
       {
         step: 4,
         title: "Documents to Collect",
-        text: "Collect and attach (numbered) to PM Booklet (Medl. I-28):<br>â€¢ Requisition for PM examination<br>â€¢ Case history<br>â€¢ Form 86 / details of dead body<br>â€¢ SOC sketch & FIR copy<br>â€¢ A.R. copies & Death Intimation copy<br>â€¢ Treatment particulars (if treated elsewhere)"
+        text: "Collect and attach (numbered) to PM Booklet (Medl. I-28):<br>&bull; Requisition for PM examination<br>&bull; Case history<br>&bull; Form 86 / details of dead body<br>&bull; SOC sketch & FIR copy<br>&bull; A.R. copies & Death Intimation copy<br>&bull; Treatment particulars (if treated elsewhere)"
       }
     ],
 
@@ -45,12 +45,12 @@ const forensicContent = {
       {
         step: 1,
         title: "Who Is Authorised Inside?",
-        text: "Only these persons are authorised during autopsy:<br>â€¢ Conducting Medical Officer(s)<br>â€¢ Required departmental technicians<br>â€¢ Mortuary attendants<br>â€¢ Body in-charge constable<br><br><b>NOT allowed</b> without explicit Govt/Court order + IO's NOC: other MOs, lawyers, common public."
+        text: "Only these persons are authorised during autopsy:<br>&bull; Conducting Medical Officer(s)<br>&bull; Required departmental technicians<br>&bull; Mortuary attendants<br>&bull; Body in-charge constable<br><br><b>NOT allowed</b> without explicit Govt/Court order + IO's NOC: other MOs, lawyers, common public."
       },
       {
         step: 2,
         title: "Documentation During Autopsy",
-        text: "All findings â€” positive AND negative â€” entered <b>during</b> the autopsy in <b>Medl. I-28 booklet (16 pages)</b>. One booklet per case only. MO decides dissection technique at the start. Department sealed with <b>wax impression</b> daily."
+        text: "All findings &mdash; positive AND negative &mdash; entered <b>during</b> the autopsy in <b>Medl. I-28 booklet (16 pages)</b>. One booklet per case only. MO decides dissection technique at the start. Department sealed with <b>wax impression</b> daily."
       },
       {
         step: 3,
@@ -59,8 +59,8 @@ const forensicContent = {
       },
       {
         step: 4,
-        title: "After Autopsy â€” Handover",
-        text: "Body packed neatly in khada cloth and plastic sheet. Jewellery & belongings handed to in-charge constable with <b>signed receipt on the same day</b>. PM certificate (Medl. I-29): <b>Original â†’ Magistrate (sealed); Duplicate â†’ IO; Triplicate â†’ Department.</b>"
+        title: "After Autopsy &mdash; Handover",
+        text: "Body packed neatly in khada cloth and plastic sheet. Jewellery & belongings handed to in-charge constable with <b>signed receipt on the same day</b>. PM certificate (Medl. I-29): <b>Original &rarr; Magistrate (sealed); Duplicate &rarr; IO; Triplicate &rarr; Department.</b>"
       }
     ],
 
@@ -68,12 +68,12 @@ const forensicContent = {
       {
         step: 1,
         title: "Custodial / Police Action Deaths",
-        text: "Team of <b>â‰¥ 2 doctors with MD Forensic Medicine</b> mandatory. Family must view body (front + back) before autopsy. <b>Whole-body X-ray / CT scan before dissection.</b> Body preserved <b>48 hours</b> if family declares intent to approach High Court."
+        text: "Team of <b>&ge; 2 doctors with MD Forensic Medicine</b> mandatory. Family must view body (front + back) before autopsy. <b>Whole-body X-ray / CT scan before dissection.</b> Body preserved <b>48 hours</b> if family declares intent to approach High Court."
       },
       {
         step: 2,
-        title: "Photography & Videography â€” Custodial",
-        text: "<b>20â€“25 coloured photographs</b>: face (3 views), torso front/back, upper/lower extremities, each numbered injury. Entire autopsy videographed in <b>6 phases</b>: bearings â†’ external â†’ injuries â†’ cavity â†’ head â†’ trunk. MO narrates aloud; date/time superimposed."
+        title: "Photography & Videography &mdash; Custodial",
+        text: "<b>20&ndash;25 coloured photographs</b>: face (3 views), torso front/back, upper/lower extremities, each numbered injury. Entire autopsy videographed in <b>6 phases</b>: bearings &rarr; external &rarr; injuries &rarr; cavity &rarr; head &rarr; trunk. MO narrates aloud; date/time superimposed."
       },
       {
         step: 3,
@@ -101,7 +101,7 @@ const forensicContent = {
       {
         step: 3,
         title: "Real-Time Recording",
-        text: "Dictate and enter findings into <b>Medl. I-28 booklet during the autopsy</b>. Never rely on memory. Note all positive AND negative findings. Dissection technique decided at the start â€” no unscientific method."
+        text: "Dictate and enter findings into <b>Medl. I-28 booklet during the autopsy</b>. Never rely on memory. Note all positive AND negative findings. Dissection technique decided at the start &mdash; no unscientific method."
       },
       {
         step: 4,
@@ -124,7 +124,7 @@ const forensicContent = {
       {
         step: 3,
         title: "Continuous Videography",
-        text: "Unedited video across all 6 phases. Capture all external injuries before dissection. MO narrates observations aloud. Sealed video chip dispatched to Magistrate â†’ NHRC same day."
+        text: "Unedited video across all 6 phases. Capture all external injuries before dissection. MO narrates observations aloud. Sealed video chip dispatched to Magistrate &rarr; NHRC same day."
       },
       {
         step: 4,
@@ -175,125 +175,125 @@ const forensicContent = {
       {
         step: 4,
         title: "Decomposition & Documentation",
-        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> â€” do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
+        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> &mdash; do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
       }
     ],
 
-    // â”€â”€ METHYL ALCOHOL POISONING â€” COMPLETE TOPIC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // -- METHYL ALCOHOL POISONING &mdash; COMPLETE TOPIC ------------
     // 8 steps covering the entire textbook topic.
     // Steps 1-3: Basics, mechanism, symptoms (text-based)
     // Steps 4-5: Diagnosis and treatment (text-based)
     // Steps 6-7: Embedded diagrams from your HTML files
     // Step 8:    Medico-legal aspects + viscera preservation
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ----------------------------------------------------------
 
     "Toxicology: Methyl Alcohol Poisoning": [
       {
         step: 1,
         title: "Properties, Sources & Fatal Dose",
-        text: `<b>Methyl alcohol (Methanol, CHâ‚ƒOH) â€” wood spirit</b><br><br>
-<b>Properties:</b> Colourless, volatile liquid. Smell and taste similar to ethyl alcohol. Cannot be distinguished by taste alone â€” forensically critical. Burns with a colourless flame.<br><br>
+        text: `<b>Methyl alcohol (Methanol, CH<sub>3</sub>OH) &mdash; wood spirit</b><br><br>
+<b>Properties:</b> Colourless, volatile liquid. Smell and taste similar to ethyl alcohol. Cannot be distinguished by taste alone &mdash; forensically critical. Burns with a colourless flame.<br><br>
 <b>Sources of poisoning:</b><br>
-â€¢ Adulterated illicit liquor (hooch â€” most common in India)<br>
-â€¢ Surgical spirit, antifreeze, industrial solvents, paint removers<br>
-â€¢ Accidental ingestion or deliberate substitution<br><br>
-<b>Fatal dose:</b> <b>30 mL (1 oz)</b> â€” but highly variable. As little as <b>10 mL</b> can cause permanent blindness. As little as <b>15 mL</b> has caused death. Susceptibility varies with nutritional status and co-ingestion of ethanol.<br><br>
-<b>Why ethanol co-ingestion matters:</b> Ethanol competes with methanol for the same enzyme (ADH), slowing conversion to toxic metabolites. This is why hooch victims who also drank ethanol sometimes survive or present late â€” the <b>latent period is prolonged</b>.`
+&bull; Adulterated illicit liquor (hooch &mdash; most common in India)<br>
+&bull; Surgical spirit, antifreeze, industrial solvents, paint removers<br>
+&bull; Accidental ingestion or deliberate substitution<br><br>
+<b>Fatal dose:</b> <b>30 mL (1 oz)</b> &mdash; but highly variable. As little as <b>10 mL</b> can cause permanent blindness. As little as <b>15 mL</b> has caused death. Susceptibility varies with nutritional status and co-ingestion of ethanol.<br><br>
+<b>Why ethanol co-ingestion matters:</b> Ethanol competes with methanol for the same enzyme (ADH), slowing conversion to toxic metabolites. This is why hooch victims who also drank ethanol sometimes survive or present late &mdash; the <b>latent period is prolonged</b>.`
       },
       {
         step: 2,
-        title: "The Toxic Cascade â€” Mechanism",
+        title: "The Toxic Cascade &mdash; Mechanism",
         text: `<b>Methanol itself is NOT the toxin. Its metabolites are.</b><br><br>
 <b>Step-by-step breakdown:</b><br><br>
-<b>Methanol</b> â†’<i>(Alcohol dehydrogenase â€” ADH)</i>â†’ <b>Formaldehyde</b> â†’<i>(Aldehyde dehydrogenase)</i>â†’ <b>Formic acid / Formate</b><br><br>
-<b>Formaldehyde</b> â€” extremely toxic to retinal cells but is so rapidly converted to formate that it has minimal systemic duration.<br><br>
+<b>Methanol</b> &rarr;<i>(Alcohol dehydrogenase &mdash; ADH)</i>&rarr; <b>Formaldehyde</b> &rarr;<i>(Aldehyde dehydrogenase)</i>&rarr; <b>Formic acid / Formate</b><br><br>
+<b>Formaldehyde</b> &mdash; extremely toxic to retinal cells but is so rapidly converted to formate that it has minimal systemic duration.<br><br>
 <b>Formic acid (formate) = the key toxin:</b><br>
-â€¢ Inhibits <b>Cytochrome c oxidase (Complex IV)</b> of the mitochondrial electron transport chain<br>
-â€¢ Halts ATP production in all cells<br>
-â€¢ The cells most dependent on oxidative metabolism â€” <b>retinal ganglion cells</b> and <b>putamen</b> â€” are the first and most severely damaged<br><br>
+&bull; Inhibits <b>Cytochrome c oxidase (Complex IV)</b> of the mitochondrial electron transport chain<br>
+&bull; Halts ATP production in all cells<br>
+&bull; The cells most dependent on oxidative metabolism &mdash; <b>retinal ganglion cells</b> and <b>putamen</b> &mdash; are the first and most severely damaged<br><br>
 <b>Result:</b> High anion gap metabolic acidosis + selective injury to optic nerve and basal ganglia<br><br>
-<b>Memory hook:</b> Methanol â†’ ADH â†’ Formaldehyde â†’ Formate â†’ <b>Formate blocks Complex IV â†’ Cell can't breathe â†’ Retina and putamen go dark first</b>`
+<b>Memory hook:</b> Methanol &rarr; ADH &rarr; Formaldehyde &rarr; Formate &rarr; <b>Formate blocks Complex IV &rarr; Cell can't breathe &rarr; Retina and putamen go dark first</b>`
       },
       {
         step: 3,
         title: "The Latent Period & Clinical Features",
-        text: `<b>The latent period â€” most important clinical feature of methanol poisoning</b><br><br>
-<b>Duration: 12â€“24 hours</b> (range 6â€“36 hrs). During this time the patient appears drunk but is relatively well â€” methanol is being metabolised slowly but formate is not yet at toxic levels.<br><br>
+        text: `<b>The latent period &mdash; most important clinical feature of methanol poisoning</b><br><br>
+<b>Duration: 12&ndash;24 hours</b> (range 6&ndash;36 hrs). During this time the patient appears drunk but is relatively well &mdash; methanol is being metabolised slowly but formate is not yet at toxic levels.<br><br>
 <b>Prolonged by:</b> Co-ingestion of ethanol (ADH competition), folate deficiency (slows formate clearance), refrigeration (slows metabolism).<br><br>
 <b>Clinical features in sequence:</b><br><br>
-<b>Early (0â€“12 h) â€” methanol phase:</b><br>
-â€¢ Inebriation similar to ethyl alcohol â€” but <b>less euphoria, more confusion</b><br>
-â€¢ Nausea, vomiting, headache, vertigo<br>
-â€¢ Visual symptoms may begin: blurring, "snowfield" vision<br><br>
-<b>Late (12â€“48 h) â€” formate phase:</b><br>
-â€¢ <b>Visual disturbances</b>: blurring â†’ "snowfield" vision â†’ complete blindness<br>
-â€¢ Pupils: dilated, sluggish or fixed (direct retinal/optic nerve toxicity)<br>
-â€¢ <b>Kussmaul breathing</b> (deep rapid breathing â€” compensating for metabolic acidosis)<br>
-â€¢ Abdominal pain, vomiting<br>
-â€¢ Bradycardia, hypotension<br>
-â€¢ Convulsions, extrapyramidal signs (rigidity, bradykinesia)<br>
-â€¢ Coma â†’ <b>respiratory failure â†’ death</b><br><br>
+<b>Early (0&ndash;12 h) &mdash; methanol phase:</b><br>
+&bull; Inebriation similar to ethyl alcohol &mdash; but <b>less euphoria, more confusion</b><br>
+&bull; Nausea, vomiting, headache, vertigo<br>
+&bull; Visual symptoms may begin: blurring, "snowfield" vision<br><br>
+<b>Late (12&ndash;48 h) &mdash; formate phase:</b><br>
+&bull; <b>Visual disturbances</b>: blurring &rarr; "snowfield" vision &rarr; complete blindness<br>
+&bull; Pupils: dilated, sluggish or fixed (direct retinal/optic nerve toxicity)<br>
+&bull; <b>Kussmaul breathing</b> (deep rapid breathing &mdash; compensating for metabolic acidosis)<br>
+&bull; Abdominal pain, vomiting<br>
+&bull; Bradycardia, hypotension<br>
+&bull; Convulsions, extrapyramidal signs (rigidity, bradykinesia)<br>
+&bull; Coma &rarr; <b>respiratory failure &rarr; death</b><br><br>
 <b>Classic triad for exams:</b> Intoxication + Visual disturbance + Metabolic acidosis = Methanol poisoning until proved otherwise.`
       },
       {
         step: 4,
-        title: "Diagnosis â€” Gaps and Levels",
+        title: "Diagnosis &mdash; Gaps and Levels",
         text: `<b>Two key gaps to calculate in suspected methanol poisoning:</b><br><br>
-<b>1. Osmolal gap (early â€” before metabolism):</b><br>
-Measured osmolality âˆ’ Calculated osmolality<br>
-Calculated = 2Ã—Na + Glucose/18 + BUN/2.8<br>
-<b>Normal gap: &lt;10 mOsm/kg</b>. In methanol poisoning, methanol itself contributes to osmolality â€” gap is elevated early before metabolism is complete.<br><br>
-<b>2. Anion gap (late â€” after metabolism):</b><br>
-Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol poisoning, formic acid is an unmeasured anion â€” gap rises as formate accumulates.<br>
+<b>1. Osmolal gap (early &mdash; before metabolism):</b><br>
+Measured osmolality &#8722; Calculated osmolality<br>
+Calculated = 2&times;Na + Glucose/18 + BUN/2.8<br>
+<b>Normal gap: &lt;10 mOsm/kg</b>. In methanol poisoning, methanol itself contributes to osmolality &mdash; gap is elevated early before metabolism is complete.<br><br>
+<b>2. Anion gap (late &mdash; after metabolism):</b><br>
+Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol poisoning, formic acid is an unmeasured anion &mdash; gap rises as formate accumulates.<br>
 <b>AG &gt;20 with pH &lt;7.3 = severe poisoning</b><br><br>
 <b>Key insight:</b> Early cases show high osmolal gap with normal anion gap (methanol not yet metabolised). Late cases show high anion gap with normalised osmolal gap (methanol fully converted to formate). This gap crossover is diagnostically useful.<br><br>
 <b>Direct measurements:</b><br>
-â€¢ Serum methanol level: <b>&gt;25 mg% = haemodialysis indicated</b>; &gt;50 mg% = severe<br>
-â€¢ Serum formic acid level â€” correlates with degree of putaminal and retinal injury<br>
-â€¢ ABG: metabolic acidosis (â†“pH, â†“HCOâ‚ƒ, â†“PaCOâ‚‚ as compensation)<br>
-â€¢ Blood glucose, electrolytes, renal function<br><br>
-<b>Ophthalmology:</b> Fundoscopy â€” retinal oedema, disc hyperaemia, later optic atrophy<br>
-<b>CT brain:</b> Bilateral symmetrical hypodensity in putamen (24â€“48 h), haemorrhagic transformation in severe cases`
+&bull; Serum methanol level: <b>&gt;25 mg% = haemodialysis indicated</b>; &gt;50 mg% = severe<br>
+&bull; Serum formic acid level &mdash; correlates with degree of putaminal and retinal injury<br>
+&bull; ABG: metabolic acidosis (&#8595;pH, &#8595;HCO<sub>3</sub>, &#8595;PaCO<sub>2</sub> as compensation)<br>
+&bull; Blood glucose, electrolytes, renal function<br><br>
+<b>Ophthalmology:</b> Fundoscopy &mdash; retinal oedema, disc hyperaemia, later optic atrophy<br>
+<b>CT brain:</b> Bilateral symmetrical hypodensity in putamen (24&ndash;48 h), haemorrhagic transformation in severe cases`
       },
       {
         step: 5,
-        title: "Treatment â€” Complete with Doses",
-        text: `<b>Treatment must be started IMMEDIATELY â€” even before methanol levels return.</b><br><br>
+        title: "Treatment &mdash; Complete with Doses",
+        text: `<b>Treatment must be started IMMEDIATELY &mdash; even before methanol levels return.</b><br><br>
 <b>1. Secure ABC + IV access</b><br><br>
 <b>2. Gastric lavage</b><br>
-â€¢ Only if &lt;1â€“2 hours since ingestion<br>
-â€¢ Use <b>sodium bicarbonate solution</b> for lavage<br>
-â€¢ Activated charcoal does NOT bind methanol â€” not useful<br><br>
-<b>3. Antidotes â€” BLOCK ADH (most critical step)</b><br>
-â€¢ <b>Fomepizole (4-methylpyrazole)</b> â€” preferred antidote<br>
+&bull; Only if &lt;1&ndash;2 hours since ingestion<br>
+&bull; Use <b>sodium bicarbonate solution</b> for lavage<br>
+&bull; Activated charcoal does NOT bind methanol &mdash; not useful<br><br>
+<b>3. Antidotes &mdash; BLOCK ADH (most critical step)</b><br>
+&bull; <b>Fomepizole (4-methylpyrazole)</b> &mdash; preferred antidote<br>
   &nbsp;&nbsp;Loading dose: <b>15 mg/kg IV</b> over 30 min<br>
-  &nbsp;&nbsp;Maintenance: 10 mg/kg IV every 12 hrs Ã— 4 doses, then 15 mg/kg every 12 hrs<br>
+  &nbsp;&nbsp;Maintenance: 10 mg/kg IV every 12 hrs &times; 4 doses, then 15 mg/kg every 12 hrs<br>
   &nbsp;&nbsp;Advantages: no CNS depression, precise dosing, no monitoring needed<br>
-â€¢ <b>Ethanol</b> â€” if fomepizole unavailable<br>
+&bull; <b>Ethanol</b> &mdash; if fomepizole unavailable<br>
   &nbsp;&nbsp;Loading: <b>0.6 g/kg IV</b> (10% ethanol in D5W) or orally (whisky/vodka 1 mL/kg)<br>
-  &nbsp;&nbsp;Maintain blood ethanol at <b>100â€“150 mg/dL</b> â€” competes with methanol for ADH<br>
+  &nbsp;&nbsp;Maintain blood ethanol at <b>100&ndash;150 mg/dL</b> &mdash; competes with methanol for ADH<br>
   &nbsp;&nbsp;Disadvantages: CNS/respiratory depression, frequent monitoring, hypoglycaemia<br><br>
-<b>4. Folinic acid (leucovorin)</b> â€” clears formate<br>
-â€¢ <b>1â€“2 mg/kg IV every 6 hours</b><br>
-â€¢ Cofactor for formate â†’ COâ‚‚ + Hâ‚‚O conversion<br>
-â€¢ Continue until methanol undetectable<br><br>
-<b>5. Sodium bicarbonate</b> â€” correct acidosis<br>
-â€¢ <b>500â€“800 mL of 7.5% NaHCOâ‚ƒ IV slowly</b><br>
-â€¢ Target pH &gt;7.35<br>
-â€¢ Also reduces formate toxicity (ionised formate crosses blood-brain barrier less)<br><br>
-<b>6. Haemodialysis â€” Indications:</b><br>
-â€¢ Methanol level <b>&gt;25â€“50 mg%</b><br>
-â€¢ Metabolic acidosis refractory to treatment (pH &lt;7.3)<br>
-â€¢ Visual impairment or any neurological symptoms<br>
-â€¢ Renal failure<br>
-â€¢ Ingestion of large amount even without symptoms<br>
-â€¢ Removes: methanol + formaldehyde + formate simultaneously<br>
-â€¢ Continue until methanol undetectable and pH normalised<br><br>
+<b>4. Folinic acid (leucovorin)</b> &mdash; clears formate<br>
+&bull; <b>1&ndash;2 mg/kg IV every 6 hours</b><br>
+&bull; Cofactor for formate &rarr; CO<sub>2</sub> + H<sub>2</sub>O conversion<br>
+&bull; Continue until methanol undetectable<br><br>
+<b>5. Sodium bicarbonate</b> &mdash; correct acidosis<br>
+&bull; <b>500&ndash;800 mL of 7.5% NaHCO<sub>3</sub> IV slowly</b><br>
+&bull; Target pH &gt;7.35<br>
+&bull; Also reduces formate toxicity (ionised formate crosses blood-brain barrier less)<br><br>
+<b>6. Haemodialysis &mdash; Indications:</b><br>
+&bull; Methanol level <b>&gt;25&ndash;50 mg%</b><br>
+&bull; Metabolic acidosis refractory to treatment (pH &lt;7.3)<br>
+&bull; Visual impairment or any neurological symptoms<br>
+&bull; Renal failure<br>
+&bull; Ingestion of large amount even without symptoms<br>
+&bull; Removes: methanol + formaldehyde + formate simultaneously<br>
+&bull; Continue until methanol undetectable and pH normalised<br><br>
 <b>7. Supportive ICU care:</b><br>
-â€¢ Diazepam / lorazepam for convulsions<br>
-â€¢ Vasopressors for hypotension<br>
-â€¢ Mechanical ventilation if respiratory failure<br>
-â€¢ Monitor glucose (ethanol therapy causes hypoglycaemia)`
+&bull; Diazepam / lorazepam for convulsions<br>
+&bull; Vasopressors for hypotension<br>
+&bull; Mechanical ventilation if respiratory failure<br>
+&bull; Monitor glucose (ethanol therapy causes hypoglycaemia)`
       },
       {
         step: 6,
@@ -319,36 +319,36 @@ Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol pois
 <!-- Step 1 Ingestion -->
 <rect x="75" y="30" width="200" height="48" rx="7" fill="#FEF3DC" stroke="#EF9F27" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#854F0B" x="175" y="50" text-anchor="middle">Methanol ingested</text>
-<text font-size="11" fill="#854F0B" x="175" y="67" text-anchor="middle">Absorbed 30â€“60 min Â· 30 mL fatal</text>
+<text font-size="11" fill="#854F0B" x="175" y="67" text-anchor="middle">Absorbed 30&ndash;60 min &middot; 30 mL fatal</text>
 <path d="M277 54 L338 54" fill="none" stroke="#378ADD" stroke-width="1.5" marker-end="url(#barr)"/>
 <rect x="340" y="30" width="200" height="48" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#185FA5" x="440" y="50" text-anchor="middle">Gastric lavage</text>
-<text font-size="11" fill="#185FA5" x="440" y="67" text-anchor="middle">NaHCOâ‚ƒ solution â€” within 1â€“2 h</text>
-<!-- Arrow 1â†’2 -->
+<text font-size="11" fill="#185FA5" x="440" y="67" text-anchor="middle">NaHCO<sub>3</sub> solution &mdash; within 1&ndash;2 h</text>
+<!-- Arrow 1&rarr;2 -->
 <line x1="175" y1="80" x2="175" y2="118" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
 <text font-size="10" fill="#888" x="184" y="104">ADH enzyme</text>
 <!-- Step 2 Formaldehyde -->
 <rect x="75" y="120" width="200" height="48" rx="7" fill="#FEF3DC" stroke="#EF9F27" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#854F0B" x="175" y="140" text-anchor="middle">Formaldehyde</text>
-<text font-size="11" fill="#854F0B" x="175" y="157" text-anchor="middle">Rapidly converted â†’ formate</text>
+<text font-size="11" fill="#854F0B" x="175" y="157" text-anchor="middle">Rapidly converted &rarr; formate</text>
 <path d="M277 144 L338 144" fill="none" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#tarr)"/>
 <rect x="340" y="110" width="200" height="66" rx="7" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
 <text font-size="13" font-weight="600" fill="#0F6E56" x="440" y="132" text-anchor="middle">Fomepizole / Ethanol</text>
-<text font-size="11" fill="#0F6E56" x="440" y="149" text-anchor="middle">Block ADH â€” stop cascade here</text>
+<text font-size="11" fill="#0F6E56" x="440" y="149" text-anchor="middle">Block ADH &mdash; stop cascade here</text>
 <text font-size="11" fill="#0F6E56" x="440" y="166" text-anchor="middle">Start ASAP, even before lab results</text>
-<!-- Arrow 2â†’3 -->
+<!-- Arrow 2&rarr;3 -->
 <line x1="175" y1="170" x2="175" y2="208" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
 <text font-size="10" fill="#888" x="184" y="194">Aldehyde DH</text>
 <!-- Step 3 Formic acid -->
 <rect x="75" y="210" width="200" height="64" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1.5"/>
-<text font-size="13" font-weight="600" fill="#791F1F" x="175" y="232" text-anchor="middle">Formic acid  âš  KEY TOXIN</text>
+<text font-size="13" font-weight="600" fill="#791F1F" x="175" y="232" text-anchor="middle">Formic acid  &#9888; KEY TOXIN</text>
 <text font-size="11" fill="#791F1F" x="175" y="249" text-anchor="middle">Blocks Complex IV (cytochrome c</text>
-<text font-size="11" fill="#791F1F" x="175" y="264" text-anchor="middle">oxidase) â†’ ATP failure</text>
+<text font-size="11" fill="#791F1F" x="175" y="264" text-anchor="middle">oxidase) &rarr; ATP failure</text>
 <path d="M277 242 L338 242" fill="none" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#tarr)"/>
 <rect x="340" y="220" width="200" height="66" rx="7" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#0F6E56" x="440" y="242" text-anchor="middle">Folinic acid (leucovorin)</text>
-<text font-size="11" fill="#0F6E56" x="440" y="259" text-anchor="middle">1â€“2 mg/kg IV every 6 hrs</text>
-<text font-size="11" fill="#0F6E56" x="440" y="276" text-anchor="middle">Converts formate â†’ COâ‚‚ + Hâ‚‚O</text>
+<text font-size="11" fill="#0F6E56" x="440" y="259" text-anchor="middle">1&ndash;2 mg/kg IV every 6 hrs</text>
+<text font-size="11" fill="#0F6E56" x="440" y="276" text-anchor="middle">Converts formate &rarr; CO<sub>2</sub> + H<sub>2</sub>O</text>
 <!-- Arrow to acidosis -->
 <line x1="175" y1="276" x2="120" y2="318" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#rarr)"/>
 <!-- Arrow to optic/putamen -->
@@ -356,35 +356,35 @@ Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol pois
 <!-- Step 4A Metabolic acidosis -->
 <rect x="30" y="320" width="170" height="52" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
 <text font-size="12" font-weight="600" fill="#791F1F" x="115" y="342" text-anchor="middle">Metabolic acidosis</text>
-<text font-size="11" fill="#791F1F" x="115" y="360" text-anchor="middle">pH &lt;7.0 Â· AG &gt;20</text>
+<text font-size="11" fill="#791F1F" x="115" y="360" text-anchor="middle">pH &lt;7.0 &middot; AG &gt;20</text>
 <path d="M202 346 L280 390 L338 390" fill="none" stroke="#378ADD" stroke-width="1.5" marker-end="url(#barr)"/>
 <rect x="340" y="366" width="200" height="52" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
-<text font-size="13" font-weight="600" fill="#185FA5" x="440" y="388" text-anchor="middle">NaHCOâ‚ƒ IV</text>
-<text font-size="11" fill="#185FA5" x="440" y="405" text-anchor="middle">500â€“800 mL of 7.5% â€” slow infusion</text>
+<text font-size="13" font-weight="600" fill="#185FA5" x="440" y="388" text-anchor="middle">NaHCO<sub>3</sub> IV</text>
+<text font-size="11" fill="#185FA5" x="440" y="405" text-anchor="middle">500&ndash;800 mL of 7.5% &mdash; slow infusion</text>
 <!-- Step 4B Optic+Putamen -->
 <rect x="204" y="320" width="160" height="52" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
 <text font-size="12" font-weight="600" fill="#791F1F" x="284" y="340" text-anchor="middle">Optic + Putamen</text>
-<text font-size="11" fill="#791F1F" x="284" y="358" text-anchor="middle">Necrosis Â· CT bilateral hypodensity</text>
+<text font-size="11" fill="#791F1F" x="284" y="358" text-anchor="middle">Necrosis &middot; CT bilateral hypodensity</text>
 <!-- HD box -->
 <path d="M277 252 L308 252 L308 448 L338 448" fill="none" stroke="#7F77DD" stroke-width="1.5" marker-end="url(#parr)"/>
 <rect x="340" y="432" width="200" height="80" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.5"/>
 <text font-size="13" font-weight="600" fill="#534AB7" x="440" y="456" text-anchor="middle">Haemodialysis</text>
 <text font-size="11" fill="#534AB7" x="440" y="473" text-anchor="middle">Removes methanol + formate</text>
 <text font-size="11" fill="#534AB7" x="440" y="490" text-anchor="middle">+ formaldehyde simultaneously</text>
-<text font-size="11" fill="#534AB7" x="440" y="507" text-anchor="middle">Indicated if level &gt;25â€“50 mg%</text>
+<text font-size="11" fill="#534AB7" x="440" y="507" text-anchor="middle">Indicated if level &gt;25&ndash;50 mg%</text>
 <!-- Arrow to convulsions -->
 <line x1="175" y1="374" x2="175" y2="536" stroke="#791F1F" stroke-width="1.5" marker-end="url(#rarr)"/>
 <!-- Step 5 Convulsions/coma -->
 <rect x="60" y="538" width="230" height="66" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#791F1F" x="175" y="560" text-anchor="middle">Convulsions / coma</text>
-<text font-size="11" fill="#791F1F" x="175" y="577" text-anchor="middle">Putaminal necrosis Â· raised ICP</text>
-<text font-size="11" fill="#791F1F" x="175" y="593" text-anchor="middle">Bradycardia Â· hypotension</text>
+<text font-size="11" fill="#791F1F" x="175" y="577" text-anchor="middle">Putaminal necrosis &middot; raised ICP</text>
+<text font-size="11" fill="#791F1F" x="175" y="593" text-anchor="middle">Bradycardia &middot; hypotension</text>
 <path d="M292 560 L338 560" fill="none" stroke="#378ADD" stroke-width="1.5" marker-end="url(#barr)"/>
 <rect x="340" y="526" width="200" height="80" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#185FA5" x="440" y="548" text-anchor="middle">ICU Supportive care</text>
 <text font-size="11" fill="#185FA5" x="440" y="565" text-anchor="middle">Diazepam / lorazepam</text>
 <text font-size="11" fill="#185FA5" x="440" y="581" text-anchor="middle">for convulsions</text>
-<text font-size="11" fill="#185FA5" x="440" y="597" text-anchor="middle">Vasopressors Â· correct hypoglycaemia</text>
+<text font-size="11" fill="#185FA5" x="440" y="597" text-anchor="middle">Vasopressors &middot; correct hypoglycaemia</text>
 <!-- Arrow to resp failure -->
 <line x1="175" y1="606" x2="175" y2="654" stroke="#791F1F" stroke-width="2" marker-end="url(#rarr)"/>
 <!-- Step 6 Respiratory failure -->
@@ -394,7 +394,7 @@ Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol pois
 <path d="M292 682 L338 682" fill="none" stroke="#378ADD" stroke-width="1.5" marker-end="url(#barr)"/>
 <rect x="340" y="656" width="200" height="52" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#185FA5" x="440" y="678" text-anchor="middle">Mechanical ventilation</text>
-<text font-size="11" fill="#185FA5" x="440" y="695" text-anchor="middle">Intubate early Â· ICU admission</text>
+<text font-size="11" fill="#185FA5" x="440" y="695" text-anchor="middle">Intubate early &middot; ICU admission</text>
 <!-- Timing rail -->
 <line x1="22" y1="30" x2="22" y2="720" stroke="#ccc" stroke-width="0.5" stroke-dasharray="3 3"/>
 <text font-size="10" fill="#888" x="16" y="58" text-anchor="middle">0h</text>
@@ -441,61 +441,61 @@ Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol pois
 </style>
 <div class="bg-wrap">
 <div class="bg-step-nav">
-  <button class="bg-sn bg-active" onclick="bgShow(0)">1 Â· Why putamen?</button>
-  <button class="bg-sn" onclick="bgShow(1)">2 Â· Injury mechanism</button>
-  <button class="bg-sn" onclick="bgShow(2)">3 Â· Clinical findings</button>
-  <button class="bg-sn" onclick="bgShow(3)">4 Â· Imaging</button>
-  <button class="bg-sn" onclick="bgShow(4)">5 Â· Differentials</button>
+  <button class="bg-sn bg-active" onclick="bgShow(0)">1 &middot; Why putamen?</button>
+  <button class="bg-sn" onclick="bgShow(1)">2 &middot; Injury mechanism</button>
+  <button class="bg-sn" onclick="bgShow(2)">3 &middot; Clinical findings</button>
+  <button class="bg-sn" onclick="bgShow(3)">4 &middot; Imaging</button>
+  <button class="bg-sn" onclick="bgShow(4)">5 &middot; Differentials</button>
 </div>
 
 <div class="bg-panel bg-show" id="bgp0">
   <div class="bg-why">
     <div class="bg-why-title">The putamen is the most metabolically active region in the brain</div>
-    <div class="bg-why-text">The putamen (part of basal ganglia / striatum) has one of the highest rates of oxidative metabolism in the CNS. This makes it exceptionally dependent on mitochondrial function â€” and therefore exceptionally vulnerable to anything that blocks energy production.</div>
+    <div class="bg-why-text">The putamen (part of basal ganglia / striatum) has one of the highest rates of oxidative metabolism in the CNS. This makes it exceptionally dependent on mitochondrial function &mdash; and therefore exceptionally vulnerable to anything that blocks energy production.</div>
   </div>
   <div class="bg-chain">
-    <span class="bg-ch bg-amber">Methanol</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-amber">Formaldehyde</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-red">Formic acid</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-red">Complex IV inhibited</span><span class="bg-arr">â†’</span>
+    <span class="bg-ch bg-amber">Methanol</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-amber">Formaldehyde</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-red">Formic acid</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-red">Complex IV inhibited</span><span class="bg-arr">&rarr;</span>
     <span class="bg-ch bg-purple">Mitochondrial failure</span>
   </div>
   <div class="bg-grid">
-    <div class="bg-card"><div class="bg-fc-mech">The culprit</div><div class="bg-fc-text">Formic acid inhibits cytochrome c oxidase (Complex IV) â€” the final enzyme in the mitochondrial electron transport chain</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">The culprit</div><div class="bg-fc-text">Formic acid inhibits cytochrome c oxidase (Complex IV) &mdash; the final enzyme in the mitochondrial electron transport chain</div></div>
     <div class="bg-card"><div class="bg-fc-mech">Why basal ganglia?</div><div class="bg-fc-text">High metabolic demand + poor collateral blood supply + end-arterial territory = greatest sensitivity to energy failure</div></div>
-    <div class="bg-card"><div class="bg-fc-mech">Why putamen specifically?</div><div class="bg-fc-text">Within basal ganglia, the putamen has the highest dopaminergic activity and densest mitochondrial load â€” it is the "first to fall" when energy fails</div></div>
-    <div class="bg-card"><div class="bg-fc-mech">What about cortex?</div><div class="bg-fc-text">Cortex is also metabolically active but has better collateral supply. Putamen is end-arterial â€” no backup perfusion when local metabolism collapses</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">Why putamen specifically?</div><div class="bg-fc-text">Within basal ganglia, the putamen has the highest dopaminergic activity and densest mitochondrial load &mdash; it is the "first to fall" when energy fails</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">What about cortex?</div><div class="bg-fc-text">Cortex is also metabolically active but has better collateral supply. Putamen is end-arterial &mdash; no backup perfusion when local metabolism collapses</div></div>
   </div>
-  <div class="bg-infobox"><p><b>Memory hook:</b> Putamen = high demand, no backup. It's like a city with one power line and no generator â€” the moment energy fails, it goes dark first.</p></div>
+  <div class="bg-infobox"><p><b>Memory hook:</b> Putamen = high demand, no backup. It's like a city with one power line and no generator &mdash; the moment energy fails, it goes dark first.</p></div>
 </div>
 
 <div class="bg-panel" id="bgp1">
-  <div class="bg-why"><div class="bg-why-title">Four-stage injury cascade</div><div class="bg-why-text">The injury unfolds predictably. Each stage builds on the last â€” which is why the latent period exists and why early treatment can interrupt the cascade.</div></div>
+  <div class="bg-why"><div class="bg-why-title">Four-stage injury cascade</div><div class="bg-why-text">The injury unfolds predictably. Each stage builds on the last &mdash; which is why the latent period exists and why early treatment can interrupt the cascade.</div></div>
   <div class="bg-grid">
-    <div class="bg-card"><div class="bg-fc-mech">Stage 1 Â· Formate accumulates</div><div class="bg-fc-text">Formic acid builds up as methanol metabolises slowly. Takes 12â€“24 hrs to reach toxic levels. Ethanol co-ingestion delays this by competing for ADH.</div></div>
-    <div class="bg-card"><div class="bg-fc-mech">Stage 2 Â· Complex IV blocked</div><div class="bg-fc-text">Formate directly inhibits cytochrome c oxidase. Electron transport halts. No ATP. The putamen, with extreme ATP demand, fails first.</div></div>
-    <div class="bg-card"><div class="bg-fc-mech">Stage 3 Â· Cytotoxic oedema</div><div class="bg-fc-text">Without ATP, Na-K-ATPase pumps fail. Sodium floods into cells. Water follows. Cells swell â€” cytotoxic oedema (intracellular). Restricts diffusion on MRI.</div></div>
-    <div class="bg-card"><div class="bg-fc-mech">Stage 4 Â· Haemorrhagic necrosis</div><div class="bg-fc-text">In severe/late cases, the swollen tissue infarcts. Capillaries rupture â†’ haemorrhage into necrotic putamen â€” "putaminal haemorrhage" at autopsy.</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">Stage 1 &middot; Formate accumulates</div><div class="bg-fc-text">Formic acid builds up as methanol metabolises slowly. Takes 12&ndash;24 hrs to reach toxic levels. Ethanol co-ingestion delays this by competing for ADH.</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">Stage 2 &middot; Complex IV blocked</div><div class="bg-fc-text">Formate directly inhibits cytochrome c oxidase. Electron transport halts. No ATP. The putamen, with extreme ATP demand, fails first.</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">Stage 3 &middot; Cytotoxic oedema</div><div class="bg-fc-text">Without ATP, Na-K-ATPase pumps fail. Sodium floods into cells. Water follows. Cells swell &mdash; cytotoxic oedema (intracellular). Restricts diffusion on MRI.</div></div>
+    <div class="bg-card"><div class="bg-fc-mech">Stage 4 &middot; Haemorrhagic necrosis</div><div class="bg-fc-text">In severe/late cases, the swollen tissue infarcts. Capillaries rupture &rarr; haemorrhage into necrotic putamen &mdash; "putaminal haemorrhage" at autopsy.</div></div>
   </div>
-  <div class="bg-keybox"><p>The injury is NOT ischaemic â€” blood supply is intact. It is a <b>metabolic infarct</b>. The putamen starves of energy despite normal blood flow. This distinction matters for treatment and for MCQs.</p></div>
+  <div class="bg-keybox"><p>The injury is NOT ischaemic &mdash; blood supply is intact. It is a <b>metabolic infarct</b>. The putamen starves of energy despite normal blood flow. This distinction matters for treatment and for MCQs.</p></div>
   <div class="bg-chain">
-    <span class="bg-ch bg-red">Formate â†‘</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-red">Complex IV blocked</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-purple">ATP failure</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-purple">Na-K pump fails</span><span class="bg-arr">â†’</span>
-    <span class="bg-ch bg-red">Cell swelling</span><span class="bg-arr">â†’</span>
+    <span class="bg-ch bg-red">Formate &#8593;</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-red">Complex IV blocked</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-purple">ATP failure</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-purple">Na-K pump fails</span><span class="bg-arr">&rarr;</span>
+    <span class="bg-ch bg-red">Cell swelling</span><span class="bg-arr">&rarr;</span>
     <span class="bg-ch bg-red">Necrosis</span>
   </div>
 </div>
 
 <div class="bg-panel" id="bgp2">
   <div class="bg-grid">
-    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Extrapyramidal symptoms</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Putamen is part of the motor circuit (basal ganglia â†’ thalamus â†’ cortex). Necrosis disrupts motor modulation. Survivors show rigidity, bradykinesia, dystonia â€” Parkinson-like picture.</div></div>
-    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Parkinsonism (late sequela)</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Dopaminergic neurons in putamen/striatum destroyed. Mirrors idiopathic Parkinson's â€” but caused acutely by a toxin destroying the same cells.</div></div>
+    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Extrapyramidal symptoms</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Putamen is part of the motor circuit (basal ganglia &rarr; thalamus &rarr; cortex). Necrosis disrupts motor modulation. Survivors show rigidity, bradykinesia, dystonia &mdash; Parkinson-like picture.</div></div>
+    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Parkinsonism (late sequela)</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Dopaminergic neurons in putamen/striatum destroyed. Mirrors idiopathic Parkinson's &mdash; but caused acutely by a toxin destroying the same cells.</div></div>
     <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Coma / convulsions</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Bilateral putaminal necrosis disrupts thalamo-cortical circuits. Global energy failure from formic acid also affects cortex and brainstem in severe cases.</div></div>
-    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">High anion gap acidosis</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Formic acid is an unmeasured anion â€” directly widens the anion gap. The more formate, the worse the acidosis and the worse the putaminal injury.</div></div>
-    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Blindness / optic atrophy</div><div class="bg-fc-mech" style="margin-top:6px">Same mechanism</div><div class="bg-fc-text">Retinal ganglion cells and optic nerve axons have very high mitochondrial density. Formate inhibits Complex IV here too. The retina is the brain's extension â€” same vulnerability.</div></div>
-    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Symmetric bilateral pattern</div><div class="bg-fc-mech" style="margin-top:6px">Why symmetric?</div><div class="bg-fc-text">Formate circulates systemically. Both putamina exposed to identical toxic concentration simultaneously. Symmetry is a diagnostic hallmark â€” asymmetric lesions suggest another diagnosis.</div></div>
+    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">High anion gap acidosis</div><div class="bg-fc-mech" style="margin-top:6px">Why?</div><div class="bg-fc-text">Formic acid is an unmeasured anion &mdash; directly widens the anion gap. The more formate, the worse the acidosis and the worse the putaminal injury.</div></div>
+    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Blindness / optic atrophy</div><div class="bg-fc-mech" style="margin-top:6px">Same mechanism</div><div class="bg-fc-text">Retinal ganglion cells and optic nerve axons have very high mitochondrial density. Formate inhibits Complex IV here too. The retina is the brain's extension &mdash; same vulnerability.</div></div>
+    <div class="bg-card"><div class="bg-fc-find">Finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Symmetric bilateral pattern</div><div class="bg-fc-mech" style="margin-top:6px">Why symmetric?</div><div class="bg-fc-text">Formate circulates systemically. Both putamina exposed to identical toxic concentration simultaneously. Symmetry is a diagnostic hallmark &mdash; asymmetric lesions suggest another diagnosis.</div></div>
   </div>
   <div class="bg-tealbox"><p>Clinical pearl: the <b>degree of acidosis correlates with degree of putaminal injury</b>. pH &lt;7.0 almost certainly means significant basal ganglia necrosis is already underway.</p></div>
 </div>
@@ -503,12 +503,12 @@ Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol pois
 <div class="bg-panel" id="bgp3">
   <div class="bg-why"><div class="bg-why-title">What you see on CT / MRI and why</div><div class="bg-why-text">The imaging findings directly reflect the staged injury mechanism.</div></div>
   <div class="bg-grid">
-    <div class="bg-card"><div class="bg-fc-exam">CT finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Bilateral hypodensity in putamen</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">Cytotoxic oedema lowers tissue density. Hypodensity = water-logged dying tissue. Appears 24â€“48 hrs after ingestion.</div></div>
-    <div class="bg-card"><div class="bg-fc-exam">CT finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Hyperdensity (haemorrhage)</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">In severe/late cases, capillary rupture into necrotic putamen appears bright on CT. Indicates haemorrhagic transformation â€” poor prognosis sign.</div></div>
-    <div class="bg-card"><div class="bg-fc-exam">MRI finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Restricted diffusion (DWI bright)</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">Cytotoxic oedema restricts random water movement. DWI lights up early â€” can detect injury before CT. Mirror image on both sides.</div></div>
+    <div class="bg-card"><div class="bg-fc-exam">CT finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Bilateral hypodensity in putamen</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">Cytotoxic oedema lowers tissue density. Hypodensity = water-logged dying tissue. Appears 24&ndash;48 hrs after ingestion.</div></div>
+    <div class="bg-card"><div class="bg-fc-exam">CT finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Hyperdensity (haemorrhage)</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">In severe/late cases, capillary rupture into necrotic putamen appears bright on CT. Indicates haemorrhagic transformation &mdash; poor prognosis sign.</div></div>
+    <div class="bg-card"><div class="bg-fc-exam">MRI finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Restricted diffusion (DWI bright)</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">Cytotoxic oedema restricts random water movement. DWI lights up early &mdash; can detect injury before CT. Mirror image on both sides.</div></div>
     <div class="bg-card"><div class="bg-fc-exam">MRI finding</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">T2/FLAIR hyperintensity</div><div class="bg-fc-mech" style="margin-top:6px">Mechanism</div><div class="bg-fc-text">Oedematous necrotic tissue has longer T2 relaxation. Bilateral putaminal T2 hyperintensity in right clinical context = methanol until proven otherwise.</div></div>
   </div>
-  <div class="bg-infobox"><p>Exam key: CT shows <b>"symmetrical areas of necrosis in the putamen"</b> â€” the textbook phrase. But this is NOT pathognomonic. Wilson's disease and Leigh's disease can look identical. Formic acid level + osmolal gap + clinical history clinches it.</p></div>
+  <div class="bg-infobox"><p>Exam key: CT shows <b>"symmetrical areas of necrosis in the putamen"</b> &mdash; the textbook phrase. But this is NOT pathognomonic. Wilson's disease and Leigh's disease can look identical. Formic acid level + osmolal gap + clinical history clinches it.</p></div>
 </div>
 
 <div class="bg-panel" id="bgp4">
@@ -519,7 +519,7 @@ Na âˆ’ (Cl + HCOâ‚ƒ). <b>Normal: 8â€“12 mEq/L</b>. In methanol pois
     <div class="bg-card"><div class="bg-fc-diff">Differential 3</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Carbon monoxide poisoning</div><div class="bg-fc-mech" style="margin-top:6px">How to distinguish</div><div class="bg-fc-text">CO also inhibits Complex IV (same mechanism). Globus pallidus more commonly involved than putamen. Carboxyhemoglobin elevated. Fire/generator exposure history.</div></div>
     <div class="bg-card"><div class="bg-fc-diff">Differential 4</div><div class="bg-fc-text" style="font-weight:600;margin-bottom:4px">Hypoxic-ischaemic injury</div><div class="bg-fc-mech" style="margin-top:6px">How to distinguish</div><div class="bg-fc-text">Cardiac arrest, near-drowning. Diffuse cortical involvement in addition to basal ganglia. No osmolal gap or elevated methanol level.</div></div>
   </div>
-  <div class="bg-tealbox"><p>Unifying theme: ALL these conditions damage the putamen by disrupting mitochondrial energy. Methanol (formate â†’ Complex IV), CO (same), Wilson's (copper toxicity), Leigh's (genetic). Same vulnerable region, different poison.</p></div>
+  <div class="bg-tealbox"><p>Unifying theme: ALL these conditions damage the putamen by disrupting mitochondrial energy. Methanol (formate &rarr; Complex IV), CO (same), Wilson's (copper toxicity), Leigh's (genetic). Same vulnerable region, different poison.</p></div>
   <div class="bg-why"><div class="bg-why-title">The clincher for methanol</div><div class="bg-why-text">High anion gap acidosis + elevated osmolal gap + detectable formic acid / methanol level + history of illicit alcohol ingestion = methanol poisoning. Imaging confirms extent; biochemistry makes the diagnosis.</div></div>
 </div>
 </div>
@@ -535,51 +535,51 @@ function bgShow(i){
         title: "Autopsy Findings & Medico-Legal Aspects",
         text: `<b>POST-MORTEM FINDINGS IN METHANOL POISONING</b><br><br>
 <b>External:</b><br>
-â€¢ Cyanosis â€” more marked on <b>upper body and face</b><br>
-â€¢ Signs of corrosion around mouth (if concentrated methanol)<br>
-â€¢ Pupils: dilated and fixed<br><br>
+&bull; Cyanosis &mdash; more marked on <b>upper body and face</b><br>
+&bull; Signs of corrosion around mouth (if concentrated methanol)<br>
+&bull; Pupils: dilated and fixed<br><br>
 <b>Internal:</b><br>
-â€¢ <b>Pulmonary oedema</b> â€” lungs heavy, waterlogged, frothy fluid in airways<br>
-â€¢ <b>Retinal oedema</b> and optic nerve pallor / atrophy<br>
-â€¢ <b>Putaminal haemorrhage / necrosis</b> â€” bilateral symmetric haemorrhagic softening in basal ganglia<br>
-â€¢ Gastric mucosa: congestion, erosions if concentrated methanol ingested<br>
-â€¢ Kidney: tubular necrosis in severe/prolonged cases<br>
-â€¢ Liver: congestion<br>
-â€¢ Brain: oedema; CT / gross section shows symmetric haemorrhagic putaminal lesions<br><br>
+&bull; <b>Pulmonary oedema</b> &mdash; lungs heavy, waterlogged, frothy fluid in airways<br>
+&bull; <b>Retinal oedema</b> and optic nerve pallor / atrophy<br>
+&bull; <b>Putaminal haemorrhage / necrosis</b> &mdash; bilateral symmetric haemorrhagic softening in basal ganglia<br>
+&bull; Gastric mucosa: congestion, erosions if concentrated methanol ingested<br>
+&bull; Kidney: tubular necrosis in severe/prolonged cases<br>
+&bull; Liver: congestion<br>
+&bull; Brain: oedema; CT / gross section shows symmetric haemorrhagic putaminal lesions<br><br>
 <b>Characteristic smell:</b> Faint alcoholic odour from viscera and blood<br><br>
 <hr style="border-color:#ddd;margin:14px 0;"><br>
-<b>VISCERA PRESERVATION â€” CRITICAL RULE</b><br><br>
+<b>VISCERA PRESERVATION &mdash; CRITICAL RULE</b><br><br>
 <b>Preserve in: Saturated Sodium Chloride (NaCl) solution</b><br>
-<b>NEVER use Rectified Spirit</b> â€” methanol is soluble in spirit; using spirit as preservative will dissolve the evidence and give a false negative on chemical analysis.<br><br>
+<b>NEVER use Rectified Spirit</b> &mdash; methanol is soluble in spirit; using spirit as preservative will dissolve the evidence and give a false negative on chemical analysis.<br><br>
 Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half each), Blood (30 mL on gauze, air-dried for serology; peripheral vein), Vitreous humour (alcohol levels better preserved here), Urine<br><br>
 <b>Additional samples for methanol specifically:</b><br>
-â€¢ <b>Vitreous humour</b> â€” most important for methanol/ethanol analysis (less affected by post-mortem redistribution)<br>
-â€¢ <b>Cerebrospinal fluid</b> â€” formic acid levels<br>
-â€¢ <b>Eye fluid</b> â€” retinal changes can be confirmed histologically<br><br>
+&bull; <b>Vitreous humour</b> &mdash; most important for methanol/ethanol analysis (less affected by post-mortem redistribution)<br>
+&bull; <b>Cerebrospinal fluid</b> &mdash; formic acid levels<br>
+&bull; <b>Eye fluid</b> &mdash; retinal changes can be confirmed histologically<br><br>
 <hr style="border-color:#ddd;margin:14px 0;"><br>
 <b>MEDICO-LEGAL ASPECTS</b><br><br>
 <b>1. Manner of death:</b> Usually <b>accidental</b> (hooch tragedies, illicit liquor). Homicidal is rare. Suicidal is uncommon but documented.<br><br>
 <b>2. Hooch tragedy / mass casualty:</b><br>
-â€¢ Report to Executive Magistrate immediately<br>
-â€¢ Multiple victims from the same illicit batch<br>
-â€¢ Preserve samples from the liquid if available â€” this is the direct evidence<br>
-â€¢ FSL analysis of the offending batch is key to prosecution<br><br>
+&bull; Report to Executive Magistrate immediately<br>
+&bull; Multiple victims from the same illicit batch<br>
+&bull; Preserve samples from the liquid if available &mdash; this is the direct evidence<br>
+&bull; FSL analysis of the offending batch is key to prosecution<br><br>
 <b>3. The latent period creates a medico-legal challenge:</b><br>
-â€¢ Victims may appear intoxicated and be turned away from hospitals<br>
-â€¢ Death occurs 12â€“36 hours later â€” apparent delay creates disputes about time of ingestion vs time of death<br>
-â€¢ Documentation of symptoms onset is critical<br><br>
+&bull; Victims may appear intoxicated and be turned away from hospitals<br>
+&bull; Death occurs 12&ndash;36 hours later &mdash; apparent delay creates disputes about time of ingestion vs time of death<br>
+&bull; Documentation of symptoms onset is critical<br><br>
 <b>4. Blindness as evidence of non-fatal poisoning:</b><br>
-â€¢ Survivors with permanent blindness â€” methanol can be established even without death<br>
-â€¢ Retinal oedema and optic atrophy are forensic evidence<br><br>
-<b>5. Offence:</b> Sale of adulterated liquor causing death/injury is punishable under IPC (Sec 304A â€” culpable homicide not amounting to murder by negligence) and Excise Act. In Tamil Nadu â€” specific provisions under Tamil Nadu Prohibition Act.<br><br>
+&bull; Survivors with permanent blindness &mdash; methanol can be established even without death<br>
+&bull; Retinal oedema and optic atrophy are forensic evidence<br><br>
+<b>5. Offence:</b> Sale of adulterated liquor causing death/injury is punishable under IPC (Sec 304A &mdash; culpable homicide not amounting to murder by negligence) and Excise Act. In Tamil Nadu &mdash; specific provisions under Tamil Nadu Prohibition Act.<br><br>
 <b>6. Examination of scene:</b><br>
-â€¢ Recover and seal offending liquid samples immediately<br>
-â€¢ Document source, batch, and distribution chain<br>
-â€¢ Preserve in airtight containers (methanol is volatile)`
+&bull; Recover and seal offending liquid samples immediately<br>
+&bull; Document source, batch, and distribution chain<br>
+&bull; Preserve in airtight containers (methanol is volatile)`
       }
     ],
 
-    // â”€â”€ TO ADD A NEW TOPIC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // -- TO ADD A NEW TOPIC --------------------------------
     // Copy the block below, paste after the last entry above,
     // add a comma after the previous closing ],
     // and fill in your content.
@@ -590,11 +590,11 @@ Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half
     //   { step:3, title:"Title 3", text:"Content 3" },
     //   { step:4, title:"Title 4", text:"Content 4" }
     // ],
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // -----------------------------------------------------
 
   },
 
-  // â”€â”€ VISCERA SIMULATION SCENARIOS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // -- VISCERA SIMULATION SCENARIOS --------------------------
   scenarios: [
     {
       id: "op",
@@ -608,7 +608,7 @@ Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half
       history: "Body found behind a liquor shop. Strong smell of alcohol. Suspected Acute Alcohol Poisoning.",
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 10mg",
-      trap: "NEVER use Rectified Spirit for alcohol cases â€” it contaminates the sample directly. Higher NaF dose (10mg) prevents post-mortem alcohol formation by bacteria."
+      trap: "NEVER use Rectified Spirit for alcohol cases &mdash; it contaminates the sample directly. Higher NaF dose (10mg) prevents post-mortem alcohol formation by bacteria."
     },
     {
       id: "acid",
@@ -622,14 +622,14 @@ Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half
       history: "Characteristic phenolic smell in mouth and stomach. Corrosive brownish staining on lips and tongue. Suspected Carbolic Acid (Phenol) Poisoning.",
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 2mg",
-      trap: "Phenol is HIGHLY SOLUBLE in Rectified Spirit â€” using spirit destroys the sample. Use Salt, NOT Spirit. Classic examiner trap."
+      trap: "Phenol is HIGHLY SOLUBLE in Rectified Spirit &mdash; using spirit destroys the sample. Use Salt, NOT Spirit. Classic examiner trap."
     },
     {
       id: "methanol",
       history: "Multiple victims from the same village admitted after consuming locally brewed liquor. All have visual disturbances, deep breathing, and altered sensorium. Suspected Methyl Alcohol (Methanol) Poisoning.",
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 2mg",
-      trap: "CRITICAL: NEVER use Rectified Spirit for methanol â€” methanol is soluble in spirit and will be dissolved, giving a false negative. Use Saturated NaCl. Also collect vitreous humour separately â€” it gives the most reliable alcohol levels."
+      trap: "CRITICAL: NEVER use Rectified Spirit for methanol &mdash; methanol is soluble in spirit and will be dissolved, giving a false negative. Use Saturated NaCl. Also collect vitreous humour separately &mdash; it gives the most reliable alcohol levels."
     }
   ]
 };
