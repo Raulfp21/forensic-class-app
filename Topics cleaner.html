@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>topics.js Cleaner</title>
+<style>
+  body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,sans-serif;margin:0;padding:24px;}
+  h2{margin:0 0 6px;color:#e6edf3;}
+  .sub{color:#8b949e;font-size:14px;margin-bottom:20px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:700px){.row{grid-template-columns:1fr;}}
+  textarea{width:100%;height:400px;background:#161b22;color:#c9d1d9;border:1px solid #30363d;
+    border-radius:8px;padding:12px;font-family:monospace;font-size:12px;resize:vertical;}
+  .label{font-size:12px;color:#8b949e;margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;}
+  .btn{background:#238636;color:white;border:none;border-radius:8px;padding:12px 24px;
+    font-size:15px;font-weight:700;cursor:pointer;margin-top:12px;margin-right:8px;}
+  .btn:active{opacity:.85;}
+  .btn-dl{background:#1f6feb;}
+  .btn-copy{background:#30363d;}
+  .status{margin-top:12px;font-size:13px;padding:10px 14px;border-radius:6px;}
+  .ok{background:#0f2e0f;border:1px solid #238636;color:#3fb950;}
+  .err{background:#3b110e;border:1px solid #da3633;color:#ff7b72;}
+  .info{font-size:13px;color:#8b949e;background:#161b22;border:1px solid #30363d;
+    border-radius:8px;padding:14px;margin-bottom:20px;line-height:1.7;}
+  .info b{color:#e6edf3;}
+  code{background:#21262d;padding:2px 6px;border-radius:4px;font-size:12px;}
+</style>
+</head>
+<body>
+
+<h2>&#128736; topics.js Encoding Cleaner</h2>
+<p class="sub">Fixes the â€" &#149; â€¢ symbols. Paste your topics.js, click Clean, download.</p>
+
+<div class="info">
+  <b>Why this happens:</b> When you write or paste content with characters like <code>&mdash;</code> <code>&bull;</code> <code>&rarr;</code> into topics.js, they are stored as multi-byte UTF-8. GitHub Pages serves .js files without a charset header, so some browsers misread them as <code>â€"</code> etc.<br><br>
+  <b>This tool</b> replaces every special character with its safe HTML entity equivalent (<code>&amp;mdash;</code>, <code>&amp;bull;</code>) so the file contains only ASCII bytes &mdash; guaranteed to display correctly everywhere.<br><br>
+  <b>Workflow:</b> Whenever you update topics.js, paste it here &rarr; Clean &rarr; Download &rarr; replace your file on GitHub.
+</div>
+
+<div class="row">
+  <div>
+    <div class="label">&#128229; Paste your topics.js here</div>
+    <textarea id="inp" placeholder="Paste the full contents of your topics.js file here..."></textarea>
+  </div>
+  <div>
+    <div class="label">&#9989; Cleaned output (copy this)</div>
+    <textarea id="out" readonly placeholder="Cleaned output will appear here..."></textarea>
+  </div>
+</div>
+
+<button class="btn" onclick="clean()">&#9889; Clean Now</button>
+<button class="btn btn-dl" onclick="download()" id="dl-btn" disabled>&#11015; Download topics.js</button>
+<button class="btn btn-copy" onclick="copyOut()" id="copy-btn" disabled>&#128203; Copy Output</button>
+
+<div id="status"></div>
+
+<script>
+const REPS = [
+  // Dashes
+  ['\u2014','&mdash;'],['\u2013','&ndash;'],['\u2012','&ndash;'],['\u2015','&mdash;'],
+  // Quotes
+  ['\u2019','&rsquo;'],['\u2018','&lsquo;'],['\u201c','&ldquo;'],['\u201d','&rdquo;'],
+  ['\u2032','&prime;'],['\u2033','&Prime;'],
+  // Arrows
+  ['\u2192','&rarr;'],['\u2190','&larr;'],['\u2194','&harr;'],['\u2191','&uarr;'],
+  ['\u2193','&darr;'],['\u21d2','&rArr;'],['\u21d0','&lArr;'],['\u21d4','&hArr;'],
+  // Bullets & dots
+  ['\u2022','&bull;'],['\u00b7','&middot;'],['\u2026','...'],
+  // Math
+  ['\u00d7','&times;'],['\u00f7','&divide;'],['\u2248','&asymp;'],['\u2260','&ne;'],
+  ['\u2265','&ge;'],['\u2264','&le;'],['\u00b1','&plusmn;'],['\u221e','&infin;'],
+  ['\u2212','&minus;'],['\u00ac','&not;'],
+  // Greek
+  ['\u03bc','&mu;'],['\u00b5','&micro;'],['\u03b1','&alpha;'],['\u03b2','&beta;'],
+  ['\u03b3','&gamma;'],['\u03b4','&delta;'],['\u03c3','&sigma;'],['\u03c0','&pi;'],
+  ['\u03a3','&Sigma;'],['\u0394','&Delta;'],
+  // Super/subscript
+  ['\u00b2','<sup>2</sup>'],['\u00b3','<sup>3</sup>'],['\u00b9','<sup>1</sup>'],
+  ['\u2070','<sup>0</sup>'],['\u2074','<sup>4</sup>'],['\u2075','<sup>5</sup>'],
+  ['\u2076','<sup>6</sup>'],
+  ['\u2080','<sub>0</sub>'],['\u2081','<sub>1</sub>'],['\u2082','<sub>2</sub>'],
+  ['\u2083','<sub>3</sub>'],['\u2084','<sub>4</sub>'],['\u2085','<sub>5</sub>'],
+  ['\u2086','<sub>6</sub>'],
+  // Degree & units
+  ['\u00b0','&deg;'],['\u00ba','&deg;'],['\u212b','&Aring;'],
+  // Fractions
+  ['\u00bd','&frac12;'],['\u00bc','&frac14;'],['\u00be','&frac34;'],
+  // Special chars
+  ['\u2713','&#10003;'],['\u2714','&#10004;'],['\u2716','&#10006;'],
+  ['\u274c','&#10060;'],['\u2705','&#9989;'],['\u26a0','&#9888;'],
+  ['\u25b6','&#9654;'],['\u25c0','&#9664;'],['\u25bc','&#9660;'],['\u25b2','&#9650;'],
+  ['\u2764','&hearts;'],['\u2665','&hearts;'],
+  // BOM & spaces
+  ['\ufeff',''],['\u00a0',' '],['\u2003',' '],['\u2002',' '],['\u2009',' '],
+  // Copyright etc
+  ['\u00ae','&reg;'],['\u00a9','&copy;'],['\u2122','&trade;'],
+  // Box drawing (used in comments)
+  ['\u2500','-'],['\u2501','-'],['\u2550','='],['\u2502','|'],['\u2503','|'],
+  ['\u251c','+'],['\u2514','+'],['\u2510','+'],['\u2518','+'],['\u250c','+'],
+  ['\u253c','+'],['\u2560','+'],['\u2563','+'],['\u2566','+'],['\u2569','+'],
+  ['\u256c','+'],['\u2524','+'],['\u252c','+'],
+  // Accented letters
+  ['\u00e9','e'],['\u00e8','e'],['\u00ea','e'],['\u00eb','e'],
+  ['\u00e0','a'],['\u00e2','a'],['\u00e4','a'],['\u00e1','a'],
+  ['\u00f6','o'],['\u00f3','o'],['\u00f4','o'],['\u00f2','o'],
+  ['\u00fc','u'],['\u00fa','u'],['\u00fb','u'],['\u00f9','u'],
+  ['\u00ef','i'],['\u00ed','i'],['\u00ee','i'],['\u00ec','i'],
+  ['\u00e6','ae'],['\u00e7','c'],['\u00f1','n'],
+  ['\u00c9','E'],['\u00c0','A'],['\u00c4','A'],['\u00d6','O'],
+  ['\u00dc','U'],['\u00c6','AE'],['\u00d1','N'],
+];
+
+function clean() {
+  let text = document.getElementById('inp').value;
+  if (!text.trim()) {
+    setStatus('Paste your topics.js content first.', false);
+    return;
+  }
+
+  let replaced = 0;
+
+  // Apply known replacements
+  for (const [from, to] of REPS) {
+    const before = text.length;
+    text = text.split(from).join(to);
+    if (text.length !== before) replaced++;
+  }
+
+  // Final sweep: any remaining non-ASCII -> numeric HTML entity
+  let result = '';
+  let numericReplaced = 0;
+  for (const char of text) {
+    const code = char.charCodeAt(0);
+    if (code > 127) {
+      result += '&#' + code + ';';
+      numericReplaced++;
+    } else {
+      result += char;
+    }
+  }
+
+  // Verify: count non-ASCII bytes in result
+  let nonAscii = 0;
+  for (const char of result) {
+    if (char.charCodeAt(0) > 127) nonAscii++;
+  }
+
+  document.getElementById('out').value = result;
+  document.getElementById('dl-btn').disabled = false;
+  document.getElementById('copy-btn').disabled = false;
+
+  if (nonAscii === 0) {
+    setStatus(
+      '&#9989; Clean! ' + (replaced + numericReplaced) + ' characters replaced. ' +
+      'Zero non-ASCII bytes remain. Safe to upload to GitHub.',
+      true
+    );
+  } else {
+    setStatus('&#9888; ' + nonAscii + ' non-ASCII chars still remain. Please report this.', false);
+  }
+}
+
+function setStatus(msg, ok) {
+  const el = document.getElementById('status');
+  el.className = 'status ' + (ok ? 'ok' : 'err');
+  el.innerHTML = msg;
+}
+
+function download() {
+  const content = document.getElementById('out').value;
+  if (!content) return;
+  const blob = new Blob([content], { type: 'text/javascript;charset=ascii' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'topics.js';
+  a.click();
+}
+
+function copyOut() {
+  const out = document.getElementById('out');
+  out.select();
+  document.execCommand('copy');
+  setStatus('&#128203; Copied to clipboard! Paste into your topics.js file.', true);
+}
+
+// Auto-clean on paste into input
+document.getElementById('inp').addEventListener('paste', () => {
+  setTimeout(clean, 100);
+});
+</script>
+</body>
+</html>
