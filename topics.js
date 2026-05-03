@@ -716,6 +716,843 @@ Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half
       correctPreservative: "Saturated Salt Solution",
       correctBloodPres: "NaF 2mg",
       trap: "CRITICAL: NEVER use Rectified Spirit for methanol &mdash; methanol is soluble in spirit and will be dissolved, giving a false negative. Use Saturated NaCl. Also collect vitreous humour separately &mdash; it gives the most reliable alcohol levels."
-    }
+    },
+    // ============================================================
+//  ADD THIS BLOCK TO topics.js
+//  Paste it INSIDE the relay: { } section,
+//  after the last existing topic's closing ],
+//  Add a comma after the previous topic's ] before pasting.
+//
+//  THEN run through topics_cleaner.html before uploading.
+// ============================================================
+
+    "Toxicology: Opium &amp; Somniferous Drugs": [
+      {
+        step: 1,
+        title: "Source, Plant, Alkaloids &amp; Classification",
+        text: `<b>OPIUM / NARCOTIC ANALGESICS (SOMNIFEROUS DRUGS)</b><br><br>
+
+<b>Plant:</b> <i>Papaver somniferum</i>, family Papaveraceae<br>
+<b>Other names:</b> Afim, Poppy tears, Lachryma<br>
+<b>Cultivation:</b> India (Rajasthan, UP, MP/Maharashtra) under Central Bureau of Narcotics (CBN) license<br>
+India produces <b>70-80%</b> of world pharmaceutical opium<br><br>
+
+<b>Plant features:</b><br>
+&bull; Height: 1-3 m; lush green leaves; white, red or purplish flowers<br>
+&bull; Each plant bears <b>5-8 fruit capsules</b><br>
+&bull; Unripe capsules: bluish-green; ripen to yellow<br>
+&bull; When colour changes to yellow: shallow incisions 3-4 mm apart made on capsule surface<br>
+&bull; Milky white latex collects &rarr; exposure to sunlight &rarr; dark brownish-black mass = <b>raw opium</b><br><br>
+
+<b>Toxic Part:</b> Unripe fruit capsule<br><br>
+
+<b>Raw Opium:</b> Dark brown/grey irregular mass, characteristic odour, bitter taste, contains <b>~10% morphine</b><br><br>
+
+<b>Poppy seeds:</b> Non-poisonous, demulcent; 33 mcg morphine/gram; 45-50% poppy oil; used in Indian sweets (Kasoomba, Bhujri, Halwa)<br><br>
+
+<b>ALKALOIDS - Two groups:</b><br>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0;">
+<div style="background:#FAEEDA;padding:10px;border-radius:8px;">
+<b style="color:#854F0B;">Phenanthrene group</b><br>
+Morphine<br>Codeine<br>Thebaine
+</div>
+<div style="background:#E6F1FB;padding:10px;border-radius:8px;">
+<b style="color:#185FA5;">Benzylisoquinoline group</b><br>
+Papaverine<br>Noscapine (Narcotine)
+</div>
+</div>
+
+<b>Opiate vs Opioid:</b><br>
+&bull; <b>Opiate</b> = natural + semisynthetic (morphine, codeine, heroin)<br>
+&bull; <b>Opioid</b> = all drugs with morphine-like activity (broader term)<br><br>
+
+<b>Classification:</b><br>
+&bull; <b>Natural:</b> Morphine, Codeine<br>
+&bull; <b>Semisynthetic:</b> Heroin, Pholcodeine, Hydrocodone, Hydromorphone, Oxymorphone<br>
+&bull; <b>Synthetic:</b> Fentanyl, Methadone, Pethidine, Tramadol, Propoxyphene, Diphenoxylate<br><br>
+
+<b>FATAL DOSES (High-yield):</b>
+<div style="overflow-x:auto;margin-top:8px;">
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+<tr style="background:#1f2937;color:#fff;"><th style="padding:6px 10px;text-align:left;">Opiate</th><th style="padding:6px 10px;text-align:left;">Therapeutic dose</th><th style="padding:6px 10px;text-align:left;">Fatal dose</th></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 10px;">Raw opium</td><td style="padding:6px 10px;">&mdash;</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">500 mg &ndash; 2 g</td></tr>
+<tr><td style="padding:6px 10px;">Morphine</td><td style="padding:6px 10px;">10&ndash;15 mg</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">200 mg</td></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 10px;">Codeine</td><td style="padding:6px 10px;">10&ndash;60 mg</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">800 mg</td></tr>
+<tr><td style="padding:6px 10px;">Heroin</td><td style="padding:6px 10px;">&mdash;</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">50 mg</td></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 10px;">Pethidine</td><td style="padding:6px 10px;">50&ndash;150 mg</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">1 g</td></tr>
+<tr><td style="padding:6px 10px;">Methadone</td><td style="padding:6px 10px;">5&ndash;10 mg</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">100 mg</td></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 10px;">Etorphine</td><td style="padding:6px 10px;">&mdash;</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">0.03&ndash;0.12 mg</td></tr>
+<tr><td style="padding:6px 10px;">Pentazocine</td><td style="padding:6px 10px;">30&ndash;60 mg</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">300 mg</td></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 10px;">Diphenoxylate</td><td style="padding:6px 10px;">10&ndash;20 mg</td><td style="padding:6px 10px;font-weight:bold;color:#A32D2D;">200 mg</td></tr>
+</table>
+</div>`
+      },
+      {
+        step: 2,
+        title: "Toxicokinetics &amp; Mechanism of Action (Receptors)",
+        text: `<b>TOXICOKINETICS</b><br><br>
+&bull; Well absorbed from GI tract and all parenteral routes<br>
+&bull; Oral bioavailability only <b>25%</b> (significant first-pass hepatic metabolism)<br>
+&bull; Protein binding: <b>7% (codeine)</b> to <b>96% (buprenorphine)</b>; morphine = 34%<br>
+&bull; Morphine metabolism: conjugated with glucuronic acid &rarr; <b>morphine-6-glucuronide</b> (pharmacologically active)<br>
+&bull; Excreted as <b>morphine-3-glucuronide</b> in urine<br><br>
+
+<b>Duration of action:</b><br>
+&bull; Minutes to 1 hour: Fentanyl, Alfentanil, Sufentanil (ultra-short)<br>
+&bull; 2 hours: Pentazocine, Pethidine<br>
+&bull; 4&ndash;8 hours: Morphine, Codeine, Heroin<br>
+&bull; 8 hours: Methadone, Buprenorphine<br><br>
+
+<b>Drug Interactions:</b> Depressant effect enhanced by alcohol, barbiturates, phenothiazines, cyclic antidepressants, MAOIs. Cimetidine &rarr; mental confusion.<br><br>
+
+<hr style="border-color:#ddd;margin:14px 0;">
+
+<b>MECHANISM OF ACTION &mdash; OPIATE RECEPTORS (High-yield)</b>
+
+<style>
+.or-wrap{font-family:Arial,sans-serif;margin-top:10px;}
+.or-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.or-tab{padding:6px 14px;font-size:12px;border-radius:20px;border:1px solid #ccc;cursor:pointer;background:#f5f5f5;color:#555;font-family:Arial;}
+.or-tab.or-on{background:#1f2937;color:#fff;border-color:#1f2937;}
+.or-panel{display:none;}
+.or-panel.or-show{display:block;}
+.or-card{background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:12px;margin-bottom:8px;}
+.or-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.or-text{font-size:13px;color:#222;line-height:1.6;}
+.or-amber{color:#854F0B;} .or-red{color:#A32D2D;} .or-blue{color:#185FA5;} .or-green{color:#0F6E56;} .or-purple{color:#534AB7;}
+.or-keybox{border-left:3px solid #E24B4A;padding:8px 14px;background:#FCEBEB;border-radius:0 6px 6px 0;margin-bottom:8px;}
+.or-keybox p{font-size:13px;color:#791F1F;line-height:1.6;margin:0;}
+.or-infobox{border-left:3px solid #378ADD;padding:8px 14px;background:#E6F1FB;border-radius:0 6px 6px 0;margin-bottom:8px;}
+.or-infobox p{font-size:13px;color:#185FA5;line-height:1.6;margin:0;}
+.or-tealbox{border-left:3px solid #1D9E75;padding:8px 14px;background:#E1F5EE;border-radius:0 6px 6px 0;margin-bottom:8px;}
+.or-tealbox p{font-size:13px;color:#0F6E56;line-height:1.6;margin:0;}
+.hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+</style>
+<div class="or-wrap">
+<div class="or-tabs">
+  <button class="or-tab or-on" onclick="orShow(0,this)">Mu (OP3)</button>
+  <button class="or-tab" onclick="orShow(1,this)">Kappa (OP2)</button>
+  <button class="or-tab" onclick="orShow(2,this)">Delta (OP1)</button>
+  <button class="or-tab" onclick="orShow(3,this)">Sigma</button>
+  <button class="or-tab" onclick="orShow(4,this)">Summary</button>
+</div>
+
+<div class="or-panel or-show" id="orp0">
+<div class="or-keybox"><p><b>Mu receptor (OP3) &mdash; MOST IMPORTANT <span class="hy-inline">MCQ</span></b><br>Most clinically used opiates are selective for mu receptors.</p></div>
+<div class="or-card"><div class="or-label or-amber">Mu-1 (OP3A) &mdash; Supraspinal</div><div class="or-text">Supraspinal analgesia &bull; Euphoria &bull; Prolactin release &bull; Peripheral analgesia</div></div>
+<div class="or-card"><div class="or-label or-red">Mu-2 (OP3B) &mdash; Spinal</div><div class="or-text">Spinal analgesia &bull; <b>Respiratory depression</b> &bull; Dependence &bull; Gastrointestinal dysmotility &bull; <b>Miosis</b></div></div>
+<div class="or-infobox"><p>Tolerance develops faster to euphoria than to respiratory depression. This explains why addicts remain at risk of respiratory depression even when tolerant to euphoric effects.</p></div>
+</div>
+
+<div class="or-panel" id="orp1">
+<div class="or-card"><div class="or-label or-blue">Kappa-1 (OP2A)</div><div class="or-text">Spinal analgesia &bull; Miosis</div></div>
+<div class="or-card"><div class="or-label or-blue">Kappa-2 (OP2B)</div><div class="or-text">Psychotomimesis &bull; <b>Dysphoria</b> (not euphoria &mdash; important distinction)</div></div>
+<div class="or-card"><div class="or-label or-blue">Kappa-3 (OP2C)</div><div class="or-text">Supraspinal analgesia</div></div>
+<div class="or-tealbox"><p>Kappa agonists produce <b>dysphoria rather than euphoria</b> in humans. Endocrine changes and analgesia also produced.</p></div>
+</div>
+
+<div class="or-panel" id="orp2">
+<div class="or-card"><div class="or-label or-green">Delta receptor (OP1)</div><div class="or-text">Spinal and supraspinal analgesia. Involved in mood, reinforcing effects, respiration, pain, blood pressure, endocrine and GI functions (with mu). Subtypes delta-1 and delta-2 postulated but not confirmed.</div></div>
+</div>
+
+<div class="or-panel" id="orp3">
+<div class="or-keybox"><p><b>Sigma receptor &mdash; NOT an opioid receptor <span class="hy-inline">Exam trap</span></b><br>Insensitive to naloxone &mdash; the defining characteristic of opioid receptors. Hence no longer classified as opioid.<br>Dextromethorphan and Pentazocine are sigma agonists &rarr; psychotomimetic effects and movement disorders.</p></div>
+<div class="or-infobox"><p>Epsilon and Zeta receptors: postulated to exist but not demonstrated so far.</p></div>
+</div>
+
+<div class="or-panel" id="orp4">
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+<tr style="background:#1f2937;color:#fff;"><th style="padding:6px 8px;">Receptor</th><th style="padding:6px 8px;">Also known as</th><th style="padding:6px 8px;">Key effects</th></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 8px;font-weight:bold;">Mu</td><td style="padding:6px 8px;">OP3</td><td style="padding:6px 8px;">Analgesia, euphoria, resp depression, miosis, dependence</td></tr>
+<tr><td style="padding:6px 8px;font-weight:bold;">Kappa</td><td style="padding:6px 8px;">OP2</td><td style="padding:6px 8px;">Analgesia, miosis, <b>dysphoria</b></td></tr>
+<tr style="background:#f9f7f3;"><td style="padding:6px 8px;font-weight:bold;">Delta</td><td style="padding:6px 8px;">OP1</td><td style="padding:6px 8px;">Analgesia, mood, GI</td></tr>
+<tr><td style="padding:6px 8px;font-weight:bold;">Sigma</td><td style="padding:6px 8px;">&mdash;</td><td style="padding:6px 8px;">Psychotomimetic, movement disorders. <b>NOT opioid</b></td></tr>
+</table>
+</div>
+<div class="or-tealbox" style="margin-top:10px;"><p><b>Memory hook:</b> Mu = Most important. Kappa = Kills euphoria (dysphoria). Delta = Doesn't stand out. Sigma = Suspect (not really opioid).</p></div>
+</div>
+</div>
+<script>
+function orShow(i,btn){
+  document.querySelectorAll('.or-panel').forEach(function(p,j){p.classList.toggle('or-show',j===i);});
+  document.querySelectorAll('.or-tab').forEach(function(b){b.classList.remove('or-on');});
+  if(btn) btn.classList.add('or-on');
+}
+</script>`
+      },
+      {
+        step: 3,
+        title: "Clinical Features &mdash; 3 Stages of Acute Poisoning",
+        text: `<style>
+.st-wrap{font-family:Arial,sans-serif;}
+.st-triad{background:#FCEBEB;border:2px solid #E24B4A;border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;}
+.st-triad-title{font-size:14px;font-weight:700;color:#791F1F;margin-bottom:8px;}
+.st-triad-items{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.st-triad-item{background:#fff;border:1px solid #E24B4A;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:#A32D2D;}
+.st-stages{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.st-stage{border-radius:10px;overflow:hidden;border:1px solid #e0ddd6;cursor:pointer;transition:all .2s;}
+.st-stage-header{display:flex;align-items:center;gap:10px;padding:12px 14px;font-weight:700;font-size:14px;}
+.st-stage-body{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;}
+.st-stage-body.st-open{max-height:400px;padding:12px 14px;}
+.st-s1{background:#FEF9E7;border-color:#F0D060;}
+.st-s1 .st-stage-header{background:#F0D060;color:#7A6010;}
+.st-s2{background:#FEF3DC;border-color:#EF9F27;}
+.st-s2 .st-stage-header{background:#EF9F27;color:#fff;}
+.st-s3{background:#FCEBEB;border-color:#E24B4A;}
+.st-s3 .st-stage-header{background:#E24B4A;color:#fff;}
+.st-item{font-size:13px;line-height:1.8;color:#333;}
+.hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+.hy-tap{cursor:pointer;border-bottom:2px dotted #e8ff47;background:rgba(232,255,71,0.15);padding:1px 3px;border-radius:3px;}
+.st-popup{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1f2937;color:#e6edf3;padding:14px 18px;border-radius:12px;font-size:13px;line-height:1.7;max-width:320px;width:90%;box-shadow:0 4px 24px rgba(0,0,0,0.5);z-index:9999;border-left:4px solid #e8ff47;}
+.st-popup-close{float:right;cursor:pointer;color:#aaa;font-size:16px;margin-left:8px;}
+</style>
+<div class="st-wrap">
+
+<div class="st-triad">
+  <div class="st-triad-title">PATHOGNOMONIC TRIAD <span class="hy-inline">EXAM</span></div>
+  <div class="st-triad-items">
+    <div class="st-triad-item">&#128084; Coma</div>
+    <div class="st-triad-item">&#128064; Pinpoint pupils</div>
+    <div class="st-triad-item">&#128168; Respiratory depression</div>
+  </div>
+  <div style="font-size:12px;color:#791F1F;margin-top:8px;">Almost pathognomonic for opiate poisoning</div>
+</div>
+
+<div style="font-size:12px;color:#8b949e;margin-bottom:8px;font-family:Arial;">Tap each stage to expand</div>
+
+<div class="st-stages">
+  <div class="st-stage st-s1" onclick="stToggle(0)">
+    <div class="st-stage-header">
+      <span>&#9312;</span>
+      <span>Stage of Excitement</span>
+      <span style="margin-left:auto;font-size:12px;font-weight:400;">(Short / absent with large dose)</span>
+    </div>
+    <div class="st-stage-body" id="stb0">
+      <div class="st-item">
+        &bull; Euphoria, elated mood, increased sense of wellbeing<br>
+        &bull; Talkative, free of anxiety<br>
+        &bull; Flushed face, restlessness<br>
+        &bull; Manic signs, hallucinations<br>
+        &bull; <span class="hy-tap" onclick="stPopup('Seizures in opiate poisoning: Primarily seen in NEONATES and CHILDREN with morphine. Not a feature of typical adult opiate poisoning. Pethidine metabolite norpethidine is epileptogenic and can cause seizures in adults.')">Seizures &mdash; mainly in neonates/children <span class="hy-inline">Note</span></span><br>
+        &bull; Rhabdomyolysis, hyperkalaemia, acute respiratory failure<br>
+        &bull; Uncontrolled desire to sleep
+      </div>
+    </div>
+  </div>
+
+  <div class="st-stage st-s2" onclick="stToggle(1)">
+    <div class="st-stage-header">
+      <span>&#9313;</span>
+      <span>Stage of Stupor</span>
+    </div>
+    <div class="st-stage-body" id="stb1">
+      <div class="st-item">
+        &bull; Giddiness, drowsiness, headache<br>
+        &bull; Nausea, vomiting<br>
+        &bull; <span class="hy-tap" onclick="stPopup('Itching in opiate poisoning is due to HISTAMINE RELEASE from mast cells, particularly prominent with morphine sulfate. Not an allergic reaction. Pruritus is a common adverse effect. Seen more with IV administration and epidural morphine.')">Itching all over body &mdash; histamine release <span class="hy-inline">MCQ</span></span><br>
+        &bull; Pupils contracted (miosis begins)<br>
+        &bull; Conjunctival congestion<br>
+        &bull; Cyanosed face and lips<br>
+        &bull; Pulse and BP still normal at this stage
+      </div>
+    </div>
+  </div>
+
+  <div class="st-stage st-s3" onclick="stToggle(2)">
+    <div class="st-stage-header">
+      <span>&#9314;</span>
+      <span>Stage of Narcosis / Coma</span>
+      <span style="margin-left:auto;font-size:12px;font-weight:400;">Terminal</span>
+    </div>
+    <div class="st-stage-body" id="stb2">
+      <div class="st-item">
+        &bull; <b>Unresponsiveness, coma</b><br>
+        &bull; <span class="hy-tap" onclick="stPopup('PINPOINT PUPILS (Miosis) = classic opiate sign. Due to mu-2 receptor stimulation of Edinger-Westphal nucleus.\n\nEXCEPTIONS - pupils may be dilated:\n1. Severe hypoxia (most common cause of dilation)\n2. Severe acidosis\n3. Pethidine (meperidine) - anticholinergic metabolite causes mydriasis\n4. Mixed drug overdose with anticholinergic agents\n\nSo: dilated pupils do NOT rule out opiate poisoning in hypoxic patient.')">Pinpoint pupils <span class="hy-inline">High-yield</span></span><br>
+        &bull; Facial pallor, cold clammy skin<br>
+        &bull; Flaccid muscles<br>
+        &bull; Decreased BP, feeble pulse<br>
+        &bull; Terminal: facial flush, gradual hypotension<br>
+        &bull; <b>Death from respiratory failure</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="st-popup-el" class="st-popup">
+  <span class="st-popup-close" onclick="document.getElementById('st-popup-el').style.display='none'">x</span>
+  <div id="st-popup-text"></div>
+</div>
+</div>
+
+<script>
+function stToggle(i){
+  var el=document.getElementById('stb'+i);
+  el.classList.toggle('st-open');
+}
+function stPopup(txt){
+  document.getElementById('st-popup-text').innerHTML=txt.replace(/\n/g,'<br>');
+  document.getElementById('st-popup-el').style.display='block';
+}
+document.addEventListener('click',function(e){
+  var p=document.getElementById('st-popup-el');
+  if(p&&!p.contains(e.target)&&!e.target.classList.contains('hy-tap')) p.style.display='none';
+});
+</script>`
+      },
+      {
+        step: 4,
+        title: "Specific Clinical Features &mdash; Tap to Reveal",
+        text: `<style>
+.sf-wrap{font-family:Arial,sans-serif;}
+.sf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+@media(max-width:400px){.sf-grid{grid-template-columns:1fr;}}
+.sf-card{background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:11px 13px;cursor:pointer;transition:all .15s;}
+.sf-card:active{background:#f0ebe0;}
+.sf-card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.sf-card-main{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px;}
+.sf-card-detail{font-size:12px;color:#555;line-height:1.5;display:none;}
+.sf-card.sf-open .sf-card-detail{display:block;}
+.sf-card-tap{font-size:10px;color:#aaa;margin-top:4px;}
+.lm-red{color:#A32D2D;} .lm-blue{color:#185FA5;} .lm-amber{color:#854F0B;} .lm-green{color:#0F6E56;} .lm-purple{color:#534AB7;}
+.hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+.sf-keybox{border-left:3px solid #E24B4A;padding:8px 14px;background:#FCEBEB;border-radius:0 6px 6px 0;margin-bottom:8px;}
+.sf-keybox p{font-size:13px;color:#791F1F;line-height:1.6;margin:0;}
+</style>
+<div class="sf-wrap">
+<div style="background:#1f2937;color:#e8ff47;font-size:12px;font-weight:700;padding:6px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;font-family:Arial;">Tap each card to reveal details</div>
+
+<div class="sf-grid">
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-red">Pupils <span class="hy-inline">MCQ</span></div>
+<div class="sf-card-main">Pinpoint miosis</div>
+<div class="sf-card-detail">Mu-2 receptor stimulation of Edinger-Westphal nucleus.<br><br><b>Exceptions (dilation):</b><br>&bull; Severe hypoxia/acidosis<br>&bull; Pethidine: anticholinergic metabolite causes mydriasis<br>&bull; Mixed overdose with anticholinergics<br><br>Dilated pupils do NOT rule out opiate poisoning if hypoxic.</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-red">Respiration <span class="hy-inline">Key</span></div>
+<div class="sf-card-main">Bradypnoea &lt;8/min</div>
+<div class="sf-card-detail">Mu receptor inhibition of medullary respiratory centres.<br><br>&bull; Snoring precedes fatal overdose (upper airway failure)<br>&bull; Gurgling = pulmonary oedema accumulation<br>&bull; <b>Non-cardiogenic pulmonary oedema</b> ("heroin-lung"): onset 0&ndash;2 hours after IV heroin<br>&bull; Pink frothy sputum, bilateral fluffy infiltrates on CXR<br>&bull; Resolves with supportive care within 1&ndash;2 days<br>&bull; <b>Primary cause of death: respiratory failure</b></div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-blue">CVS</div>
+<div class="sf-card-main">Hypotension + Bradycardia</div>
+<div class="sf-card-detail">Opiate-induced arteriolar and venous dilation.<br><br>&bull; While bradycardia is common, tachycardia can also occur<br>&bull; Non-specific ST-T changes on ECG reported<br>&bull; Terminal: gradual hypotension, feeble pulse<br>&bull; Hyperkalaemia may occur (especially with rhabdomyolysis)</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-amber">Temperature</div>
+<div class="sf-card-main">Hypothermia</div>
+<div class="sf-card-detail">Cold clammy skin, hypothermia. Contributes to evidence of 3H triad for diagnosis:<br><br>&bull; <b>Hypoglycaemia</b><br>&bull; <b>Hypoxia</b><br>&bull; <b>Hypothermia</b><br><br>All three should be looked for and corrected.</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-red">Heroin-lung <span class="hy-inline">MCQ</span></div>
+<div class="sf-card-main">Non-cardiogenic pulmonary oedema</div>
+<div class="sf-card-detail">Specific complication of IV heroin overdose.<br><br>&bull; Onset: immediate to 2 hours<br>&bull; Features: rales, pink frothy sputum, significant hypoxia, bilateral fluffy infiltrates on CXR<br>&bull; Some require mechanical ventilation<br>&bull; <b>Resolves rapidly with supportive care alone</b> (hours to 1&ndash;2 days)<br>&bull; Cardiogenic origin excluded: wedge pressure normal/low</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-purple">Rhabdomyolysis</div>
+<div class="sf-card-main">Muscle breakdown cascade</div>
+<div class="sf-card-detail">Especially with prolonged hypoxic coma.<br><br>Sequence: Rhabdomyolysis &rarr; Hyperkalaemia &rarr; Acute renal failure<br><br>Management:<br>&bull; Early aggressive fluid replacement (mainstay)<br>&bull; Mannitol or furosemide to maintain urine output<br>&bull; Urinary alkalinisation NOT routinely recommended</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-blue">GI effects</div>
+<div class="sf-card-main">Urinary retention + Constipation</div>
+<div class="sf-card-detail">&bull; Urinary retention (mu-2 effect on bladder)<br>&bull; Cramping and constipation<br>&bull; Sphincter of Oddi spasm<br>&bull; Nausea and vomiting<br>&bull; GI dysmotility (mu-2 receptor mediated)</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+<div class="sf-card" onclick="this.classList.toggle('sf-open')">
+<div class="sf-card-label lm-green">Foetal effects</div>
+<div class="sf-card-main">Crosses placenta in 5 minutes</div>
+<div class="sf-card-detail">Most opiates cross the human placenta.<br><br>&bull; Appear in foetal circulation within <b>5 minutes</b> of maternal IV injection<br>&bull; Morphine: vasoconstricts placental vasculature<br>&bull; Decreases biophysical profile score<br>&bull; Absent foetal breathing movements, non-reactive NST<br>&bull; Neonatal respiratory depression if delivery 1&ndash;3 hours post-maternal dose</div>
+<div class="sf-card-tap">Tap for detail</div>
+</div>
+
+</div>
+
+<div class="sf-keybox"><p><b>Adverse effects summary (mnemonic ROVE-MCP):</b><br>
+<b>R</b>espiratory depression &bull; <b>O</b>pioid-induced constipation &bull; <b>V</b>omiting/vertigo &bull; <b>E</b>uphoria/dysphoria &bull; <b>M</b>iosis &bull; <b>C</b>ough suppression &bull; <b>P</b>ruritus / Priapism / hypotension</p></div>
+</div>`
+      },
+      {
+        step: 5,
+        title: "Chronic Poisoning &amp; Withdrawal Stages",
+        text: `<b>CHRONIC OPIATE POISONING</b><br><br>
+
+<b>Signs and Symptoms:</b><br>
+&bull; Restlessness, irritable, emaciated, disturbed sleep<br>
+&bull; Contracted sluggish pupils (even at rest)<br>
+&bull; Marked constipation, nausea, anorexia<br>
+&bull; Decreased immune response (decreased immune cell counts, macrophage progenitor proliferation)<br>
+&bull; CNS: dementia, mania, intellectual and moral deterioration<br>
+&bull; Memory loss, neurasthenia<br>
+&bull; Impotence (temporary)<br>
+&bull; Pigmentation around mouth and nostrils<br>
+&bull; Dermal scars (IV abuse), amnesia, occasional hallucinations<br>
+&bull; Compartment syndrome (from narcotic injections)<br><br>
+
+<b>Addiction indicators (clinical pointers):</b><br>
+Unusual mood swings &bull; Withdrawal from social activities &bull; Unexplained overspending &bull; Dwindling sexual drive &bull; Pills/syringes around the house &bull; Pinpoint pupils &bull; Weight loss, pallor &bull; Chronic constipation &bull; Periodic sweating/tremors<br><br>
+
+<hr style="border-color:#ddd;margin:14px 0;">
+
+<b>WITHDRAWAL STAGES</b> <span style="font-size:11px;color:#888;">(times based on heroin)</span>
+
+<style>
+.wd-stage{border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid transparent;}
+.wd-s0{background:#f0f9f0;border-color:#3fb950;}
+.wd-s1{background:#fff8e6;border-color:#EF9F27;}
+.wd-s2{background:#FCEBEB;border-color:#E24B4A;}
+.wd-s3{background:#EEEDFE;border-color:#7F77DD;}
+.wd-head{font-size:13px;font-weight:700;margin-bottom:6px;}
+.wd-time{font-size:11px;font-weight:400;color:#888;margin-left:6px;}
+.wd-text{font-size:13px;line-height:1.7;color:#333;}
+.hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+</style>
+
+<div class="wd-stage wd-s0">
+<div class="wd-head" style="color:#1D6E30;">Anticipatory <span class="wd-time">3&ndash;4 hours</span></div>
+<div class="wd-text">Anxiety &bull; Craving &bull; Drug-seeking behaviour</div>
+</div>
+
+<div class="wd-stage wd-s1">
+<div class="wd-head" style="color:#854F0B;">Early <span class="wd-time">8&ndash;10 hours</span></div>
+<div class="wd-text">Restlessness &bull; Yawning &bull; Nausea &bull; Sweating &bull; Rhinorrhoea &bull; Lacrimation &bull; <b>Mydriasis</b> &bull; Stomach cramps &bull; Drug-seeking behaviour</div>
+</div>
+
+<div class="wd-stage wd-s2">
+<div class="wd-head" style="color:#791F1F;">Fully Developed <span class="wd-time">1&ndash;3 days</span> <span class="hy-inline">Exam</span></div>
+<div class="wd-text">Tremor &bull; <b>Piloerection</b> (gooseflesh = <i>cold turkey</i>) &bull; Vomiting &bull; Diarrhoea &bull; Muscle spasm &bull; Hypertension &bull; Tachycardia &bull; Fever &bull; Chills &bull; Impulse-driven drug-seeking behaviour</div>
+</div>
+
+<div class="wd-stage wd-s3">
+<div class="wd-head" style="color:#534AB7;">Protracted Abstinence <span class="wd-time">Up to 6 months</span></div>
+<div class="wd-text">Hypotension &bull; Bradycardia &bull; Insomnia &bull; Anorexia &bull; Stimulus-driven opiate craving</div>
+</div>
+
+<div style="background:#E6F1FB;border-left:3px solid #378ADD;padding:10px 14px;border-radius:0 8px 8px 0;margin-top:10px;font-size:13px;color:#185FA5;line-height:1.7;">
+<b>Cold turkey</b> &mdash; term derived from gooseflesh + hypothermia appearance of skin during opiate withdrawal, resembling the skin of a plucked cold turkey.<br><br>
+<b>Neonatal withdrawal:</b> Infants of addicted mothers; onset 12&ndash;72 hours after birth; dehydration, irritability, tremors, continuous crying, diarrhoea.
+</div>`
+      },
+      {
+        step: 6,
+        title: "Diagnosis &amp; Differential Diagnosis",
+        text: `<b>DIAGNOSIS OF OPIATE POISONING</b><br><br>
+
+<b>1. Clinical:</b><br>
+&bull; Needle marks, dermal scars (injection marks in antecubital fossae, forearms, back of hands, neck, groin, ankles)<br>
+&bull; 3H triad: Hypoglycaemia + Hypoxia + Hypothermia<br>
+&bull; Pathognomonic triad: Coma + Pinpoint pupils + Respiratory depression<br><br>
+
+<b>2. Lab / Chemical:</b><br>
+&bull; RIA, GC, GC-MS, HPLC &mdash; detect most opiates in urine/blood<br>
+&bull; <b>Marquis test</b>: Suspect sample + Marquis reagent (5 mL of 40% formaldehyde in 100 mL of sulphuric acid)<br>
+&nbsp;&nbsp;&mdash; Result: fine purple-red &rarr; violet &rarr; blue (morphine/opiates)<br>
+&nbsp;&nbsp;&mdash; Same reagent + amphetamine: yellow-orange colour<br><br>
+
+<b>3. Empirical naloxone test:</b><br>
+&bull; Dramatic reversal of triad = confirms opiate poisoning<br>
+&bull; <b>Caution:</b> can precipitate withdrawal reaction in addicts<br>
+&bull; If no response after 10 mg naloxone &rarr; question the diagnosis<br><br>
+
+<hr style="border-color:#ddd;margin:14px 0;">
+
+<b>DIFFERENTIAL DIAGNOSIS</b>
+
+<style>
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+@media(max-width:400px){.dd-grid{grid-template-columns:1fr;}}
+.dd-card{background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:10px 12px;cursor:pointer;}
+.dd-card:active{background:#f0ebe0;}
+.dd-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#A32D2D;margin-bottom:4px;}
+.dd-main{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px;}
+.dd-detail{font-size:12px;color:#555;line-height:1.5;display:none;}
+.dd-card.dd-open .dd-detail{display:block;}
+.dd-tap{font-size:10px;color:#aaa;margin-top:3px;}
+</style>
+<div style="font-size:12px;color:#8b949e;margin-bottom:6px;font-family:Arial;">Tap each card for distinguishing feature</div>
+<div class="dd-grid">
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 1</div>
+<div class="dd-main">Alcohol intoxication</div>
+<div class="dd-detail">Smell of alcohol. Lab support (blood alcohol level). Pupils usually not pinpoint. No response to naloxone.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 2</div>
+<div class="dd-main">Barbiturate poisoning</div>
+<div class="dd-detail">No pinpoint pupils (barbiturates cause mid-sized or slightly dilated pupils). Lab support (barbiturate levels). No naloxone response.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 3</div>
+<div class="dd-main">Carbolic acid / Phenol</div>
+<div class="dd-detail">Characteristic phenolic smell. Urine analysis (greenish/dark urine). Corrosive stains. No naloxone response.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 4</div>
+<div class="dd-main">Intracranial haemorrhage</div>
+<div class="dd-detail">History of head injury/hypertension. Unequal pupils (herniation). Localising neurological signs. CT scan diagnostic. No naloxone response.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 5</div>
+<div class="dd-main">Cerebral malaria (falciparum)</div>
+<div class="dd-detail">History of travel/fever. Thick film/rapid antigen test positive. No pinpoint pupils. No naloxone response.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 6</div>
+<div class="dd-main">CO poisoning</div>
+<div class="dd-detail">History of fire/generator exposure. Cherry red skin/mucosae. Carboxyhaemoglobin elevated on spectroscopic examination. Globus pallidus &gt; putamen on CT. COHb confirms.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 7</div>
+<div class="dd-main">Diabetic coma / Uraemia</div>
+<div class="dd-detail">Blood glucose / BUN elevated. No pinpoint pupils. No naloxone response. History of DM/renal disease.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+<div class="dd-card" onclick="this.classList.toggle('dd-open')">
+<div class="dd-label">Diff 8</div>
+<div class="dd-main">Epilepsy / Meningitis / Heat stroke</div>
+<div class="dd-detail">Epilepsy: history, post-ictal state. Meningitis: fever, neck stiffness, CSF analysis. Heat stroke: high body temperature, no sweating, history of heat exposure.</div>
+<div class="dd-tap">Tap to expand</div>
+</div>
+
+</div>`
+      },
+      {
+        step: 7,
+        title: "Treatment &mdash; Acute &amp; Chronic (with Doses)",
+        text: `<style>
+.tx-wrap{font-family:Arial,sans-serif;}
+.tx-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.tx-tab{padding:6px 16px;font-size:13px;border-radius:20px;border:1px solid #ccc;cursor:pointer;background:#f5f5f5;color:#555;font-family:Arial;}
+.tx-tab.tx-on{background:#1f2937;color:#fff;border-color:#1f2937;}
+.tx-panel{display:none;}
+.tx-panel.tx-show{display:block;}
+.tx-step{background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:11px 13px;margin-bottom:8px;}
+.tx-step-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.tx-step-text{font-size:13px;line-height:1.7;color:#333;}
+.lm-red{color:#A32D2D;} .lm-blue{color:#185FA5;} .lm-green{color:#0F6E56;} .lm-amber{color:#854F0B;} .lm-purple{color:#534AB7;}
+.hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+.tx-antidote{background:#E1F5EE;border:1.5px solid #1D9E75;border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.tx-antidote-title{font-size:14px;font-weight:700;color:#0F6E56;margin-bottom:6px;}
+.tx-antidote-text{font-size:13px;color:#1a1a1a;line-height:1.7;}
+.tx-dose{background:#e8ff47;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;color:#1a1a1a;display:inline-block;margin:2px 0;}
+.tx-warn{background:#FCEBEB;border-left:3px solid #E24B4A;padding:8px 14px;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#791F1F;line-height:1.6;}
+</style>
+<div class="tx-wrap">
+<div class="tx-tabs">
+  <button class="tx-tab tx-on" onclick="txShow(0,this)">Acute</button>
+  <button class="tx-tab" onclick="txShow(1,this)">Antidotes</button>
+  <button class="tx-tab" onclick="txShow(2,this)">Chronic</button>
+</div>
+
+<div class="tx-panel tx-show" id="txp0">
+<div class="tx-step">
+  <div class="tx-step-label lm-blue">Step 1 &mdash; Supportive (ABC)</div>
+  <div class="tx-step-text">
+    &bull; Maintain patent airway<br>
+    &bull; Endotracheal intubation + assisted ventilation<br>
+    &bull; Monitor arterial blood gases / pulse oximetry<br>
+    &bull; PEEP if ARDS; small tidal volumes (6 mL/kg)<br>
+    &bull; Ipecac-induced emesis: <b>NOT recommended</b> (risk of CNS depression + seizures)
+  </div>
+</div>
+<div class="tx-step">
+  <div class="tx-step-label lm-amber">Step 2 &mdash; Gastric Lavage <span class="hy-inline">Note</span></div>
+  <div class="tx-step-text">
+    &bull; Use <b>potassium permanganate (KMnO4)</b> solution<br>
+    &bull; <b>250&ndash;300 mL should be left in stomach</b> after wash<br>
+    &bull; Reason: <b>enterohepatic circulation</b> of opiates &mdash; KMnO4 neutralises reabsorbed drug<br>
+    &bull; Activated charcoal: most effective within 1 hour
+  </div>
+</div>
+<div class="tx-step">
+  <div class="tx-step-label lm-amber">Step 3 &mdash; Reduce Reabsorption</div>
+  <div class="tx-step-text">
+    &bull; Oral sodium sulphate <b>30 g</b><br>
+    &bull; Enema twice daily<br>
+    &bull; Prevents reabsorption from gut
+  </div>
+</div>
+<div class="tx-step">
+  <div class="tx-step-label lm-red">Step 4 &mdash; Convulsions</div>
+  <div class="tx-step-text">
+    &bull; Benzodiazepines: <b>5&ndash;10 mg IV initially</b>, repeat every 5&ndash;10 min as needed<br>
+    &bull; Usually not required if naloxone is available<br>
+    &bull; Monitor for hypoxia, electrolytes, hypoglycaemia<br>
+    &bull; IV dextrose: 50 mL of 50% (adult) or 2 mL/kg of 25% (child)
+  </div>
+</div>
+<div class="tx-step">
+  <div class="tx-step-label lm-red">Step 5 &mdash; Hypotension</div>
+  <div class="tx-step-text">
+    &bull; IV isotonic fluid 10&ndash;20 mL/kg + Trendelenburg position<br>
+    &bull; Dopamine: 5 mcg/kg/min, increase in 5 mcg/kg/min increments<br>
+    &bull; Noradrenaline: 0.5&ndash;1 mcg/min, titrate
+  </div>
+</div>
+</div>
+
+<div class="tx-panel" id="txp1">
+<div class="tx-antidote">
+  <div class="tx-antidote-title">&#9989; Naloxone &mdash; ANTIDOTE OF CHOICE <span class="hy-inline">MCQ</span></div>
+  <div class="tx-antidote-text">
+    Effective against ALL opiates including pentazocine<br>
+    <b>NOT very effective against buprenorphine</b> (needs 10 mg+)<br><br>
+    <b>Dramatic reversal of:</b> miosis, respiratory depression, hypotension, coma<br><br>
+    <b>Doses:</b><br>
+    &bull; Adult: <span class="tx-dose">1.2 mg IV</span><br>
+    &bull; Child: <span class="tx-dose">0.4 mg IV</span><br>
+    &bull; Neonate: <span class="tx-dose">0.1 mg/kg IV or intratracheal</span><br>
+    &bull; Repeat: <b>2 mg doses</b> as needed<br>
+    &bull; Total max adult: <b>75 mg</b> (Reddy) / if no response after 10 mg, question diagnosis<br>
+    &bull; Routes: IV (best); sublingual, IM, down endotracheal tube if IV difficult<br><br>
+    <b>Naloxone infusion</b> (for long-acting opiates):<br>
+    &bull; Better than repeated boluses<br>
+    &bull; Amount (mg/24h) = bolus dose (mg) &times; 2/3 &times; 24<br>
+    &bull; Dilute in normal saline or 5% dextrose (NOT alkaline solutions)<br>
+    &bull; Use within 24 hours<br>
+    &bull; Observe for 2 hours after stopping infusion
+  </div>
+</div>
+<div class="tx-warn">Caution in addicts: naloxone can precipitate acute withdrawal reaction. Titrate carefully.</div>
+<div class="tx-antidote">
+  <div class="tx-antidote-title">Naltrexone &mdash; Long-acting oral antagonist</div>
+  <div class="tx-antidote-text">
+    &bull; <span class="tx-dose">50 mg/day orally</span> (weeks to months)<br>
+    &bull; Used for treating opiate addiction (chronic use)<br>
+    &bull; Must NOT be given to opioid-dependent patient who has NOT been detoxified<br>
+    &bull; Challenge dose of naloxone first to confirm lack of dependence
+  </div>
+</div>
+<div class="tx-antidote">
+  <div class="tx-antidote-title">Nalmefene &mdash; Naltrexone derivative</div>
+  <div class="tx-antidote-text">
+    &bull; Longer duration than naloxone in acute overdose<br>
+    &bull; IV: <span class="tx-dose">0.1 mg</span> &rarr; if no withdrawal &rarr; <span class="tx-dose">0.5 mg</span> &rarr; <span class="tx-dose">1 mg</span> in 2&ndash;5 min<br>
+    &bull; Also IM or SC
+  </div>
+</div>
+<div class="tx-antidote">
+  <div class="tx-antidote-title">Physostigmine (controversial)</div>
+  <div class="tx-antidote-text">
+    &bull; <span class="tx-dose">0.04 mg/kg IV</span><br>
+    &bull; Increases ACh in reticular formation of brainstem (suppressed by opiates)<br>
+    &bull; <b>Controversial and dangerous</b> &mdash; not routinely recommended
+  </div>
+</div>
+</div>
+
+<div class="tx-panel" id="txp2">
+<div class="tx-step">
+  <div class="tx-step-label lm-blue">Chronic treatment steps</div>
+  <div class="tx-step-text">
+    a) <b>Gradual withdrawal</b> of the opiate<br>
+    b) <b>Methadone substitution:</b> <span class="tx-dose">30&ndash;40 mg/day</span>, then gradually tapered<br>
+    c) <b>Propranolol 80 mg</b>: relieves anxiety and craving; no effect on physical symptoms<br>
+    d) <b>Clonidine</b>: autonomic symptoms<br>
+    e) <b>Buprenorphine</b> or <b>Naltrexone</b>: maintenance<br>
+    f) <b>Gabapentin regimen <span class="hy-inline">New</span>:</b><br>
+    &nbsp;&nbsp;&bull; Clonidine 0.1 mg TID &times; 7 days<br>
+    &nbsp;&nbsp;&bull; Then Naltrexone 50 mg BD &times; 14 days<br>
+    &nbsp;&nbsp;&bull; Gabapentin 600 mg BD throughout all 21 days<br>
+    g) Antispasmodics for abdominal cramps, vomiting, diarrhoea<br>
+    h) Tranquillisers or bedtime sedation if needed<br>
+    i) <b>Psychiatric counselling</b>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+function txShow(i,btn){
+  document.querySelectorAll('.tx-panel').forEach(function(p,j){p.classList.toggle('tx-show',j===i);});
+  document.querySelectorAll('.tx-tab').forEach(function(b){b.classList.remove('tx-on');});
+  if(btn) btn.classList.add('tx-on');
+}
+</script>`
+      },
+      {
+        step: 8,
+        title: "Autopsy, Forensic Issues &amp; Special Topics",
+        text: `<style>
+.af-wrap{font-family:Arial,sans-serif;}
+.af-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.af-tab{padding:5px 12px;font-size:12px;border-radius:20px;border:1px solid #ccc;cursor:pointer;background:#f5f5f5;color:#555;font-family:Arial;}
+.af-tab.af-on{background:#1f2937;color:#fff;border-color:#1f2937;}
+.af-panel{display:none;}
+.af-panel.af-show{display:block;}
+.af-card{background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+.af-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.af-text{font-size:13px;color:#222;line-height:1.7;}
+.lm-red{color:#A32D2D;} .lm-blue{color:#185FA5;} .lm-amber{color:#854F0B;} .lm-green{color:#0F6E56;} .lm-purple{color:#534AB7;}
+.hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+.af-keybox{border-left:3px solid #E24B4A;padding:8px 14px;background:#FCEBEB;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#791F1F;line-height:1.6;}
+.af-infobox{border-left:3px solid #378ADD;padding:8px 14px;background:#E6F1FB;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#185FA5;line-height:1.6;}
+.af-tealbox{border-left:3px solid #1D9E75;padding:8px 14px;background:#E1F5EE;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#0F6E56;line-height:1.6;}
+</style>
+<div class="af-wrap">
+<div class="af-tabs">
+  <button class="af-tab af-on" onclick="afShow(0,this)">Autopsy</button>
+  <button class="af-tab" onclick="afShow(1,this)">Forensic</button>
+  <button class="af-tab" onclick="afShow(2,this)">Heroin</button>
+  <button class="af-tab" onclick="afShow(3,this)">Fentanyl</button>
+  <button class="af-tab" onclick="afShow(4,this)">Body packer</button>
+</div>
+
+<div class="af-panel af-show" id="afp0">
+<div class="af-card"><div class="af-label lm-red">External findings</div><div class="af-text">
+&bull; Injection marks, dermal abscesses, scarring (antecubital fossae, forearms, back of hands, neck, groin, ankles)<br>
+&bull; Tattooing (common feature of drug sub-culture)<br>
+&bull; Emaciation, unkempt appearance<br>
+&bull; <b>Deep cyanosis: nails, lips, palm, sole</b><br>
+&bull; Froth at mouth and nostrils (gross pulmonary oedema)
+</div></div>
+<div class="af-card"><div class="af-label lm-red">Internal findings <span class="hy-inline">High-yield</span></div><div class="af-text">
+&bull; <b>Gross pulmonary oedema</b> (dominant finding; especially in sudden heroin death)<br>
+&bull; Intense congestion of all internal organs<br>
+&bull; Cerebral oedema<br>
+&bull; Liver: congestion, enlargement of hepatic lymph nodes (morphine detectable in nodes)<br>
+&bull; Myocardial damage: focal mononuclear cells, degenerated/necrotic fibres<br>
+&bull; Undiagnosed pneumonia (frequent in heroin fatalities)<br>
+&bull; <b>Heroin-induced spongiform leukoencephalopathy</b>: spongiform degeneration of white matter, vacuolisation and fluid accumulation in myelin sheaths
+</div></div>
+<div class="af-tealbox">Preserve: blood, urine, brain, liver, bile for chemical analysis. Autopsy in drug-related deaths requires precautions for HIV and serum hepatitis (common in IV drug abusers).</div>
+</div>
+
+<div class="af-panel" id="afp1">
+<div class="af-card"><div class="af-label lm-amber">Manner of death</div><div class="af-text">
+&bull; <b>Accidental:</b> most common; IV abusers; "death on the needle"<br>
+&bull; <b>Suicidal:</b> opioids = ideal suicidal poison (painless death, bitter taste discourages homicide)<br>
+&bull; <b>Homicidal:</b> rare; opioids are bitter-tasting<br>
+&bull; <b>Euthanasia:</b> morphine most commonly favoured for causing painless death<br>
+&bull; Accidental in children: rare; doping of racehorses
+</div></div>
+<div class="af-card"><div class="af-label lm-red">Drug adulterants / street terms <span class="hy-inline">Viva</span></div><div class="af-text">
+&bull; <b>Cutting:</b> addition of adulterants to heroin by pushers for monetary gain<br>
+&bull; <b>Sting:</b> scopolamine added to heroin<br>
+&bull; <b>Hot shot:</b> strychnine added to heroin<br>
+&bull; <b>Speed ball:</b> heroin + cocaine/amphetamine/alcohol/benzodiazepines/cannabis<br>
+&bull; Combination with phencyclidine can cause death
+</div></div>
+<div class="af-card"><div class="af-label lm-blue">India-specific forensic points</div><div class="af-text">
+&bull; Heroin (brown sugar) = most commonly abused in India; metropolitan cities<br>
+&bull; Medical/paramedical staff abuse morphine, pethidine, pentazocine<br>
+&bull; Buprenorphine: emerging non-medical abuse<br>
+&bull; Codeine OTC (antitussive syrups): increasingly abused by college-going youth<br>
+&bull; Cotton fever: febrile reaction in IV abusers (drugs filtered through cotton balls)<br>
+&bull; Wound botulism: black tar heroin SC/IM injections &rarr; Clostridium botulinum germination &rarr; descending flaccid paralysis
+</div></div>
+<div class="af-card"><div class="af-label lm-purple">Opium food preparations (India)</div><div class="af-text">
+&bull; <b>Kasoomba:</b> tea made from poppy seeds<br>
+&bull; <b>Bhujri:</b> decoction of green poppy fruits fried in ghee/butter<br>
+&bull; <b>Halwa:</b> sweet prepared with poppy green fruit juice
+</div></div>
+</div>
+
+<div class="af-panel" id="afp2">
+<div class="af-keybox"><b>Heroin = 3,6-diacetylmorphine (diamorphine, diacetate)</b><br>Semi-synthetic; synthesized from morphine by mixing with acetic anhydride.</div>
+<div class="af-card"><div class="af-label lm-red">Potency</div><div class="af-text">
+&bull; Orally: <b>1.5 times</b> more potent than morphine<br>
+&bull; Parenterally: <b>2&ndash;4 times</b> more potent<br>
+&bull; Fatal dose: 50 mg<br>
+&bull; More rapid blood-brain barrier penetration than morphine
+</div></div>
+<div class="af-card"><div class="af-label lm-amber">Metabolism</div><div class="af-text">
+Heroin &rarr; <b>6-monoacetylmorphine</b> (more potent than morphine) &rarr; Morphine<br>
+Hence detected in body as morphine. Heroin has lower mu receptor affinity itself, but its metabolite is highly potent.<br>
+Heroin lower affinity for mu receptor but 6-monoacetylmorphine &gt; morphine in potency.
+</div></div>
+<div class="af-card"><div class="af-label lm-blue">Two forms</div><div class="af-text">
+&bull; <b>Salt (hydrochloride):</b> white powder, highly water-soluble, IV/SC use; "mainliners" (IV) = needle-track ulcers; SC users = "skin popping"<br>
+&bull; <b>Base (pure alkaloid):</b> <b>"Brown sugar"</b> or black taar; most prevalent in India
+</div></div>
+<div class="af-infobox">Heroin is metabolised to morphine &mdash; so if heroin was being abused, morphine is what is found at autopsy in liver, lymph nodes, etc.</div>
+</div>
+
+<div class="af-panel" id="afp3">
+<div class="af-keybox"><b>Fentanyl &mdash; synthetic opiate, mu receptor agonist, 80 times more potent than morphine</b></div>
+<div class="af-card"><div class="af-label lm-red">Analogues</div><div class="af-text">Sufentanil &bull; Alfentanil &bull; Carfentanil (even more potent)<br>
+<b>Designer drugs (fentanyl derivatives):</b><br>
+&bull; "China white" = Afentanil (alphafentanyl)<br>
+&bull; 3-methylfentanyl<br>
+&bull; Flourofentanyl<br>
+Can be sniffed, rubbed, smoked, or injected
+</div></div>
+<div class="af-card"><div class="af-label lm-blue">Forensic significance</div><div class="af-text">
+&bull; Exhibit stronger euphoria than any other opioids &mdash; high abuse potential<br>
+&bull; Can be converted to aerosol form &mdash; used in modern warfare/hostage situations to subdue enemies without bloodshed<br>
+&bull; Duration: minutes to 1 hour (ultra-short acting)<br>
+&bull; Clinical features same as morphine/heroin
+</div></div>
+</div>
+
+<div class="af-panel" id="afp4">
+<div class="af-keybox"><b>Body Packer Syndrome (Mule / Bodypacker)</b><br>Individual who transports illicit drugs by swallowing wrapped drug packets.</div>
+<div class="af-card"><div class="af-label lm-amber">Method</div><div class="af-text">
+&bull; Swallows packets packed in gut-resistant plastic, latex condoms, gloves, or balloons<br>
+&bull; Also inserted rectally or vaginally<br>
+&bull; After arrival at destination: cathartics self-administered, packets defaecated<br>
+&bull; Most common with cocaine; also heroin, amphetamine, cannabis
+</div></div>
+<div class="af-card"><div class="af-label lm-red">Clinical features</div><div class="af-text">
+&bull; Usually asymptomatic<br>
+&bull; Serious toxicity if packet ruptures &rarr; acute signs of poisoning<br>
+&bull; Death reported from intestinal obstruction and perforation
+</div></div>
+<div class="af-card"><div class="af-label lm-blue">Diagnosis <span class="hy-inline">MCQ</span></div><div class="af-text">
+&bull; <b>Abdominal X-ray</b> (first choice and best)<br>
+&bull; Ultrasound or CT scan (if X-ray unclear)<br>
+&bull; MRI: does NOT visualise packets (no protons in drug)<br>
+&bull; Faecal examination over a few days in some cases
+</div></div>
+<div class="af-card"><div class="af-label lm-green">Management</div><div class="af-text">
+<b>Asymptomatic:</b><br>
+&bull; Whole bowel irrigation with polyethylene glycol (PEG) solution<br>
+&bull; Alternative: wait until packets move to colon, then low-volume phosphosoda enemas or high-volume saline enemas<br>
+&bull; No food until all packets in colon; Metoclopramide 10 mg 8th hourly to encourage gastric emptying<br>
+&bull; Empty rectum first with bisacodyl suppository<br><br>
+<b>Symptomatic (packet rupture):</b><br>
+&bull; Continuous-infusion naloxone + activated charcoal + whole bowel irrigation<br>
+&bull; Surgical intervention for intestinal perforation or obstruction
+</div></div>
+</div>
+</div>
+
+<script>
+function afShow(i,btn){
+  document.querySelectorAll('.af-panel').forEach(function(p,j){p.classList.toggle('af-show',j===i);});
+  document.querySelectorAll('.af-tab').forEach(function(b){b.classList.remove('af-on');});
+  if(btn) btn.classList.add('af-on');
+}
+</script>`
+      }
+    ],
   ]
 };
