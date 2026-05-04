@@ -663,68 +663,7 @@ Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half
 &bull; Document source, batch, and distribution chain<br>
 &bull; Preserve in airtight containers (methanol is volatile)`
       }
-    ],
-
-    // -- TO ADD A NEW TOPIC --------------------------------
-    // Copy the block below, paste after the last entry above,
-    // add a comma after the previous closing ],
-    // and fill in your content.
-    //
-    // "Your New Topic Name": [
-    //   { step:1, title:"Title 1", text:"Content 1" },
-    //   { step:2, title:"Title 2", text:"Content 2" },
-    //   { step:3, title:"Title 3", text:"Content 3" },
-    //   { step:4, title:"Title 4", text:"Content 4" }
-    // ],
-    // -----------------------------------------------------
-
-  },
-
-  // -- VISCERA SIMULATION SCENARIOS --------------------------
-  scenarios: [
-    {
-      id: "op",
-      history: "A farmer is found collapsed in his field with frothing at the mouth, pin-point pupils, and excessive secretions. Suspected Organophosphorus (OP) Poisoning.",
-      correctPreservative: "Saturated Salt Solution",
-      correctBloodPres: "NaF 2mg",
-      trap: "Do NOT use Rectified Spirit for OP poisoning. Saturated Salt Solution is the standard for organic poisons."
-    },
-    {
-      id: "alcohol",
-      history: "Body found behind a liquor shop. Strong smell of alcohol. Suspected Acute Alcohol Poisoning.",
-      correctPreservative: "Saturated Salt Solution",
-      correctBloodPres: "NaF 10mg",
-      trap: "NEVER use Rectified Spirit for alcohol cases &mdash; it contaminates the sample directly. Higher NaF dose (10mg) prevents post-mortem alcohol formation by bacteria."
-    },
-    {
-      id: "acid",
-      history: "Body found near toilet cleaner bottles. Leathery, corroded stomach lining at autopsy. Suspected Mineral Acid Poisoning.",
-      correctPreservative: "Rectified Spirit",
-      correctBloodPres: "NaF 2mg",
-      trap: "Salt solution reacts with mineral acids. Rectified Spirit is the required exception for corrosive acid cases."
-    },
-    {
-      id: "phenol",
-      history: "Characteristic phenolic smell in mouth and stomach. Corrosive brownish staining on lips and tongue. Suspected Carbolic Acid (Phenol) Poisoning.",
-      correctPreservative: "Saturated Salt Solution",
-      correctBloodPres: "NaF 2mg",
-      trap: "Phenol is HIGHLY SOLUBLE in Rectified Spirit &mdash; using spirit destroys the sample. Use Salt, NOT Spirit. Classic examiner trap."
-    },
-    {
-      id: "methanol",
-      history: "Multiple victims from the same village admitted after consuming locally brewed liquor. All have visual disturbances, deep breathing, and altered sensorium. Suspected Methyl Alcohol (Methanol) Poisoning.",
-      correctPreservative: "Saturated Salt Solution",
-      correctBloodPres: "NaF 2mg",
-      trap: "CRITICAL: NEVER use Rectified Spirit for methanol &mdash; methanol is soluble in spirit and will be dissolved, giving a false negative. Use Saturated NaCl. Also collect vitreous humour separately &mdash; it gives the most reliable alcohol levels."
-    },
-    // ============================================================
-//  ADD THIS BLOCK TO topics.js
-//  Paste it INSIDE the relay: { } section,
-//  after the last existing topic's closing ],
-//  Add a comma after the previous topic's ] before pasting.
-//
-//  THEN run through topics_cleaner.html before uploading.
-// ============================================================
+    
 
     "Toxicology: Opium &amp; Somniferous Drugs": [
       {
