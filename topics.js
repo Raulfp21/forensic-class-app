@@ -270,7 +270,6 @@ const forensicContent = {
       }
     ],
 
-    // -- METHYL ALCOHOL POISONING — COMPLETE TOPIC ------------
     "Toxicology: Methyl Alcohol Poisoning": [
       {
         step: 1,
@@ -315,7 +314,7 @@ const forensicContent = {
 &bull; <b>Kussmaul breathing</b> (deep rapid breathing &mdash; compensating for metabolic acidosis)<br>
 &bull; Abdominal pain, vomiting<br>
 &bull; Bradycardia, hypotension<br>
-&bull; Convulsions, extrapyramidal signs (rigidity, bradykinesia)<br>
+&bull; Convulsions, extrapyramidal signs (rigidity, braykinesia)<br>
 &bull; Coma &rarr; <b>respiratory failure &rarr; death</b><br><br>
 <b>Classic triad for exams:</b> Intoxication + Visual disturbance + Metabolic acidosis = Methanol poisoning until proved otherwise.`
       },
@@ -380,9 +379,6 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 &bull; Monitor glucose (ethanol therapy causes hypoglycaemia)`
       },
       {
-        // ── FIX: SVG cascade lines now have class="fg-cascade-line"
-        // so they animate via CSS (stroke-dasharray draw-on effect).
-        // No inline <script> needed here.
         step: 6,
         title: "Toxic Cascade + Treatment Map (Diagram)",
         text: `<div style="font-family:sans-serif; font-size:13px; margin-bottom:10px; display:flex; gap:12px; flex-wrap:wrap;">
@@ -493,12 +489,6 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 </svg>`
       },
       {
-        // ── FIX: <script> tag REMOVED from text string.
-        // bgShow() is now defined in your main JS file (see top comment).
-        // The CSS for .bg-panel/.bg-sn is kept here because it scopes
-        // styles to this step's content only — that is safe via innerHTML.
-        // The animation classes (.bg-show, .bg-card, .bg-ch) are driven
-        // by CSS in forensicContent._animationCSS injected into <head>.
         step: 7,
         title: "Why Putamen? Basal Ganglia Mechanism (Diagram)",
         text: `<style>
@@ -663,7 +653,7 @@ Send: Stomach + contents, Small intestine + contents, Liver (500g), Kidney (half
 &bull; Document source, batch, and distribution chain<br>
 &bull; Preserve in airtight containers (methanol is volatile)`
       }
-    
+    ],
 
     "Toxicology: Opium &amp; Somniferous Drugs": [
       {
@@ -795,8 +785,7 @@ Papaverine<br>Noscapine (Narcotine)
 </div>
 
 <div class="or-panel" id="orp3">
-<div class="or-keybox"><p><b>Sigma receptor &mdash; NOT an opioid receptor <span class="hy-inline">Exam trap</span></b><br>Insensitive to naloxone &mdash; the defining characteristic of opioid receptors. Hence no longer classified as opioid.<br>Dextromethorphan and Pentazocine are sigma agonists &rarr; psychotomimetic effects and movement disorders.</p></div>
-<div class="or-infobox"><p>Epsilon and Zeta receptors: postulated to exist but not demonstrated so far.</p></div>
+<div class="or-keybox"><p><b>Sigma receptor &mdash; NOT an opioid receptor <span class="hy-inline">Exam trap</span></b><br>Insensitive to naloxone &mdash; the defining characteristic of opioid receptors. Hence no longer classified as opioid.<br>Dextromethorphan and Pentazocine are sigma agonists &rarr; psychotomimetic effects and movement disorders.<br>Epsilon and Zeta receptors: postulated to exist but not demonstrated so far.</p></div>
 </div>
 
 <div class="or-panel" id="orp4">
@@ -1425,8 +1414,7 @@ function txShow(i,btn){
 </div></div>
 <div class="af-card"><div class="af-label lm-amber">Metabolism</div><div class="af-text">
 Heroin &rarr; <b>6-monoacetylmorphine</b> (more potent than morphine) &rarr; Morphine<br>
-Hence detected in body as morphine. Heroin has lower mu receptor affinity itself, but its metabolite is highly potent.<br>
-Heroin lower affinity for mu receptor but 6-monoacetylmorphine &gt; morphine in potency.
+Hence detected in body as morphine. Heroin has lower mu receptor affinity itself, but its metabolite is highly potent.
 </div></div>
 <div class="af-card"><div class="af-label lm-blue">Two forms</div><div class="af-text">
 &bull; <b>Salt (hydrochloride):</b> white powder, highly water-soluble, IV/SC use; "mainliners" (IV) = needle-track ulcers; SC users = "skin popping"<br>
@@ -1492,6 +1480,6 @@ function afShow(i,btn){
 }
 </script>`
       }
-    ],
-  ]
+    ]
+  }
 };
