@@ -266,7 +266,7 @@ const forensicContent = {
       {
         step: 4,
         title: "Decomposition &amp; Documentation",
-        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> &mdash; do not confuse decomposition changes with antemain injuries. All viscera preserved for chemical analysis."
+        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> &mdash; do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
       }
     ],
 
@@ -294,7 +294,7 @@ const forensicContent = {
 &bull; Inhibits <b>Cytochrome c oxidase (Complex IV)</b> of the mitochondrial electron transport chain<br>
 &bull; Halts ATP production in all cells<br>
 &bull; The cells most dependent on oxidative metabolism &mdash; <b>retinal ganglion cells</b> and <b>putamen</b> &mdash; are the first and most severely damaged<br><br>
-<b>Result:</b> High anion gap metabolic acidosis + selective injury to optic nerve and basal ganglia<br><br>
+<b>Result:</b> High anion gap metabolic acidosis + selective injury to optic nerve and basal ganglia.<br><br>
 <b>Memory hook:</b> Methanol &rarr; ADH &rarr; Formaldehyde &rarr; Formate &rarr; <b>Formate blocks Complex IV &rarr; Cell can't breathe &rarr; Retina and putamen go dark first</b>`
       },
       {
@@ -328,7 +328,7 @@ Calculated = 2&times;Na + Glucose/18 + BUN/2.8<br>
 <b>Normal gap: &lt;10 mOsm/kg</b>. In methanol poisoning, methanol itself contributes to osmolality &mdash; gap is elevated early before metabolism is complete.<br><br>
 <b>2. Anion gap (late &mdash; after metabolism):</b><br>
 Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol poisoning, formic acid is an unmeasured anion &mdash; gap rises as formate accumulates.<br>
-<b>AG &gt;20 with pH &lt;7.3 = severe poisoning</b><br><br>
+<b>AG &gt;20 with pH &lt;7.3 = severe poisoning</b>.<br><br>
 <b>Key insight:</b> Early cases show high osmolal gap with normal anion gap (methanol not yet metabolised). Late cases show high anion gap with normalised osmolal gap (methanol fully converted to formate). This gap crossover is diagnostically useful.<br><br>
 <b>Direct measurements:</b><br>
 &bull; Serum methanol level: <b>&gt;25 mg% = haemodialysis indicated</b>; &gt;50 mg% = severe<br>
@@ -1193,7 +1193,7 @@ Unusual mood swings &bull; Withdrawal from social activities &bull; Unexplained 
     &bull; Endotracheal intubation + assisted ventilation<br>
     &bull; Monitor arterial blood gases / pulse oximetry<br>
     &bull; PEEP if ARDS; small tidal volumes (6 mL/kg)<br>
-    &bull; Ipecac-induced EMESIS: <b>NOT recommended</b> (risk of CNS depression + seizures)
+    &bull; Ipecac-induced emesis: <b>NOT recommended</b> (risk of CNS depression + seizures)
   </div>
 </div>
 <div class="tx-step">
@@ -1324,11 +1324,11 @@ function txShow(i,btn){
 .af-card{background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:10px 12px;margin-bottom:8px;}
 .af-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
 .af-text{font-size:13px;color:#222;line-height:1.7;}
-.lm-red{color:#A32D2D;} .lm-blue{color:#185FA5;} .lm-amber{color:#854F0B;} .lm-green{color:#0F6E56;} .lm-purple{color:#534AB7;}
+.lm-red{color:#A32D2D;} .lm-blue{color:#185FA5;} .lm-green{color:#0F6E56;} .lm-purple{color:#534AB7;}
 .hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
 .af-keybox{border-left:3px solid #E24B4A;padding:8px 14px;background:#FCEBEB;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#791F1F;line-height:1.6;}
 .af-infobox{border-left:3px solid #378ADD;padding:8px 14px;background:#E6F1FB;margin-bottom:8px;font-size:13px;color:#185FA5;line-height:1.6;}
-.af-tealbox{border-left:3px solid #1D9E75;padding:8px 14px;background:#E1F5EE;margin-bottom:8px;font-size:13px;color:#0F6E56;line-height:1.6;}
+.af-tealbox{border-left:3px solid #1D9E75;padding:8px 14px;background:#E1F5EE;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#0F6E56;line-height:1.6;}
 </style>
 <div class="af-wrap">
 <div class="af-tabs">
@@ -1460,7 +1460,7 @@ Can be sniffed, rubbed, smoked, or injected
 <script>
 function afShow(i,btn){
   document.querySelectorAll('.af-panel').forEach(function(p,j){p.classList.toggle('af-show',j===i);});
-  document.querySelectorAll('.af-tab').forEach(function(b){b.classList.remove('or-on');});
+  document.querySelectorAll('.af-tab').forEach(function(b){b.classList.remove('af-on');});
   if(btn) btn.classList.add('af-on');
 }
 </script>`
