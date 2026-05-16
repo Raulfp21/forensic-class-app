@@ -266,7 +266,7 @@ const forensicContent = {
       {
         step: 4,
         title: "Decomposition &amp; Documentation",
-        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> &mdash; do not confuse decomposition changes with antemortem injuries. All viscera preserved for chemical analysis."
+        text: "Document adipocere, mummification, or skeletonisation. <b>Burial artifacts must be interpreted correctly</b> &mdash; do not confuse decomposition changes with antemain injuries. All viscera preserved for chemical analysis."
       }
     ],
 
@@ -396,10 +396,8 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
   <marker id="barr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
   <marker id="parr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
 </defs>
-<!-- Headers -->
 <text font-size="11" fill="#888" x="175" y="20" text-anchor="middle">TOXIC CASCADE</text>
 <text font-size="11" fill="#1D9E75" x="490" y="20" text-anchor="middle">TREATMENT</text>
-<!-- Step 1 Ingestion -->
 <rect x="75" y="30" width="200" height="48" rx="7" fill="#FEF3DC" stroke="#EF9F27" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#854F0B" x="175" y="50" text-anchor="middle">Methanol ingested</text>
 <text font-size="11" fill="#854F0B" x="175" y="67" text-anchor="middle">Absorbed 30&ndash;60 min &middot; 30 mL fatal</text>
@@ -407,10 +405,8 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 <rect x="340" y="30" width="200" height="48" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#185FA5" x="440" y="50" text-anchor="middle">Gastric lavage</text>
 <text font-size="11" fill="#185FA5" x="440" y="67" text-anchor="middle">NaHCO<tspan baseline-shift="sub" font-size="9">3</tspan> solution &mdash; within 1&ndash;2 h</text>
-<!-- Arrow 1→2 -->
 <line class="fg-cascade-line" x1="175" y1="80" x2="175" y2="118" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
 <text font-size="10" fill="#888" x="184" y="104">ADH enzyme</text>
-<!-- Step 2 Formaldehyde -->
 <rect x="75" y="120" width="200" height="48" rx="7" fill="#FEF3DC" stroke="#EF9F27" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#854F0B" x="175" y="140" text-anchor="middle">Formaldehyde</text>
 <text font-size="11" fill="#854F0B" x="175" y="157" text-anchor="middle">Rapidly converted &rarr; formate</text>
@@ -419,10 +415,8 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 <text font-size="13" font-weight="600" fill="#0F6E56" x="440" y="132" text-anchor="middle">Fomepizole / Ethanol</text>
 <text font-size="11" fill="#0F6E56" x="440" y="149" text-anchor="middle">Block ADH &mdash; stop cascade here</text>
 <text font-size="11" fill="#0F6E56" x="440" y="166" text-anchor="middle">Start ASAP, even before lab results</text>
-<!-- Arrow 2→3 -->
 <line class="fg-cascade-line" x1="175" y1="170" x2="175" y2="208" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
 <text font-size="10" fill="#888" x="184" y="194">Aldehyde DH</text>
-<!-- Step 3 Formic acid -->
 <rect x="75" y="210" width="200" height="64" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1.5"/>
 <text font-size="13" font-weight="600" fill="#791F1F" x="175" y="232" text-anchor="middle">Formic acid &#9888; KEY TOXIN</text>
 <text font-size="11" fill="#791F1F" x="175" y="249" text-anchor="middle">Blocks Complex IV (cytochrome c</text>
@@ -432,10 +426,8 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 <text font-size="13" font-weight="600" fill="#0F6E56" x="440" y="242" text-anchor="middle">Folinic acid (leucovorin)</text>
 <text font-size="11" fill="#0F6E56" x="440" y="259" text-anchor="middle">1&ndash;2 mg/kg IV every 6 hrs</text>
 <text font-size="11" fill="#0F6E56" x="440" y="276" text-anchor="middle">Converts formate &rarr; CO<tspan baseline-shift="sub" font-size="9">2</tspan> + H<tspan baseline-shift="sub" font-size="9">2</tspan>O</text>
-<!-- Branches to acidosis and optic/putamen -->
 <line class="fg-cascade-line" x1="175" y1="276" x2="120" y2="318" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#rarr)"/>
 <line class="fg-cascade-line" x1="175" y1="276" x2="230" y2="318" stroke="#A32D2D" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#rarr)"/>
-<!-- Step 4A Metabolic acidosis -->
 <rect x="30" y="320" width="170" height="52" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
 <text font-size="12" font-weight="600" fill="#791F1F" x="115" y="342" text-anchor="middle">Metabolic acidosis</text>
 <text font-size="11" fill="#791F1F" x="115" y="360" text-anchor="middle">pH &lt;7.0 &middot; AG &gt;20</text>
@@ -443,20 +435,16 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 <rect x="340" y="366" width="200" height="52" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#185FA5" x="440" y="388" text-anchor="middle">NaHCO<tspan baseline-shift="sub" font-size="9">3</tspan> IV</text>
 <text font-size="11" fill="#185FA5" x="440" y="405" text-anchor="middle">500&ndash;800 mL of 7.5% &mdash; slow infusion</text>
-<!-- Step 4B Optic+Putamen -->
 <rect x="204" y="320" width="160" height="52" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
 <text font-size="12" font-weight="600" fill="#791F1F" x="284" y="340" text-anchor="middle">Optic + Putamen</text>
 <text font-size="11" fill="#791F1F" x="284" y="358" text-anchor="middle">Necrosis &middot; CT bilateral hypodensity</text>
-<!-- Haemodialysis -->
 <path class="fg-cascade-line" d="M277 252 L308 252 L308 448 L338 448" fill="none" stroke="#7F77DD" stroke-width="1.5" marker-end="url(#parr)"/>
 <rect x="340" y="432" width="200" height="80" rx="7" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.5"/>
 <text font-size="13" font-weight="600" fill="#534AB7" x="440" y="456" text-anchor="middle">Haemodialysis</text>
 <text font-size="11" fill="#534AB7" x="440" y="473" text-anchor="middle">Removes methanol + formate</text>
 <text font-size="11" fill="#534AB7" x="440" y="490" text-anchor="middle">+ formaldehyde simultaneously</text>
 <text font-size="11" fill="#534AB7" x="440" y="507" text-anchor="middle">Indicated if level &gt;25&ndash;50 mg%</text>
-<!-- Arrow to convulsions -->
 <line class="fg-cascade-line" x1="175" y1="374" x2="175" y2="536" stroke="#791F1F" stroke-width="1.5" marker-end="url(#rarr)"/>
-<!-- Step 5 Convulsions/coma -->
 <rect x="60" y="538" width="230" height="66" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#791F1F" x="175" y="560" text-anchor="middle">Convulsions / coma</text>
 <text font-size="11" fill="#791F1F" x="175" y="577" text-anchor="middle">Putaminal necrosis &middot; raised ICP</text>
@@ -467,9 +455,7 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 <text font-size="11" fill="#185FA5" x="440" y="565" text-anchor="middle">Diazepam / lorazepam</text>
 <text font-size="11" fill="#185FA5" x="440" y="581" text-anchor="middle">for convulsions</text>
 <text font-size="11" fill="#185FA5" x="440" y="597" text-anchor="middle">Vasopressors &middot; correct hypoglycaemia</text>
-<!-- Arrow to resp failure -->
 <line class="fg-cascade-line" x1="175" y1="606" x2="175" y2="654" stroke="#791F1F" stroke-width="2" marker-end="url(#rarr)"/>
-<!-- Step 6 Respiratory failure -->
 <rect x="60" y="656" width="230" height="52" rx="7" fill="#FCEBEB" stroke="#E24B4A" stroke-width="2"/>
 <text font-size="13" font-weight="600" fill="#791F1F" x="175" y="678" text-anchor="middle">Respiratory failure</text>
 <text font-size="11" fill="#791F1F" x="175" y="695" text-anchor="middle">PRIMARY cause of death in methanol</text>
@@ -477,7 +463,6 @@ Na &#8722; (Cl + HCO<sub>3</sub>). <b>Normal: 8&ndash;12 mEq/L</b>. In methanol 
 <rect x="340" y="656" width="200" height="52" rx="7" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
 <text font-size="13" font-weight="600" fill="#185FA5" x="440" y="678" text-anchor="middle">Mechanical ventilation</text>
 <text font-size="11" fill="#185FA5" x="440" y="695" text-anchor="middle">Intubate early &middot; ICU admission</text>
-<!-- Timing rail -->
 <line x1="22" y1="30" x2="22" y2="720" stroke="#ccc" stroke-width="0.5" stroke-dasharray="3 3"/>
 <text font-size="10" fill="#888" x="16" y="58" text-anchor="middle">0h</text>
 <text font-size="10" fill="#888" x="16" y="148" text-anchor="middle">1h</text>
@@ -1208,7 +1193,7 @@ Unusual mood swings &bull; Withdrawal from social activities &bull; Unexplained 
     &bull; Endotracheal intubation + assisted ventilation<br>
     &bull; Monitor arterial blood gases / pulse oximetry<br>
     &bull; PEEP if ARDS; small tidal volumes (6 mL/kg)<br>
-    &bull; Ipecac-induced emesis: <b>NOT recommended</b> (risk of CNS depression + seizures)
+    &bull; Ipecac-induced EMESIS: <b>NOT recommended</b> (risk of CNS depression + seizures)
   </div>
 </div>
 <div class="tx-step">
@@ -1342,8 +1327,8 @@ function txShow(i,btn){
 .lm-red{color:#A32D2D;} .lm-blue{color:#185FA5;} .lm-amber{color:#854F0B;} .lm-green{color:#0F6E56;} .lm-purple{color:#534AB7;}
 .hy-inline{display:inline-block;background:#e8ff47;color:#1a1a1a;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle;}
 .af-keybox{border-left:3px solid #E24B4A;padding:8px 14px;background:#FCEBEB;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#791F1F;line-height:1.6;}
-.af-infobox{border-left:3px solid #378ADD;padding:8px 14px;background:#E6F1FB;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#185FA5;line-height:1.6;}
-.af-tealbox{border-left:3px solid #1D9E75;padding:8px 14px;background:#E1F5EE;border-radius:0 6px 6px 0;margin-bottom:8px;font-size:13px;color:#0F6E56;line-height:1.6;}
+.af-infobox{border-left:3px solid #378ADD;padding:8px 14px;background:#E6F1FB;margin-bottom:8px;font-size:13px;color:#185FA5;line-height:1.6;}
+.af-tealbox{border-left:3px solid #1D9E75;padding:8px 14px;background:#E1F5EE;margin-bottom:8px;font-size:13px;color:#0F6E56;line-height:1.6;}
 </style>
 <div class="af-wrap">
 <div class="af-tabs">
@@ -1475,36 +1460,14 @@ Can be sniffed, rubbed, smoked, or injected
 <script>
 function afShow(i,btn){
   document.querySelectorAll('.af-panel').forEach(function(p,j){p.classList.toggle('af-show',j===i);});
-  document.querySelectorAll('.af-tab').forEach(function(b){b.classList.remove('af-on');});
+  document.querySelectorAll('.af-tab').forEach(function(b){b.classList.remove('or-on');});
   if(btn) btn.classList.add('af-on');
 }
 </script>`
       }
     ],
->
-              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Chest Fixation</strong></td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">External compression preventing respiratory wall expansion</td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Traumatic Asphyxia, Crowd Crush, Burking</td>
-            </tr>
-            <tr style="background:#fafafa;">
-              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Postural Distortion</strong></td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Inability to breathe safely due to mechanical body placement</td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Positional Asphyxia, Restraint Custody Incidents</td>
-            </tr>
-          </tbody>
-        </table>`
-      },
-      {
-        
-        <details class="hall-activity" style="margin-top:14px; border:2px dashed #5346b0; border-radius:8px; padding:10px; background:#fdfdfd; cursor:pointer;">
-          <summary style="font-weight:700; color:#5346b0; font-size:13px; outline:none;">🧠 Concept Challenge: The Airway Radial Pulse Paradox</summary>
-          <p style="font-size:12px; margin-top:8px; line-height:1.5; color:#333; cursor:default;">
-            <strong>Question:</strong> If an assailant completely seals a victim's airway with a soft cushion (Smothering), does the radial pulse vanish instantly at that exact moment? <br><br>
-            <strong>Mechanism:</strong> No. The sinus node continues firing and the myocardium contracts using residual dissolved oxygen. The pulse remains palpable for roughly 3 to 5 minutes against an empty oxygen reservoir before bradycardia and terminal electromechanical dissociation set in. This illustrates why the historical Greek definition is a physiological misnomer.
-          </p>
-        </details>`
-      },
-      "Forensic Medicine: Mechanical Asphyxia": [
+
+    "Forensic Medicine: Mechanical Asphyxia": [
       {
         step: 1,
         title: "Core Definition & The Pulse Paradox",
@@ -1784,6 +1747,5 @@ function afShow(i,btn){
         </div>`
       }
     ]
-}
+  }
 };
-        
