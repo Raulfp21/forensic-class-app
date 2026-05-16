@@ -1481,78 +1481,7 @@ function afShow(i,btn){
 </script>`
       }
     ],
-    "Forensic Medicine: Mechanical Asphyxia": [
-      {
-        step: 1,
-        title: "Core Definition & Socratic Paradox",
-        text: `<div class="def-grid">
-          <div class="def-card">
-            <div class="label">Practical Definition</div>
-            <p>A fatal condition caused by <strong>external physical forces or mechanical barriers</strong> interfering with the uptake, transport, or cellular utilization of oxygen—mechanically induced hypoxia coupled with hypercapnia.</p>
-          </div>
-          <div class="def-card" style="background:#faece7; border-left-color:#D85A30;">
-            <div class="label" style="color:#D85A30;">Etymological Misnomer</div>
-            <p><em>Asphyxia</em> (Greek) literally means <strong>"absence of pulse"</strong>. This is a complete physiological misnomer; during airway obstruction, the heart continues to pump unoxygenated blood for several minutes.</p>
-          </div>
-        </div>
-        
-        <details class="hall-activity" style="margin-top:14px; border:2px dashed #5346b0; border-radius:8px; padding:10px; background:#fdfdfd; cursor:pointer;">
-          <summary style="font-weight:700; color:#5346b0; font-size:13px; outline:none;">🧠 Click to Reveal: The Airway Radial Pulse Paradox</summary>
-          <p style="font-size:12px; margin-top:8px; line-height:1.5; color:#333; cursor:default;">
-            <strong>Socratic Class Prompt:</strong> "If an assailant completely seals a victim's airway with a soft cushion (Smothering), does their peripheral radial artery pulse vanish at that exact instance? Explain the mechanism."<br><br>
-            <strong>Instructor Solution Key:</strong> No. The sinus node continues firing and the myocardium contracts using residual dissolved oxygen. The pulse remains palpable for roughly 3 to 5 minutes against an empty oxygen reservoir before bradycardia and terminal electromechanical dissociation set in. This illustrates why the historical term is flawed.
-          </p>
-        </details>`
-      },
-      {
-        step: 2,
-        title: "Pathophysiology — The Asphyxial Triad Loop",
-        text: `<div class="cycle-wrap" style="display: flex; align-items: flex-start; justify-content: center; gap: 10px; margin-bottom:12px;">
-          <div class="cycle-col" style="display:flex; flex-direction:column; gap:6px;">
-            <div class="cycle-box cycle-amber" style="background:#faeeda; color:#633806; border:1px solid #EF9F27; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Deficient Lung Oxygenation</div>
-            <div style="text-align:center; color:#888;">↓</div>
-            <div class="cycle-box cycle-amber" style="background:#faeeda; color:#633806; border:1px solid #EF9F27; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Decreased Pulmonary Flow</div>
-            <div style="text-align:center; color:#888;">↓</div>
-            <div class="cycle-box cycle-amber" style="background:#faeeda; color:#633806; border:1px solid #EF9F27; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Systemic Hypoxia</div>
-          </div>
-          <div style="display:flex; flex-direction:column; justify-content:center; padding-top:40px;">
-            <div style="background:#faece7; color:#4A1B0C; border:1px solid #D85A30; font-size:13px; font-weight:700; padding:12px; border-radius:50%; width:90px; text-align:center;">VENOUS STASIS</div>
-          </div>
-          <div class="cycle-col" style="display:flex; flex-direction:column; gap:6px;">
-            <div class="cycle-box cycle-teal" style="background:#e1f5ee; color:#04342c; border:1px solid #1D9E75; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Capillary Dilatation</div>
-            <div style="text-align:center; color:#888;">↓</div>
-            <div class="cycle-box cycle-teal" style="background:#e1f5ee; color:#04342c; border:1px solid #1D9E75; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Endothelial Hypoxic Injury</div>
-            <div style="text-align:center; color:#888;">↓</div>
-            <div class="cycle-box cycle-teal" style="background:#e1f5ee; color:#04342c; border:1px solid #1D9E75; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Microvascular Leakage</div>
-          </div>
-        </div>
-        <div style="background:#fffbe6; border:1px solid #EF9F27; border-radius:6px; padding:10px; font-size:12px; color:#633806; line-height:1.5;">
-          <strong>Mechanistic Rule:</strong> The combination of profound endothelial hypoxic injury and an abrupt, severe spike in post-obstruction venous backpressure forces the clinical expression of the classic triad: <strong>Petechiae, Congestion, and Cyanosis</strong>.
-        </div>`
-      },
-      {
-        step: 3,
-        title: "Classification of Asphyxial Deaths",
-        text: `<table style="width:100%; border-collapse:collapse; font-size:12px;">
-          <thead>
-            <tr style="background:#2d2460; color:#fff;">
-              <th style="padding:6px; text-align:left;">Category</th>
-              <th style="padding:6px; text-align:left;">Mechanical Mechanism</th>
-              <th style="padding:6px; text-align:left;">Primary Forensic Examples</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Suffocation</strong></td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Closure of external orifices or oxygen-starved environment</td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Smothering, Choking, Gagging, Environmental Vitiation</td>
-            </tr>
-            <tr style="background:#fafafa;">
-              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Neck Constriction</strong></td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Direct external force compressing vasculature and airways</td>
-              <td style="padding:6px; border-bottom:1px solid #eee;">Hanging, Ligature Strangulation, Throttling (Manual)</td>
-            </tr>
-            <tr>
+>
               <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Chest Fixation</strong></td>
               <td style="padding:6px; border-bottom:1px solid #eee;">External compression preventing respiratory wall expansion</td>
               <td style="padding:6px; border-bottom:1px solid #eee;">Traumatic Asphyxia, Crowd Crush, Burking</td>
@@ -1566,62 +1495,16 @@ function afShow(i,btn){
         </table>`
       },
       {
-        step: 4,
-        title: "Interactive Vector Matching Lab",
-        text: `<p style="font-size:12px; font-style:italic; margin-bottom:8px; color:#555;">Instruct students to analyze the structural physics of the injuries below and link them to their definitions:</p>
-        <div style="background:#f0edf8; border:1px solid #cbbee3; padding:8px; border-radius:6px; text-align:center; margin-bottom:10px; font-size:11px; font-weight:bold; color:#5346b0; letter-spacing:0.5px;">
-          [ HANGING ] &bull; [ LIGATURE STRANGULATION ] &bull; [ THROTTLING ] &bull; [ TRAUMATIC ASPHYXIA ]
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div style="background:#f9f8f6; border:1px solid #ddd; padding:8px; border-radius:6px; font-size:12px;">
-            <div style="background:#e9e8e3; border:1px dashed #b5b4ae; text-align:center; font-weight:bold; padding:15px 4px; font-size:10px; color:#2d2460; margin-bottom:4px; border-radius:4px;">VECTOR PROFILE A</div>
-            <strong>Force Vector:</strong> Complete, low-positioned, completely horizontal loop around the neck. Force application is independent of body weight.
-          </div>
-          <div style="background:#f9f8f6; border:1px solid #ddd; padding:8px; border-radius:6px; font-size:12px;">
-            <div style="background:#e9e8e3; border:1px dashed #b5b4ae; text-align:center; font-weight:bold; padding:15px 4px; font-size:10px; color:#2d2460; margin-bottom:4px; border-radius:4px;">VECTOR PROFILE B</div>
-            <strong>Force Vector:</strong> Incomplete, oblique, non-uniform loop asymmetric tracking upwards toward a suspensions point. Force driven by gravity.
-          </div>
-        </div>
-        <details style="margin-top:10px; background:#edf7f4; border:1px solid #1D9E75; padding:8px; border-radius:6px; font-size:12px; cursor:pointer;">
-          <summary style="font-weight:700; color:#0F6E56; outline:none;">👁️ View Diagnostic Master Key</summary>
-          <p style="margin-top:6px; color:#333; cursor:default;">
-            • <strong>Profile A = Ligature Strangulation</strong> (Horizontal, continuous mechanism)<br>
-            • <strong>Profile B = Hanging</strong> (Oblique, asymmetrical gravitational tracking)
+        
+        <details class="hall-activity" style="margin-top:14px; border:2px dashed #5346b0; border-radius:8px; padding:10px; background:#fdfdfd; cursor:pointer;">
+          <summary style="font-weight:700; color:#5346b0; font-size:13px; outline:none;">🧠 Concept Challenge: The Airway Radial Pulse Paradox</summary>
+          <p style="font-size:12px; margin-top:8px; line-height:1.5; color:#333; cursor:default;">
+            <strong>Question:</strong> If an assailant completely seals a victim's airway with a soft cushion (Smothering), does the radial pulse vanish instantly at that exact moment? <br><br>
+            <strong>Mechanism:</strong> No. The sinus node continues firing and the myocardium contracts using residual dissolved oxygen. The pulse remains palpable for roughly 3 to 5 minutes against an empty oxygen reservoir before bradycardia and terminal electromechanical dissociation set in. This illustrates why the historical Greek definition is a physiological misnomer.
           </p>
         </details>`
       },
-      {
-        step: 5,
-        title: "Postmortem Findings: Case Progressive Reveal",
-        text: `<p style="font-size:12px; margin-bottom:8px; line-height:1.4;">Challenge the 240-student room with this clinical rollout sequence to test their baseline understanding of postmortem signs.</p>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <details style="background:#fffdf5; border-left:4px solid #EF9F27; border:1px solid #ddd; padding:8px; border-radius:4px; font-size:12px; cursor:pointer;">
-            <summary style="font-weight:700; color:#854F0B; outline:none;">Phase 1: External Presentations</summary>
-            <p style="margin-top:6px; color:#222; cursor:default;">A 19-year-old collapses suddenly during intense running. External exam reveals dramatic, dense petechial hemorrhages covering both eyelids and bulbar conjunctivae. <br><strong>Class Query:</strong> Does this prove manual throttling or homicidal smothering?</p>
-          </details>
-          <details style="background:#fffaf8; border-left:4px solid #D85A30; border:1px solid #ddd; padding:8px; border-radius:4px; font-size:12px; cursor:pointer;">
-            <summary style="font-weight:700; color:#4A1B0C; outline:none;">Phase 2: Internal Organ Mapping</summary>
-            <p style="margin-top:6px; color:#222; cursor:default;">Internal opening shows completely normal neck tissues without bruising. However, deep visceral petechiae (Tardieu spots) are clustered across the posterior pericardial groove of the heart. The blood inside all major organs is completely fluid and uncoagulated.</p>
-          </details>
-          <details style="background:#fdf6f6; border-left:4px solid #A32D2D; border:1px solid #ddd; padding:8px; border-radius:4px; font-size:12px; cursor:pointer;">
-            <summary style="font-weight:700; color:#791F1F; outline:none;">Phase 3: The Diagnostic Clincher</summary>
-            <p style="margin-top:6px; color:#222; cursor:default;"><strong>Final Diagnosis:</strong> Natural sudden cardiac death due to a congenital single coronary artery ostium. <br><br><strong>Crucial Scaffolding Takeaway:</strong> Petechiae, fluid blood, and congestion are non-specific terminal hypoxic markers. They happen in natural sudden cardiac events due to acute right-heart failure backpressure spikes. They are <strong>never pathognomonic</strong> on their own!</p>
-          </details>
-        </div>`
-      },
-      {
-        step: 6,
-        title: "Medicolegal Interpretation & Flawed Certification Challenge",
-        text: `<blockquote style="border-left:4px solid #3b6d11; padding:6px 12px; background:#eaf3de; font-style:italic; font-size:12px; color:#173404; margin-bottom:10px;">
-          "The diagnosis of asphyxia stands and falls with the proof of the asphyxiating mechanism." — Hofmann's Rule
-        </blockquote>
-        <p style="font-size:12px; margin-bottom:6px;">Have the students find the systemic legal vulnerability in this autopsy report summary:</p>
-        <div style="background:#fffcf7; border:1px solid #ddd; padding:10px; font-family:monospace; font-size:11px; border-radius:4px; line-height:1.4;">
-          <strong>POSTMORTEM CLINICAL SUMMARY:</strong><br>
-          "External inspection reveals intense cyanosis of lips and nailbeds, alongside confluent conjunctival petechiae. Internal evaluation confirms profound congestion of the lungs and dark fluid blood. No local neck trauma or mechanical facial patterns identified.<br>
-          <strong>OPINION:</strong> Cause of death is certified definitively as Homicidal Mechanical Asphyxia based on Adelson's Classic Quintet."
-        </div>
-        <details style="margin-top:10px; background:#fdf6f6; border:1px solid "Forensic Medicine: Mechanical Asphyxia": [
+      "Forensic Medicine: Mechanical Asphyxia": [
       {
         step: 1,
         title: "Core Definition & The Pulse Paradox",
@@ -1639,7 +1522,7 @@ function afShow(i,btn){
         <details class="hall-activity" style="margin-top:14px; border:2px dashed #5346b0; border-radius:8px; padding:10px; background:#fdfdfd; cursor:pointer;">
           <summary style="font-weight:700; color:#5346b0; font-size:13px; outline:none;">🧠 Concept Challenge: The Airway Radial Pulse Paradox</summary>
           <p style="font-size:12px; margin-top:8px; line-height:1.5; color:#333; cursor:default;">
-            <strong>Question:</strong> If an assailant completely seals a victim's airway with a soft cushion (Smothering), does the radial pulse vanish instantly at that exact moment? <br><br>
+            <strong>Question:</strong> If an assailant completely seals a victim's airway with a soft cushion (Smothering), does the radial pulse vanish instantly at that exact moment?<br><br>
             <strong>Mechanism:</strong> No. The sinus node continues firing and the myocardium contracts using residual dissolved oxygen. The pulse remains palpable for roughly 3 to 5 minutes against an empty oxygen reservoir before bradycardia and terminal electromechanical dissociation set in. This illustrates why the historical Greek definition is a physiological misnomer.
           </p>
         </details>`
@@ -1707,31 +1590,120 @@ function afShow(i,btn){
       },
       {
         step: 4,
-        title: "Mechanical Force Vectors",
-        text: `<p style="font-size:12px; margin-bottom:8px; color:#333;">Correlate the physical vectors of mechanical violence to their proper forensic categories:</p>
-        <div style="background:#f0edf8; border:1px solid #cbbee3; padding:8px; border-radius:6px; text-align:center; margin-bottom:10px; font-size:11px; font-weight:bold; color:#5346b0; letter-spacing:0.5px;">
-          [ HANGING ] &bull; [ LIGATURE STRANGULATION ] &bull; [ THROTTLING ] &bull; [ TRAUMATIC ASPHYXIA ]
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div style="background:#f9f8f6; border:1px solid #ddd; padding:8px; border-radius:6px; font-size:12px;">
-            <div style="background:#e9e8e3; border:1px dashed #b5b4ae; text-align:center; font-weight:bold; padding:15px 4px; font-size:10px; color:#2d2460; margin-bottom:4px; border-radius:4px;">VECTOR PROFILE A</div>
-            <strong>Force Vector:</strong> Complete, low-positioned, completely horizontal loop around the neck. Force application is independent of body weight.
-          </div>
-          <div style="background:#f9f8f6; border:1px solid #ddd; padding:8px; border-radius:6px; font-size:12px;">
-            <div style="background:#e9e8e3; border:1px dashed #b5b4ae; text-align:center; font-weight:bold; padding:15px 4px; font-size:10px; color:#2d2460; margin-bottom:4px; border-radius:4px;">VECTOR PROFILE B</div>
-            <strong>Force Vector:</strong> Incomplete, oblique, non-uniform loop asymmetrically tracking upwards toward a suspension point driven by body mass.
-          </div>
-        </div>
-        <details style="margin-top:10px; background:#edf7f4; border:1px solid #1D9E75; padding:8px; border-radius:6px; font-size:12px; cursor:pointer;">
-          <summary style="font-weight:700; color:#0F6E56; outline:none;">👁️ View Differential Diagnostics</summary>
-          <p style="margin-top:6px; color:#333; cursor:default;">
-            • <strong>Vector Profile A = Ligature Strangulation</strong> (Continuous, horizontal mechanism)<br>
-            • <strong>Vector Profile B = Hanging</strong> (Oblique, asymmetrical gravitational tracking)
-          </p>
-        </details>`
+        title: "Live Class Poll: The Specificity Challenge",
+        text: `<style>
+          .poll-box { background: #fcfcfc; border: 1px solid #ddd; border-radius: 8px; padding: 14px; font-family: system-ui, sans-serif; }
+          .poll-title { font-weight: 700; font-size: 13px; color: #2d2460; margin-bottom: 10px; }
+          .poll-opt-lbl { display: block; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-size: 12px; position: relative; overflow: hidden; background: #fff; transition: background 0.15s; }
+          .poll-opt-lbl:hover { background: #fbfbfc; border-color: #5346b0; }
+          .poll-input { display: none; }
+          .poll-bar { position: absolute; top: 0; left: 0; height: 100%; background: #e6f1fb; z-index: 1; width: 0%; opacity: 0; transition: width 0.4s ease, opacity 0.2s; }
+          .poll-bar.bar-correct { background: #e1f5ee; }
+          .poll-txt-wrap { position: relative; z-index: 2; display: flex; justify-content: space-between; width: 100%; }
+          .poll-pct { opacity: 0; font-weight: 700; font-size: 12px; color: #185FA5; }
+          .poll-pct.pct-correct { color: #0F6E56; }
+          .poll-fb { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 12px; line-height: 1.5; border-left: 4px solid; }
+          
+          /* CSS State Trigger Engine */
+          .poll-input:checked ~ .poll-opt-lbl { border-color: #bbb; background: #f8f8f8; pointer-events: none; }
+          .poll-input:checked ~ .poll-opt-lbl .poll-bar { opacity: 1; }
+          .poll-input:checked ~ .poll-opt-lbl .poll-pct { opacity: 1; }
+          
+          #asph-p1:checked ~ .lbl-p1 .poll-bar { width: 44%; }
+          #asph-p2:checked ~ .lbl-p2 .poll-bar { width: 14%; }
+          #asph-p3:checked ~ .lbl-p3 .poll-bar { width: 8%; }
+          #asph-p4:checked ~ .lbl-p4 .poll-bar { width: 34%; }
+          
+          #asph-p1:checked ~ .fb-p1 { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+          #asph-p2:checked ~ .fb-p2 { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+          #asph-p3:checked ~ .fb-p3 { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+          #asph-p4:checked ~ .fb-p4 { display: block; background: #f4fbf9; border-color: #1D9E75; color: #085041; }
+        </style>
+        <div class="poll-box">
+          <div class="poll-title">📊 ANATOMICAL POLL: Which postmortem finding is 100% specific & pathognomonic for mechanical asphyxia?</div>
+          
+          <input type="radio" id="asph-p1" name="asph_poll_grp" class="poll-input">
+          <input type="radio" id="asph-p2" name="asph_poll_grp" class="poll-input">
+          <input type="radio" id="asph-p3" name="asph_poll_grp" class="poll-input">
+          <input type="radio" id="asph-p4" name="asph_poll_grp" class="poll-input">
+
+          <label for="asph-p1" class="poll-opt-lbl lbl-p1"><div class="poll-bar"></div><div class="poll-txt-wrap"><span>A) Deep cutaneous cyanosis of lips & nailbeds</span><span class="poll-pct">44%</span></div></label>
+          <label for="asph-p2" class="poll-opt-lbl lbl-p2"><div class="poll-bar"></div><div class="poll-txt-wrap"><span>B) Visceral subpleural Tardieu hemorrhages</span><span class="poll-pct">14%</span></div></label>
+          <label for="asph-p3" class="poll-opt-lbl lbl-p3"><div class="poll-bar"></div><div class="poll-txt-wrap"><span>C) Total fluidity of blood inside the right atrium</span><span class="poll-pct">8%</span></div></label>
+          <label for="asph-p4" class="poll-opt-lbl lbl-p4"><div class="poll-bar bar-correct"></div><div class="poll-txt-wrap"><span style="font-weight:600;">D) None of the above</span><span class="poll-pct pct-correct">34% (Correct)</span></div></label>
+
+          <div class="poll-fb fb-p1">❌ <strong>Incorrect (44% voted):</strong> Cyanosis is easily obscured or perfectly simulated by standard postmortem hypostasis. Pathologists never rely on it alone.</div>
+          <div class="poll-fb fb-p2">❌ <strong>Incorrect (14% voted):</strong> Tardieu spots are caused by sudden agonal elevations in venule pressure. They appear in up to 4.3% of purely natural sudden cardiac deaths.</div>
+          <div class="poll-fb fb-p3">❌ <strong>Incorrect (8% voted):</strong> Postmortem blood fluidity is regulated by erratic postmortem fibrinolysin activity. It is highly non-specific.</div>
+          <div class="poll-fb fb-p4">✅ <strong>Correct Matrix! (34% voted):</strong> None of Adelson's classic diagnostic quintet parameters are pathognomonic. Diagnosis stands or falls completely on finding localized mechanical blockages or compression signatures.</div>
+        </div>`
       },
       {
         step: 5,
+        title: "Interactive Match-the-Vector Lab",
+        text: `<style>
+          .lab-card { background: #fdfdfd; border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-family: system-ui, sans-serif; }
+          .lab-profile-head { background: #2d2460; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 6px; letter-spacing: 0.5px; }
+          .lab-desc { font-size: 12px; color: #222; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+          .lab-btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+          .lab-lbl { font-size: 11px; padding: 5px 12px; border: 1px solid #ccc; border-radius: 20px; cursor: pointer; background: #fff; color: #555; transition: all 0.15s; }
+          .lab-lbl:hover { border-color: #5346b0; background: #fcfbfe; }
+          .lab-radio { display: none; }
+          .lab-feedback-panel { display: none; margin-top: 8px; padding: 8px 12px; border-radius: 4px; font-size: 12px; line-height: 1.4; border-left: 3px solid; }
+          
+          /* Vector Engine 1 */
+          #r-v1-a:checked ~ .lab-card .l-v1-a { background: #fcebeb; border-color: #E24B4A; color: #A32D2D; }
+          #r-v1-b:checked ~ .lab-card .l-v1-b { background: #e1f5ee; border-color: #1D9E75; color: #0F6E56; font-weight: 700; }
+          #r-v1-c:checked ~ .lab-card .l-v1-c { background: #fcebeb; border-color: #E24B4A; color: #A32D2D; }
+          #r-v1-a:checked ~ .fb-v1-a { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+          #r-v1-b:checked ~ .fb-v1-b { display: block; background: #f4fbf9; border-color: #1D9E75; color: #085041; }
+          #r-v1-c:checked ~ .fb-v1-c { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+
+          /* Vector Engine 2 */
+          #r-v2-a:checked ~ .lab-card .l-v2-a { background: #e1f5ee; border-color: #1D9E75; color: #0F6E56; font-weight: 700; }
+          #r-v2-b:checked ~ .lab-card .l-v2-b { background: #fcebeb; border-color: #E24B4A; color: #A32D2D; }
+          #r-v2-c:checked ~ .lab-card .l-v2-c { background: #fcebeb; border-color: #E24B4A; color: #A32D2D; }
+          #r-v2-a:checked ~ .fb-v2-a { display: block; background: #f4fbf9; border-color: #1D9E75; color: #085041; }
+          #r-v2-b:checked ~ .fb-v2-b { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+          #r-v2-c:checked ~ .fb-v2-c { display: block; background: #fdf6f6; border-color: #E24B4A; color: #791F1F; }
+        </style>
+        
+        <input type="radio" id="r-v1-a" name="v1_grp" class="lab-radio">
+        <input type="radio" id="r-v1-b" name="v1_grp" class="lab-radio">
+        <input type="radio" id="r-v1-c" name="v1_grp" class="lab-radio">
+
+        <input type="radio" id="r-v2-a" name="v2_grp" class="lab-radio">
+        <input type="radio" id="r-v2-b" name="v2_grp" class="lab-radio">
+        <input type="radio" id="r-v2-c" name="v2_grp" class="lab-radio">
+
+        <div class="lab-card">
+          <div class="lab-profile-head">ANATOMICAL VECTOR PATTERN 1</div>
+          <div class="lab-desc">A continuous, low, completely horizontal groove encircling the neck smoothly. Force application occurs entirely independent of body mass.</div>
+          <div class="lab-btn-row">
+            <label for="r-v1-a" class="lab-lbl l-v1-a">Hanging</label>
+            <label for="r-v1-b" class="lab-lbl l-v1-b">Ligature Strangulation</label>
+            <label for="r-v1-c" class="lab-lbl l-v1-c">Throttling (Manual)</label>
+          </div>
+        </div>
+        <div class="lab-feedback-panel fb-v1-a">❌ <strong>Incorrect Match:</strong> Hanging creates an incomplete, asymmetrical oblique mark running upwards toward a suspension point driven by gravity.</div>
+        <div class="lab-feedback-panel fb-v1-b">✅ <strong>Correct Match!</strong> Ligature strangulation produces a horizontal, uniform, fully continuous mark around the circumference of the lower neck.</div>
+        <div class="lab-feedback-panel fb-v1-c">❌ <strong>Incorrect Match:</strong> Throttling utilizes human fingers, leaving discrete, scattered fingertip contusions and fingernail claw scratches rather than a linear groove.</div>
+
+        <div class="lab-card" style="margin-top:14px;">
+          <div class="lab-profile-head" style="background:#0F6E56;">ANATOMICAL VECTOR PATTERN 2</div>
+          <div class="lab-desc">An incomplete, oblique, non-uniform loop running upward along the jawline toward an asymmetric suspension apex.</div>
+          <div class="lab-btn-row">
+            <label for="r-v2-a" class="lab-lbl l-v2-a">Hanging</label>
+            <label for="r-v2-b" class="lab-lbl l-v2-b">Ligature Strangulation</label>
+            <label for="r-v2-c" class="lab-lbl l-v2-c">Traumatic Chest Asphyxia</label>
+          </div>
+        </div>
+        <div class="lab-feedback-panel fb-v2-a">✅ <strong>Correct Match!</strong> Hanging tension maps obliquely upward, clearing the knot side and creating a characteristically asymmetric suspension mark.</div>
+        <div class="lab-feedback-panel fb-v2-b">❌ <strong>Incorrect Match:</strong> Ligature strangulation is a horizontal traction loop running completely flat around the neck level.</div>
+        <div class="lab-feedback-panel fb-v2-c">❌ <strong>Incorrect Match:</strong> Traumatic chest asphyxia presents with mechanical chest wall fixation, leaving zero linear neck loop marks.</div>`
+      },
+      {
+        step: 6,
         title: "Postmortem Findings: Diagnostic Case Review",
         text: `<p style="font-size:12px; margin-bottom:8px; line-height:1.4;">Analyze the postmortem rollout sequence below to differentiate general agonal signs from specific mechanical findings:</p>
         <div style="display:flex; flex-direction:column; gap:8px;">
@@ -1750,7 +1722,7 @@ function afShow(i,btn){
         </div>`
       },
       {
-        step: 6,
+        step: 7,
         title: "Medicolegal Interpretation & Certification Review",
         text: `<blockquote style="border-left:4px solid #3b6d11; padding:6px 12px; background:#eaf3de; font-style:italic; font-size:12px; color:#173404; margin-bottom:10px;">
           "The diagnosis of asphyxia stands and falls with the proof of the asphyxiating mechanism." — Hofmann's Rule
@@ -1768,7 +1740,7 @@ function afShow(i,btn){
         </details>`
       },
       {
-        step: 7,
+        step: 8,
         title: "The Cyanosis-Anemia Absolute Threshold",
         text: `<p style="font-size:12px; line-height:1.5; margin-bottom:10px;">
           Cyanosis is a physical mass threshold effect, not an indicator of relative oxygen percentage. To manifest a cyanosed hue, a body requires an <strong>absolute mass threshold of &ge;5 g/dL of reduced (deoxygenated) hemoglobin</strong> inside the microcirculation.
@@ -1812,5 +1784,6 @@ function afShow(i,btn){
         </div>`
       }
     ]
-  }
 }
+};
+        
