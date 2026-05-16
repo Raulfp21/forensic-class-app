@@ -1621,18 +1621,157 @@ function afShow(i,btn){
           "External inspection reveals intense cyanosis of lips and nailbeds, alongside confluent conjunctival petechiae. Internal evaluation confirms profound congestion of the lungs and dark fluid blood. No local neck trauma or mechanical facial patterns identified.<br>
           <strong>OPINION:</strong> Cause of death is certified definitively as Homicidal Mechanical Asphyxia based on Adelson's Classic Quintet."
         </div>
-        <details style="margin-top:10px; background:#fdf6f6; border:1px solid #E24B4A; padding:8px; border-radius:6px; font-size:12px; cursor:pointer;">
-          <summary style="font-weight:700; color:#A32D2D; outline:none;">⚖️ Click to Cross-Examine: Why this fails in court</summary>
+        <details style="margin-top:10px; background:#fdf6f6; border:1px solid "Forensic Medicine: Mechanical Asphyxia": [
+      {
+        step: 1,
+        title: "Core Definition & The Pulse Paradox",
+        text: `<div class="def-grid">
+          <div class="def-card">
+            <div class="label">Practical Definition</div>
+            <p>A fatal condition caused by <strong>external physical forces or mechanical barriers</strong> interfering with the uptake, transport, or cellular utilization of oxygen—mechanically induced hypoxia coupled with hypercapnia.</p>
+          </div>
+          <div class="def-card" style="background:#faece7; border-left-color:#D85A30;">
+            <div class="label" style="color:#D85A30;">Etymological Misnomer</div>
+            <p><em>Asphyxia</em> (Greek) literally means <strong>"absence of pulse"</strong>. This is a complete physiological misnomer; during airway obstruction, the heart continues to pump unoxygenated blood for several minutes.</p>
+          </div>
+        </div>
+        
+        <details class="hall-activity" style="margin-top:14px; border:2px dashed #5346b0; border-radius:8px; padding:10px; background:#fdfdfd; cursor:pointer;">
+          <summary style="font-weight:700; color:#5346b0; font-size:13px; outline:none;">🧠 Concept Challenge: The Airway Radial Pulse Paradox</summary>
+          <p style="font-size:12px; margin-top:8px; line-height:1.5; color:#333; cursor:default;">
+            <strong>Question:</strong> If an assailant completely seals a victim's airway with a soft cushion (Smothering), does the radial pulse vanish instantly at that exact moment? <br><br>
+            <strong>Mechanism:</strong> No. The sinus node continues firing and the myocardium contracts using residual dissolved oxygen. The pulse remains palpable for roughly 3 to 5 minutes against an empty oxygen reservoir before bradycardia and terminal electromechanical dissociation set in. This illustrates why the historical Greek definition is a physiological misnomer.
+          </p>
+        </details>`
+      },
+      {
+        step: 2,
+        title: "Pathophysiology — The Asphyxial Triad Loop",
+        text: `<div class="cycle-wrap" style="display: flex; align-items: flex-start; justify-content: center; gap: 10px; margin-bottom:12px;">
+          <div class="cycle-col" style="display:flex; flex-direction:column; gap:6px;">
+            <div class="cycle-box cycle-amber" style="background:#faeeda; color:#633806; border:1px solid #EF9F27; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Deficient Lung Oxygenation</div>
+            <div style="text-align:center; color:#888;">↓</div>
+            <div class="cycle-box cycle-amber" style="background:#faeeda; color:#633806; border:1px solid #EF9F27; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Decreased Pulmonary Flow</div>
+            <div style="text-align:center; color:#888;">↓</div>
+            <div class="cycle-box cycle-amber" style="background:#faeeda; color:#633806; border:1px solid #EF9F27; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Systemic Hypoxia</div>
+          </div>
+          <div style="display:flex; flex-direction:column; justify-content:center; padding-top:40px;">
+            <div style="background:#faece7; color:#4A1B0C; border:1px solid #D85A30; font-size:13px; font-weight:700; padding:12px; border-radius:50%; width:90px; text-align:center;">VENOUS STASIS</div>
+          </div>
+          <div class="cycle-col" style="display:flex; flex-direction:column; gap:6px;">
+            <div class="cycle-box cycle-teal" style="background:#e1f5ee; color:#04342c; border:1px solid #1D9E75; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Capillary Dilatation</div>
+            <div style="text-align:center; color:#888;">↓</div>
+            <div class="cycle-box cycle-teal" style="background:#e1f5ee; color:#04342c; border:1px solid #1D9E75; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Endothelial Hypoxic Injury</div>
+            <div style="text-align:center; color:#888;">↓</div>
+            <div class="cycle-box cycle-teal" style="background:#e1f5ee; color:#04342c; border:1px solid #1D9E75; padding:6px; font-size:12px; text-align:center; border-radius:6px; width:140px;">Microvascular Leakage</div>
+          </div>
+        </div>
+        <div style="background:#fffbe6; border:1px solid #EF9F27; border-radius:6px; padding:10px; font-size:12px; color:#633806; line-height:1.5;">
+          <strong>Mechanistic Rule:</strong> The combination of profound endothelial hypoxic injury and an abrupt, severe spike in post-obstruction venous backpressure forces the clinical expression of the classic triad: <strong>Petechiae, Congestion, and Cyanosis</strong>.
+        </div>`
+      },
+      {
+        step: 3,
+        title: "Classification of Asphyxial Deaths",
+        text: `<table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <thead>
+            <tr style="background:#2d2460; color:#fff;">
+              <th style="padding:6px; text-align:left;">Category</th>
+              <th style="padding:6px; text-align:left;">Mechanical Mechanism</th>
+              <th style="padding:6px; text-align:left;">Primary Forensic Examples</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Suffocation</strong></td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Closure of external orifices or oxygen-starved environment</td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Smothering, Choking, Gagging, Environmental Vitiation</td>
+            </tr>
+            <tr style="background:#fafafa;">
+              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Neck Constriction</strong></td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Direct external force compressing vasculature and airways</td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Hanging, Ligature Strangulation, Throttling (Manual)</td>
+            </tr>
+            <tr>
+              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Chest Fixation</strong></td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">External compression preventing respiratory wall expansion</td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Traumatic Asphyxia, Crowd Crush, Burking</td>
+            </tr>
+            <tr style="background:#fafafa;">
+              <td style="padding:6px; border-bottom:1px solid #eee;"><strong>Postural Distortion</strong></td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Inability to breathe safely due to mechanical body placement</td>
+              <td style="padding:6px; border-bottom:1px solid #eee;">Positional Asphyxia, Restraint Custody Incidents</td>
+            </tr>
+          </tbody>
+        </table>`
+      },
+      {
+        step: 4,
+        title: "Mechanical Force Vectors",
+        text: `<p style="font-size:12px; margin-bottom:8px; color:#333;">Correlate the physical vectors of mechanical violence to their proper forensic categories:</p>
+        <div style="background:#f0edf8; border:1px solid #cbbee3; padding:8px; border-radius:6px; text-align:center; margin-bottom:10px; font-size:11px; font-weight:bold; color:#5346b0; letter-spacing:0.5px;">
+          [ HANGING ] &bull; [ LIGATURE STRANGULATION ] &bull; [ THROTTLING ] &bull; [ TRAUMATIC ASPHYXIA ]
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div style="background:#f9f8f6; border:1px solid #ddd; padding:8px; border-radius:6px; font-size:12px;">
+            <div style="background:#e9e8e3; border:1px dashed #b5b4ae; text-align:center; font-weight:bold; padding:15px 4px; font-size:10px; color:#2d2460; margin-bottom:4px; border-radius:4px;">VECTOR PROFILE A</div>
+            <strong>Force Vector:</strong> Complete, low-positioned, completely horizontal loop around the neck. Force application is independent of body weight.
+          </div>
+          <div style="background:#f9f8f6; border:1px solid #ddd; padding:8px; border-radius:6px; font-size:12px;">
+            <div style="background:#e9e8e3; border:1px dashed #b5b4ae; text-align:center; font-weight:bold; padding:15px 4px; font-size:10px; color:#2d2460; margin-bottom:4px; border-radius:4px;">VECTOR PROFILE B</div>
+            <strong>Force Vector:</strong> Incomplete, oblique, non-uniform loop asymmetrically tracking upwards toward a suspension point driven by body mass.
+          </div>
+        </div>
+        <details style="margin-top:10px; background:#edf7f4; border:1px solid #1D9E75; padding:8px; border-radius:6px; font-size:12px; cursor:pointer;">
+          <summary style="font-weight:700; color:#0F6E56; outline:none;">👁️ View Differential Diagnostics</summary>
           <p style="margin-top:6px; color:#333; cursor:default;">
-            <strong>The Fatal Error:</strong> The pathologist violated Hofmann's Rule. They certified a violent mechanical manner of death based solely on non-specific, general visceral agonal markers without proving a distinct local structural mechanism (e.g., a ligature groove, bruising, or an intra-airway object). A defense attorney would get this thrown out immediately. If a mechanism cannot be found and collateral proof is absent, the cause of death **must be signed out as undetermined**.
+            • <strong>Vector Profile A = Ligature Strangulation</strong> (Continuous, horizontal mechanism)<br>
+            • <strong>Vector Profile B = Hanging</strong> (Oblique, asymmetrical gravitational tracking)
+          </p>
+        </details>`
+      },
+      {
+        step: 5,
+        title: "Postmortem Findings: Diagnostic Case Review",
+        text: `<p style="font-size:12px; margin-bottom:8px; line-height:1.4;">Analyze the postmortem rollout sequence below to differentiate general agonal signs from specific mechanical findings:</p>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <details style="background:#fffdf5; border-left:4px solid #EF9F27; border:1px solid #ddd; padding:8px; border-radius:4px; font-size:12px; cursor:pointer;">
+            <summary style="font-weight:700; color:#854F0B; outline:none;">Phase 1: External Presentations</summary>
+            <p style="margin-top:6px; color:#222; cursor:default;">A 19-year-old collapses suddenly during intense running. External examination reveals dramatic, dense petechial hemorrhages covering both eyelids and bulbar conjunctivae.</p>
+          </details>
+          <details style="background:#fffaf8; border-left:4px solid #D85A30; border:1px solid #ddd; padding:8px; border-radius:4px; font-size:12px; cursor:pointer;">
+            <summary style="font-weight:700; color:#4A1B0C; outline:none;">Phase 2: Internal Organ Mapping</summary>
+            <p style="margin-top:6px; color:#222; cursor:default;">Internal opening shows completely normal neck tissues without bruising. However, deep visceral petechiae (Tardieu spots) are clustered across the posterior pericardial groove of the heart. The blood inside all major organs is completely fluid and uncoagulated.</p>
+          </details>
+          <details style="background:#fdf6f6; border-left:4px solid #A32D2D; border:1px solid #ddd; padding:8px; border-radius:4px; font-size:12px; cursor:pointer;">
+            <summary style="font-weight:700; color:#791F1F; outline:none;">Phase 3: Pathological Diagnosis</summary>
+            <p style="margin-top:6px; color:#222; cursor:default;"><strong>Final Cause of Death:</strong> Natural sudden cardiac death due to a congenital single coronary artery ostium. <br><br><strong>Key Takeaway:</strong> Petechiae, fluid blood, and congestion are non-specific agonal changes. They manifest during acute right-heart failure backpressure spikes and are <strong>never pathognomonic</strong> on their own.</p>
+          </details>
+        </div>`
+      },
+      {
+        step: 6,
+        title: "Medicolegal Interpretation & Certification Review",
+        text: `<blockquote style="border-left:4px solid #3b6d11; padding:6px 12px; background:#eaf3de; font-style:italic; font-size:12px; color:#173404; margin-bottom:10px;">
+          "The diagnosis of asphyxia stands and falls with the proof of the asphyxiating mechanism." — Hofmann's Rule
+        </blockquote>
+        <div style="background:#fffcf7; border:1px solid #ddd; padding:10px; font-family:monospace; font-size:11px; border-radius:4px; line-height:1.4;">
+          <strong>POSTMORTEM CLINICAL SUMMARY (MOCK EXTRACT):</strong><br>
+          "External inspection reveals intense cyanosis of lips and nailbeds, alongside confluent conjunctival petechiae. Internal evaluation confirms profound congestion of the lungs and dark fluid blood. No local neck trauma or mechanical facial patterns identified.<br>
+          <strong>OPINION:</strong> Cause of death is certified definitively as Homicidal Mechanical Asphyxia based on Adelson's Classic Quintet."
+        </div>
+        <details style="margin-top:10px; background:#fdf6f6; border:1px solid #E24B4A; padding:8px; border-radius:6px; font-size:12px; cursor:pointer;">
+          <summary style="font-weight:700; color:#A32D2D; outline:none;">⚖️ Courtroom Analysis: Systemic Vulnerability</summary>
+          <p style="margin-top:6px; color:#333; cursor:default;">
+            <strong>The Forensic Flaw:</strong> This certificate violates Hofmann's Rule. It states a violent mechanical manner of death based solely on non-specific, general visceral agonal markers without identifying a distinct local physical mechanism (e.g., a ligature groove, bruising, or an intra-airway object). In court, this opinion is unsustainable. If a mechanical obstruction cannot be verified and collateral proof is missing, the cause of death <strong>must be signed out as undetermined</strong>.
           </p>
         </details>`
       },
       {
         step: 7,
-        title: "The Cyanosis-Anemia Absolute Threshold Paradox",
+        title: "The Cyanosis-Anemia Absolute Threshold",
         text: `<p style="font-size:12px; line-height:1.5; margin-bottom:10px;">
-          Students frequently treat cyanosis as an indicator of relative oxygen percentage, but it is actually a physical mass threshold effect. To manifest a cyanosed hue, a body requires an **absolute mass threshold of &ge;5 g/dL of reduced (deoxygenated) hemoglobin** inside the microcirculation.
+          Cyanosis is a physical mass threshold effect, not an indicator of relative oxygen percentage. To manifest a cyanosed hue, a body requires an <strong>absolute mass threshold of &ge;5 g/dL of reduced (deoxygenated) hemoglobin</strong> inside the microcirculation.
         </p>
         <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:left; margin-bottom:10px;">
           <thead>
@@ -1669,9 +1808,7 @@ function afShow(i,btn){
           </tbody>
         </table>
         <div style="background:#e6f1fb; border-left:3px solid #378ADD; padding:10px; font-size:12px; color:#185FA5; line-height:1.5;">
-          <strong>The Scaffolding Rule:</strong> Cyanosis requires a physical structural canvas of red blood cells to show through. If a patient is severely anemic, they mathematically lack the hemoglobin mass to turn blue, no matter how badly they are suffocating. Therefore, a lack of cyanosis at autopsy does not rule out severe hypoxic death.
+          <strong>Physiological Principle:</strong> Cyanosis requires a physical structural canvas of red blood cells to show through. If a patient is severely anemic, they mathematically lack the hemoglobin mass to turn blue, no matter how badly they are suffocating. Therefore, a lack of cyanosis at autopsy does not rule out severe hypoxic death.
         </div>`
       }
     ]
-  }
-};
