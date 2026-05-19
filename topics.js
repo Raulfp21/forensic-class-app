@@ -1746,6 +1746,463 @@ function afShow(i,btn){
           <strong>Physiological Principle:</strong> Cyanosis requires a physical structural canvas of red blood cells to show through. If a patient is severely anemic, they mathematically lack the hemoglobin mass to turn blue, no matter how badly they are suffocating. Therefore, a lack of cyanosis at autopsy does not rule out severe hypoxic death.
         </div>`
       }
-    ]
+    ],
+    const pptxgen = require("pptxgenjs");
+
+const pres = new pptxgen();
+pres.layout = "LAYOUT_16x9";
+pres.title = "Forensic Toxicology – Psychotropic Substances";
+
+// ─── PALETTE ───────────────────────────────────────────────────────────────
+const BG   = "0A0A0F";   // near-black
+const C1   = "C8F251";   // lime green (accent)
+const C2   = "FFFFFF";   // white
+const CARD = "141420";   // card bg
+const MUTED= "8B8B9A";   // muted text
+const RED  = "E05C5C";
+const TEAL = "4ECDC4";
+const AMBER= "F6C744";
+
+// Helper: slide background
+function bg(slide) { slide.background = { color: BG }; }
+
+// Helper: section accent bar left edge of card
+function accentBar(slide, x, y, h, col) {
+  slide.addShape(pres.shapes.RECTANGLE, { x, y, w: 0.06, h, fill: { color: col || C1 }, line: { type: "none" } });
+}
+
+// Helper: full-width card
+function card(slide, x, y, w, h, col) {
+  slide.addShape(pres.shapes.RECTANGLE, {
+    x, y, w, h,
+    fill: { color: col || CARD },
+    line: { type: "none" },
+    shadow: { type: "outer", blur: 10, offset: 3, angle: 135, color: "000000", opacity: 0.4 }
+  });
+}
+
+// Helper: slide title
+function title(slide, text, sub) {
+  slide.addText(text, { x: 0.55, y: 0.22, w: 9, h: 0.55, fontSize: 32, bold: true, color: C2, fontFace: "Calibri", margin: 0 });
+  if (sub) slide.addText(sub, { x: 0.55, y: 0.8, w: 9, h: 0.3, fontSize: 13, color: C1, fontFace: "Calibri", margin: 0 });
+  slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.08, fill: { color: C1 }, line: { type: "none" } });
+}
+
+// ─── SLIDE 1: TITLE SLIDE ───────────────────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  // Large coloured block left side
+  s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 4.2, h: 5.625, fill: { color: "111118" }, line: { type: "none" } });
+  s.addShape(pres.shapes.RECTANGLE, { x: 4.2, y: 0, w: 0.06, h: 5.625, fill: { color: C1 }, line: { type: "none" } });
+  s.addText("Forensic\nToxicology", { x: 0.4, y: 0.6, w: 3.6, h: 1.8, fontSize: 42, bold: true, color: C2, fontFace: "Calibri", valign: "top", margin: 0 });
+  s.addText("Psychotropic Substances", { x: 0.4, y: 2.55, w: 3.6, h: 0.45, fontSize: 16, color: C1, fontFace: "Calibri", margin: 0 });
+  s.addText("Barbiturates · Benzodiazepines · Amphetamines · Designer Drugs", { x: 0.4, y: 3.1, w: 3.6, h: 0.6, fontSize: 11, color: MUTED, fontFace: "Calibri", margin: 0 });
+  s.addText("Based on KS Narayan Reddy's Essentials of Forensic Medicine\nUpdated with UpToDate · PubMed · UNODC · NCB India 2024 Data", { x: 0.4, y: 4.6, w: 3.6, h: 0.7, fontSize: 9, color: MUTED, fontFace: "Calibri", margin: 0 });
+  // Right side bullets
+  const topics = ["Definition & Relevance 2025", "Current Classification (UNODC/WHO)", "India Drug Abuse Data 2023-24", "Fentanyl Analogues & NPS", "Designer Drug Engineering", "Medicolegal Significance", "Barbiturates: Full Clinical Chain", "Benzodiazepines: Full Clinical Chain", "Amphetamines: Full Clinical Chain"];
+  topics.forEach((t, i) => {
+    s.addShape(pres.shapes.RECTANGLE, { x: 4.6, y: 0.6 + i * 0.53, w: 0.04, h: 0.3, fill: { color: C1 }, line: { type: "none" } });
+    s.addText(t, { x: 4.76, y: 0.6 + i * 0.53, w: 5, h: 0.35, fontSize: 12, color: C2, fontFace: "Calibri", valign: "middle", margin: 0 });
+  });
+}
+
+// ─── SLIDE 2: DEFINITION & RELEVANCE ────────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Psychotropic Drugs: Definition & Current Relevance", "Is the term still valid in 2025?");
+
+  // Card left
+  card(s, 0.35, 1.05, 4.4, 1.55);
+  accentBar(s, 0.35, 1.05, 1.55, C1);
+  s.addText("Legal Definition", { x: 0.55, y: 1.1, w: 4, h: 0.35, fontSize: 14, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  s.addText("Under India's NDPS Act 1985, a psychotropic substance is any substance that alters mental functioning by direct CNS action. This definition remains the operative legal standard in India.", { x: 0.55, y: 1.48, w: 4, h: 0.9, fontSize: 11, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 0.35, 2.75, 4.4, 1.5);
+  accentBar(s, 0.35, 2.75, 1.5, TEAL);
+  s.addText("WHO / UN Current Framing", { x: 0.55, y: 2.8, w: 4, h: 0.35, fontSize: 14, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+  s.addText("WHO 2024 still uses 'psychotropic substance' for treaty scheduling. UNODC prefers 'New Psychoactive Substances (NPS)' for novel compounds; >1,396 NPS reported across 153 countries by 2024.", { x: 0.55, y: 3.18, w: 4, h: 0.9, fontSize: 11, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 0.35, 4.35, 4.4, 1.0);
+  accentBar(s, 0.35, 4.35, 1.0, AMBER);
+  s.addText("Is the Term Relevant?", { x: 0.55, y: 4.4, w: 4, h: 0.35, fontSize: 13, bold: true, color: AMBER, fontFace: "Calibri", margin: 0 });
+  s.addText("Yes — legally indispensable under NDPS Act; scientifically broadened to include NPS, designer benzodiazepines, synthetic opioids and cathinones.", { x: 0.55, y: 4.78, w: 4, h: 0.5, fontSize: 11, color: C2, fontFace: "Calibri", margin: 0 });
+
+  // Right: classification table
+  card(s, 5.0, 1.05, 4.6, 4.3);
+  s.addText("Current Forensic Classification (UNODC 2024)", { x: 5.15, y: 1.12, w: 4.3, h: 0.35, fontSize: 13, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  const cats = [
+    ["Antipsychotics", "Haloperidol, Risperidone, Clozapine", C1],
+    ["Anxiolytics", "Benzodiazepines, Z-drugs (Zolpidem)", TEAL],
+    ["Hypnotics / Sedatives", "Barbiturates, GHB, Chloral hydrate", AMBER],
+    ["Stimulants", "Amphetamine, MDMA, Mephedrone", RED],
+    ["Synthetic Opioids", "Fentanyl, Carfentanil, Nitazenes", "E05C5C"],
+    ["Synthetic Cannabinoids", "K2/Spice (indazole/indole-based)", MUTED],
+    ["Dissociatives / Hallucinogens", "Ketamine, PCP, LSD, Psilocybin", "BB88FF"],
+  ];
+  cats.forEach(([name, ex, col], i) => {
+    s.addShape(pres.shapes.RECTANGLE, { x: 5.1, y: 1.6 + i * 0.52, w: 0.04, h: 0.35, fill: { color: col }, line: { type: "none" } });
+    s.addText(name, { x: 5.22, y: 1.6 + i * 0.52, w: 1.8, h: 0.35, fontSize: 11, bold: true, color: col, fontFace: "Calibri", valign: "middle", margin: 0 });
+    s.addText(ex, { x: 7.05, y: 1.6 + i * 0.52, w: 2.45, h: 0.35, fontSize: 10, color: MUTED, fontFace: "Calibri", valign: "middle", margin: 0 });
+  });
+}
+
+// ─── SLIDE 3: INDIA DATA ─────────────────────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Drug Abuse in India — 2023-24 Data", "NCB Annual Report · Ministry of Social Justice · NITI Aayog 2024");
+
+  const stats = [
+    ["~100 Million", "Total substance addicts\n(70% rise in 8 years)", C1],
+    ["7 Crore", "Adults (18-75 yrs)\nusing illicit drugs", TEAL],
+    ["1.18 Crore", "Children/adolescents\n(10-17 yrs) using drugs", RED],
+    ["74,000", "Drug cases filed\nin 2023 (NCB)", AMBER],
+  ];
+  stats.forEach(([num, lab, col], i) => {
+    const x = 0.35 + i * 2.42;
+    card(s, x, 1.05, 2.2, 1.55, CARD);
+    s.addShape(pres.shapes.RECTANGLE, { x, y: 1.05, w: 2.2, h: 0.06, fill: { color: col }, line: { type: "none" } });
+    s.addText(num, { x: x + 0.1, y: 1.18, w: 2.0, h: 0.65, fontSize: 24, bold: true, color: col, fontFace: "Calibri", align: "center", margin: 0 });
+    s.addText(lab, { x: x + 0.1, y: 1.85, w: 2.0, h: 0.65, fontSize: 10, color: MUTED, fontFace: "Calibri", align: "center", margin: 0 });
+  });
+
+  // Most abused substances table
+  card(s, 0.35, 2.78, 9.3, 1.8);
+  s.addText("Most Abused Substances — India (ranked)", { x: 0.5, y: 2.85, w: 9, h: 0.3, fontSize: 12, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  const drugs = [
+    ["Cannabis", "2.8% prevalence", "UP, Punjab, Sikkim, Chhattisgarh", "Most widely abused; bhang, ganja, charas"],
+    ["Opioids / Heroin", "2.1% prevalence", "Punjab, J&K, Northeast", "Heroin replaced opium as #1 opioid"],
+    ["Codeine Syrups", "Rising sharply", "Pan-India, youth", "'Phenethyl' cough syrups — NCB 2024"],
+    ["Methamphetamine", "Emerging; labs seized", "Northeast, Metro cities", "Mexican cartel links; meth labs in UP"],
+    ["ATS / MDMA", "0.18%", "Urban nightlife circuits", "Ecstasy tablets from SE Asia"],
+  ];
+  drugs.forEach(([d, prev, geo, note], i) => {
+    const y = 3.2 + i * 0.27;
+    s.addText(d, { x: 0.55, y, w: 2.1, h: 0.25, fontSize: 10, bold: true, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addText(prev, { x: 2.7, y, w: 1.5, h: 0.25, fontSize: 10, color: C1, fontFace: "Calibri", margin: 0 });
+    s.addText(geo, { x: 4.25, y, w: 2.5, h: 0.25, fontSize: 10, color: TEAL, fontFace: "Calibri", margin: 0 });
+    s.addText(note, { x: 6.8, y, w: 2.7, h: 0.25, fontSize: 9, color: MUTED, fontFace: "Calibri", margin: 0 });
+  });
+
+  card(s, 0.35, 4.7, 9.3, 0.72);
+  s.addText("⚠  NCB 2024: Drug seizures up 25% QoQ since 2019. 65% of narcotic transactions via encrypted platforms (Telegram/Signal). 20% of UP pharmacies found supplying codeine syrups illicitly.", { x: 0.55, y: 4.78, w: 8.9, h: 0.56, fontSize: 10, color: AMBER, fontFace: "Calibri", margin: 0 });
+}
+
+// ─── SLIDE 4: MODERN TRENDS / SYNTHETIC OPIOIDS ──────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Modern Trends: Synthetic Opioids & Fentanyl Analogues", "World Drug Report 2025 · CDC MMWR Dec 2024 · PMC 2024");
+
+  card(s, 0.35, 1.05, 4.45, 4.3);
+  accentBar(s, 0.35, 1.05, 4.3, RED);
+  s.addText("Fentanyl & Analogues", { x: 0.55, y: 1.1, w: 4.1, h: 0.35, fontSize: 14, bold: true, color: RED, fontFace: "Calibri", margin: 0 });
+  const fents = [
+    ["Fentanyl", "100× morphine", "μ-opioid full agonist"],
+    ["Acetylfentanyl", "~15× morphine", "Short-acting; street cut"],
+    ["Carfentanil", "10,000× morphine", "Elephant tranquiliser; reemerged 2024"],
+    ["Butyrfentanyl", "~7× morphine", "Common in Europe seizures"],
+    ["Furanylfentanyl", "~40× morphine", "Online darknet markets"],
+    ["Nitazenes*", "10-100× fentanyl", "Protonitazene #1 in 2024 forensics"],
+  ];
+  fents.forEach(([n, p, note], i) => {
+    const y = 1.55 + i * 0.6;
+    s.addShape(pres.shapes.RECTANGLE, { x: 0.55, y, w: 0.04, h: 0.4, fill: { color: RED }, line: { type: "none" } });
+    s.addText(n, { x: 0.7, y, w: 2.0, h: 0.25, fontSize: 11, bold: true, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addText(p, { x: 0.7, y: y + 0.22, w: 2.0, h: 0.2, fontSize: 9, color: RED, fontFace: "Calibri", margin: 0 });
+    s.addText(note, { x: 2.75, y: y + 0.05, w: 1.9, h: 0.35, fontSize: 9, color: MUTED, fontFace: "Calibri", margin: 0 });
+  });
+  s.addText("*Nitazenes: benzimidazole opioids — not fentanyl-derived; 458 UK deaths Jun 2023–Jan 2025 (UNODC WDR 2025)", { x: 0.5, y: 5.05, w: 4.15, h: 0.2, fontSize: 8, color: MUTED, fontFace: "Calibri", margin: 0 });
+
+  // Right side: crisis stats + MOA
+  card(s, 5.05, 1.05, 4.55, 1.75);
+  s.addText("Global Poisoning Scale (CDC MMWR 2024)", { x: 5.2, y: 1.12, w: 4.2, h: 0.3, fontSize: 12, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  s.addText("~72,000 US overdose deaths in 2023 involved illegally manufactured fentanyls (IMF) — ~70% of all drug OD deaths.\n\nCarfentanil deaths surged 7× from 29 (Jan-Jun 2023) to 238 (Jan-Jun 2024), detected in 37 US states.\n\nIndia: NDPS Act does not explicitly control fentanyl analogues — regulatory gap exploited by clandestine labs.", { x: 5.2, y: 1.47, w: 4.25, h: 1.25, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 5.05, 2.92, 4.55, 1.4);
+  accentBar(s, 5.05, 2.92, 1.4, TEAL);
+  s.addText("Mechanism of Toxicity", { x: 5.25, y: 2.97, w: 4.1, h: 0.3, fontSize: 13, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+  s.addText("μ-opioid receptor agonism → ↓ cAMP → hyperpolarisation of neurons → brainstem respiratory centre depression → apnea → death. Chest wall rigidity ('wooden chest') with rapid IV bolus.", { x: 5.25, y: 3.3, w: 4.2, h: 0.9, fontSize: 10.5, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 5.05, 4.43, 4.55, 0.92);
+  accentBar(s, 5.05, 4.43, 0.92, AMBER);
+  s.addText("Treatment (Current Guidelines)", { x: 5.25, y: 4.48, w: 4.1, h: 0.3, fontSize: 12, bold: true, color: AMBER, fontFace: "Calibri", margin: 0 });
+  s.addText("Naloxone 0.4–2 mg IV/IN (repeat q2-3 min; high-potency analogues may need 10–20 mg total) · Airway/ventilatory support · ICU monitoring for recurrence.", { x: 5.25, y: 4.8, w: 4.25, h: 0.48, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+}
+
+// ─── SLIDE 5: DESIGNER DRUGS – HOW THEY BYPASS REGULATION ───────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Designer Drugs: Engineering to Bypass Regulation", "UNODC Technical Update 2024 · FAA · NPS Forensic Science Reviews");
+
+  // Left: steps
+  card(s, 0.35, 1.05, 4.35, 4.35);
+  s.addText("The Engineering Playbook", { x: 0.55, y: 1.12, w: 4.0, h: 0.35, fontSize: 13, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  const steps = [
+    ["1. Choose a Controlled Scaffold", "Start with a scheduled drug (e.g., fentanyl, THC, amphetamine, LSD)."],
+    ["2. Minor Structural Modification", "Add/replace an atom or side chain — fluorine, methyl, acetyl. One atom can change legal status entirely."],
+    ["3. Sell as 'Not for Human Use'", "Labelled 'research chemical', 'bath salts', 'plant food', 'incense' to evade analogue acts."],
+    ["4. Wait for Scheduling", "Regulatory review takes 12–24 months. A new variant is released before banning completes."],
+    ["5. Repeat", "UNODC 2024: 688 NPS identified in 2024 (highest ever). >1,396 cumulative across 153 countries."],
+  ];
+  steps.forEach(([head, body], i) => {
+    const y = 1.58 + i * 0.76;
+    s.addShape(pres.shapes.OVAL, { x: 0.5, y: y + 0.04, w: 0.3, h: 0.3, fill: { color: C1 }, line: { type: "none" } });
+    s.addText(String(i+1), { x: 0.5, y: y + 0.04, w: 0.3, h: 0.3, fontSize: 11, bold: true, color: BG, fontFace: "Calibri", align: "center", valign: "middle", margin: 0 });
+    s.addText(head, { x: 0.9, y, w: 3.6, h: 0.28, fontSize: 10.5, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+    s.addText(body, { x: 0.9, y: y + 0.28, w: 3.6, h: 0.42, fontSize: 9.5, color: C2, fontFace: "Calibri", margin: 0 });
+  });
+
+  // Right cards
+  card(s, 4.85, 1.05, 4.8, 1.5);
+  accentBar(s, 4.85, 1.05, 1.5, AMBER);
+  s.addText("Halogenation Strategy (Most Common)", { x: 5.05, y: 1.1, w: 4.4, h: 0.3, fontSize: 12, bold: true, color: AMBER, fontFace: "Calibri", margin: 0 });
+  s.addText("Amphetamine → 4-fluoroamphetamine (not scheduled → sold legally). Methamphetamine → fluoromethamphetamine. 4-methylaminorex → 4′-fluoro, 4′-chloro, 4′-bromo variants appeared online 2022-24 — all unscheduled at release. Adding halogens is cheap, changes MS fingerprint, evades standard immunoassays.", { x: 5.05, y: 1.45, w: 4.5, h: 1.0, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 4.85, 2.68, 4.8, 1.35);
+  accentBar(s, 4.85, 2.68, 1.35, TEAL);
+  s.addText("Prodrug Loophole", { x: 5.05, y: 2.73, w: 4.4, h: 0.3, fontSize: 12, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+  s.addText("1P-LSD, ALD-52 are LSD 'prodrugs' — ester groups cleaved in vivo to yield LSD. Sold legally as 'analogues' until scheduling. LSD-like designer variants proliferated 2020-2024, requiring GC-MS + UV spectroscopy for identification.", { x: 5.05, y: 3.07, w: 4.5, h: 0.88, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 4.85, 4.13, 4.8, 1.27);
+  accentBar(s, 4.85, 4.13, 1.27, RED);
+  s.addText("Detection Challenge", { x: 5.05, y: 4.18, w: 4.4, h: 0.3, fontSize: 12, bold: true, color: RED, fontFace: "Calibri", margin: 0 });
+  s.addText("Standard immunoassay screens MISS most NPS — novel structures don't cross-react. Confirmatory GC-MS/HPLC misses unknowns without reference standards. Orbitrap/TOF-MS (untargeted) is the current gold standard but expensive. India: few labs have this capability.", { x: 5.05, y: 4.52, w: 4.5, h: 0.82, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+}
+
+// ─── SLIDE 6: MEDICOLEGAL SIGNIFICANCE ──────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Medicolegal Significance of Psychotropic Poisoning", "NDPS Act 1985 · IPC · Evidence Challenges · Forensic Practice");
+
+  const points = [
+    [C1,   "Criminal Proceedings", "Blood/urine toxicology is primary evidence under NDPS Act. Chain-of-custody documentation is mandatory — breaks in chain render results inadmissible. India: conviction rate <0.1% despite 98,000 arrests (2023)."],
+    [TEAL, "Cause of Death Certification", "Psychotropic poisoning must be distinguished from natural disease at autopsy. Vitreous humor, hair, bone marrow are alternative matrices when blood is unavailable or putrefied."],
+    [AMBER,"Sexual Assault (DFSA)", "BZDs (Flunitrazepam, Clonazepam, GHB) used in drug-facilitated sexual assault. Detection window is short (BZD ~72 hrs urine; GHB ~8 hrs). Rapid specimen collection is essential."],
+    [RED,  "Road Traffic Accidents", "Psychotropic intoxication is legally equivalent to DUI in India. Amphetamines impair reaction time; BZDs cause anterograde amnesia confounding witness accounts."],
+    [C1,   "Insurance / Suicide Determination", "Deliberate vs accidental ingestion affects insurance payout and IPC classification. Blood levels, scene investigation, and psychiatric history must be integrated."],
+    ["BB88FF", "New Psychoactive Substances Gap", "NPS not scheduled under NDPS Act cannot be prosecuted as psychotropic offences. Forensic labs must prove analogousness — scientific and legal grey zone. Medicolegal recommendations must note the gap explicitly."],
+  ];
+  points.forEach(([col, head, body], i) => {
+    const col2 = i < 3 ? 0.35 : 5.05;
+    const row = i < 3 ? i : i - 3;
+    const y = 1.15 + row * 1.42;
+    card(s, col2, y, 4.45, 1.32, CARD);
+    s.addShape(pres.shapes.RECTANGLE, { x: col2, y, w: 4.45, h: 0.06, fill: { color: col }, line: { type: "none" } });
+    s.addText(head, { x: col2 + 0.15, y: y + 0.14, w: 4.15, h: 0.3, fontSize: 12, bold: true, color: col, fontFace: "Calibri", margin: 0 });
+    s.addText(body, { x: col2 + 0.15, y: y + 0.46, w: 4.1, h: 0.8, fontSize: 9.5, color: C2, fontFace: "Calibri", margin: 0 });
+  });
+}
+
+// ─── SLIDE 7: BARBITURATES – PHARMACOLOGY ────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Barbiturates — Pharmacology & Mechanism", "StatPearls 2024 · VV Pillay Textbook · Narayan Reddy");
+
+  card(s, 0.35, 1.0, 4.45, 2.8);
+  accentBar(s, 0.35, 1.0, 2.8, C1);
+  s.addText("Mechanism of Action", { x: 0.55, y: 1.06, w: 4.1, h: 0.32, fontSize: 14, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  s.addText([
+    { text: "Bind GABA-A receptor/Cl⁻ channel ", options: { color: C2 } },
+    { text: "→ ↑ duration", options: { color: C1, bold: true } },
+    { text: " of Cl⁻ channel opening (vs BZDs which ↑ frequency).\n\nAt high doses: GABA-A agonism independent of GABA — causes direct CNS depression, mimicking general anaesthesia.\n\nCNS → Respiratory → Cardiovascular depression cascade.\n\nNo ceiling effect → lethal at 5–10× sedative dose.", options: { color: C2 } }
+  ], { x: 0.55, y: 1.44, w: 4.1, h: 2.25, fontSize: 10.5, fontFace: "Calibri", margin: 0 });
+
+  card(s, 0.35, 3.92, 4.45, 1.5);
+  accentBar(s, 0.35, 3.92, 1.5, TEAL);
+  s.addText("Pharmacokinetics", { x: 0.55, y: 3.98, w: 4.1, h: 0.3, fontSize: 13, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+  const pk = [["Absorption","Rapid from GI tract; IV fastest"],["Onset","Short-acting (Thiopental 30s); Long-acting (Phenobarb 1h)"],["Fatal Dose","6–10 g (highly variable with tolerance)"],["Fatal Blood Level","Phenobarbitone: 8–15 mg%"]];
+  pk.forEach(([k, v], i) => {
+    s.addText(k + ": ", { x: 0.55, y: 4.35 + i * 0.25, w: 1.4, h: 0.22, fontSize: 10, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+    s.addText(v, { x: 1.95, y: 4.35 + i * 0.25, w: 2.7, h: 0.22, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+  });
+
+  // Classification table right
+  card(s, 5.0, 1.0, 4.65, 4.42);
+  s.addText("Classification by Duration of Action", { x: 5.15, y: 1.07, w: 4.3, h: 0.3, fontSize: 13, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  const tbl = [
+    ["Ultra-short", "<30 min", "Thiopental, Methohexital", "IV anaesthesia; lethal injection"],
+    ["Short", "3–8 h", "Pentobarbital, Secobarbital", "Insomnia; high abuse potential"],
+    ["Intermediate", "6–12 h", "Amobarbital, Butabarbital", "Pre-operative sedation"],
+    ["Long-acting", "10–16 h", "Phenobarbital, Primidone", "Epilepsy; neonatal seizures"],
+  ];
+  const hdr = ["Type","Duration","Examples","Clinical Use"];
+  hdr.forEach((h, i) => {
+    s.addText(h, { x: 5.1 + [0,1.1,2.3,3.6][i], y: 1.44, w: [1.0,1.1,1.3,1.0][i], h: 0.28, fontSize: 9, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  });
+  tbl.forEach(([t, d, ex, cu], i) => {
+    const y = 1.78 + i * 0.85;
+    const bg2 = i % 2 === 0 ? "181828" : CARD;
+    s.addShape(pres.shapes.RECTANGLE, { x: 5.05, y, w: 4.5, h: 0.82, fill: { color: bg2 }, line: { type: "none" } });
+    s.addText(t, { x: 5.1, y: y+0.05, w: 1.0, h: 0.35, fontSize: 10, bold: true, color: AMBER, fontFace: "Calibri", margin: 0 });
+    s.addText(d, { x: 6.2, y: y+0.05, w: 1.0, h: 0.35, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addText(ex, { x: 7.35, y: y+0.05, w: 1.35, h: 0.35, fontSize: 9, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addText(cu, { x: 5.1, y: y+0.44, w: 4.4, h: 0.3, fontSize: 9, color: MUTED, fontFace: "Calibri", margin: 0 });
+  });
+}
+
+// ─── SLIDE 8: BARBITURATES – SYMPTOMS & TREATMENT ────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Barbiturates — Symptoms, Pathophysiology & Treatment", "StatPearls 2024 · UpToDate · Medscape 2025");
+
+  const rows = [
+    { sym: "CNS Depression → Coma", why: "GABA-A direct agonism → global cortical + brainstem suppression. GCS may reach 3.", tx: "Secure airway early. Intubate if GCS ≤8 or RR <12.", col: RED },
+    { sym: "Respiratory Depression / Apnea", why: "Brainstem respiratory centre (pre-Bötzinger complex) inhibited. Decreased hypoxic drive.", tx: "Mechanical ventilation. O₂ target SpO₂ >94%.", col: RED },
+    { sym: "Barbiturate Bullae", why: "Prolonged pressure + drug-induced tissue ischaemia → sweat gland necrosis (pathognomonic).", tx: "Wound care; confirm barbiturate poisoning (no other drug causes this).", col: AMBER },
+    { sym: "Hypotension", why: "Peripheral vasodilation + myocardial depression (Na⁺/K⁺ ATPase inhibition).", tx: "IV crystalloids; vasopressors (noradrenaline) if refractory.", col: AMBER },
+    { sym: "Hypothermia", why: "Hypothalamic thermoregulation suppressed.", tx: "Active external warming. Core temp monitoring.", col: TEAL },
+  ];
+
+  rows.forEach(({ sym, why, tx, col }, i) => {
+    const y = 1.08 + i * 0.88;
+    card(s, 0.35, y, 9.3, 0.82, CARD);
+    s.addShape(pres.shapes.RECTANGLE, { x: 0.35, y, w: 0.04, h: 0.82, fill: { color: col }, line: { type: "none" } });
+    s.addText(sym, { x: 0.5, y: y + 0.04, w: 2.6, h: 0.38, fontSize: 11, bold: true, color: col, fontFace: "Calibri", margin: 0 });
+    s.addText("Why: " + why, { x: 0.5, y: y + 0.42, w: 2.6, h: 0.35, fontSize: 9, color: MUTED, fontFace: "Calibri", margin: 0 });
+    s.addText("Pathophysiology: " + why, { x: 3.2, y: y + 0.06, w: 3.5, h: 0.7, fontSize: 9.5, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addText("Tx: " + tx, { x: 6.8, y: y + 0.06, w: 2.7, h: 0.7, fontSize: 9.5, color: C1, fontFace: "Calibri", margin: 0 });
+  });
+
+  card(s, 0.35, 5.45, 9.3, 0.0);
+  s.addText("No specific antidote. Management: Activated charcoal (within 1h) → Urinary alkalinisation (NaHCO₃, pH>7.5) → MDAC for phenobarb → Haemodialysis in severe cases. Avoid stimulants. Monitor for non-cardiogenic pulmonary oedema.", {
+    x: 0.5, y: 5.3, w: 9.0, h: 0.3, fontSize: 9.5, color: AMBER, fontFace: "Calibri", margin: 0
+  });
+}
+
+// ─── SLIDE 9: BENZODIAZEPINES – PHARMACOLOGY ─────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Benzodiazepines — Pharmacology & Forensic Contexts", "UpToDate 2024 · IEM-Student 2024 · Forensic Pharmacology");
+
+  card(s, 0.35, 1.0, 4.5, 2.55);
+  accentBar(s, 0.35, 1.0, 2.55, TEAL);
+  s.addText("Mechanism vs Barbiturates", { x: 0.55, y: 1.06, w: 4.2, h: 0.3, fontSize: 13, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+  s.addText([
+    { text: "BZDs: ↑ frequency ", options: { color: TEAL, bold: true } },
+    { text: "of Cl⁻ channel opening\nBarbiturates: ↑ ", options: { color: C2 } },
+    { text: "duration ", options: { color: C1, bold: true } },
+    { text: "of opening\n\nBZDs require GABA to be present — ceiling effect → relatively safer in overdose alone. BZDs potentiate all other CNS depressants multiplicatively (alcohol + BZD = lethal synergy).\n\nPharmacological classifications:\n• Short-acting: Triazolam, Midazolam (DFSA agents)\n• Intermediate: Lorazepam, Temazepam\n• Long-acting: Diazepam, Chlordiazepoxide, Clonazepam", options: { color: C2 } },
+  ], { x: 0.55, y: 1.44, w: 4.15, h: 2.0, fontSize: 10.5, fontFace: "Calibri", margin: 0 });
+
+  card(s, 0.35, 3.65, 4.5, 1.72);
+  accentBar(s, 0.35, 3.65, 1.72, AMBER);
+  s.addText("Drug-Facilitated Sexual Assault (DFSA)", { x: 0.55, y: 3.71, w: 4.2, h: 0.3, fontSize: 12, bold: true, color: AMBER, fontFace: "Calibri", margin: 0 });
+  s.addText("Flunitrazepam (Rohypnol), Clonazepam, Alprazolam, GHB used.\nKey features: rapid onset, anterograde amnesia, colourless/odourless when dissolved.\nDetection window: urine 72 hrs (7-aminoflunitrazepam); blood 12-24 hrs.\nForensic pearl: preserve first-void urine immediately — demand urgent collection.", { x: 0.55, y: 4.07, w: 4.15, h: 1.22, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  // Right
+  card(s, 5.0, 1.0, 4.65, 2.0);
+  accentBar(s, 5.0, 1.0, 2.0, RED);
+  s.addText("Clinical Manifestations of BZD Toxicity", { x: 5.2, y: 1.07, w: 4.3, h: 0.3, fontSize: 13, bold: true, color: RED, fontFace: "Calibri", margin: 0 });
+  const mani = [["Ataxia / Dysarthria","Cerebellar GABA-A activation"],["Ptosis / Nystagmus","Brainstem inhibition"],["Anterograde Amnesia","Hippocampal GABA-A"],["Resp. depression","Only severe in polydrug OD"],["Paradoxical agitation","Disinhibition — esp. children, elderly"]];
+  mani.forEach(([m, o], i) => {
+    s.addText("• " + m, { x: 5.2, y: 1.44 + i * 0.28, w: 2.2, h: 0.26, fontSize: 10, bold: true, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addText(o, { x: 7.45, y: 1.44 + i * 0.28, w: 2.1, h: 0.26, fontSize: 9, color: MUTED, fontFace: "Calibri", margin: 0 });
+  });
+
+  card(s, 5.0, 3.1, 4.65, 1.4);
+  accentBar(s, 5.0, 3.1, 1.4, C1);
+  s.addText("Treatment — Current Evidence", { x: 5.2, y: 3.16, w: 4.3, h: 0.3, fontSize: 13, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  s.addText("Supportive: Airway, O₂, IV fluids (primary)\nFlumazenil 0.2 mg IV q1 min (max 1 mg) — use ONLY in BZD-naive patients (procedural OD, paediatric accidental). CONTRAINDICATED in chronic BZD users → precipitates status epilepticus.\nSeizures from flumazenil: treat with propofol or phenobarbital.", { x: 5.2, y: 3.5, w: 4.35, h: 0.9, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 5.0, 4.6, 4.65, 0.76);
+  s.addText("Designer BZDs (2024 threat): Flubromazepam, Etizolam, Clonazolam — NOT detected on standard immunoassay. Require LC-HRMS for confirmation. Increasingly seen in India via darknet.", { x: 5.15, y: 4.68, w: 4.4, h: 0.62, fontSize: 9.5, color: AMBER, fontFace: "Calibri", margin: 0 });
+}
+
+// ─── SLIDE 10: AMPHETAMINES ───────────────────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Amphetamines & Designer Stimulants — Full Clinical Chain", "StatPearls · UpToDate · WHO/UNODC 2024");
+
+  card(s, 0.35, 1.0, 4.45, 2.05);
+  accentBar(s, 0.35, 1.0, 2.05, AMBER);
+  s.addText("Mechanism — Adrenergic Surge", { x: 0.55, y: 1.06, w: 4.1, h: 0.3, fontSize: 13, bold: true, color: AMBER, fontFace: "Calibri", margin: 0 });
+  s.addText("Amphetamines act as VMAT2 disruptors and DAT/NET/SERT reversers → massive release of dopamine, noradrenaline, and serotonin into synaptic cleft (not reuptake inhibition — active efflux).\n\nResult: sympathomimetic toxidrome:\n↑BP, ↑HR, ↑temp, dilated pupils, diaphoresis, agitation, psychosis.", { x: 0.55, y: 1.42, w: 4.1, h: 1.5, fontSize: 10.5, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 0.35, 3.13, 4.45, 1.1);
+  accentBar(s, 0.35, 3.13, 1.1, RED);
+  s.addText("Forensic Data", { x: 0.55, y: 3.19, w: 4.1, h: 0.3, fontSize: 13, bold: true, color: RED, fontFace: "Calibri", margin: 0 });
+  s.addText("Fatal dose: ~1.5 mg/kg (variable; tolerance plays a major role). Urine detection: 2–5 days. India: meth labs (Greater Noida — Jalisco cartel link). ATS 0.18% prevalence nationally; rising sharply in urban circuits and NE states.", { x: 0.55, y: 3.53, w: 4.1, h: 0.65, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 0.35, 4.32, 4.45, 1.08);
+  accentBar(s, 0.35, 4.32, 1.08, C1);
+  s.addText("Treatment — Amphetamine OD", { x: 0.55, y: 4.38, w: 4.1, h: 0.3, fontSize: 12, bold: true, color: C1, fontFace: "Calibri", margin: 0 });
+  s.addText("Gastric lavage (if early) → Activated charcoal → Urine acidification (NH₄Cl or ascorbic acid, target pH<5.5 to ionise drug) → Chlorpromazine for agitation/HTN → Benzodiazepines for seizures → Cooling for hyperthermia → No beta-blockers alone (unopposed α).", { x: 0.55, y: 4.73, w: 4.1, h: 0.6, fontSize: 9.5, color: C2, fontFace: "Calibri", margin: 0 });
+
+  // Right: MDMA + synthetic cathinones
+  card(s, 5.0, 1.0, 4.65, 2.3);
+  accentBar(s, 5.0, 1.0, 2.3, RED);
+  s.addText("MDMA (Ecstasy) — Serotonin Toxicity", { x: 5.2, y: 1.06, w: 4.3, h: 0.3, fontSize: 13, bold: true, color: RED, fontFace: "Calibri", margin: 0 });
+  s.addText("MDMA: preferential SERT reversal → serotonin syndrome triad:\n1. Neuromuscular: clonus, hyperreflexia, tremor\n2. Autonomic: hyperthermia, HTN, tachycardia\n3. Altered mental status: agitation, confusion\n\nHyperpyrexia >41°C = life-threatening. DIC, rhabdomyolysis, hepatic failure follow.\n\nTreatment: Aggressive cooling (ice-packs, evaporation), BZDs for myoclonus/seizures, cyproheptadine (5-HT antagonist), avoid serotonergic agents.", { x: 5.2, y: 1.43, w: 4.35, h: 1.76, fontSize: 10, color: C2, fontFace: "Calibri", margin: 0 });
+
+  card(s, 5.0, 3.4, 4.65, 2.0);
+  accentBar(s, 5.0, 3.4, 2.0, TEAL);
+  s.addText("Synthetic Cathinones ('Bath Salts') & Mephedrone", { x: 5.2, y: 3.46, w: 4.3, h: 0.3, fontSize: 12, bold: true, color: TEAL, fontFace: "Calibri", margin: 0 });
+  s.addText("Cathinone scaffold (khat derivative) → synthetic: mephedrone (4-MMC), methylone, MDPV.\nIndia: mephedrone (MD) is emerging — INCB flagged India threat.\nMechanism: DAT/NET reversal + SERT (MDPV = potent DAT blocker).\nClinical: 'excited delirium' syndrome — hyperthermia, extreme agitation, superhuman strength, sudden cardiac arrest.\nForensic: NOT detected on routine amphetamine immunoassay. LC-MS/MS required.\nTreatment: High-dose BZDs, physical restraint, cooling, early intubation.", { x: 5.2, y: 3.83, w: 4.35, h: 1.5, fontSize: 9.5, color: C2, fontFace: "Calibri", margin: 0 });
+}
+
+// ─── SLIDE 11: ANALYTICAL METHODS ────────────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  title(s, "Analytical Identification — Forensic Lab Workflow", "From Scene to Conviction");
+
+  const methods = [
+    { step: "1", name: "Immunoassay Screening", detail: "ELISA / CLIA on urine/blood. Fast, cheap. HIGH false-negative for NPS/designer drugs — NOT confirmation. Cross-reactivity unpredictable.", col: MUTED, tag: "SCREEN" },
+    { step: "2", name: "Thin Layer Chromatography (TLC)", detail: "Colour reactions (Marquis = orange for amphetamines; purple for MDxx). Presumptive only. Useful in resource-limited Indian labs.", col: TEAL, tag: "PRESUMPTIVE" },
+    { step: "3", name: "GC-MS (Gold Standard)", detail: "Electron ionisation fingerprint. Required for court evidence. Cannot detect unknowns without reference library. Misses many NPS.", col: C1, tag: "CONFIRMATORY" },
+    { step: "4", name: "LC-HRMS / Orbitrap", detail: "Untargeted screening — exact mass ±5 ppm. Detects NPS, designer BZDs, nitazenes without reference standard. Current forensic gold for NPS. Expensive.", col: AMBER, tag: "NPS GOLD STD" },
+    { step: "5", name: "Hair / Alternative Matrices", detail: "Hair: 1 cm = 1 month history. Vitreous, bone marrow for decomposed remains. Meconium for neonatal drug exposure.", col: RED, tag: "CHRONIC / PM" },
+  ];
+
+  methods.forEach(({ step, name, detail, col, tag }, i) => {
+    const y = 1.1 + i * 0.87;
+    card(s, 0.35, y, 9.3, 0.8, CARD);
+    s.addShape(pres.shapes.OVAL, { x: 0.42, y: y + 0.2, w: 0.45, h: 0.45, fill: { color: col }, line: { type: "none" } });
+    s.addText(step, { x: 0.42, y: y + 0.2, w: 0.45, h: 0.45, fontSize: 14, bold: true, color: BG, fontFace: "Calibri", align: "center", valign: "middle", margin: 0 });
+    s.addText(name, { x: 1.05, y: y + 0.06, w: 3.5, h: 0.3, fontSize: 12, bold: true, color: col, fontFace: "Calibri", margin: 0 });
+    s.addText(detail, { x: 1.05, y: y + 0.38, w: 5.5, h: 0.38, fontSize: 9.5, color: C2, fontFace: "Calibri", margin: 0 });
+    s.addShape(pres.shapes.RECTANGLE, { x: 8.5, y: y + 0.22, w: 1.05, h: 0.35, fill: { color: col }, line: { type: "none" }, rectRadius: 0.05 });
+    s.addText(tag, { x: 8.5, y: y + 0.22, w: 1.05, h: 0.35, fontSize: 8, bold: true, color: BG, fontFace: "Calibri", align: "center", valign: "middle", margin: 0 });
+  });
+}
+
+// ─── SLIDE 12: CONCLUSION ─────────────────────────────────────────────────────
+{
+  const s = pres.addSlide();
+  bg(s);
+  s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.08, fill: { color: C1 }, line: { type: "none" } });
+  s.addText("Key Takeaways", { x: 0.5, y: 0.3, w: 9, h: 0.55, fontSize: 32, bold: true, color: C2, fontFace: "Calibri", margin: 0 });
+  const takes = [
+    [C1,   "The term 'psychotropic' remains legally essential under NDPS Act 1985 — now expanded to encompass 1,396+ NPS across 153 countries (UNODC 2024)."],
+    [TEAL, "India faces a dual burden: traditional drugs (cannabis, heroin) + emerging synthetic drugs (meth, mephedrone, fentanyl analogues). NCB 2024: 65% of transactions via encrypted platforms."],
+    [AMBER,"Fentanyl analogues (carfentanil, acetylfentanyl) and nitazenes are dominating global overdose deaths. India's NDPS Act has regulatory gaps for analogues — urgent amendment needed."],
+    [RED,  "Designer drugs engineer minor molecular changes (halogenation, esterification) to outpace scheduling — new variant appears before a ban is implemented."],
+    [C1,   "Barbiturates: No antidote. GABA-A duration ↑. Treat with airway, alkalinise urine. Bullae = pathognomonic sign. Phenobarb fatal at 8-15 mg%."],
+    [TEAL, "BZDs: Antidote = Flumazenil (caution in chronic users). DFSA agents. Designer BZDs (clonazolam, etizolam) evade immunoassay — require LC-HRMS."],
+    [AMBER,"Amphetamines: Sympathomimetic toxidrome. MDMA → serotonin syndrome. Cathinones → excited delirium. Urine acidification + chlorpromazine + BZDs."],
+    ["BB88FF", "Forensic workflow: Screen (ELISA) → Confirm (GC-MS) → NPS (LC-HRMS). Chain-of-custody is paramount for admissibility in Indian courts."],
+  ];
+  takes.forEach(([col, text], i) => {
+    const y = 1.05 + i * 0.55;
+    s.addShape(pres.shapes.RECTANGLE, { x: 0.35, y: y + 0.1, w: 0.06, h: 0.32, fill: { color: col }, line: { type: "none" } });
+    s.addText(text, { x: 0.55, y, w: 9.1, h: 0.52, fontSize: 10, color: C2, fontFace: "Calibri", valign: "middle", margin: 0 });
+  });
+  s.addText("Sources: KS Narayan Reddy Ch.31/33 · VV Pillay Textbook of Forensic Medicine · StatPearls 2024 · UpToDate 2024 · UNODC World Drug Report 2025 · CDC MMWR Dec 2024 · NCB India Annual Report 2023-24", {
+    x: 0.35, y: 5.35, w: 9.3, h: 0.2, fontSize: 7.5, color: MUTED, fontFace: "Calibri", margin: 0
+  });
+}
+
+pres.writeFile({ fileName: "/mnt/user-data/outputs/Forensic_Toxicology_Psychotropic_Comprehensive.pptx" })
+  .then(() => console.log("Done"))
+  .catch(e => console.error(e));
   }
 };
