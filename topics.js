@@ -2204,5 +2204,7 @@ function title(slide, text, sub) {
 pres.writeFile({ fileName: "/mnt/user-data/outputs/Forensic_Toxicology_Psychotropic_Comprehensive.pptx" })
   .then(() => console.log("Done"))
   .catch(e => console.error(e));
-  }
-};
+}
+]
+}
+}
